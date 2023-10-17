@@ -1,0 +1,108 @@
+%! Author = niko
+%! Date = 5/10/2023
+
+% Preamble
+\documentclass[
+    paper=240mm:170mm,
+    paper=portrait,
+    parskip=half,
+    cleardoublepage=plain,
+    toc=chapterentrywithdots
+]{scrbook}
+
+% Het formaat van een doctoraat is "proefschrift B5".
+% Een lichte afwijking tegenover ISO B5. B5 = 176x250mm
+% Wij gebruiken 170x240mm.
+%\usepackage[paperheight=240mm,paperwidth=170mm,heightrounded,showframe]{geometry}
+
+% Indivuele hoofdstukken compileren
+\usepackage{subfiles}
+
+% Andere
+\usepackage{lipsum}
+%\usepackage{showframe}
+\usepackage{marginnote}
+\renewcommand{\dictumwidth}{0.80\textwidth}
+\setkomafont{dictum}{\rmfamily\itshape}
+\setkomafont{dictumauthor}{\upshape}
+
+% Lettertypes
+\usepackage{microtype}
+\usepackage{fontspec}
+\setmainfont{Source Serif 4}[
+    UprightFont    = *-Regular,
+    ItalicFont     = *-Italic,
+    BoldFont       = *-Semibold,
+    BoldItalicFont = *-Semibold Italic,
+    Numbers        = OldStyle
+]
+\setsansfont{Source Sans 3}[
+    UprightFont    = *-Regular,
+    ItalicFont     = *-Italic,
+    BoldFont       = *-Semibold,
+    BoldItalicFont = *-Semibold Italic
+]
+\setmonofont{Source Code Pro}[
+    UprightFont    = *-Regular,
+    ItalicFont     = *-Italic,
+    BoldFont       = *-Semibold,
+    BoldItalicFont = *-Semibold Italic
+]
+\renewcommand*{\marginfont}{\itshape\footnotesize}
+
+% Referenties
+\usepackage[colorlinks]{hyperref}
+\usepackage{cleveref}
+
+% Taalinstellingen. Door de verengelsing is de standaardtaal van dit document Engels.
+\usepackage{polyglossia}
+
+% Voorblad
+\usepackage[type=report]{ugent2016-title}
+
+% Taalinstellingen.
+\setdefaultlanguage[variant=british]{english}
+\setotherlanguages{latin,dutch,french}
+
+\author{Niko Strijbol}
+\title{A doctorate in some subject}
+\subtitle{Some more information on what the title could mean}
+\academicyear{2023 – 2024}
+\titletext{%
+A dissertation submitted to Ghent University in partial fulfilment of the requirements for the degree of Doctor of Computer Science.
+}
+\promotors{%
+Supervisors:\\
+Prof.\ Dr.\ Peter Dawyndt\\
+Prof.\ Dr.\ Christophe Scholliers\\
+Prof.\ Dr.\ Ir.\ Bart Mesuere
+}
+
+% Document
+\begin{document}
+
+\frontmatter
+
+% We want Panno on the complete front page.
+{
+    \selectfont\panno
+    \maketitle
+}
+
+\subfile{colophon}
+
+\tableofcontents
+
+\subfile{preface}
+\subfile{summary-nl}
+\subfile{summary-en}
+
+\mainmatter
+
+\subfile{chapter1}
+
+
+%    \bibliography{main}
+%    \bibliographystyle{plain}
+
+\end{document}
