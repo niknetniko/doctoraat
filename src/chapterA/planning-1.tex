@@ -1,0 +1,55 @@
+%! Suppress = MultipleIncludes
+\documentclass[tikz,crop]{standalone}
+
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc}
+
+\onlyifstandalone{
+    \definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
+    \definecolor{ugent-we}{RGB}{45, 140, 168}        % no match
+    \definecolor{ugent-ge}{RGB}{232, 94, 113}        % rose				/ bleekrood
+    \definecolor{ugent-ea}{RGB}{111, 113, 185}        % distant blue		/ verblauw
+    \definecolor{ugent-pp}{RGB}{251, 126, 58}        % deep orange		/ dieporanje
+    \definecolor{ugent-ps}{RGB}{113, 168, 96}        % yellow green		/ geelgroen
+
+    \newlength{\unit}
+    \setlength{\unit}{0.75cm}
+}
+
+\begin{document}
+
+
+\tikzstyle{box}=[draw,rectangle,anchor=north west]
+\tikzstyle{cont}=[box,minimum height=1\unit,minimum width=1\unit]
+\tikzstyle{tc}=[box,draw=ugent-ps]
+\tikzstyle{comp}=[box,draw=ugent-re,fill=ugent-re,fill opacity=0.05]
+\tikzstyle{exec}=[box,draw=ugent-we,fill=ugent-we,fill opacity=0.10]
+
+
+\begin{tikzpicture}[x=0.75cm,y=0.75cm]
+%    \draw[step=1,gray!10,thin] (0,0) grid (14,-20);
+
+    \node[box,minimum height=3\unit, minimum width=13.5\unit] at (0,0) (ts1) {};
+    \node[below right] at (ts1.north west) {Test suite};
+
+    \node[cont] at (0.75, -1.5) (ts1c1) {C\textsubscript{1}};
+    \node[cont] at (2.25, -1.5) (ts1c2) {C\textsubscript{2}};
+    \node[cont] at (3.75, -1.5) (ts1c3) {C\textsubscript{3}};
+    \node[tc,minimum height=2\unit,minimum width=4.5\unit] at (0.5,-0.75) (tc1) {};
+    \node[below right] at (tc1.north west) {\small Unit 1};
+
+    \node[cont] at (5.50, -1.5) (ts1c4) {C\textsubscript{4}};
+    \node[cont] at (7.00, -1.5) (ts1c5) {C\textsubscript{5}};
+    \node[tc,minimum height=2\unit,minimum width=3\unit] at (5.25,-0.75) (tc2) {};
+    \node[below right] at (tc2.north west) {\small Unit 2};
+
+    \node[cont] at (8.75, -1.5) (ts1c6) {C\textsubscript{6}};
+    \node[cont] at (10.25, -1.5) (ts1c7) {C\textsubscript{7}};
+    \node[cont] at (11.75, -1.5) (ts1c8) {C\textsubscript{8}};
+    \node[tc,minimum height=2\unit,minimum width=4.5\unit] at (8.5,-0.75) (tc3) {};
+    \node[below right] at (tc3.north west) {\small Unit 3};
+\end{tikzpicture}
+
+\end{document}

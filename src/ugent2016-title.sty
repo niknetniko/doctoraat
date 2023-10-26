@@ -1,0 +1,387 @@
+%%----------------------------------------------------------------------------------------------------------------------
+%% Copyright (C) 2019 by Niko Strijbol
+%%
+%% This file may be distributed and/or modified under the conditions of the LaTeX Project Public License, either
+%% version 1.3c of this license or (at your option) any later version. The latest version of this license is in:
+%%
+%%      http://www.latex-project.org/lppl.txt
+%%
+%% and version 1.3c or later is part of all distributions of LaTeX version 2006/05/20 or later.
+%%----------------------------------------------------------------------------------------------------------------------
+% Package that will apply general style options to the document in which it is applied.
+%
+% This package provides the three officially defined styles [1]: notes/report, thesis (any kind) and book.
+%
+% [1]: https://styleguide.ugent.be/sjablonen/drukwerk.html
+\ProvidesPackage{ugent2016-title}[2020/05/28 package ugent2016-title]
+
+% Load our stuff at the end of the preamble. This allows the user to override loaded packages.
+\RequirePackage{etoolbox}
+% Used to parse options for this package.
+\RequirePackage{kvoptions}
+% Compare strings
+\RequirePackage{xstring}
+% We need to load this early or the classes will break for some reason.
+\RequirePackage{auxhook}
+
+% All non-essential packages are loaded at the end of the preamble to prevent option clashes.
+\AtEndPreamble{
+	% Used to provide translated texts.
+	\RequirePackage{translations}
+	% We need proper font support.
+	\RequirePackage{fontspec}
+	% Used for the assets (colours, images)
+	\RequirePackage{ugent2016-assets}
+	% Used to position and generally lay out the title pages.
+	\RequirePackage{tikz}
+	% Used to provide proper upper case support for titles
+	\RequirePackage{textcase}
+	% Used for including images
+	\RequirePackage{graphicx}
+	% Used to adjust margins of the title page
+	\RequirePackage{geometry}
+	% Sets the spacing between lines.
+	\RequirePackage{setspace}
+	% Used for underlining the titles
+	\RequirePackage[normalem]{ulem}
+	% Position things within tikz.
+	\usetikzlibrary{positioning}
+}
+
+% Set-up for our options.
+\SetupKeyvalOptions{
+ family=ugenttitle,
+ prefix=ugenttitle@
+}
+
+% Defines the style of the title page.
+\DeclareStringOption[course]{type}
+% The faculty (or none)
+\DeclareStringOption[we]{faculty}
+% Which campus
+\DeclareStringOption[ugent]{campus}
+
+% Styling options
+% Define whether the titles should be underlined or not.
+% This is on by default; the underlining has some issues with thickness and spacing.
+\DeclareBoolOption[true]{underline}
+% Define whether the titles should be forced to uppercase or not.
+% This is on by default; there should be no issues.
+\DeclareBoolOption[true]{uppercase}
+
+\DeclareDefaultOption{%
+	\@unknownoptionerror
+}
+
+% Process options
+\ProcessKeyvalOptions*
+
+% Utility to check if a string is in a list of strings.
+\providecommand*{\IfStringInList}[2]{\IfSubStr{,#2,}{,#1,}}
+
+% Check if the faculty is valid.
+\IfStringInList{\ugenttitle@faculty}{bw,di,ea,eb,fw,ge,lw,pp,ps,re,we,none}{}{%
+	\PackageError{\@currname}{Unknown faculty provided: \ugenttitle@faculty}{%
+		The faculty must be one of [bw,di,ea,eb,fw,ge,lw,pp,ps,re,we,none].
+	}
+}
+% Check if the campus is valid.
+\IfStringInList{\ugenttitle@campus}{ugent,global,kortrijk}{}{%
+	\PackageError{\@currname}{Unknown campus provided: \ugenttitle@campus}{%
+		The campus must be one of [ugent,global,kortrijk].
+	}
+}
+% Check if the style is valid.
+\IfStringInList{\ugenttitle@type}{course,report,notes}{}{%
+	\PackageError{\@currname}{Unknown document type provided: \ugenttitle@type}{%
+		The document type must be one of [course,report,notes].
+	}
+}
+
+% Some combinations of options are not possible.
+\IfStrEq{\ugenttitle@type}{course}{%
+	\IfStrEq{\ugenttitle@faculty}{none}{%
+		\PackageError{\@currname}{The faculty is mandatory when using course title page}{%
+			If the course document type is selected, the faculty is necessary to determine the colours.
+		}
+	}{}
+}{}
+
+% Define a shortcut for the faculty color
+\newcommand*{\@facultycolor}{ugent-\ugenttitle@faculty}
+% Define a shortcut for the faculty logo
+\newcommand*{\@facultyimage}{\ugentlogo{\ugenttitle@faculty}}
+% Define a shortcut for the campus name
+\newcommand*{\@campusimage}{\ugentlogo{\ugenttitle@campus}}
+% Define a shortcut for the faculty code.
+\newcommand*{\@facultycode}{\ugenttitle@faculty}
+
+% If subtitle does not exist
+\ifcsundef{subtitle}{%
+	\newcommand*{\@subtitle}{}
+	\newcommand*{\subtitle}[1]{\gdef\@subtitle{#1}}
+}{}
+
+% Define front page attributes.
+% See the manual for a description and the intended use.
+\newcommand*{\@academicyear}{}
+\newcommand*{\@programme}{}
+\newcommand*{\@studentnumber}{}
+\newcommand*{\@wordcount}{}
+\newcommand*{\@titletext}{}
+\newcommand*{\@department}{}
+\newcommand*{\@researchgroup}{}
+\newcommand*{\@email}{}
+\newcommand*{\@phone}{}
+\newcommand*{\@mobile}{}
+\newcommand*{\@address}{}
+\newcommand*{\@facultish}{}
+\newcommand*{\@promotors}{}
+
+% Create the command that will make them available to the package.
+\newcommand*{\professor}[1]{\author{#1}}
+\newcommand*{\programme}[1]{\gdef\@programme{#1}}
+\newcommand*{\academicyear}[1]{\gdef\@academicyear{#1}}
+\newcommand*{\studentnumber}[1]{\gdef\@studentnumber{#1}}
+\newcommand*{\wordcount}[1]{\gdef\@wordcount{#1}}
+\newcommand*{\titletext}[1]{\gdef\@titletext{#1}}
+\newcommand*{\department}[1]{\gdef\@department{#1}}
+\newcommand*{\researchgroup}[1]{\gdef\@researchgroup{#1}}
+\newcommand*{\email}[1]{\gdef\@email{#1}}
+\newcommand*{\phone}[1]{\gdef\@phone{#1}}
+\newcommand*{\mobile}[1]{\gdef\@mobile{#1}}
+\newcommand*{\address}[1]{\gdef\@address{#1}}
+\newcommand*{\facultish}[1]{\gdef\@facultish{#1}}
+\newcommand*{\promotors}[1]{\gdef\@promotors{#1}}
+
+\IfStrEq{\ugenttitle@type}{notes}{
+% By default and if possible, we use the faculty name.
+	\IfStrEq{\@facultish}{}{
+		\IfStrEq{\ugenttitle@faculty}{none}{
+			\PackageError{\@currname}{If no faculty is set, provide a name using \\@facultish{name}}{Consult the manual for more information.}%
+		}{
+			\facultish{\facultyname{\ugenttitle@faculty}}
+		}
+	}{}
+}{}
+
+% Redefine the /and command to prevent issues.
+% The UGent theme does not specify how multiple authors should be listed, so we just use a comma.
+\renewcommand*{\and}{\leavevmode\unskip{}, \ignorespaces}
+
+
+\AtEndPreamble{
+
+	\IfStrEq{\ugenttitle@type}{notes}{%
+		\@ifpackageloaded{hyperref}{}{%
+			\PackageError{\@currname}{Package 'hyperref' is not loaded}{Please add \\usepackage{hyperref}}%
+		}%
+	}
+
+	\newcommand*{\ugenttitle@maybeUnderline}[1]{%
+		\ifbool{ugenttitle@underline}{%
+			\uline{#1}%
+		}{%
+			#1%
+		}%
+	}
+
+	\newcommand*{\ugenttitle@maybeUppercase}[1]{%
+		\ifbool{ugenttitle@uppercase}{%
+			\MakeUppercase{#1}%
+		}{%
+			#1%
+		}%
+	}
+
+	% Do translations
+	\NewTranslationFallback{wordcounttext}{Aantal woorden:}
+	\NewTranslation{english}{wordcounttext}{Word count:}
+	\NewTranslationFallback{numbertext}{Studentennummer:}
+	\NewTranslation{english}{numbertext}{Student number:}
+	\NewTranslationFallback{academicyear}{Academiejaar:}
+	\NewTranslation{english}{academicyear}{Academic year:}
+
+	% For the course title page, we differ slightly from the Word templates; our title page is aligned to the grid,
+	% theirs is not.
+
+	\newlength{\textblockwidth}
+	\setlength\textblockwidth{\dimexpr0.61\pagewidth-2\smallblock\relax}
+	\newlength{\textblockheight}
+	\setlength\textblockheight{\dimexpr(0.37\pageheight)-(2\smallblock)\relax}
+
+	\newlength{\@basesize}
+	\setlength{\@basesize}{\f@size pt}
+
+	\renewcommand*{\maketitle}{%
+		\thispagestyle{empty}
+		\renewcommand{\ULthickness}{0.2ex}
+		\renewcommand{\ULdepth}{0.4ex}
+
+		\IfStrEq{\ugenttitle@type}{report}{
+			\newgeometry{margin=2\smallblock,bottom=4\smallblock,top=3\smallblock} % adjust margins, restored later
+			\begin{titlepage}
+				\begin{tikzpicture}[remember picture,overlay,every node/.style={inner sep=0,outer sep=0}]
+					\node[anchor=north west] (faculty) at ([shift={(\smallblock,0)}]current page.north west) {
+						% Don't display the faculty logo if we don't have one.
+						% We can still keep the node, it doesn't matter.
+						\IfStrEq{\ugenttitle@faculty}{none}{}{%
+							\includegraphics[height=3\smallblock]{\@facultyimage}
+						}
+					};
+					\node[anchor=south west] (ugent) at ([shift={(\smallblock,0)}]current page.south west) {
+						\includegraphics[height=4\smallblock]{\@campusimage}
+					};
+				\end{tikzpicture}
+
+				\vspace{\fill}
+				\noindent
+				\begin{minipage}{\textwidth}
+					\raggedright
+					\fontsize{2.5\@basesize}{3\@basesize}\selectfont\bfseries\panno\color{ugent-blue}\ugenttitle@maybeUppercase{\ugenttitle@maybeUnderline{\@title}} \par
+					\vspace{0.3\baselineskip}
+					\fontsize{1.5\@basesize}{1.8\@basesize}\selectfont\panno\color{ugent-blue}\ugenttitle@maybeUppercase{\@subtitle}
+				\end{minipage}
+
+				% Add word count if necessary
+				\ifdefempty{\@wordcount}{%
+					\vspace{6\baselineskip}
+				}{%
+					\vspace{1\baselineskip}
+					\noindent{\GetTranslation{wordcounttext} \@wordcount}
+					\vspace{4\baselineskip}
+				}
+
+				\noindent{\fontsize{1.5\@basesize}{1.8\@basesize}\selectfont\@author} \par
+				\ifdefempty{\@studentnumber}{%
+					\vspace{1\baselineskip}
+				}{%
+					\noindent{\GetTranslation{numbertext} \@studentnumber}
+				}
+
+				\vspace{1\baselineskip}
+
+				\ifdefempty{\@promotors}{%
+					\vspace{2\baselineskip}
+				}{%
+					\noindent{\fontsize{1.2\@basesize}{1.44\@basesize}\selectfont\@promotors}
+					\vspace{1\baselineskip}
+				}
+
+				\ifdefempty{\@titletext}{}{%
+					\noindent{\@titletext}
+				}
+
+				\vspace{1\baselineskip}
+				\ifdefempty{\@academicyear}{}{%
+					\noindent{\GetTranslation{academicyear} \@academicyear}
+				}
+				\vspace{\fill}
+			\end{titlepage}
+			\restoregeometry % restore margins
+		}{}
+		\IfStrEq{\ugenttitle@type}{notes}{
+			\newgeometry{margin=2\smallblock,bottom=4\smallblock,top=3\smallblock} % adjust margins, restored later
+			\begin{titlepage}
+				\IfStrEq{\ugenttitle@faculty}{none}{%
+					\begin{tikzpicture}[remember picture,overlay,every node/.style={inner sep=0,outer sep=0}]
+						\node[anchor=north west] (faculty) at ([shift={(\smallblock,0)}]current page.north west) {
+							\includegraphics[height=4\smallblock]{\@campusimage}
+						};
+					\end{tikzpicture}
+				}{% A faculty was defined
+					\begin{tikzpicture}[remember picture,overlay,every node/.style={inner sep=0,outer sep=0}]
+						\node[anchor=north west] (faculty) at ([shift={(\smallblock,0)}]current page.north west) {
+							\includegraphics[height=3\smallblock]{\@facultyimage}
+						};
+						\node[anchor=south west] (ugent) at ([shift={(\smallblock,0)}]current page.south west) {
+							\includegraphics[height=4\smallblock]{\@campusimage}
+						};
+					\end{tikzpicture}
+				}
+
+				\vspace{\fill}
+				\noindent
+				\begin{minipage}{\textwidth}
+					\raggedright
+
+					\fontsize{3\@basesize}{3.63\@basesize}\selectfont\bfseries\panno\color{ugent-blue}\ugenttitle@maybeUppercase{\ugenttitle@maybeUnderline{\@title}} \par
+					\vspace{0.3\baselineskip}
+					\fontsize{2\@basesize}{2.4\@basesize}\selectfont\panno\color{ugent-blue}\ugenttitle@maybeUppercase{\@subtitle}
+				\end{minipage}
+
+				\vspace{1\baselineskip}
+
+				\ifdefempty{\@titletext}{%
+					\vspace{1\baselineskip}
+				}{%
+					\noindent\@titletext \par
+				}
+
+				\vspace{3\baselineskip}
+
+				\noindent\@facultish \par
+				\noindent\@department \par
+				\ifdefempty{\@researchgroup}{}{%
+					\noindent\@researchgroup \par
+				}
+				\vspace{1\baselineskip}
+				\noindent{E \href{mailto:\@email}{\@email}} \par
+				\ifdefempty{\@phone}{}{%
+					\noindent{T \@phone} \par
+				}
+				\ifdefempty{\@mobile}{}{%
+					\noindent{M \@mobile} \par
+				}
+				\vspace{1\baselineskip}
+				\noindent{\@address} \par
+				\vspace{1\baselineskip}
+				\noindent{\href{https://www.ugent.be}{\color{ugent-blue}www.ugent.be}}
+
+				\vspace{\fill}
+
+			\end{titlepage}
+			\restoregeometry % restore margins
+		}{}
+		\IfStrEq{\ugenttitle@type}{course}{
+			\begin{titlepage}
+				\begin{tikzpicture}[remember picture,overlay,every node/.style={inner sep=0,outer sep=0}]
+					\coordinate (big-top-right) at ([shift={(0,-3\smallblock)}]current page.north east);
+					\coordinate (big-top-left) at ([shift={(\smallblock,-3\smallblock)}]current page.north west);
+					\coordinate (big-bottom-left) at ([shift={(\smallblock,4\smallblock)}]current page.south west);
+					\coordinate (big-bottom-right) at ([shift={(0,4\smallblock)}]current page.south east);
+					\coordinate (small-bottom-left) at (big-bottom-left);
+					\coordinate (small-bottom-right) at ([shift={(0.61\pagewidth,0)}]small-bottom-left);
+					\coordinate (small-top-left) at ([shift={(0,0.37\pageheight)}]small-bottom-left);
+					\coordinate (small-top-right) at ([shift={(0.61\pagewidth,0)}]small-top-left);
+					\fill[\@facultycolor] (big-top-right) rectangle (big-bottom-left);
+					\fill[ugent-blue] (small-top-right) rectangle (small-bottom-left);
+
+					\node[anchor=north west] (faculty) at (current page.north west) {
+						\includegraphics[height=3\smallblock]{\@facultyimage}
+					};
+					\node[anchor=south west] (ugent) at (current page.south west) {
+						\includegraphics[height=4\smallblock]{\@campusimage}
+					};
+					\node[anchor=north west, align=left] (title) at ([shift={(\smallblock,-\smallblock)}]small-top-left) {
+					\begin{minipage}[c][\dimexpr0.37\pageheight-2\smallblock\relax][s]{\dimexpr0.61\pagewidth-2\smallblock\relax}
+						\raggedright
+						\color{white}
+						\begin{spacing}{3}
+							{\fontsize{35bp}{42bp}\selectfont\bfseries\panno\ugenttitle@maybeUppercase{\ugenttitle@maybeUnderline{\@title}}} \par
+							{\fontsize{30bp}{36bp}\selectfont\bfseries\panno\@subtitle}
+						\end{spacing}
+						\vfill
+						{\fontsize{18bp}{22bp}\selectfont\panno\@author} \par
+						\vspace{\smallblock}
+						{\fontsize{15bp}{18bp}\selectfont\panno\@programme} \par
+						{\fontsize{15bp}{18bp}\selectfont\panno\@academicyear}
+					\end{minipage}
+					};
+				\end{tikzpicture}
+			\end{titlepage}
+		}{}
+	}
+}
+
+\endinput

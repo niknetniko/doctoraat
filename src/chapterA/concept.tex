@@ -1,0 +1,63 @@
+%! Suppress = MultipleIncludes
+\documentclass[tikz,crop]{standalone}
+
+\usepackage{amsmath}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc}
+
+\begin{document}
+
+\tikzstyle{node}=[draw, minimum height=0.5cm, align=center, fill=white,text depth=.25ex]
+\tikzstyle{box}=[draw,rectangle,anchor=north west]
+\tikzstyle{process}=[node, rectangle]
+\tikzstyle{terminator}=[node, rectangle, rounded corners=0.5cm]
+\tikzstyle{document}=[node,tape,tape bend top=none]
+\tikzstyle{io}=[node,trapezium,trapezium left angle=70,trapezium right angle=-70,minimum width=2.5cm,trapezium stretches=true]
+\tikzstyle{nothing}=[align=center]
+\tikzstyle{inner}=[process,draw=gray]
+\tikzstyle{arrow}=[draw, -latex]
+\tikzstyle{small}=[font=\footnotesize,color=darkgray]
+\tikzstyle{submission}=[document,align=right,minimum width=3cm,minimum height=0.75cm,text depth=0.5cm,inner sep=0.5mm,font=\scriptsize]
+
+\tikzstyle{python}=[fill=ugent-ps!50!white]
+\tikzstyle{java}=[fill=ugent-we!50!white]
+\tikzstyle{haskell}=[fill=ugent-ea!50!white]
+\tikzstyle{js}=[fill=ugent-pp!50!white]
+\tikzstyle{c}=[fill=ugent-re!50!white]
+
+\begin{tikzpicture}
+%        \draw[step=1.0,gray,thin] (0,0) grid (6,-16);
+
+    \node[document, minimum width=3cm,minimum height=1cm] at (2, -1.425) (testplan) {Test suite};
+
+    \node[submission,python] at (6, -0.5) (pysub) {Python};
+    \node[submission,java] at (5.8, -0.8) (javasub) {Java};
+    \node[submission,haskell] at (5.6, -1.1) (hssub) {Haskell};
+    \node[submission,c] at (5.4, -1.4) (csub) {C};
+    \node at (5.4, -1.55) (subm) {Submission};
+
+    \node[process, minimum width=8cm, minimum height=3cm] at (4,-3.75) (tested) {};
+
+    \draw[arrow] (csub) -- (tested.north-|csub);
+    \draw[arrow] (testplan) -- (tested.north-|testplan);
+
+    \node[inner, python, minimum width=7.5cm] at (4,-3.2) (core) {Core};
+
+    \node at (1, -2.6) (label) {TESTed};
+
+    \node[process, densely dotted, minimum width=7.5cm, minimum height=1.2cm] at (4,-4.35) (modules) {};
+    \node[small] at (3.25, -4) (labelmod) {Programming language packages};
+    \node[inner, java, minimum width=1.25cm] at (1,-4.55) (java) {Java};
+    \node[inner, python, minimum width=1.25cm] at (2.5,-4.55) (python) {Python};
+    \node[inner, haskell, minimum width=1.25cm] at (4,-4.55) (haskell) {Haskell};
+    \node[inner, c, minimum width=1.25cm] at (5.5,-4.55) (c) {C};
+
+    \node at (6.75,-4.55) (c) {\ldots};
+
+    \node[document,minimum width=3cm,minimum height=1cm] at (4,-6) (feedback) {Feedback};
+
+    \draw[arrow] (tested) -- (feedback);
+\end{tikzpicture}
+
+\end{document}

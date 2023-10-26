@@ -7,7 +7,9 @@
     paper=portrait,
     parskip=half,
     cleardoublepage=plain,
-    toc=chapterentrywithdots
+    toc=chapterentrywithdots,
+    fontsize=10pt,
+%    mpinclude=true,
 ]{scrbook}
 
 % Het formaat van een doctoraat is "proefschrift B5".
@@ -15,26 +17,45 @@
 % Wij gebruiken 170x240mm.
 %\usepackage[paperheight=240mm,paperwidth=170mm,heightrounded,showframe]{geometry}
 
-% Indivuele hoofdstukken compileren
-\usepackage{subfiles}
+\usepackage[subpreambles=true,sort=true]{standalone}
 
 % Andere
 \usepackage{lipsum}
-%\usepackage{showframe}
+\usepackage{showframe}
 \usepackage{marginnote}
+\usepackage{xcolor}
+\usepackage{circledsteps}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\newlength{\unit}
+\setlength{\unit}{0.75cm}
+
+% We want modern numbers here
+\renewcommand{\CircledText}[2][]{%
+    \CircledParamOpts{inner color=none, outer color=none, #1}{1}{\liningnums{#2}}%
+}
+
 \renewcommand{\dictumwidth}{0.80\textwidth}
 \setkomafont{dictum}{\rmfamily\itshape}
 \setkomafont{dictumauthor}{\upshape}
+\usepackage[style=long]{glossaries}
+\setacronymstyle{long-sc-short}
 
-% Lettertypes
-\usepackage{microtype}
 \usepackage{fontspec}
 \setmainfont{Source Serif 4}[
-    UprightFont    = *-Regular,
-    ItalicFont     = *-Italic,
-    BoldFont       = *-Semibold,
-    BoldItalicFont = *-Semibold Italic,
-    Numbers        = OldStyle
+%    UprightFont     = * Regular,
+    Renderer = OpenType,
+    SizeFeatures    = {%
+        {Size={-9},Font=* Caption},
+        {Size={9-13},Font=*},
+        {Size={14-24},Font=* Subhead},
+        {Size={24-},Font=* Display}
+    },
+    ItalicFont      = * Italic,
+    BoldFont        = * Semibold,
+    BoldItalicFont  = * Semibold Italic,
+    Numbers         = OldStyle,
 ]
 \setsansfont{Source Sans 3}[
     UprightFont    = *-Regular,
@@ -48,7 +69,18 @@
     BoldFont       = *-Semibold,
     BoldItalicFont = *-Semibold Italic
 ]
+
+%\setlength{\marginparwidth}{1.67\marginparwidth}
+%\usepackage{scrlayer-notecolumn}
+%\addtokomafont{notecolumn.marginpar}{\itshape\footnotesize\raggedright}
 \renewcommand*{\marginfont}{\itshape\footnotesize}
+\setcapindent{0em}
+\setkomafont{captionlabel}{\small\bfseries}
+\setkomafont{caption}{\small}
+
+% Lettertypes
+\usepackage{microtype}
+
 
 % Referenties
 \usepackage[colorlinks]{hyperref}
@@ -57,13 +89,28 @@
 % Taalinstellingen. Door de verengelsing is de standaardtaal van dit document Engels.
 \usepackage{polyglossia}
 
+\usepackage{subfiles}
+
 % Voorblad
 \usepackage[type=report]{ugent2016-title}
+
+\newcommand{\todo}[1]{\textcolor{orange}{\textsc{Todo}: #1}}
+
+
+\usepackage{xcolor}
+\definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
+\definecolor{ugent-we}{RGB}{45, 140, 168}        % no match
+\definecolor{ugent-ge}{RGB}{232, 94, 113}        % rose				/ bleekrood
+\definecolor{ugent-ea}{RGB}{111, 113, 185}        % distant blue		/ verblauw
+\definecolor{ugent-pp}{RGB}{251, 126, 58}        % deep orange		/ dieporanje
+\definecolor{ugent-ps}{RGB}{113, 168, 96}        % yellow green		/ geelgroen
+
 
 % Taalinstellingen.
 \setdefaultlanguage[variant=british]{english}
 \setotherlanguages{latin,dutch,french}
 
+\usepackage[type=report]{ugent2016-title}
 \author{Niko Strijbol}
 \title{A doctorate in some subject}
 \subtitle{Some more information on what the title could mean}
@@ -100,6 +147,9 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \mainmatter
 
 \subfile{chapter1}
+\subfile{chapterA/chapterA.tex}
+
+%\subfile{chapter5}
 
 
 %    \bibliography{main}

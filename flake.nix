@@ -16,7 +16,7 @@
         pkgs = import nixpkgs { inherit system; overlays = [ devshell.overlays.default ]; config.allowUnfree = true; };
         ugent2016 = pkgs.stdenvNoCC.mkDerivation (finalAttrs: rec {
             pname = "ugent2016";
-            version = "0.9.0";
+            version = "0.10.0";
             passthru = {
               pkgs = [ finalAttrs.finalPackage ];
               tlDeps = with pkgs.texlive; [
@@ -38,7 +38,7 @@
 
             src = pkgs.fetchurl {
               url = "https://github.com/niknetniko/ugent2016/releases/download/${version}/ugent2016.zip";
-              hash = "sha256-3HNdJLpwBKOZIpqma+A9E4rvTl3eQMGn1g4kRD4CTfM=";
+              hash = "sha256-70/5WHljZwbB//CiKy5AKuVTpwyK2BmbPD/Z4lQwPc8=";
             };
 
             nativeBuildInputs = [ pkgs.unzip ];
