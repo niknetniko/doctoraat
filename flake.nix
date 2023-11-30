@@ -80,6 +80,7 @@
               latex_with_ugent
               gnumake
               inkscape
+              python312Packages.pygments
             ];
             env = [
               {

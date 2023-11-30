@@ -22,7 +22,7 @@
 % Andere
 \usepackage{lipsum}
 \usepackage{showframe}
-\usepackage{marginnote}
+%\usepackage{marginnote}
 \usepackage{xcolor}
 \usepackage{circledsteps}
 \usepackage{caption}
@@ -44,7 +44,6 @@
 
 \usepackage{fontspec}
 \setmainfont{Source Serif 4}[
-%    UprightFont     = * Regular,
     Renderer = OpenType,
     SizeFeatures    = {%
         {Size={-9},Font=* Caption},
@@ -52,9 +51,30 @@
         {Size={14-24},Font=* Subhead},
         {Size={24-},Font=* Display}
     },
-    ItalicFont      = * Italic,
-    BoldFont        = * Semibold,
-    BoldItalicFont  = * Semibold Italic,
+    ItalicFeatures = {%
+        SizeFeatures    = {%
+            {Size={-9},Font=* Caption Italic},
+            {Size={9-13},Font=* Italic},
+            {Size={14-24},Font=* Subhead Italic},
+            {Size={24-},Font=* Display Italic}
+        },
+    },
+    BoldFeatures = {%
+        SizeFeatures    = {%
+            {Size={-9},Font=* Caption Semibold},
+            {Size={9-13},Font=* Semibold},
+            {Size={14-24},Font=* Subhead Semibold},
+            {Size={24-},Font=* Display Semibold}
+        },
+    },
+    BoldItalicFeatures = {%
+        SizeFeatures    = {%
+                {Size={-9},Font=* Caption Semibold Italic},
+                {Size={9-13},Font=* Semibold Italic},
+                {Size={14-24},Font=* Subhead Semibold Italic},
+                {Size={24-},Font=* Display Semibold Italic}
+        },
+    },
     Numbers         = OldStyle,
 ]
 \setsansfont{Source Sans 3}[
@@ -71,12 +91,16 @@
 ]
 
 %\setlength{\marginparwidth}{1.67\marginparwidth}
-%\usepackage{scrlayer-notecolumn}
-%\addtokomafont{notecolumn.marginpar}{\itshape\footnotesize\raggedright}
-\renewcommand*{\marginfont}{\itshape\footnotesize}
-\setcapindent{0em}
+\usepackage{scrlayer-scrpage}
+\usepackage{scrlayer-notecolumn}
+\addtokomafont{notecolumn.marginpar}{\itshape\footnotesize\raggedright}
+\newcommand*{\marginnote}{\makenote}
+%\setcapindent{0em}
 \setkomafont{captionlabel}{\small\bfseries}
 \setkomafont{caption}{\small}
+
+\usepackage[newfloat,outputdir=../../out/]{minted}
+\setminted{autogobble=true,linenos=true,breaklines=true}
 
 % Lettertypes
 \usepackage{microtype}
