@@ -31,7 +31,7 @@ TESTed implements this concept using code generation.
 This means that TESTed converts the test suite on the fly suite into the programming language of the submission.
 It also takes care of the various aspects of the evaluation process: compiling the submitted code, executing the submission together with the test code, interpreting the results, and generating feedback.
 
-While some parts of the evaluation process are obviously programming-language-specific, such as generating the test code, a lot of parts are not.
+While some parts of the evaluation process are programming-language-specific by necessity, such as generating the test code, a lot of parts are not.
 For example, creating an execution plan or interpreting the test results and generating the feedback are not specific to any one programming language.
 Therefore, the language-specific aspects are isolated in language modules, as illustrated in~\cref{fig:conceptual-design}.
 
@@ -315,7 +315,7 @@ These are also explained in TODO, where the focus lies on using the oracles.
 The third oracle type is a programming-language-dependent oracle.
 
 The two generic oracles are the built-in oracles and the programmed oracles.
-The first are oracles which are, as the name implies, built into TESTed.
+The first are oracles are, as the name implies, built into TESTed.
 These are rather simple, but should suffice for most exercises.
 Currently, the following oracles are included:
 
@@ -436,8 +436,87 @@ The structure of the feedback is indicated by commands, with \emph{start} comman
     \label{lst:tested-output-example}
 \end{listing}
 
+\section{Programming language support}\label{sec:programming-language-support}
 
+The parts of the evaluation process that are programming-language-specific are implemented using a module system.
+To make adding new programming languages easy, TESTed enforces a strict separation of concerns with regard to programming-language-specific tasks.
+All programming-language-specific actions and tasks must go through a single well-defined interface.
+This interface is implemented using Python's object-oriented capabilities by defining an abstract base class (ABC) called \mintinline{python}{Language}.
 
+This \mintinline{python}{Language} class has a set of abstract methods, for which an implementation is thus necessary, and the remaining optional methods, which may be overridden but are not required.
+This abstract class is the interface between the core modules of TESTed and the language-specific modules.
+No other modules have language-specific code.
 
+The main task when adding support for a new programming language is to implement this abstract base class.
+Some other smaller tasks are registering the language in TESTed and adding support in the test suite for this new programming language.
+
+The remainder of this section describes the different methods that must or can be implemented.
+We always begin by providing the signature, followed by a discussion of the method.
+Most of this information is also available in the class itself as documentation in the code.
+
+\subsection{Compilation}\label{subsec:impl-compilation}
+
+\begin{minted}{python}
+    def compilation(self, files: list[str]) -> CallbackResult:
+\end{minted}
+
+The compilation method must return the command that TESTed will use to compile the test code together with the submission.
+The return type \mintinline{python}{CallbackResult} is an alias for \mintinline{python}{tuple[Command, list[str] | FileFilter]}.
+
+The first value of the returned tuple is the compilation command.
+This command is a list of command parts, which will be executed with the Python \mintinline{python}{subprocess} package.
+For generating this command, the \mintinline{python}{files} argument can be useful.
+This is a list of potential dependencies provided by TESTed.
+By convention, the last file in the list is the file containing the \emph{main} function.
+
+The second part of the return value must be a list of resulting files, in which by convention the last file is the executable file.
+This list contains the files that will be made available to the execution command in the next step of the evaluation process.
+Alternatively, a file filter can be returned, which allows dynamic filtering of the resulting files after compilation.
+
+For example, in C, only the resulting binary is relevant, and it has a predictable name.
+We can thus return a single file in the list.
+
+However, it is not always possible to predict the list of executables.
+For example, in Java, compiling a Java file will result in one or more class files, depending on the content of the Java file (a nested class will result in more class files).
+In that case, the file filter can be used, which will be called for each file in the compilation directory after compilation has completed.
+
+As a concrete example, this is how the method is called and what its return value is for C (on Windows):
+
+\begin{minted}{pycon}
+    >>> compilation(['submission.c', 'evaluation_result.c', 'context_0_0.c', 'selector.c'])
+    (
+        ['gcc', '-std=c11', '-Wall', 'evaluation_result.c', 'values.c', 'selector.c',
+         '-o', 'selector.exe'], ['selector.exe']
+    )
+\end{minted}
+
+The compilation method is optional: languages that do not require compilation can use the default implementation, which returns an empty list as command.
+We do recommend to implement, if at all possible, some sort of compilation or syntax checking.
+For example, both Python and JavaScript are not considered compiled languages, but both implement a syntax check in TESTed.
+
+\subsection{Execution}\label{subsec:impl-execution}
+
+One of the most important methods is the method responsible for creating the command, which will execute the test code.
+This method is called after the compilation was successful.
+
+\begin{minted}{python}
+    def execution(self, cwd: Path, file: str, arguments: list[str]) -> Command:
+\end{minted}
+
+This method must return one value: the command to execute.
+As with the compilation method, the returned command will be executed by passing it to Python's \mintinline{python}{subprocess} package.
+
+The returned command must execute the file from the \mintinline{python}{file} argument.
+The argument \mintinline{python}{arguments} contains a list of command line arguments that must be passed to the program.
+The \mintinline{python}{cwd} arguments is the directory in which the execution will take place.
+This is useful for languages that compile to a binary executable.
+Since this executable is not on the path, it is safer to return an absolute path to it.
+
+Continuing with the same example in C, a call to this method would look like this:
+
+\begin{minted}{pycon}
+    >>> execution('/test/path', 'executable.exe', ['arg1', 'arg2'])
+    ['/test/path/executable.exe', 'arg1', 'arg2']
+\end{minted}
 
 \end{document}
