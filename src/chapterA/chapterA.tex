@@ -519,4 +519,230 @@ Continuing with the same example in C, a call to this method would look like thi
     ['/test/path/executable.exe', 'arg1', 'arg2']
 \end{minted}
 
+\subsection{Dependencies and other files}\label{subsec:dependencies-and-other-files}
+
+In the commands from two previous sections, the methods receive a list of files that are potential dependencies for compilation or execution.
+There are also some methods that optionally can influence which files are considered dependencies.
+
+\begin{minted}{python}
+    def initial_dependencies(self) -> list[str]:
+\end{minted}
+
+Returns a list of additional dependencies that will be included in the compilation and execution.
+The returned strings are paths to files, relative to the implementation folder of the language module in TESTed.
+
+For example, most languages include a separate file to deal with encoding return values into the TESTed data format.
+
+\begin{minted}{python}
+def filter_dependencies(self, files: list[Path], context_name: str) -> list[Path]:
+\end{minted}
+
+Used to filter the results of the compilation step to the files needed for one testcase.
+In most cases, a single compilation step is used for all testcase.
+However, not all languages need all resulting files for each execution.
+By default, the name of the testcase is used to filter the files.
+
+\begin{minted}{python}
+def find_main_file(self, files: list[Path], name: str) -> tuple[Path | None, Status]
+\end{minted}
+
+This optional method finds the main file (i.e.\ the executable file or the file with the main method) in a list of dependencies.
+The method should either return the path to that file with the status \texttt{CORRECT}, or return \mintinline{python}{None} with an error status if the file could not be found.
+It can be useful if the normal convention of putting the main file last in a list of files is not enough.
+
+\begin{minted}{python}
+    def modify_solution(self, solution: Path):
+\end{minted}
+
+A callback that allows modifying the submission.
+The submission should be modified in place.
+The callback is called after linting, but before compilation or execution.
+
+An example of this use case is JavaScript.
+To support both CommonJS and ES6 modules, we analyze the code and add exports for all functions, variables, and classes in the submission.
+Similarly, the main function in C programs is renamed to prevent conflicts with the main function in the generated TESTed code.
+
+\subsection{Configuration and conventions}\label{subsec:configuration-and-conventions}
+
+There are a number of simple methods that deal with the different conventions used by the programming language.
+
+\begin{minted}{python}
+    def get_string_quote(self):
+\end{minted}
+
+Returns the character used to quote strings.
+By default, this is a double quotation mark (\texttt{"}).
+
+\begin{minted}{python}
+    def naming_conventions(self) -> dict[Conventionable, NamingConventions]:
+\end{minted}
+
+Returns the naming conventions used by the programming language.
+It must return a dictionary, which maps different aspects to a naming convention.
+
+The ``conventionable'' aspects are namespaces, function names, identifiers, properties, classes, and global identifiers.
+Most are self-explanatory, except for namespace, whose meaning depends on the programming language.
+In some languages this is used as the name for packages or modules, but in Bash, for example, it is used as the name of the script.
+\Cref{tab:naming-conventions} contains an overview of the available naming conventions in TESTed.
+
+\marginnote{
+    In practice, most languages use camel case and snake case (and their uppercase variants).
+}
+\begin{table}[h]
+    \centering
+    \caption{Available naming conventions in TESTed.}
+    \label{tab:naming-conventions}
+    \begin{tabular}{|l|l|}
+        \hline
+        Naming convention & Example \\
+        \hline
+        Camel case & \texttt{thisIsAnExample}  \\
+        Snake case & \texttt{this\_is\_an\_example} \\
+        Camel snake case & \texttt{this\_Is\_An\_Example} \\
+        Cobol case & \texttt{THIS-IS-AN-EXAMPLE} \\
+        Dash case & \texttt{this-is-an-example} \\
+        Donor case & \texttt{this|is|an|example} \\
+        Flat case & \texttt{thisisanexample} \\
+        Macro case & \texttt{THIS\_I\_AN\_EXAMPLE} \\
+        Pascal case & \texttt{ThisIsAnExample} \\
+        Pascal snake case & \texttt{This\_Is\_An\_Example} \\
+        Train case & \texttt{This-Is-An-Example} \\
+        Upper (flat) case & \texttt{THISISANEXAMPLE} \\
+        \hline
+    \end{tabular}
+\end{table}
+
+\begin{minted}{python}
+    def file_extension(self) -> str:
+\end{minted}
+
+Return the main file extension for the programming language.
+For language with multiple extensions, this should return the extension used for executable (main) files
+For example, in C this returns \texttt{c} and not \texttt{h}.
+
+\begin{minted}{python}
+    def is_source_file(self, file: Path) -> bool:
+\end{minted}
+
+An optional method that determines if a file could be a source file for the programming language.
+By default, this will check the extension of the file against the extension provided by the \mintinline{python}{file_extension} method.
+
+\begin{minted}{python}
+    def submission_file(self) -> str:
+\end{minted}
+
+Returns the name of the submission file.
+By default, this calls the helper function \mintinline{python}{submission_name} and adds the file extension to it.
+
+\subsection{Type support}\label{subsec:type-support}
+
+The system for data types used by TESTed is explained in TODO.
+The actual implementation of this system happens with the following methods.
+
+\begin{minted}{python}
+    def supported_constructs(self) -> set[Construct]:
+\end{minted}
+
+This method should return a set of the constructs that are supported by this language.
+This is one of the mechanisms used in~\cref{subsec:solvability-and-correctness-checks} to check if a submissions in a certain programming language are possible for a given test suite.
+
+The currently supported constructs are:
+
+\begin{description}
+    \item[Objects] Object-oriented constructs, such as classes.
+    \item[Exceptions] Exception support.
+    \item[Function calls] Function call support.
+    \item[Assignments] The result of an expression can be assigned to a variable.
+    \item[Heterogeneous collections] Data structures whose elements can be of different data types.
+    \item[Default parameters] Parameters in a function with a default value.
+    \item[Named arguments] Paramaters in a function can be passed by name rather than (or in addition to) by position.
+    \item[Global variables] Variables or constants defined at a top-level.
+\end{description}
+
+Note that the constructs can sometimes be interpreted in a loose sense.
+For example, Haskell indicates that assignments are supported, even if this is not strictly true.
+\mintinline{haskell}{x = 5 + 5} defines a new function \mintinline{haskell}{x} with the body \mintinline{haskell}{5 + 5}.
+However, for practical purposes, this can fulfill the same role as an assignment in TESTed.
+
+\begin{minted}{python}
+    def map_type_restrictions(self) -> set[ExpressionTypes] | None:
+    def set_type_restrictions(self) -> set[ExpressionTypes] | None:
+\end{minted}
+
+These two optional functions allow restricting which data types are allowed in map keys and sets respectively.
+For example, in Python, a list is not hashable, meaning it cannot be used as the key in a dictionary, nor can it be an element of a set.
+
+\begin{minted}{python}
+    def datatype_support(self) -> dict[AllTypes, TypeSupport]:
+\end{minted}
+
+This function is used to indicate the data type support for the language, as described in X.
+The return value is a mapping of the types to their support.
+The default is unsupported: only supported types must be present.
+
+For example, in Bash, the implementation of this function looks like:
+
+\begin{minted}{python}
+    def datatype_support(self) -> dict[AllTypes, TypeSupport]:
+        return {
+            AdvancedStringTypes.CHAR: TypeSupport.REDUCED,
+            BasicStringTypes.TEXT: TypeSupport.SUPPORTED,
+        }
+\end{minted}
+
+Strings are supported (and are the only type supported by TESTed).
+Characters are supported, but in reduced form.
+This means that strings will be used for characters.
+
+\subsection{Stacktraces and compiler outputs}\label{subsec:error-messages-and-compiler-outputs}
+
+In most cases, stacktraces from errors, compiler errors, or compiler warnings contain lines referring to the generated TESTed code.
+However, these lines are not relevant nor useful to students.
+Therefore, these methods provide a way to clean up stacktraces.
+
+Another example of a use-case for these is adding links in the feedback to the relevant lines in the submission.
+Dodona also supports this feature, so users there can click on a stacktrace and go to the relevant lines, like some IDEs.
+
+\begin{minted}{python}
+    def compiler_output(self, stdout: str, stderr: str) -> tuple[list[Message], list[AnnotateCode], str, str]
+\end{minted}
+
+Allows cleaning up the output from the compiler.
+The returned tuple contains a list of messages, a list of code annotations, and the clean version of the compiler output.
+
+\begin{minted}{python}
+    def cleanup_stacktrace(self, stacktrace: str) -> str:
+\end{minted}
+
+Cleans up a stacktrace.
+
+\subsection{Code generation}\label{subsec:code-generation2}
+
+As mentioned in \cref{subsec:code-generation}, TESTed works by generating code.
+The following methods are called on the language module to generate code for various language constructs.
+In the implementation for most languages, the code generation is implemented in a separate module, and these methods just call that module.
+
+\begin{minted}{python}
+    def generate_statement(self, statement: Statement) -> str
+\end{minted}
+
+Generate code for a statement.
+
+\begin{minted}{python}
+    def generate_execution_unit(self, execution_unit: "PreparedExecutionUnit") -> str:
+\end{minted}
+
+Generate code for an execution unit.
+Of course, it is expected that the implementation of this method uses the other methods for generating code.
+For example, an execution unit probably needs to generate code for a statement somewhere, which would be done using \mintinline{python}{generate_statement}.
+
+When generating the code for an execution unit, a few things must be taken into account:
+
+TODO: namen...
+\begin{itemize}
+    \item TESTed expects two secret sentinel values to be present in all outputs (stdout, stderr, return values, exceptions): \texttt{testcase\_separator\_secret} between the outputs for tests and \texttt{context\_separator\_secret} between the outputs for testcases.
+    \item Return values and exceptions must be serialized in JSON, using the internal data form from TESTed.
+    \item The generated code should be robust against unexpected output, including exceptions.
+\end{itemize}
+
 \end{document}
