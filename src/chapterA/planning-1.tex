@@ -1,32 +1,8 @@
-%! Suppress = MultipleIncludes
 \documentclass[tikz,crop]{standalone}
 
-\usepackage{amsmath}
-\usepackage{tikz}
-\usepackage{xcolor}
-\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc}
-
-\onlyifstandalone{
-    \definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
-    \definecolor{ugent-we}{RGB}{45, 140, 168}        % no match
-    \definecolor{ugent-ge}{RGB}{232, 94, 113}        % rose				/ bleekrood
-    \definecolor{ugent-ea}{RGB}{111, 113, 185}        % distant blue		/ verblauw
-    \definecolor{ugent-pp}{RGB}{251, 126, 58}        % deep orange		/ dieporanje
-    \definecolor{ugent-ps}{RGB}{113, 168, 96}        % yellow green		/ geelgroen
-
-    \newlength{\unit}
-    \setlength{\unit}{0.75cm}
-}
+\input{../tikz-preamble}
 
 \begin{document}
-
-
-\tikzstyle{box}=[draw,rectangle,anchor=north west]
-\tikzstyle{cont}=[box,minimum height=1\unit,minimum width=1\unit]
-\tikzstyle{tc}=[box,draw=ugent-ps]
-\tikzstyle{comp}=[box,draw=ugent-re,fill=ugent-re,fill opacity=0.05]
-\tikzstyle{exec}=[box,draw=ugent-we,fill=ugent-we,fill opacity=0.10]
-
 
 \begin{tikzpicture}[x=0.75cm,y=0.75cm]
 %    \draw[step=1,gray!10,thin] (0,0) grid (14,-20);

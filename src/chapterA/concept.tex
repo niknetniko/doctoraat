@@ -1,18 +1,12 @@
 %! Suppress = MultipleIncludes
 \documentclass[tikz,crop]{standalone}
 
-\usepackage{amsmath}
-\usepackage{tikz}
-
-\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc}
+\input{../tikz-preamble}
 
 \begin{document}
 
-\tikzstyle{node}=[draw, minimum height=0.5cm, align=center, fill=white,text depth=.25ex]
-\tikzstyle{box}=[draw,rectangle,anchor=north west]
 \tikzstyle{process}=[node, rectangle]
 \tikzstyle{terminator}=[node, rectangle, rounded corners=0.5cm]
-\tikzstyle{document}=[node,tape,tape bend top=none]
 \tikzstyle{io}=[node,trapezium,trapezium left angle=70,trapezium right angle=-70,minimum width=2.5cm,trapezium stretches=true]
 \tikzstyle{nothing}=[align=center]
 \tikzstyle{inner}=[process,draw=gray]

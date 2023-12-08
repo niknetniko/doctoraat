@@ -736,7 +736,7 @@ Generate code for an execution unit.
 Of course, it is expected that the implementation of this method uses the other methods for generating code.
 For example, an execution unit probably needs to generate code for a statement somewhere, which would be done using \mintinline{python}{generate_statement}.
 
-When generating the code for an execution unit, a few things must be taken into account:
+When generating the code for an execution unit, a few things must be taken into account (\cref{fig:generated-code}):
 
 TODO: namen...
 \begin{itemize}
@@ -744,5 +744,20 @@ TODO: namen...
     \item Return values and exceptions must be serialized in JSON, using the internal data form from TESTed.
     \item The generated code should be robust against unexpected output, including exceptions.
 \end{itemize}
+
+\begin{figure}
+    \centering
+    \includestandalone{code-generation}
+    \caption{Overview of how the generated code in TESTed works.
+        In the best case, a single executable is generated and compiled for the test suite.
+        Its main function has one job: selecting the correct function for the relevant execution unit.
+        This is illustrated here with a \mintinline{java}{switch}.
+        Each of these execution functions will write a separator to all outputs (return values, stdout, stderr, exceptions) and will then call the function for the contexts in that execution unit.
+        Finally, the function for the context does something very similar: write the context separator to the outputs and execute the testcases.
+        In the end, the results for each output are a set of captured values separated by the context and testcase separators.
+    }
+    \label{fig:generated-code}
+\end{figure}
+
 
 \end{document}

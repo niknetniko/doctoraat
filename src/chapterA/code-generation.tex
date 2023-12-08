@@ -1,0 +1,211 @@
+%! Suppress = MultipleIncludes
+\documentclass[tikz,crop]{standalone}
+
+\onlyifstandalone{
+    \usepackage[outputdir=../../out/]{minted}
+    \setminted{autogobble=true}
+}
+
+\input{../tikz-preamble}
+
+\begin{document}
+
+% Define a tikzcode environment for code.
+\newminted[tikzcode]{java}{autogobble,linenos=false,fontsize=\tiny,stripall}
+\newminted[tikztcode]{text}{autogobble,linenos=false,fontsize=\tiny,stripall}
+
+\begin{tikzpicture}[x=0.75cm,y=0.75cm]
+    % \draw[step=1,gray!10,thin] (0,0) grid (14,-20);
+    % Ensure width is the same
+%    \node[box,opacity=0,minimum width=13.5\unit] at (0,-1.75) (ts1) {};
+
+    \begin{scope} [shift={(1.875,1.5)}]
+        \node[cont] at (0.75, -1.75) (ts1c1) {C\textsubscript{1}};
+        \node[cont] at (2.25, -1.75) (ts1c2) {C\textsubscript{2}};
+        \node[cont] at (3.75, -1.75) (ts1c3) {C\textsubscript{3}};
+        \node[tc,minimum height=2\unit,minimum width=4.5\unit] at (0.5,-1) (tc1) {};
+        \node[below right,text=ugent-ps] at (tc1.north west) {\small Unit 1};
+
+        \node[cont] at (5.50, -1.75) (ts1c4) {C\textsubscript{4}};
+        \node[cont] at (7.00, -1.75) (ts1c5) {C\textsubscript{5}};
+        \node[tc,minimum height=2\unit,minimum width=3\unit] at (5.25,-1) (tc2) {};
+        \node[below right,text=ugent-ps] at (tc2.north west) {\small Unit 2};
+
+        \node[cont] at (8.75, -1.75) (ts1c6) {C\textsubscript{6}};
+        \node[cont] at (10.25, -1.75) (ts1c7) {C\textsubscript{7}};
+        \node[cont] at (11.75, -1.75) (ts1c8) {C\textsubscript{8}};
+        \node[tc,minimum height=2\unit,minimum width=4.5\unit] at (8.5,-1) (tc3) {};
+        \node[below right,text=ugent-ps] at (tc3.north west) {\small Unit 3};
+
+        \node[comp,minimum height=2.5\unit,minimum width=13\unit] at (0.25,-0.75) (comp) {};
+
+        \node[exec,minimum height=2.25\unit,minimum width=4.25\unit] at (0.625,-0.875) (execu1) {};
+        \node[exec,minimum height=2.25\unit,minimum width=1.25\unit] at (5.375,-0.875) (execu2) {};
+        \node[exec,minimum height=2.25\unit,minimum width=6\unit] at (6.875,-0.875) (execu3) {};
+    \end{scope}
+
+    \begin{scope} [shift={(0,-3)}]
+        \node[document,minimum width=17.25\unit, minimum height=8.5\unit,draw=ugent-re] at (0,0) (executable) {};
+        \node[below right,text=ugent-re] at (executable.north west) {\small Executable};
+
+        \node[box,draw=ugent-re,minimum height=3.25\unit,minimum width=4\unit] at (0.25,-0.75) (main) {};
+        \node[below right,text=ugent-re] at (main.north west) (mtitle) {\small \texttt{main} function};
+        \node[below right,text width=3.75\unit] at (mtitle.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikzcode}
+                switch(argument) {
+                  case "1" -> exec1();
+                  case "2" -> exec2();
+                  case "3" -> exec3();
+                  default -> throw ...;
+                }
+            \end{tikzcode}
+        };
+
+        \node[exec,minimum height=3.25\unit,minimum width=4\unit] at (4.5,-0.75) (exec1) {};
+        \node[below right,text=ugent-we] at (exec1.north west) (e1title) {\small \texttt{exec1()} function};
+        \node[below right,text width=3.75\unit] at (e1title.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikzcode}
+                outputContextSecret();
+                context1();
+                outputContextSecret();
+                context2();
+                outputContextSecret();
+                context3();
+            \end{tikzcode}
+        };
+
+        \node[exec,minimum height=3.25\unit,minimum width=4\unit] at (8.75,-0.75) (exec2) {};
+        \node[below right,text=ugent-we] at (exec2.north west) (e2title) {\small \texttt{exec2()} function};
+        \node[below right,text width=3.75\unit] at (e2title.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikzcode}
+                outputContextSecret();
+                context4();
+            \end{tikzcode}
+        };
+
+        \node[exec,minimum height=3.25\unit,minimum width=4\unit] at (13,-0.75) (exec3) {};
+        \node[below right,text=ugent-we] at (exec3.north west) (e3title) {\small \texttt{exec3()} function};
+        \node[below right,text width=3.75\unit] at (e3title.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikzcode}
+                outputContextSecret();
+                context5();
+                outputContextSecret();
+                context6();
+                outputContextSecret();
+                context7();
+                outputContextSecret();
+                context8();
+            \end{tikzcode}
+        };
+
+        % Normally, context functions should be here, however, they are drawn at the end.
+    \end{scope}
+
+
+    \draw[-latex,draw=ugent-we] (execu1) to [out=-90,in=90] (exec1);
+    \draw[-latex,draw=ugent-we] (execu2) to [out=-90,in=90] (exec2);
+    \draw[-latex,draw=ugent-we] (execu3) to [out=-90,in=90] (exec3);
+
+%    \draw[-latex] (ts1c1) to [out=-90,in=90] (cf1);
+%    \draw[-latex] (ts1c2) to [out=-90,in=90] (cf2);
+%    \draw[-latex] (ts1c8) to [out=-90,in=90] (cf8);
+
+    \draw[-latex,draw=ugent-re] (comp) -- (executable) node[midway,fill=white,fill opacity=0.8,text opacity=1] {\small Code generation and compilation};
+
+    \begin{scope} [shift={(0,-13)}]
+        \node[document,draw=ugent-we,minimum width=5\unit, minimum height=3.25\unit] at (0.625, 0) (res1) {};
+        \node[below right,color=ugent-we] at (res1.north west) (res1title) {\small \texttt{output1.txt}};
+        \node[below right,text width=3.75\unit] at (res1title.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikztcode}
+                context_separator (C1)
+                testcase_separator
+                result1
+                testcase_separator
+                result2
+            \end{tikztcode}
+        };
+
+        \node[document,draw=ugent-we,minimum width=5\unit, minimum height=3.25\unit] at (6.125, 0) (res2) {};
+        \node[below right,color=ugent-we] at (res2.north west) (res2title) {\small \texttt{output2.txt}};
+        \node[below right,text width=3.75\unit] at (res2title.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikztcode}
+                context_separator (C1)
+                testcase_separator
+                result1
+                context_separator (C2)
+                testcase_separator
+                result1
+                ...
+            \end{tikztcode}
+        };
+
+        \node[document,draw=ugent-we,minimum width=5\unit, minimum height=3.25\unit] at (11.625, 0) (res3) {};
+        \node[below right,color=ugent-we] at (res3.north west) (res3title) {\small \texttt{output3.txt}};
+        \node[below right,text width=3.75\unit] at (res3title.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikztcode}
+                ...
+                context_separator (C8)
+                testcase_separator
+                result1
+            \end{tikztcode}
+        };
+    \end{scope}
+
+    \draw[-latex,draw=ugent-we] (exec1) to [out=-90,in=90] (res1);
+    \draw[-latex,draw=ugent-we] (exec2) to [out=-90,in=90] (res2);
+    \draw[-latex,draw=ugent-we] (exec3) to [out=-90,in=90] (res3);
+
+    % Context functions, to be before the arrows
+    \begin{scope} [shift={(0,-3)}]
+        \node[cont,minimum width=4.5\unit, minimum height=3\unit,fill=white] at (0.5, -4.75) (cf1) {};
+        \node[below right] at (cf1.north west) (c1title) {\small \texttt{context1()} function};
+        \node[below right,text width=3.75\unit] at (c1title.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikzcode}
+                outputTestcaseSeparator();
+                testcase1();
+                outputTestcaseSeparator();
+                testcase2();
+                outputTestcaseSeparator();
+                testcase3();
+                ...
+            \end{tikzcode}
+        };
+
+        \node[cont,minimum width=4.5\unit, minimum height=3\unit,fill=white] at (5.5, -4.75) (cf2) {};
+        \node[below right] at (cf2.north west) (c2title) {\small \texttt{context2()} function};
+        \node[below right,text width=3.75\unit] at (c2title.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikzcode}
+                outputTestcaseSeparator();
+                testcase1();
+                outputTestcaseSeparator();
+                testcase2();
+            \end{tikzcode}
+        };
+
+        \node[cont,draw opacity=0,align=center] at (10.625, -4.75) {\ldots};
+
+        \node[cont,minimum width=4.5\unit, minimum height=3\unit,fill=white] at (12.25, -4.75) (cf8) {};
+        \node[below right] at (cf8.north west) (c8title) {\small \texttt{context8()} function};
+        \node[below right,text width=3.75\unit] at (c8title.south west) {%
+            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+            \begin{tikzcode}
+                outputTestcaseSeparator();
+                testcase1();
+            \end{tikzcode}
+        };
+    \end{scope}
+
+    \draw[draw opacity=0] (executable) -- (res2) node[midway,fill=white,fill opacity=0.8,text opacity=1] {\small Execution};
+
+\end{tikzpicture}
+
+\end{document}

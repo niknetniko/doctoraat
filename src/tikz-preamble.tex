@@ -1,0 +1,29 @@
+% Part of the preamble, for TikZ figures.
+% This is used in both the main document and in the subfigures.
+% One exception is minted: since the path depends on the file, it is not set.
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{xcolor}
+
+\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc}
+
+\definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
+\definecolor{ugent-we}{RGB}{45, 140, 168}       % no match
+\definecolor{ugent-ge}{RGB}{232, 94, 113}       % rose				/ bleekrood
+\definecolor{ugent-ea}{RGB}{111, 113, 185}      % distant blue		/ verblauw
+\definecolor{ugent-pp}{RGB}{251, 126, 58}       % deep orange		/ dieporanje
+\definecolor{ugent-ps}{RGB}{113, 168, 96}       % yellow green		/ geelgroen
+
+\newlength{\unit}
+\setlength{\unit}{0.75cm}
+
+\tikzstyle{box}=[draw,rectangle,anchor=north west]
+\tikzstyle{node}=[draw,minimum height=0.5cm,align=center,fill=white,text depth=.25ex,anchor=north west]
+\tikzstyle{document}=[node,tape,tape bend top=none]
+\tikzstyle{cont}=[box,minimum height=1\unit,minimum width=1\unit]
+
+
+% Some things specific to TESTed imagery.
+\tikzstyle{tc}=[box,draw=ugent-ps]
+\tikzstyle{comp}=[box,draw=ugent-re,fill=ugent-re,fill opacity=0.05]
+\tikzstyle{exec}=[box,draw=ugent-we,fill=ugent-we,fill opacity=0.10]

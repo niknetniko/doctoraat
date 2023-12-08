@@ -17,19 +17,16 @@
 % Wij gebruiken 170x240mm.
 %\usepackage[paperheight=240mm,paperwidth=170mm,heightrounded,showframe]{geometry}
 
-\usepackage[subpreambles=true,sort=true]{standalone}
+\usepackage{standalone}
 
 % Andere
 \usepackage{lipsum}
-\usepackage{showframe}
+%\usepackage{showframe}
 %\usepackage{marginnote}
 \usepackage{xcolor}
 \usepackage{circledsteps}
 \usepackage{caption}
 \usepackage{subcaption}
-
-\newlength{\unit}
-\setlength{\unit}{0.75cm}
 
 % We want modern numbers here
 \renewcommand{\CircledText}[2][]{%
@@ -90,16 +87,16 @@
     BoldItalicFont = *-Semibold Italic
 ]
 
-%\setlength{\marginparwidth}{1.67\marginparwidth}
 \usepackage{scrlayer-scrpage}
 \usepackage{scrlayer-notecolumn}
 \addtokomafont{notecolumn.marginpar}{\itshape\footnotesize\raggedright}
 \newcommand*{\marginnote}{\makenote}
-%\setcapindent{0em}
 \setkomafont{captionlabel}{\small\bfseries}
 \setkomafont{caption}{\small}
 
-\usepackage[newfloat,outputdir=../../out/]{minted}
+\usepackage{subfiles}
+
+\usepackage[newfloat,outputdir=\subfix{../out/}]{minted}
 \setminted{autogobble=true,linenos=true,breaklines=true}
 
 % Lettertypes
@@ -113,22 +110,13 @@
 % Taalinstellingen. Door de verengelsing is de standaardtaal van dit document Engels.
 \usepackage{polyglossia}
 
-\usepackage{subfiles}
-
 % Voorblad
 \usepackage[type=report]{ugent2016-title}
 
 \newcommand{\todo}[1]{\textcolor{orange}{\textsc{Todo}: #1}}
 
-
-\usepackage{xcolor}
-\definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
-\definecolor{ugent-we}{RGB}{45, 140, 168}        % no match
-\definecolor{ugent-ge}{RGB}{232, 94, 113}        % rose				/ bleekrood
-\definecolor{ugent-ea}{RGB}{111, 113, 185}        % distant blue		/ verblauw
-\definecolor{ugent-pp}{RGB}{251, 126, 58}        % deep orange		/ dieporanje
-\definecolor{ugent-ps}{RGB}{113, 168, 96}        % yellow green		/ geelgroen
-
+% Figuren
+\include{tikz-preamble}
 
 % Taalinstellingen.
 \setdefaultlanguage[variant=british]{english}
@@ -136,8 +124,8 @@
 
 \usepackage[type=report]{ugent2016-title}
 \author{Niko Strijbol}
-\title{A doctorate in some subject}
-\subtitle{Some more information on what the title could mean}
+\title{De Technologiae in Curabitur Aliquet Ultricies}
+\subtitle{Quaedam loca debugging et aestimationes}
 \academicyear{2023 – 2024}
 \titletext{%
 A dissertation submitted to Ghent University in partial fulfilment of the requirements for the degree of Doctor of Computer Science.
