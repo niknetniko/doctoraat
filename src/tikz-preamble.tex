@@ -14,11 +14,18 @@
 \definecolor{ugent-pp}{RGB}{251, 126, 58}       % deep orange		/ dieporanje
 \definecolor{ugent-ps}{RGB}{113, 168, 96}       % yellow green		/ geelgroen
 
+\tikzstyle{python}=[fill=ugent-ps!50!white]
+\tikzstyle{java}=[fill=ugent-we!50!white]
+\tikzstyle{haskell}=[fill=ugent-ea!50!white]
+\tikzstyle{js}=[fill=ugent-pp!50!white]
+\tikzstyle{c}=[fill=ugent-re!50!white]
+
 \newlength{\unit}
 \setlength{\unit}{0.75cm}
 
-\tikzstyle{box}=[draw,rectangle,anchor=north west]
-\tikzstyle{node}=[draw,minimum height=0.5cm,align=center,fill=white,text depth=.25ex,anchor=north west]
+\tikzstyle{a}=[anchor=north west]
+\tikzstyle{box}=[a,draw,rectangle]
+\tikzstyle{node}=[a,draw,minimum height=0.5cm,align=center,fill=white,text depth=.25ex]
 \tikzstyle{document}=[node,tape,tape bend top=none]
 \tikzstyle{cont}=[box,minimum height=1\unit,minimum width=1\unit]
 
