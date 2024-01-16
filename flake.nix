@@ -14,6 +14,22 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; overlays = [ devshell.overlays.default ]; config.allowUnfree = true; };
+        ugent-panno = pkgs.stdenvNoCC.mkDerivation rec {
+          pname = "ugent-panno";
+          version = "3.00";
+          src = pkgs.fetchzip {
+            url = "https://github.com/niknetniko/ugent2016/raw/master/panno_${version}.zip";
+            hash = "sha256-G2Hz1m+ERioyJp+2FTguhqyX3FNfipdHm7v6fAYj6rQ=";
+            stripRoot = false;
+          };
+          installPhase = ''
+            runHook preInstall
+
+            install -D -m444 -t $out/share/fonts/opentype $src/*.otf
+
+            runHook postInstall
+          '';
+        };
         ugent2016 = pkgs.stdenvNoCC.mkDerivation (finalAttrs: rec {
             pname = "ugent2016";
             version = "0.10.0";
@@ -81,11 +97,16 @@
               gnumake
               inkscape
               python312Packages.pygments
+              ugent-panno
             ];
             env = [
               {
                 name = "TEXLIVE_HOME";
                 eval = "${latex_with_ugent}";
+              }
+              {
+                name = "OSFONTDIR";
+                prefix = "${ugent-panno}/share/fonts";
               }
             ];
           };
