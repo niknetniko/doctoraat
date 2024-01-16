@@ -9,7 +9,7 @@
     cleardoublepage=plain,
     toc=chapterentrywithdots,
     fontsize=10pt,
-%    mpinclude=true,
+    mpinclude=true,
 ]{scrbook}
 
 % Het formaat van een doctoraat is "proefschrift B5".
@@ -21,12 +21,13 @@
 
 % Andere
 \usepackage{lipsum}
-%\usepackage{showframe}
+\usepackage{showframe}
 %\usepackage{marginnote}
 \usepackage{xcolor}
 \usepackage{circledsteps}
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{luacode}
 
 % We want modern numbers here
 \renewcommand{\CircledText}[2][]{%
@@ -87,6 +88,7 @@
     BoldItalicFont = *-Semibold Italic
 ]
 
+\usepackage{layouts}
 \usepackage{scrlayer-scrpage}
 \usepackage{scrlayer-notecolumn}
 \addtokomafont{notecolumn.marginpar}{\itshape\footnotesize\raggedright}
@@ -137,6 +139,18 @@ Prof.\ Dr.\ Christophe Scholliers\\
 Prof.\ Dr.\ Ir.\ Bart Mesuere
 }
 
+% Automagically convert 'Tested' to smallcaps.
+\begin{luacode}
+  function capstosc(s)
+    return string.gsub(s, "%f[%w_]TESTed%f[^%w_]" , "\\textsc{Test}ed")
+  end
+\end{luacode}
+\AtBeginDocument{%
+\directlua{luatexbase.add_to_callback ("process_input_buffer", capstosc, "capstosc" )}
+}
+
+\setlength{\marginparwidth}{2.5\marginparwidth}
+
 % Document
 \begin{document}
 
@@ -158,8 +172,16 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \mainmatter
 
-\subfile{chapter1}
-\subfile{chapterA/chapterA.tex}
+\printinunitsof{mm}{\pagevalues}
+
+\pagediagram
+
+%\subfile{chapter1}
+
+\part{TESTed}\label{part:tested}
+
+\subfile{chapter3/chapter3.tex}
+%\subfile{chapter1/chapter1.tex}
 
 %\subfile{chapter5}
 
