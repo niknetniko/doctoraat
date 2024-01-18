@@ -15,7 +15,7 @@ jobs:
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: DeterminateSystems/flake-checker-action@main
-      - run: nix build
+      - run: nix build --print-build-logs
       - uses: actions/upload-artifact@v4
         with:
           name: doctoraat.pdf
