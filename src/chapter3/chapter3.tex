@@ -20,16 +20,6 @@ Finally, we look at how support for multiple programming languages is achieved.
 \section{Conceptual design}
 \label{sec:conceptual design}
 
-The main idea behind a programming-language-independent test framework is that an exercise designer can write a single test suite for a programming exercise, while the test framework is still able to evaluate submissions in multiple programming languages.
-
-TESTed implements this concept using code generation.
-This means that TESTed converts the test suite on the fly suite into the programming language of the submission.
-It also takes care of the various aspects of the evaluation process: compiling the submitted code, executing the submission together with the test code, interpreting the results, and generating feedback.
-
-While some parts of the evaluation process are programming-language-specific by necessity, such as generating the test code, a lot of parts are not.
-For example, creating an execution plan or interpreting the test results and generating the feedback are not specific to any one programming language.
-Therefore, the language-specific aspects are isolated in language modules, as illustrated in~\cref{fig:conceptual-design}.
-
 \begin{figure}[t]
     \centering
     \includestandalone{concept}
@@ -43,18 +33,28 @@ Therefore, the language-specific aspects are isolated in language modules, as il
     \label{fig:conceptual-design}
 \end{figure}
 
-\marginnote{
-    A Python module is simply a \texttt{.py} file, while a Python package is a folder containing modules.
-}
+The main idea behind a programming-language-independent test framework is that an exercise designer can write a single test suite for a programming exercise, while the test framework is still able to evaluate submissions in multiple programming languages.
+
+TESTed implements this concept using code generation.
+This means that TESTed converts the test suite on the fly suite into the programming language of the submission.
+It also takes care of the various aspects of the evaluation process: compiling the submitted code, executing the submission together with the test code, interpreting the results, and generating feedback.
+
+While some parts of the evaluation process are programming-language-specific by necessity, such as generating the test code, a lot of parts are not.
+For example, creating an execution plan or interpreting the test results and generating the feedback are not specific to any one programming language.
+Therefore, the language-specific aspects are isolated in language modules, as illustrated in~\cref{fig:conceptual-design}.
+
+\leavevmode\marginnote{
+    A Python module is a \texttt{.py} file, while a Python package is a folder containing modules.
+}%
 TESTed is written in Python and organized into a set of Python modules and packages.
 An import package is the \emph{core} package, which contains modules that are responsible for all language-independent tasks, such as scheduling tests.
-This is discussed in TODO.
+This is discussed in \cref{subsec:execution-planning}.
 In most cases, the core is also responsible for checking the collected test results and generating the feedback.
-This is discussed in TODO.
+This is discussed in \cref{subsec:checking-results}.
 
 All aspects that are specific to one programming language are bundled in one package.
 These language-specific modules take care of all language-specific tasks, such as compiling submissions, executing submissions, and handling language-specific data types, expressions, and statements.
-These modules are discussed in TODO.
+These modules are discussed in \cref{sec:programming-language-support}.
 
 Since the language-specific code is limited to these modules, this offers benefits for adding support for new programming languages to TESTed, see TODO.
 
@@ -103,7 +103,7 @@ The input for the evaluation process is a test suite and a submission, which is 
 A general overview is given in~\cref{subsec:evaluation-process}.
 Other subsections dive into more detail of individual parts of the process.
 
-\subsection{Evaluation process}\label{subsec:evaluation-process}
+\subsection{The complete evaluation process}\label{subsec:evaluation-process}
 
 We can now take a look at the complete evaluation process used by TESTed when evaluating a submission (a schematic is~\cref{fig:flow}).
 The very first step in the evaluation process is checking if the exercise is solvable in the programming language of the submission (see~\cref{subsec:solvability-and-correctness-checks}).
@@ -251,7 +251,7 @@ For performance reasons, the ideal partitioning would be a single execution unit
 However, this prevents certain types of exercises from being evaluated correctly.
 Therefore, a new execution unit is started based on the type of testcase: if a testcase has stdin, command line arguments, or an explicit check for the exit code, a new execution unit is started.
 
-\subsection{Generating code}\label{subsec:code-generation}
+\subsection{Generating test code}\label{subsec:code-generation}
 
 Depending on the execution plan, the appropriate code is generated for the test suite.
 In concept, this step converts the programming-language-independent test suite into actual source code, in the programming language of the test suite.
@@ -302,7 +302,7 @@ This is even truer in TESTed, as executing the test code already happens in a se
 This leads directly to the solution in TESTed: since the test code is executed in a separate process, the GIL does not apply.
 Most of the time is spent waiting on results from a subproces.
 
-\subsection{Checking the test results}\label{subsec:checking-results}
+\subsection{Checking test results}\label{subsec:checking-results}
 
 The code responsible for checking wheter test results (return values, stdout, etc.) are correct is called an oracle. TODO referentie.
 TESTed supports three types of oracles, which can be divided into two categories.
@@ -414,20 +414,20 @@ The compilation method must return the command that TESTed will use to compile t
 The return type \mintinline{python}{CallbackResult} is an alias for \mintinline{python}{tuple[Command, list[str] | FileFilter]}.
 
 The first value of the returned tuple is the compilation command.
-This command is a list of command parts, which will be executed with the Python \mintinline{python}{subprocess} package.
-For generating this command, the \mintinline{python}{files} argument can be useful.
-This is a list of potential dependencies provided by TESTed.
-By convention, the last file in the list is the file containing the \emph{main} function.
+This command is a list of strings, which will be executed with the Python \mintinline{python}{subprocess} package.
+For generating this command, the \mintinline{python}{files} argument can be useful: it is a list of potential dependencies.
+By convention, the last file in the list is the file containing the \emph{program entry point} (which is often a main function).
 
-The second part of the return value must be a list of resulting files, in which by convention the last file is the executable file.
-This list contains the files that will be made available to the execution command in the next step of the evaluation process.
+The second part of the return value must be a list of generated files, in which by convention the last file is the executable file.
+All files in this list will be made available to the execution command in the next step of the evaluation process.
 Alternatively, a file filter can be returned, which allows dynamic filtering of the resulting files after compilation.
 
-For example, in C, only the resulting binary is relevant, and it has a predictable name.
-We can thus return a single file in the list.
+As an example, consider the C language.
+When compiling C, we are only interested in the resulting binary, which also has a predictable name.
+The list of generated files can thus contain a single string: the name of the generated binary.
 
-However, it is not always possible to predict the list of executables.
-For example, in Java, compiling a Java file will result in one or more class files, depending on the content of the Java file (a nested class will result in more class files).
+However, it is not always possile to predict the list of generated files, nor is it possible to predict their names.
+For example, in Java, compiling a file will result in one or more class files, depending on the content of the Java file (a nested class will result in more class files).
 In that case, the file filter can be used, which will be called for each file in the compilation directory after compilation has completed.
 
 As a concrete example, this is how the method is called and what its return value is for C (on Windows):
@@ -440,14 +440,15 @@ As a concrete example, this is how the method is called and what its return valu
     )
 \end{minted}
 
-The compilation method is optional: languages that do not require compilation can use the default implementation, which returns an empty list as command.
-We do recommend to implement, if at all possible, some sort of compilation or syntax checking.
+The compilation method is optional: languages that do not require compilation can use the default implementation.
+However, this step is ideal to at least perform a syntax check, and we recommend that all languages do this, if at all possible.
+Even non-compiled languages often have a syntax checker that is faster than executing the program.
 For example, both Python and JavaScript are not considered compiled languages, but both implement a syntax check in TESTed.
 
 \subsection{Execution}\label{subsec:impl-execution}
 
-One of the most important methods is the method responsible for creating the command, which will execute the test code.
-This method is called after the compilation was successful.
+One of the most important methods is the method responsible for creating the execution command.
+This method is called after the compilation step, if that step was successful.
 
 \begin{minted}{python}
     def execution(self, cwd: Path, file: str, arguments: list[str]) -> Command:
@@ -459,7 +460,7 @@ As with the compilation method, the returned command will be executed by passing
 The returned command must execute the file from the \mintinline{python}{file} argument.
 The argument \mintinline{python}{arguments} contains a list of command line arguments that must be passed to the program.
 The \mintinline{python}{cwd} arguments is the directory in which the execution will take place.
-This is useful for languages that compile to a binary executable.
+This can be useful for languages that compile to a binary executable.
 Since this executable is not on the path, it is safer to return an absolute path to it.
 
 Continuing with the same example in C, a call to this method would look like this:
@@ -468,6 +469,8 @@ Continuing with the same example in C, a call to this method would look like thi
     >>> execution('/test/path', 'executable.exe', ['arg1', 'arg2'])
     ['/test/path/executable.exe', 'arg1', 'arg2']
 \end{minted}
+
+All files that were included in the return value of the compilation method will also be available in the execution directory, in addition to other dependencies that we discuss next.
 
 \subsection{Dependencies and other files}\label{subsec:dependencies-and-other-files}
 
