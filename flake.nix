@@ -86,19 +86,19 @@
           inherit (pkgs.texlive) scheme-full;
           inherit ugent2016;
         };
+        font_dir = builtins.concatStringsSep "//:" [
+          "${ugent-panno}/share/fonts"
+          "${pkgs.source-serif}/share/fonts"
+          "${pkgs.source-sans}/share/fonts"
+          "${pkgs.source-code-pro}/share/fonts"
+        ];
       in
-      {
+      rec {
         devShells = rec {
-          default = site;
-          site = pkgs.devshell.mkShell {
+          default = dev;
+          dev = pkgs.devshell.mkShell {
             name = "doctoraat";
-            packages = with pkgs; [
-              latex_with_ugent
-              gnumake
-              inkscape
-              python312Packages.pygments
-              ugent-panno
-            ];
+            packages = packages.document.buildInputs ++ packages.document.nativeBuildInputs;
             env = [
               {
                 name = "TEXLIVE_HOME";
@@ -106,9 +106,48 @@
               }
               {
                 name = "OSFONTDIR";
-                prefix = "${ugent-panno}/share/fonts";
+                eval = font_dir;
               }
             ];
+          };
+#          dev2 = pkgs.mkShellNoCC {
+#            name = "doctoraat";
+#            inputsFrom = [packages.document];
+#            TEXLIVE_HOME = "${latex_with_ugent}";
+#            OSFONTDIR = font_dir;
+#          };
+        };
+        packages = rec {
+          default = document;
+          document = pkgs.stdenvNoCC.mkDerivation {
+            name = "doctoraat";
+            src = ./src;
+            nativeBuildInputs = with pkgs; [
+              which
+              latex_with_ugent
+              gnumake
+              inkscape
+              python312Packages.pygments
+              ugent-panno
+              source-serif
+              source-sans
+              source-code-pro
+            ];
+            phases = ["unpackPhase" "buildPhase" "installPhase"];
+            configurePhase = ''
+              export TEXLIVE_HOME="${latex_with_ugent}"
+              export OSFONTDIR="${font_dir}"
+              export BUILD_DIR=$TMPDIR/build
+              export TEXMFHOME=$TMPDIR/.cache
+              export TEXMFVAR=$TMPDIR/.cache/texmf-var
+            '';
+            buildPhase = ''
+              latexmk -f -pdf -lualatex -shell-escape main.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
+            '';
+            installPhase = ''
+              mkdir -p $out;
+              cp $BUILD_DIR/main.pdf $out/doctoraat.pdf
+            '';
           };
         };
       }

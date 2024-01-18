@@ -98,7 +98,24 @@
 
 \usepackage{subfiles}
 
-\usepackage[newfloat,outputdir=\subfix{../out/}]{minted}
+%\usepackage[newfloat,outputdir=\subfix{../out/}]{minted}
+% Load minted but listen to the output-directory environment
+\begin{luacode*}
+    function parseargv()
+      local rep = {}
+      for k, x in pairs(arg) do
+          local kw, vw = string.match(x, "([^=]+)=?([^=]*)")
+          rep[kw] = vw
+      end
+      return rep
+    end
+    local arguments = parseargv()
+    local outputdir = arguments["-output-directory"]
+    if outputdir ~= nil then
+      tex.print([[\PassOptionsToPackage{outputdir=]] .. outputdir .. [[}{minted}]])
+    end
+\end{luacode*}
+\usepackage[newfloat]{minted}
 \setminted{autogobble=true,linenos=true,breaklines=true}
 
 % Lettertypes
