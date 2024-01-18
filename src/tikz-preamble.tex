@@ -28,7 +28,8 @@
 \tikzstyle{node}=[a,draw,minimum height=0.5cm,align=center,fill=white,text depth=.25ex]
 \tikzstyle{document}=[node,tape,tape bend top=none]
 \tikzstyle{cont}=[box,minimum height=1\unit,minimum width=1\unit]
-
+\tikzstyle{arrow}=[draw, -latex]
+\tikzstyle{inner}=[box,draw=gray]
 
 % Some things specific to TESTed imagery.
 \tikzstyle{tc}=[box,draw=ugent-ps]
@@ -38,3 +39,16 @@
 % Minted environments for use in Tikz
 \newminted[tikzjava]{java}{autogobble,linenos=false,fontsize=\tiny,stripall}
 \newminted[tikztext]{text}{autogobble,linenos=false,fontsize=\tiny,stripall}
+
+% Stuff from chapter3/concept.tex
+\tikzstyle{process}=[node,rectangle]
+\tikzstyle{terminator}=[node,rectangle,rounded corners=0.5cm]
+\tikzstyle{io}=[node,trapezium,trapezium left angle=70,trapezium right angle=-70,minimum width=2.5cm,trapezium stretches=true]
+\tikzstyle{small}=[font=\footnotesize,color=darkgray]
+\tikzstyle{submission}=[document,align=right,minimum width=3cm,minimum height=1cm,text depth=0.5cm,inner sep=0.5mm,font=\scriptsize]
+
+% Stuff from chatper3/flow.tex
+\tikzstyle{height}=[minimum height=0.75\unit]
+\tikzstyle{contt}=[cont,minimum height=0.75\unit]
+\tikzstyle{compop}=[comp,text opacity=1]
+\tikzstyle{execop}=[exec,text opacity=1]

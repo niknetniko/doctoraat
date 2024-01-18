@@ -5,13 +5,6 @@
 
 \begin{document}
 
-\tikzstyle{height}=[minimum height=0.75\unit]
-\tikzstyle{contt}=[cont,minimum height=0.75\unit]
-\tikzstyle{inner}=[box,draw=gray]
-\tikzstyle{arrow}=[draw, -latex]
-\tikzstyle{comp}=[draw=ugent-re,fill=ugent-re,fill opacity=0.05,text opacity=1]
-\tikzstyle{exec}=[draw=ugent-we,fill=ugent-we,fill opacity=0.10,text opacity=1]
-
 \begin{tikzpicture}[x=0.75cm,y=0.75cm,framed]
 %    \draw[step=1,gray!30,thin] (0,0) grid (11,-20);
 
@@ -34,9 +27,9 @@
     \node[box,minimum width=11\unit,height] at (0,-4) (plan) {Execution planning};
     \draw[arrow] (input.219) -- (plan.north-|input.219);
 
-    \node[contt,comp,minimum width=4.5\unit] at (0,-5.25) (cu1) {Compilation unit 1};
+    \node[contt,compop,minimum width=4.5\unit] at (0,-5.25) (cu1) {Compilation unit 1};
     \node[contt,draw opacity=0] at (5, -5.25) {\ldots};
-    \node[contt,comp,minimum width=4.5\unit] at (6.5,-5.25) (cu2) {Compilation unit $m$};
+    \node[contt,compop,minimum width=4.5\unit] at (6.5,-5.25) (cu2) {Compilation unit $m$};
     \draw[arrow] (plan.south-|cu1) -- (cu1);
     \draw[arrow] (plan.south-|cu2) -- (cu2);
 
@@ -61,10 +54,10 @@
     \draw[arrow] (comp1.south-|ex1) -- (ex1);
     \draw[arrow] (comp2.south-|ex3) -- (ex3);
 
-    \node[box,exec,minimum width=2.5\unit,height] at (0.5,-11.25) (e1) {E\textsubscript{1}};
-    \node[box,exec,minimum width=2.5\unit,height=] at (3.5,-11.25) (e2) {E\textsubscript{2}};
+    \node[box,execop,minimum width=2.5\unit,height] at (0.5,-11.25) (e1) {E\textsubscript{1}};
+    \node[box,execop,minimum width=2.5\unit,height=] at (3.5,-11.25) (e2) {E\textsubscript{2}};
     \node[contt,draw opacity=0] at (6.75, -11.25) {\ldots};
-    \node[box,exec,minimum width=2.5\unit,height] at (8.25,-11.25) (e3) {E\textsubscript{$k$}};
+    \node[box,execop,minimum width=2.5\unit,height] at (8.25,-11.25) (e3) {E\textsubscript{$k$}};
 
     \node[box,minimum width=2.5\unit,height=1] at (0.5,-13) (exe1) {Execution};
     \node[box,minimum width=2.5\unit,height=1] at (3.5,-13) (exe2) {Execution};
