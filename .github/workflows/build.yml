@@ -13,4 +13,7 @@ jobs:
           # Mostly to avoid GitHub rate limiting
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-      - run:
+      - run: nix build
+      - uses: actions/upload-artifact@v4
+        name: doctoraat.pdf
+        path: result/doctoraat.pdf
