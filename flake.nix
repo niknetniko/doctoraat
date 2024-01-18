@@ -30,11 +30,12 @@
             runHook postInstall
           '';
         };
-        ugent2016 = pkgs.stdenvNoCC.mkDerivation (finalAttrs: rec {
+        ugent2016 = pkgs.stdenvNoCC.mkDerivation rec {
             pname = "ugent2016";
             version = "0.10.0";
+            outputs = ["tex"];
+
             passthru = {
-              pkgs = [ finalAttrs.finalPackage ];
               tlDeps = with pkgs.texlive; [
                 etoolbox
                 kvoptions
@@ -49,7 +50,6 @@
                 setspace
                 ulem
               ];
-              tlType = "run";
             };
 
             src = pkgs.fetchurl {
@@ -57,7 +57,13 @@
               hash = "sha256-70/5WHljZwbB//CiKy5AKuVTpwyK2BmbPD/Z4lQwPc8=";
             };
 
-            nativeBuildInputs = [ pkgs.unzip ];
+            nativeBuildInputs = [
+              pkgs.unzip
+              # multiple-outputs.sh fails if $out is not defined
+              (pkgs.writeShellScript "force-tex-output.sh" ''
+                out="''${tex-}"
+              '')
+            ];
 
             sourceRoot = ".";
 
@@ -67,13 +73,11 @@
             installPhase = ''
               runHook preInstall
 
-              mkdir -p $out
-              unzip ugent2016.tds -d $out
+              mkdir -p "$tex/"
+              unzip ugent2016.tds -d "$tex"
 
               runHook postInstall
             '';
-
-            dontFixup = true;
 
             meta = with pkgs.lib; {
               description = "Styles for UGent";
@@ -81,11 +85,41 @@
               maintainers = [ ];
               platforms = platforms.all;
             };
-        });
-        latex_with_ugent = pkgs.texlive.combine {
-          inherit (pkgs.texlive) scheme-full;
-          inherit ugent2016;
         };
+        latex_with_ugent = pkgs.texliveBasic.withPackages (ps: with ps; [
+          luatex
+          luatexbase
+          koma-script
+          standalone
+          lipsum
+          eso-pic
+          xcolor
+          circledsteps
+          caption
+          luacode
+          glossaries
+          fontspec
+          layouts
+          subfiles
+          minted
+          microtype
+          hyperref
+          cleveref
+          polyglossia
+          pgf
+          graphics
+          latexmk
+          svn-prov
+          picture
+          pict2e
+          xpatch
+          newfloat
+          ugent2016
+        ]);
+#        latex_with_ugent = pkgs.texlive.combine {
+#          inherit (pkgs.texlive) scheme-full;
+#          inherit ugent2016;
+#        };
         font_dir = builtins.concatStringsSep "//:" [
           "${ugent-panno}/share/fonts"
           "${pkgs.source-serif}/share/fonts"
