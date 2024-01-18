@@ -133,7 +133,7 @@
               source-sans
               source-code-pro
             ];
-            phases = ["unpackPhase" "buildPhase" "installPhase"];
+            phases = ["unpackPhase" "configurePhase" "buildPhase" "installPhase"];
             configurePhase = ''
               export TEXLIVE_HOME="${latex_with_ugent}"
               export OSFONTDIR="${font_dir}"
