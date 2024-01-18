@@ -115,6 +115,9 @@
           xpatch
           newfloat
           ugent2016
+          collection-langenglish
+          collection-langeuropean
+          collection-langfrench
         ]);
 #        latex_with_ugent = pkgs.texlive.combine {
 #          inherit (pkgs.texlive) scheme-full;
