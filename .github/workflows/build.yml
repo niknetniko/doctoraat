@@ -15,5 +15,6 @@ jobs:
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
       - run: nix build
       - uses: actions/upload-artifact@v4
-        name: doctoraat.pdf
-        path: result/doctoraat.pdf
+        with:
+          name: doctoraat.pdf
+          path: result/doctoraat.pdf
