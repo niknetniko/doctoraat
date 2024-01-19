@@ -32,7 +32,7 @@
         };
         ugent2016 = pkgs.stdenvNoCC.mkDerivation rec {
             pname = "ugent2016";
-            version = "0.10.0";
+            version = "0.11.0";
             outputs = ["tex"];
 
             passthru = {
@@ -54,7 +54,7 @@
 
             src = pkgs.fetchurl {
               url = "https://github.com/niknetniko/ugent2016/releases/download/${version}/ugent2016.zip";
-              hash = "sha256-70/5WHljZwbB//CiKy5AKuVTpwyK2BmbPD/Z4lQwPc8=";
+              hash = "sha256-4SY6F1DKnkaWWlFfVzxxZLFpqDrAnmbQ3uPCqi9doLQ=";
             };
 
             nativeBuildInputs = [
@@ -184,6 +184,7 @@
             installPhase = ''
               mkdir -p $out;
               cp $BUILD_DIR/main.pdf $out/doctoraat.pdf
+              cp $BUILD_DIR/main.log $out/doctoraat.log
             '';
           };
         };
