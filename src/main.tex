@@ -32,6 +32,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{luacode}
+\usepackage{csquotes}
 
 % We want modern numbers here
 \renewcommand{\CircledText}[2][]{%
@@ -124,14 +125,13 @@
 
 % Lettertypes
 \usepackage{microtype}
-
-
-% Referenties
 \usepackage[colorlinks,pdfusetitle]{hyperref}
 \usepackage{cleveref}
 
 % Taalinstellingen. Door de verengelsing is de standaardtaal van dit document Engels.
 \usepackage{polyglossia}
+\usepackage{biblatex}
+\addbibresource{main.bib}
 
 % Voorblad
 \usepackage[type=report]{ugent2016-title}
@@ -204,7 +204,8 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 %\subfile{chapter5}
 
 
-%    \bibliography{main}
-%    \bibliographystyle{plain}
+%\bibliography{main}
+%\bibliographystyle{plain}
+\printbibliography
 
 \end{document}

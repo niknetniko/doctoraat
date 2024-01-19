@@ -118,6 +118,9 @@
           collection-langenglish
           collection-langeuropean
           collection-langfrench
+          csquotes
+          biblatex
+          biber
         ]);
 #        latex_with_ugent = pkgs.texlive.combine {
 #          inherit (pkgs.texlive) scheme-full;
