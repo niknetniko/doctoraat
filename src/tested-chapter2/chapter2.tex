@@ -95,7 +95,7 @@ TESTed uses two categories of data types.
 The first category is a limited set of \textbf{basic types} that are abstract and map to concepts.
 Currently, the following basic types are supported:
 
-\begin{description}
+\begin{description}[noitemsep]
     \item[\texttt{integer}] An integer.
     \item[\texttt{real}] A real number.
     \item[\texttt{boolean}] A Boolean value.
@@ -140,11 +140,122 @@ The second category consists of \textbf{advanced types}, which are more detailed
 Each advanced type is associated with a basic type, acting as a fallback.
 For example, \texttt{int64} is an advanced type with the basic type \texttt{integer} as a fallback.
 If a programming language does not support a particular advanced type, the corresponding basic type will be used.
-For example, a \texttt{tuple} in Python is equal to an \texttt{array} in Java, since both share the same basic type \texttt{sequence}.
+For example, consider tuples.
+Many programming languages do not have direct support for tuples, but exercises using tuples can still be solved by using the corresponding basic type (sequence).
+For a concrete example, an exercise using a \texttt{tuple} can be solved in Java by using a \texttt{List}.
 When adding a programming language, it is possible to disable this fallback for certain types.
-For example, JavaScript has no built-in support for fixed precision numbers.
+For example, JavaScript has no support for fixed precision numbers.
 This prevents TESTed from evaluating submissions in JavaScript if fixed precision numbers are used in the test suite.
 TESTed will generate an appropriate error in this case.
+Currently supported advanced types are:
+
+\begin{description}[noitemsep]
+    \item[\texttt{int8}] 8-bit integers (signed)
+    \item[\texttt{uint8}] 8-bit natural numbers (unsigned)
+    \item[\texttt{int16}] 16-bit integers (signed)
+    \item[\texttt{uint16}] 16-bit natural numbers (unsigned)
+    \item[\texttt{int32}] 32-bit integers (signed)
+    \item[\texttt{uint32}] 32-bit natural numbers (unsigned)
+    \item[\texttt{int64}] 64-bit integers (signed)
+    \item[\texttt{uint64}] 64-bit natural numbers (unsigned)
+    \item[\texttt{bigint}] integers without upper and lower limit (signed)
+    \item[\texttt{single\_precision}] single precision real number
+    \marginnote{The names for real numbers are borrowed from IEEE 754.}
+    \item[\texttt{double\_precision}] double precision real number
+    \item[\texttt{double\_extended}] double extended precision real number
+    \item[\texttt{fixed\_precision}] fixed precision real number
+    \item[\texttt{array}] a mutable fixed-size sequence
+    \item[\texttt{list}] a mutable variable-size sequence
+    \item[\texttt{tuple}] an immutable sequence
+    \item[\texttt{char}] a single character
+    \item[\texttt{undefined}] \texttt{undefined} in JavaScript
+    \item[\texttt{null}] \texttt{null} in JavaScript
+\end{description}
+
+The advanced data types are also where the language-specific aspects can come into play.
+For example, in addition to the basic type \texttt{nothing}, we have both \texttt{undefined} and \texttt{null}.
+In most languages, there is no difference between those, but for example, in JavaScript there is.
+Having both available as an advanced type allows exercises to use either in JavaScript exercises, while still being language-agnostic.
+
+An overview of the supported advanced types for each programming language is given in xy.
+A plus sign (+) in a column indicates that the programming language has limited support for the data type.
+This means that the programming language will fall back to the basic type (as discussed previously).
+A dash means there is no support in the programming language: exercises using this data type will not be solvable in that programming language.
+
+\begin{table}
+    \caption{
+        An overview of advanced types supported by TESTed.
+        The first column contains all advanced types, and the second column contains their corresponding basic type.
+        The other columns contain the mapping to the data types of the programming languages currently supported.
+        \emph{(Table continues)}
+    }
+    \widefloat{%
+        \small\setlength{\tabcolsep}{0.5\tabcolsep}%
+        \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+            \hline
+            \tested{}         & Basic & Python         & JavaScript       & Java             & Kotlin   \\
+            \hline
+            int8              & integer & + & + & \texttt{byte} & \texttt{Byte} \\
+            uint8             & integer & + & + & + & \texttt{UByte} \\
+            int16             & integer & + & + & \texttt{short} & \texttt{Short} \\
+            uint16 & integer & + & + & + & \texttt{UShort} \\
+            int32 & integer & + & + & \texttt{int} & \texttt{Int} \\
+            uint32 & integer & + & + & + & \texttt{UInt} \\
+            int64 & integer & + & + & \texttt{long} & \texttt{Long} \\
+            uint64 & integer  & + & + & + & \texttt{ULong} \\
+            bigint & integer  & \texttt{int} & \texttt{BigInt} & \texttt{BigInteger}
+            & \texttt{BigInteger} \\
+            single\_precision & real & + & + & \texttt{float} & \texttt{Float} \\
+            double\_precision & real & + & + & \texttt{double} & \texttt{Double} \\
+            double\_extended & real & + & + & + & + \\
+            fixed\_precision & rational & \texttt{Decimal} & - & \texttt{BigDecimal}
+            & \texttt{BigDecimal} \\
+            array & sequence & + & + & \texttt{array} & \texttt{Array} \\
+            list & sequence & \texttt{List} & + & \texttt{List} & \texttt{List} \\
+            tuple & sequence & \texttt{Tuple} & + & + & + \\
+            char & text & + & + & \texttt{char} & \texttt{Char} \\
+            undefined & nothing & + & \texttt{undefined} & + & + \\
+            \hline
+        \end{tabular}}
+    \label{tab:tested-advanced-types}
+\end{table}
+
+\begin{table}
+    \ContinuedFloat
+    \caption{
+        \emph{(Continued)}
+        An overview of advanced types supported by TESTed.
+    }
+    \widefloat{%
+        \small\setlength{\tabcolsep}{0.5\tabcolsep}%
+        \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+            \hline
+            \tested{}         & Haskell                   & C                        & Bash & C\# \\
+            \hline
+            int8              & \texttt{Data.Int.Int8}    & +                        & -    & \\
+            uint8             & \texttt{Data.Word.Word8}  & +                        & -    & \\
+            int16             & \texttt{Data.Int.Int16}   & \texttt{short}           & -    & \\
+            uint16            & \texttt{Data.Word.Word16} & \texttt{unsigned\ short} & -    & \\
+            int32             & \texttt{Data.Int.Int32}   & \texttt{int}             & -    & \\
+            uint32            & \texttt{Data.Word.Word32} & \texttt{unsigned\ int}   & -    & \\
+            int64             & \texttt{Data.Int.Int64}   & \texttt{long}            & -    & \\
+            uint64            & \texttt{Data.Word.Word64} & \texttt{unsigned\ long}  & -    & \\
+            bigint            & \texttt{Integer}          & -                        & -    & \\
+            single\_precision & \texttt{Float}            & \texttt{float}           & -    & \\
+            double\_precision & \texttt{Double}           & \texttt{double}          & -    & \\
+            double\_extended  & -                         & \texttt{double\ double}  & -    & \\
+            fixed\_precision  & -                         & -                        & -    & \\
+            array             & -                         & -                        & -    & \\
+            list              & \texttt{{[}{]}}           & -                        & -    & \\
+            tuple             & \texttt{()}               & -                        & -    & \\
+            char              & \texttt{Char}             & \texttt{char}            & +    & \\
+            undefined         & +                         & +                        & -    & \\
+            \hline
+        \end{tabular}}
+    \label{tab:tested-advanced-types-2}
+\end{table}
+
+
 
 A current limitation is that TESTed does not support user-defined data types as a return value in test suites.
 This omission is intentional, as generic implementation of object serialization and deserialization across programming languages is far from trivial.

@@ -101,6 +101,8 @@
 \newcommand*{\marginnote}{\makenote}
 \setkomafont{captionlabel}{\small\bfseries}
 \setkomafont{caption}{\small}
+\DeclareCaptionLabelFormat{cont}{#1 #2\alph{ContinuedFloat}}
+\captionsetup[ContinuedFloat]{labelformat=cont}
 
 \usepackage{subfiles}
 
@@ -177,7 +179,7 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \newcommand{\widefloat}[1]{%
     \noindent\mbox{%
-        \Ifthispageodd{\hspace*{\marginparwidth+\marginparsep}}{\hspace*{-\marginparwidth-\marginparsep}}%
+        \Ifthispageodd{}{\hspace*{-\marginparwidth-\marginparsep}}%
         \begin{minipage}{\textwidth+\marginparwidth+\marginparsep}%
             \Ifthispageodd{\raggedright}{\raggedleft}%
             \noindent#1%
