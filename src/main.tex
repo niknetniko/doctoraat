@@ -26,13 +26,14 @@
 
 % Andere
 \usepackage{lipsum}
-\usepackage{showframe}
+%\usepackage{showframe}
 \usepackage{xcolor}
 \usepackage{circledsteps}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{luacode}
 \usepackage{csquotes}
+\usepackage[inline]{enumitem}
 
 % We want modern numbers here
 \renewcommand{\CircledText}[2][]{%
@@ -163,15 +164,32 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 % Automagically convert 'Tested' to smallcaps.
 \begin{luacode}
   function capstosc(s)
-    return string.gsub(s, "%f[%w_]TESTed%f[^%w_]" , "\\textsc{Test}ed")
+    s = string.gsub(s, "%f[%w_]TESTed%f[^%w_]", "\\textsc{Test}ed")
+    s = string.gsub(s, "%f[%w_]JSON%f[^%w_]", "\\textsc{json}")
+    s = string.gsub(s, "%f[%w_]DSL%f[^%w_]", "\\textsc{dsl}")
+    s = string.gsub(s, "%f[%w_]YAML%f[^%w_]", "\\textsc{yaml}")
+    return s
   end
 \end{luacode}
 \AtBeginDocument{%
 \directlua{luatexbase.add_to_callback ("process_input_buffer", capstosc, "capstosc" )}
 }
 
+\newcommand{\widefloat}[1]{%
+    \noindent\mbox{%
+        \Ifthispageodd{\hspace*{\marginparwidth+\marginparsep}}{\hspace*{-\marginparwidth-\marginparsep}}%
+        \begin{minipage}{\textwidth+\marginparwidth+\marginparsep}%
+            \Ifthispageodd{\raggedright}{\raggedleft}%
+            \noindent#1%
+        \end{minipage}%
+    }%
+}
+
 % Allow using TESTed as is, without small caps replacement.
 \newcommand{\tested}{TESTed}
+\newcommand{\dsl}{DSL}
+\newcommand{\json}{JSON}
+\newcommand{\yaml}{YAML}
 
 % Document
 \begin{document}
@@ -194,18 +212,18 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \mainmatter
 
-%\subfile{chapter1}
+%\subfile{tested-chapter1}
 
 \part{TESTed}\label{part:tested}
 
-\subfile{chapter3/chapter3.tex}
-%\subfile{chapter1/chapter1.tex}
+\subfile{tested-chapter3/chapter3.tex}
+%\subfile{tested-chapter1/tested-chapter1.tex}
 
 %\subfile{chapter5}
 
 
 %\bibliography{main}
 %\bibliographystyle{plain}
-\printbibliography
+\printbibliography[heading=bibintoc]
 
 \end{document}

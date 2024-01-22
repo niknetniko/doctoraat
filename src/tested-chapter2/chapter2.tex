@@ -1,0 +1,170 @@
+%! Author = niko
+%! Date = 11/01/2024
+
+\documentclass[../main]{subfiles}
+
+% Document
+\begin{document}
+
+\chapter{Test suites and \tested-\dsl}\label{ch:test-suites-and-tested-dsl}
+
+In this chapter, we discuss the test suites used by TESTed.
+We begin by introducing TESTed-DSL, a test suite format specifically design for writing tests in a programming language independent way, tailored for use in an educational setting.
+
+TODO: heel veel chapters.
+
+\section{Test suites in \tested}\label{sec:test-suites-in-tested}
+
+TESTed-DSL is the intended way to write test suites for TESTed.
+However, it is also possible to write JSON test suites.
+These test suites are a direct JSON representation of the internal structure of a test suite as used by TESTed.
+While it is similar in some ways to the DSL, it is much more verbose in some key aspects.
+
+In general, as the JSON test suite is a reflection of the internal structure, it is used as-is.
+This means no processing is done: the test suite must be fully ``rolled out''.
+For example, only the lowest levels of the test suite (the tests) can have options in the JSON suite.
+
+A snippet of a test suite in JSON that will be used as the running example in this section is given in \cref{lst:expanded-json-test-suite}.
+Note that the structure elements (tabs and contexts) are omitted in this example.
+
+\begin{listing}
+\begin{minted}{json}
+{
+ "variable": "a_list",
+ "type": "sequence",
+ "expression": {
+  "type": "sequence",
+  "data": [
+   {"data": 1, "type": "integer"},
+   {"data": 2, "type": "integer"},
+   {"data": 3, "type": "integer"},
+   {"data": 2, "type": "integer"}
+  ]
+ }
+}, {
+ "input": {
+  "type": "function",
+  "name": "remove_all_occurences",
+  "arguments": [
+   "a_list",
+   {"data": 2, "type": "integer"}
+  ]
+ },
+ "output": {
+  "result": {
+   "value": {
+    "type": "sequence",
+    "data": [
+     {"data": 1, "type": "integer"},
+     {"data": 3, "type": "integer"}
+    ]
+}}}}
+    \end{minted}
+    \caption[]{
+    A snippet of a JSON test suite for TESTed with two statements:
+    \begin{enumerate*}[label=\emph{\roman*})]
+        \item declaration of a variable (\texttt{aList}) that is assigned a sequence containing four integers 1, 2, 3, and 2 and
+        \item call of the function \texttt{remove\_all\_occurrences} with two arguments: \texttt{aList} and the integer 2.
+    \end{enumerate*}
+    The expected return value is a list containing the integers 1 and 3.
+    }
+    \label{lst:expanded-json-test-suite}
+\end{listing}
+
+
+\subsection{Structure of a \json{} test suite}\label{subsec:structure-of-a-json-test-suite}
+
+A JSON test suite has the same hierarchy as a DSL test suite: it consists of tabs, which consist of contexts, consisting of testcases, which contain the tests.
+There is, however, no shortcut to define a test suite where each testcase is its own context.
+
+\section{Data serialization}\label{sec:data-serialization}
+
+TESTed uses data serialization to convert between the language-independent format of the test suite, and the generated test code.
+Additionally, the same data serialization is used to convert return values from the submission into the language-independent format for checking (as described in \cref{subsec:checking-results}).
+We now describe the data serialization format used by TESTed.
+
+Each literal value is described using two attributes: a value (e.g.\ the number \texttt{5.3}) and a data type (e.g.\ \texttt{real}).
+These attributes are combined into a JSON object with two fields.
+The value is encoded using the closest representation available in JSON\@.
+For example, a number is represented by a JSON number, and a string is represented by a JSON string.
+The data type of a literal value is more complex, since TESTed targets multiple programming languages that each support their own collection of data types.
+TESTed therefore defines a set of rules to denote data types and their support in programming languages.
+This allows TESTed to convert types between programming languages.
+
+TESTed uses two categories of data types.
+The first category is a limited set of \textbf{basic types} that are abstract and map to concepts.
+Currently, the following basic types are supported:
+
+\begin{description}
+    \item[\texttt{integer}] An integer.
+    \item[\texttt{real}] A real number.
+    \item[\texttt{boolean}] A Boolean value.
+    \item[\texttt{text}] Textual data (e.g.\ strings). The intention is important here: for example, an \textsc{ASCII} character can be represented as both an integer or as text.
+    \item[\texttt{sequence}] An ordered sequence of values.
+    \item[\texttt{set}] An unordered collection of unique values.
+    \item[\texttt{map}] A collection of key-value pairs, where the keys are unique.
+    \item[\texttt{nothing}] A representation of ``nothing'', meaning no value.
+    \item[\texttt{any}] \marginnote{The \texttt{any} type acts roughly as the \emph{top type}, except that we do not have a formal type system, nor do we have subtypes.} Any or unknown data type. This type is not usable in test suites, but is used to indicated return values of an unknown type.
+\end{description}
+
+When a test suite contains a literal value of a basic type, it will be serialized as an object of an actual data type in the target programming language.
+An overview of all basic types and their implementation is given in X.
+For example, a literal value with data type \texttt{map} will become a \texttt{Map} in Java or a \texttt{dict} in Python.
+
+\begin{table}
+    \caption{
+        Overview of the basic types of TESTed and their implementation in the programming languages supported by TESTed.
+        Sometimes, another type is used instead, based on the value. For example, an integer that is too large for \texttt{int} in Java will become a \texttt{long}.
+        A dash (-) is used to indicate that the programming language does not support this type.
+    }
+    \widefloat{%
+        \small\setlength{\tabcolsep}{0.25\tabcolsep}%
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+        \hline
+        \tested{} & Python         & JavaScript       & Java             & Kotlin           & Haskell & C & Bash & C\# \\ \hline
+        integer   & \texttt{int}   & \texttt{number}  & \texttt{int}     & \texttt{Int}     & \texttt{Int} & \texttt{int} & - & \texttt{Int32} \\
+        real      & \texttt{float} & \texttt{number}  & \texttt{double}  & \texttt{Double}  & \texttt{Double} & \texttt{double} & - & \texttt{Double} \\
+        boolean   & \texttt{bool}  & \texttt{boolean} & \texttt{boolean} & \texttt{Boolean} & \texttt{Bool} & \texttt{bool} & - & \texttt{Boolean} \\
+        text      & \texttt{str}   & \texttt{String}  & \texttt{String}  & \texttt{String}  & \texttt{String} & \texttt{char*} & \texttt{text} & \texttt{string} \\
+        sequence  & \texttt{list}  & \texttt{array}   & \texttt{List}    & \texttt{List}    & \texttt{{[}{]}} & - & - & \texttt{List} \\
+        set       & \texttt{set}   & \texttt{Set}     & \texttt{Set}     & \texttt{Set}     & - & - & - & \texttt{Set} \\
+        map       & \texttt{dict}  & \texttt{object}  & \texttt{Map}     & \texttt{Map}     & - & - & - & \texttt{Dictionary} \\
+        nothing   & \texttt{None}  & \texttt{null}    & \texttt{null}    & \texttt{null}    & \texttt{Nothing} & \texttt{void} & - & \texttt{void} \\
+        \hline
+    \end{tabular}}
+    \label{tab:tested-basic-types}
+\end{table}
+
+The second category consists of \textbf{advanced types}, which are more detailed or programming language specific.
+Each advanced type is associated with a basic type, acting as a fallback.
+For example, \texttt{int64} is an advanced type with the basic type \texttt{integer} as a fallback.
+If a programming language does not support a particular advanced type, the corresponding basic type will be used.
+For example, a \texttt{tuple} in Python is equal to an \texttt{array} in Java, since both share the same basic type \texttt{sequence}.
+When adding a programming language, it is possible to disable this fallback for certain types.
+For example, JavaScript has no built-in support for fixed precision numbers.
+This prevents TESTed from evaluating submissions in JavaScript if fixed precision numbers are used in the test suite.
+TESTed will generate an appropriate error in this case.
+
+A current limitation is that TESTed does not support user-defined data types as a return value in test suites.
+This omission is intentional, as generic implementation of object serialization and deserialization across programming languages is far from trivial.
+For example, there is no universal way to handle differences in built-in behavior (e.g.\ \texttt{hash} and \texttt{equals} methods in Java or operator overloading in Python).
+
+The same dataserialization is applied when using DSL test suites.
+However, instead of using JSON objects, YAML tags are used, as described in TODO.
+
+Te doen: wat introductie over dit deel van de thesis.
+
+In this chapter, we discuss software testing in an educational context.
+This serves as an introduction to the next chapters, which discuss TESTed, our own educational testing framework.
+We begin by giving a short overview of software testing, followed by how testing is used in an educational context.
+Next, we identify the challenges unique to the eductional context.
+We also look at existing and related work for these challenges.
+
+\section{Software testing}
+\label{sec:software-testing}
+
+Software testing is the validation and verification of a system derived from source code (Ammann \& Offutt, 2016).
+Two complementary approaches prevail: dynamic testing executes the source code with a given suite of test cases, whereas static testing analyzes the source code without executing it (Romli et al., 2010). Both approaches might be done via manual or automated processes, based on a specification (Pieterse, 2013). In modern software development, automated testing has become a standard practice for continuous integration and continuous development of living codebases, where both the code base and the system requirements might evolve over time (Winters et al., 2020). The minimum requirement that is tested is correctness, which is the essential purpose of software testing (Pan, 1999b). Automated testing for correctness needs some kind of oracle to tell the right behavior from the wrong one. Other software quality factors that may be tested are its functionality (reliability, usability, integrity), engineering (efficiency, testability, documentation, structure) and adaptability (flexibility, reusability, maintainability) (Hetzel, 1988).
+
+
+\end{document}

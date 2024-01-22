@@ -121,6 +121,7 @@
           csquotes
           biblatex
           biber
+          enumitem
         ]);
 #        latex_with_ugent = pkgs.texlive.combine {
 #          inherit (pkgs.texlive) scheme-full;
@@ -138,7 +139,7 @@
           default = dev;
           dev = pkgs.devshell.mkShell {
             name = "doctoraat";
-            packages = packages.document.buildInputs ++ packages.document.nativeBuildInputs;
+            packages = packages.document.buildInputs ++ packages.document.nativeBuildInputs ++ [pkgs.kile];
             env = [
               {
                 name = "TEXLIVE_HOME";
@@ -167,7 +168,7 @@
               latex_with_ugent
               gnumake
               inkscape
-              python312Packages.pygments
+              (python312.withPackages(ps: [ps.pygments]))
               ugent-panno
               source-serif
               source-sans
