@@ -33,24 +33,22 @@
         ugent2016 = pkgs.stdenvNoCC.mkDerivation rec {
             pname = "ugent2016";
             version = "0.11.0";
-            outputs = ["tex"];
+            outputs = ["tex" "out"];
 
-            passthru = {
-              tlDeps = with pkgs.texlive; [
-                etoolbox
-                kvoptions
-                xstring
-                auxhook
-                translations
-                fontspec
-                pgf
-                textcase
-                graphics
-                geometry
-                setspace
-                ulem
-              ];
-            };
+            passthru.tlDeps = with pkgs.texlive; [
+              etoolbox
+              kvoptions
+              xstring
+              auxhook
+              translations
+              fontspec
+              pgf
+              textcase
+              graphics
+              geometry
+              setspace
+              ulem
+            ];
 
             src = pkgs.fetchurl {
               url = "https://github.com/niknetniko/ugent2016/releases/download/${version}/ugent2016.zip";
@@ -60,9 +58,9 @@
             nativeBuildInputs = [
               pkgs.unzip
               # multiple-outputs.sh fails if $out is not defined
-              (pkgs.writeShellScript "force-tex-output.sh" ''
-                out="''${tex-}"
-              '')
+#               (pkgs.writeShellScript "force-tex-output.sh" ''
+#                 out="''${tex-}"
+#               '')
             ];
 
             sourceRoot = ".";
@@ -75,6 +73,7 @@
 
               mkdir -p "$tex/"
               unzip ugent2016.tds -d "$tex"
+              unzip ugent2016.tds -d "$out"
 
               runHook postInstall
             '';
@@ -122,11 +121,9 @@
           biblatex
           biber
           enumitem
+          fancyvrb
+          upquote
         ]);
-#        latex_with_ugent = pkgs.texlive.combine {
-#          inherit (pkgs.texlive) scheme-full;
-#          inherit ugent2016;
-#        };
         font_dir = builtins.concatStringsSep "//:" [
           "${ugent-panno}/share/fonts"
           "${pkgs.source-serif}/share/fonts"
