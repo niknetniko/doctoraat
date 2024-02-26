@@ -85,44 +85,44 @@
               platforms = platforms.all;
             };
         };
-        latex_with_ugent = pkgs.texliveBasic.withPackages (ps: with ps; [
-          luatex
-          luatexbase
-          koma-script
-          standalone
-          lipsum
-          eso-pic
-          xcolor
-          circledsteps
-          caption
-          luacode
-          glossaries
-          fontspec
-          layouts
-          subfiles
-          minted
-          microtype
-          hyperref
-          cleveref
-          polyglossia
-          pgf
-          graphics
-          latexmk
-          svn-prov
-          picture
-          pict2e
-          xpatch
-          newfloat
+        latex_with_ugent = pkgs.texliveFull.withPackages (ps: with ps; [
+#          luatex
+#          luatexbase
+#          koma-script
+#          standalone
+#          lipsum
+#          eso-pic
+#          xcolor
+#          circledsteps
+#          caption
+#          luacode
+#          glossaries
+#          fontspec
+#          layouts
+#          subfiles
+#          minted
+#          microtype
+#          hyperref
+#          cleveref
+#          polyglossia
+#          pgf
+#          graphics
+#          latexmk
+#          svn-prov
+#          picture
+#          pict2e
+#          xpatch
+#          newfloat
+#          collection-langenglish
+#          collection-langeuropean
+#          collection-langfrench
+#          csquotes
+#          biblatex
+#          biber
+#          enumitem
+#          fancyvrb
+#          upquote
           ugent2016
-          collection-langenglish
-          collection-langeuropean
-          collection-langfrench
-          csquotes
-          biblatex
-          biber
-          enumitem
-          fancyvrb
-          upquote
         ]);
         font_dir = builtins.concatStringsSep "//:" [
           "${ugent-panno}/share/fonts"
