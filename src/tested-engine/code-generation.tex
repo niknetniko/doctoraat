@@ -11,88 +11,93 @@
 \begin{document}
 
 \begin{tikzpicture}[x=0.75cm,y=0.75cm]
-    \begin{scope} [shift={(1.1125,1.5)}]
+    \begin{scope} [shift={(0.625,1.5)}]
         \node[cont] at (0.75, -1.75) (ts1c1) {C\textsubscript{1}};
         \node[cont] at (2.25, -1.75) (ts1c2) {C\textsubscript{2}};
         \node[cont] at (3.75, -1.75) (ts1c3) {C\textsubscript{3}};
-        \node[tc,minimum height=2\unit,minimum width=4.5\unit] at (0.5,-1) (tc1) {};
+        \node[tc,minimum height=2\block,minimum width=4.5\block] at (0.5,-1) (tc1) {};
         \node[below right,text=ugent-ps] at (tc1.north west) {\small Unit 1};
 
         \node[cont] at (5.50, -1.75) (ts1c4) {C\textsubscript{4}};
         \node[cont] at (7.00, -1.75) (ts1c5) {C\textsubscript{5}};
-        \node[tc,minimum height=2\unit,minimum width=3\unit] at (5.25,-1) (tc2) {};
+        \node[tc,minimum height=2\block,minimum width=3\block] at (5.25,-1) (tc2) {};
         \node[below right,text=ugent-ps] at (tc2.north west) {\small Unit 2};
 
         \node[cont] at (8.75, -1.75) (ts1c6) {C\textsubscript{6}};
         \node[cont] at (10.25, -1.75) (ts1c7) {C\textsubscript{7}};
         \node[cont] at (11.75, -1.75) (ts1c8) {C\textsubscript{8}};
-        \node[tc,minimum height=2\unit,minimum width=4.5\unit] at (8.5,-1) (tc3) {};
+        \node[tc,minimum height=2\block,minimum width=4.5\block] at (8.5,-1) (tc3) {};
         \node[below right,text=ugent-ps] at (tc3.north west) {\small Unit 3};
 
-        \node[comp,minimum height=2.5\unit,minimum width=13\unit] at (0.25,-0.75) (comp) {};
+        \node[comp,minimum height=2.5\block,minimum width=13\block] at (0.25,-0.75) (comp) {};
 
-        \node[exec,minimum height=2.25\unit,minimum width=4.25\unit] at (0.625,-0.875) (execu1) {};
-        \node[exec,minimum height=2.25\unit,minimum width=1.25\unit] at (5.375,-0.875) (execu2) {};
-        \node[exec,minimum height=2.25\unit,minimum width=6\unit] at (6.875,-0.875) (execu3) {};
+        \node[exec,minimum height=2.25\block,minimum width=4.25\block] at (0.625,-0.875) (execu1) {};
+        \node[exec,minimum height=2.25\block,minimum width=1.25\block] at (5.375,-0.875) (execu2) {};
+        \node[exec,minimum height=2.25\block,minimum width=6\block] at (6.875,-0.875) (execu3) {};
     \end{scope}
 
     \begin{scope} [shift={(0,-3)}]
-        \node[document,minimum width=15.75\unit, minimum height=8.25\unit,draw=ugent-re] at (0,0) (executable) {};
+        \node[document,minimum width=14.75\block, minimum height=9\block,draw=ugent-re] at (0,0) (executable) {};
         \node[below right,text=ugent-re] at (executable.north west) {\small Executable};
 
-        \node[box,draw=ugent-re,minimum height=3.25\unit,minimum width=3.5\unit] at (0.25,-0.75) (main) {};
-        \node[below right,text=ugent-re] at (main.north west) (mtitle) {\small \texttt{main} function};
-        \node[below right,text width=3.75\unit] at (mtitle.south west) {%
+        \node[box,draw=ugent-re,minimum height=3.75\block,minimum width=3\block] at (0.25,-0.75) (main) {};
+        \node[below right,text=ugent-re] at (main.north west) (mtitle) {\footnotesize\texttt{def main()}};
+        \node[below right,text width=3\block] at (mtitle.south west) {%
             \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
-            \begin{tikzjava}
-                switch(argument) {
-                  case "1" -> exec1();
-                  case "2" -> exec2();
-                  case "3" -> exec3();
-                  default -> throw ...;
-                }
-            \end{tikzjava}
+            \begin{tikzpython}
+                match argument:
+                  case "1":
+                    exec1()
+                  case "2":
+                    exec2()
+                  case "3":
+                    exec3()
+            \end{tikzpython}
         };
 
-        \node[exec,minimum height=3.25\unit,minimum width=3.5\unit] at (4,-0.75) (exec1) {};
-        \node[below right,text=ugent-we] at (exec1.north west) (e1title) {\small \texttt{exec1} function};
-        \node[below right,text width=3.75\unit] at (e1title.south west) {%
-            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
-            \begin{tikzjava}
-                outputContextSecret();
-                context1();
-                outputContextSecret();
-                context2();
-                outputContextSecret();
-                context3();
-            \end{tikzjava}
-        };
+        \begin{scope} [shift={(-0.5,0)}]
 
-        \node[exec,minimum height=3.25\unit,minimum width=3.5\unit] at (7.75,-0.75) (exec2) {};
-        \node[below right,text=ugent-we] at (exec2.north west) (e2title) {\small \texttt{exec2} function};
-        \node[below right,text width=3.75\unit] at (e2title.south west) {%
-            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
-            \begin{tikzjava}
-                outputContextSecret();
-                context4();
-            \end{tikzjava}
-        };
+            \node[exec,minimum height=3.75\block,minimum width=3.5\block] at (4,-0.75) (exec1) {};
+            \node[below right,text=ugent-we] at (exec1.north west) (e1title) {\small \texttt{def exec1()}};
+            \node[below right,text width=3.75\block] at (e1title.south west) {%
+                \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+                \begin{tikzpython}
+                    print_ctx_secret()
+                    context1()
+                    print_ctx_secret()
+                    context2()
+                    print_ctx_secret()
+                    context3()
+                \end{tikzpython}
+            };
 
-        \node[exec,minimum height=3.25\unit,minimum width=3.5\unit] at (11.5,-0.75) (exec3) {};
-        \node[below right,text=ugent-we] at (exec3.north west) (e3title) {\small \texttt{exec3} function};
-        \node[below right,text width=3.75\unit] at (e3title.south west) {%
-            \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
-            \begin{tikzjava}
-                outputContextSecret();
-                context5();
-                outputContextSecret();
-                context6();
-                outputContextSecret();
-                context7();
-                outputContextSecret();
-                context8();
-            \end{tikzjava}
-        };
+            \node[exec,minimum height=3.75\block,minimum width=3.5\block] at (7.75,-0.75) (exec2) {};
+            \node[below right,text=ugent-we] at (exec2.north west) (e2title) {\small \texttt{def exec2()}};
+            \node[below right,text width=3.75\block] at (e2title.south west) {%
+                \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+                \begin{tikzpython}
+                    print_ctx_secret()
+                    context4()
+                \end{tikzpython}
+            };
+
+            \node[exec,minimum height=3.75\block,minimum width=3.5\block] at (11.5,-0.75) (exec3) {};
+            \node[below right,text=ugent-we] at (exec3.north west) (e3title) {\small \texttt{def exec3()}};
+            \node[below right,text width=3.75\block] at (e3title.south west) {%
+                \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
+                \begin{tikzpython}
+                    print_ctx_secret()
+                    context5()
+                    print_ctx_secret()
+                    context6()
+                    print_ctx_secret()
+                    context7()
+                    print_ctx_secret()
+                    context8()
+                \end{tikzpython}
+            };
+
+        \end{scope}
 
         % Normally, context functions should be here, however, they are drawn at the end.
     \end{scope}
@@ -104,10 +109,10 @@
 
     \draw[-latex,draw=ugent-re] (comp) -- (executable) node[midway,fill=white,fill opacity=0.8,text opacity=1] {\small Code generation and compilation};
 
-    \begin{scope} [shift={(0,-12)}]
-        \node[document,draw=ugent-we,minimum width=4.75\unit, minimum height=3.25\unit] at (0.25, 0) (res1) {};
+    \begin{scope} [shift={(-0.25,-13.25)}]
+        \node[document,draw=ugent-we,minimum width=4.25\block, minimum height=3.5\block] at (0.25, 0) (res1) {};
         \node[below right,color=ugent-we] at (res1.north west) (res1title) {\small \texttt{output1.txt}};
-        \node[below right,text width=3.75\unit] at (res1title.south west) {%
+        \node[below right,text width=3.75\block] at (res1title.south west) {%
             \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
             \begin{tikztext}
                 context_separator (C1)
@@ -118,9 +123,9 @@
             \end{tikztext}
         };
 
-        \node[document,draw=ugent-we,minimum width=4.75\unit, minimum height=3.25\unit] at (5.5, 0) (res2) {};
+        \node[document,draw=ugent-we,minimum width=4.25\block, minimum height=3.5\block] at (5.5, 0) (res2) {};
         \node[below right,color=ugent-we] at (res2.north west) (res2title) {\small \texttt{output2.txt}};
-        \node[below right,text width=3.75\unit] at (res2title.south west) {%
+        \node[below right,text width=3.75\block] at (res2title.south west) {%
             \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
             \begin{tikztext}
                 context_separator (C1)
@@ -133,9 +138,9 @@
             \end{tikztext}
         };
 
-        \node[document,draw=ugent-we,minimum width=4.75\unit, minimum height=3.25\unit] at (10.75, 0) (res3) {};
+        \node[document,draw=ugent-we,minimum width=4.25\block, minimum height=3.5\block] at (10.75, 0) (res3) {};
         \node[below right,color=ugent-we] at (res3.north west) (res3title) {\small \texttt{output3.txt}};
-        \node[below right,text width=3.75\unit] at (res3title.south west) {%
+        \node[below right,text width=3.75\block] at (res3title.south west) {%
             \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
             \begin{tikztext}
                 ...
@@ -151,44 +156,44 @@
     \draw[-latex,draw=ugent-we] (exec3) to [out=-90,in=90] (res3);
 
     % Context functions, to be before the arrows
-    \begin{scope} [shift={(0,-3)}]
-        \node[cont,minimum width=4\unit, minimum height=3\unit,fill=white] at (0.25, -4.75) (cf1) {};
-        \node[below right] at (cf1.north west) (c1title) {\small \texttt{context1} function};
-        \node[below right,text width=3.75\unit] at (c1title.south west) {%
+    \begin{scope} [shift={(0,-3.25)}]
+        \node[cont,minimum width=4.25\block, minimum height=3.5\block,fill=white] at (0.25, -4.75) (cf1) {};
+        \node[below right] at (cf1.north west) (c1title) {\small \texttt{def context1()}};
+        \node[below right,text width=3.75\block] at (c1title.south west) {%
             \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
-            \begin{tikzjava}
-                outputTestcaseSeparator();
-                testcase1();
-                outputTestcaseSeparator();
-                testcase2();
-                outputTestcaseSeparator();
-                testcase3();
+            \begin{tikzpython}
+                print_tc_secret()
+                testcase1()
+                print_tc_secret()
+                testcase2()
+                print_tc_secret()
+                testcase3()
                 ...
-            \end{tikzjava}
+            \end{tikzpython}
         };
 
-        \node[cont,minimum width=4\unit, minimum height=3\unit,fill=white] at (5, -4.75) (cf2) {};
-        \node[below right] at (cf2.north west) (c2title) {\small \texttt{context2} function};
-        \node[below right,text width=3.75\unit] at (c2title.south west) {%
+        \node[cont,minimum width=4.25\block, minimum height=3.5\block,fill=white] at (4.75, -4.75) (cf2) {};
+        \node[below right] at (cf2.north west) (c2title) {\small \texttt{def context2()}};
+        \node[below right,text width=3.75\block] at (c2title.south west) {%
             \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
-            \begin{tikzjava}
-                outputTestcaseSeparator();
-                testcase1();
-                outputTestcaseSeparator();
-                testcase2();
-            \end{tikzjava}
+            \begin{tikzpython}
+                print_tc_secret()
+                testcase1()
+                print_tc_secret()
+                testcase2()
+            \end{tikzpython}
         };
 
-        \node[cont,draw opacity=0,align=center] at (9.75, -4.75) {\ldots};
+        \node[cont,draw opacity=0,align=center] at (9, -4.75) {\ldots};
 
-        \node[cont,minimum width=4\unit, minimum height=3\unit,fill=white] at (11.5, -4.75) (cf8) {};
-        \node[below right] at (cf8.north west) (c8title) {\small \texttt{context8} function};
-        \node[below right,text width=3.75\unit] at (c8title.south west) {%
+        \node[cont,minimum width=4.25\block, minimum height=3.5\block,fill=white] at (10.25, -4.75) (cf8) {};
+        \node[below right] at (cf8.north west) (c8title) {\small \texttt{def context8()}};
+        \node[below right,text width=3.75\block] at (c8title.south west) {%
             \fvset{listparameters=\setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}}%
-            \begin{tikzjava}
-                outputTestcaseSeparator();
+            \begin{tikzpython}
+                print_tc_secret()
                 testcase1();
-            \end{tikzjava}
+            \end{tikzpython}
         };
     \end{scope}
 

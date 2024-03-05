@@ -27,7 +27,7 @@
 
 % Andere
 \usepackage{lipsum}
-%\usepackage{showframe}
+\usepackage{showframe}
 \usepackage{xcolor}
 \usepackage{circledsteps}
 \usepackage{caption}
@@ -89,6 +89,7 @@
     BoldItalicFont = *-Semibold Italic
 ]
 \setmonofont{Source Code Pro}[
+    Scale          = MatchLowercase,
     UprightFont    = *-Regular,
     ItalicFont     = *-Italic,
     BoldFont       = *-Semibold,
@@ -99,7 +100,7 @@
 \usepackage{layout}
 \usepackage{scrlayer-scrpage}
 \usepackage{scrlayer-notecolumn}
-\addtokomafont{notecolumn.marginpar}{\itshape\footnotesize\raggedright}
+\addtokomafont{notecolumn.marginpar}{\footnotesize\raggedright}
 \newcommand*{\marginnote}{\makenote}
 \renewcommand*{\captionformat}{~}
 \setkomafont{captionlabel}{\small\bfseries}
@@ -126,7 +127,9 @@
     end
 \end{luacode*}
 \usepackage[newfloat]{minted}
-\setminted{autogobble=true,linenos=true,breaklines=true,fontsize=\small}
+\setminted{autogobble=true,linenos=true,breaklines=true,fontsize=\footnotesize}
+\setmintedinline{fontsize=,}
+
 
 \usepackage{microtype}
 
@@ -138,8 +141,12 @@
 \addbibresource{main.bib}
 
 % Lettertypes
+\usepackage[nospace]{varioref}
 \usepackage[colorlinks,pdfusetitle]{hyperref}
 \usepackage{cleveref}
+
+\usepackage{siunitx}
+\sisetup{detect-all}
 
 % Voorblad
 \usepackage[type=report]{ugent2016-title}
@@ -177,6 +184,10 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
     s = string.gsub(s, "%f[%w_]API%f[^%w_]", "\\textsc{api}")
     s = string.gsub(s, "%f[%w_]SVG%f[^%w_]", "\\textsc{svg}")
     s = string.gsub(s, "%f[%w_]NDJSON%f[^%w_]", "\\textsc{ndjson}")
+    s = string.gsub(s, "%f[%w_]MIT%f[^%w_]", "\\textsc{MIT}")
+    s = string.gsub(s, "%f[%w_]GIL%f[^%w_]", "\\textsc{GIL}")
+    s = string.gsub(s, "%f[%w_]ABC%f[^%w_]", "\\textsc{ABC}")
+    s = string.gsub(s, "%f[%w_]ASCII%f[^%w_]", "\\textsc{ASCII}")
     return s
   end
 \end{luacode}
@@ -197,6 +208,8 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \newcommand{\json}{JSON}
 \newcommand{\yaml}{YAML}
 \newcommand{\api}{API}
+
+\newcommand{\software}[1]{\textit{#1}}
 
 % Document
 \begin{document}
@@ -222,6 +235,7 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \layout{}
 
 \part{\tested{}}\label{part:tested}
+\subfile{tested-glue.tex}
 
 % Introduction about this part.
 %This part of the thesis concerns TESTed, an educational testing framework that enables creating programming-language-agnostic programming exercises.

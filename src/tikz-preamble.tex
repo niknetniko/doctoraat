@@ -20,14 +20,14 @@
 \tikzstyle{js}=[fill=ugent-pp!50!white]
 \tikzstyle{c}=[fill=ugent-re!50!white]
 
-\newlength{\unit}
-\setlength{\unit}{0.75cm}
+\newlength{\block}
+\setlength{\block}{0.75cm}
 
 \tikzstyle{a}=[anchor=north west]
 \tikzstyle{box}=[a,draw,rectangle]
 \tikzstyle{node}=[a,draw,minimum height=0.5cm,align=center,fill=white,text depth=.25ex]
 \tikzstyle{document}=[node,tape,tape bend top=none]
-\tikzstyle{cont}=[box,minimum height=1\unit,minimum width=1\unit]
+\tikzstyle{cont}=[box,minimum height=1\block,minimum width=1\block]
 \tikzstyle{arrow}=[draw, -latex]
 \tikzstyle{inner}=[box,draw=gray]
 
@@ -38,6 +38,7 @@
 
 % Minted environments for use in Tikz
 \newminted[tikzjava]{java}{autogobble,linenos=false,fontsize=\tiny,stripall}
+\newminted[tikzpython]{python}{autogobble,linenos=false,fontsize=\tiny,stripall}
 \newminted[tikztext]{text}{autogobble,linenos=false,fontsize=\tiny,stripall}
 
 % Stuff from tested-engine/concept.tex
@@ -48,7 +49,7 @@
 \tikzstyle{submission}=[document,align=right,minimum width=3cm,minimum height=1cm,text depth=0.5cm,inner sep=0.5mm,font=\scriptsize]
 
 % Stuff from chatper3/flow.tex
-\tikzstyle{height}=[minimum height=0.75\unit]
-\tikzstyle{contt}=[cont,minimum height=0.75\unit]
+\tikzstyle{height}=[minimum height=0.75\block]
+\tikzstyle{contt}=[cont,minimum height=0.75\block]
 \tikzstyle{compop}=[comp,text opacity=1]
 \tikzstyle{execop}=[exec,text opacity=1]
