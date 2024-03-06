@@ -87,7 +87,7 @@ As a result, the test suite is tightly coupled to a specific programming languag
 Evaluating a submission for the same exercise in another programming language would require a new test suite, often also involving another test framework.
 
 With output comparison, the judge system imposes stringent restrictions on the programming exercise: only stdin, stdout, stderr and files can be used for input and output.
-Prominent examples are the test frameworks used in ICPC-style (\emph{International Collegiate Programming Contest}, sometimes still referred to as ACM-ICPC)~\autocite{ICPCFactSheet2020} programming contests.
+Prominent examples are the test frameworks used in \textsc{icpc}-style (\emph{International Collegiate Programming Contest}, sometimes still referred to as \textsc{acm/icpc})~\autocite{ICPCFactSheet2020} programming contests.
 While this approach makes test suites independent of any programming language, the restrictions yield that testing is limited to data passed through stdin/stdout/stderr or via files.
 All aspects of the submission that the test suite needs to check must be converted to a textual representation.
 Files can contain binary data, but the same limitations apply.
