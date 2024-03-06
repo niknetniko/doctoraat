@@ -684,21 +684,20 @@ As an example, \vref{lst:javascript-test-suite} shows a JavaScript-specific vers
 Test suites guiding automated assessment for the same exercise in other programming languages supported by TESTed, only differ in their representation for statements of the test scripts (\texttt{expression}, \texttt{statement}), expected values for strongly typed outputs (\texttt{return}, \texttt{exception}) and strongly typed arguments passed to custom oracles (\texttt{arguments}).
 The programming language in which these attributes (blizzard blue background) are expressed is specified with the \texttt{language} attribute (line 2) that is inherited across the hierarchy of the test suite.
 
-% TODO: text colors...
 \begin{listing}
-    \begin{minted}{yaml}
+    \begin{minted}[escapeinside=@@]{yaml}
 unit: "Cipher"
-language: "|*@\textcolor{black}{\tt\hl{javascript}}@*|"
+language: @\hl{"javascript"}@
 cases:
   - script:
-      - statement: "|*@\textcolor{black}{\tt\hl{const cipher = new Cipher(\textquotesingle{}ABCD\textquotesingle{}, \textquotesingle{}1AX3S1M2PYZ\textquotesingle{})}}@*|"
-      - expression: "|*@\textcolor{black}{\tt\hl{cipher.grid}}@*|"
+      - statement: @\hl{"const cipher = new Cipher('ABCD', '1AX3S1M2PYZ')"}@
+      - expression: @\hl{"cipher.grid"}@
         return:
          - ["-", "A", "X", "-"]
          - ["-", "-", "S", "-"]
          - ["M", "-", "-", "P"]
          - ["Y", "Z", "-", "-"]
-      - expression: "|*@\textcolor{black}{\tt\hl{cipher.map}}@*|"
+      - expression: @\hl{"cipher.map"}@
         return:
           "Y": "DA"
           "M": "CA"
@@ -707,20 +706,20 @@ cases:
           "S": "BC"
           "A": "AB"
           "X": "AC"
-      - expression: "|*@\textcolor{black}{\tt\hl{cipher.encode(\textquotesingle{}spam\textquotesingle{})}}@*|"
+      - expression: @\hl{"cipher.encode('spam')"}@
         return: "BCCDABCA"
-      - expression: "|*@\textcolor{black}{\tt\hl{cipher.decode(\textquotesingle{}BCCDABCA\textquotesingle{})}}@*|"
+      - expression: @\hl{"cipher.decode('BCCDABCA')"}@
         return: "SPAM"
-      - expression: "|*@\textcolor{black}{\tt\hl{cipher.encode(\textquotesingle{}eggs\textquotesingle{})}}@*|"
+      - expression: @\hl{"cipher.encode('eggs')"}@
         exception: "invalid message"
-      - expression: "|*@\textcolor{black}{\tt\hl{cipher.decode(\textquotesingle{}BCCDBACA\textquotesingle{})}}@*|"
+      - expression: @\hl{"cipher.decode('BCCDBACA')"}@
         exception: "invalid message"
   - script:
       # statements and expressions of the second script come here
     \end{minted}
     \caption[]{
         JavaScript-specific test suite to validate correct behavior of submissions that must define the class \texttt{Cipher}, where the shorthand was applied for test suites having a single unit.
-        The JavaScript-specific attributes of this test suite are highlighted in blizzard blue.
+        The JavaScript-specific attributes of this test suite are highlighted in blue.
     }
     \label{lst:javascript-test-suite}
 \end{listing}
@@ -733,12 +732,12 @@ This example also shows that TESTed-DSL test suites can mix language-specific (l
 
 % TODO: text colors...
 \begin{listing}
-    \begin{minted}{yaml}
+    \begin{minted}[escapeinside=@@]{yaml}
 unit: 'Sort words'
-expression:                          # language-specific
-  python: "|*@\textcolor{black}{\sethlcolor{grannysmithapple}\hl{\tt sort\_words([\textquotesingle{}SPAM\textquotesingle{}, \textquotesingle{}eggs\textquotesingle{}, \textquotesingle{}bacon\textquotesingle{}], lambda word: word.upper())}}@*|"
-  javascript: '|*@\textcolor{black}{\hl{\tt sortWords(["SPAM", "eggs", "bacon"], word => word.toUpperCase())}}@*|'
-return: ['bacon', 'eggs', 'SPAM']    # language-agnostic
+expression:                       # language-specific
+  python: @\hl[ugent-ps!20!white]{"sort\_words(['SPAM', 'eggs', 'bacon'], lambda word: word.upper())"}@
+  javascript: @\hl{'sortWords(["SPAM", "eggs", "bacon"], word => word.toUpperCase())'}@
+return: ['bacon', 'eggs', 'SPAM'] # language-agnostic
     \end{minted}
     \caption[]{
         TESTed-DSL test suite to validate correct behavior of submissions that must either define the function \texttt{sort\_words} in Python or define the function \texttt{sortWords} in JavaScript. The Python-specific sections of this test suite are marked in green and the JavaScript-specific sections in blue.
