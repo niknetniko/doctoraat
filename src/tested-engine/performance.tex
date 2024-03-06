@@ -21,8 +21,20 @@
         xminorgrids,
         xbar=2*\pgflinewidth,
         xtick={0,1,...,4},
-        minor x tick num=1
+        minor x tick num=1,
+        legend style={at={(0.5,-0.3)},anchor=north,font=\small},
+        legend columns=2,
+        reverse legend,
     ]
+        \addplot[style={fill=ugent-ps}] coordinates {
+            (0.5,Bash)
+            (0.8,Python)
+            (1.9,Java)
+            (0.8,JavaScript)
+            (1.9,Haskell)
+            (0.6,C)
+        };
+
         \addplot[style={fill=ugent-we}] coordinates {
             (0.2,Bash)
             (0.4,Python)
@@ -32,14 +44,7 @@
             (2.1,C)
         };
 
-        \addplot[style={fill=ugent-ps}] coordinates {
-            (0.5,Bash)
-            (0.8,Python)
-            (1.9,Java)
-            (0.8,JavaScript)
-            (1.9,Haskell)
-            (0.6,C)
-        };
+        \legend{TESTed,Language-specific framework};
     \end{axis}
 \end{tikzpicture}
 
