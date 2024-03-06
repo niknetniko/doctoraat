@@ -139,6 +139,8 @@
 
 \usepackage[autocite=inline]{biblatex}
 \addbibresource{main.bib}
+% Smaller font for bibliography
+\renewcommand*{\bibfont}{\normalfont\small}
 
 % Lettertypes
 \usepackage[nospace]{varioref}
@@ -157,7 +159,8 @@
 \include{tikz-preamble}
 
 % Taalinstellingen.
-
+\definecolor{input-green}{rgb}{0.32941,0.5098,0.20784}
+\definecolor{output-blue}{rgb}{0.18039,0.45882,0.71373}
 
 \usepackage[type=report]{ugent2016-title}
 \author{Niko Strijbol}

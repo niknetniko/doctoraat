@@ -1,3 +1,4 @@
+%! suppress = FileNotFound
 \documentclass[../main]{subfiles}
 \usepackage{glossaries}
 
@@ -28,17 +29,17 @@ Finally, we evaluate TESTed in educational practice.
 
 Formative feedback on solutions for programming exercises is a crucial part of learning to code~\autocite{shuteFocusFormativeFeedback2008,orrellFeedbackLearningAchievement2006,luxton-reillyIntroductoryProgrammingSystematic2018}.
 Feedback is formative (and most valuable) if learners receive rich and qualitative feedback throughout the learning process.
-Providing such feedback by hand is a challenge for educators since it is a time-consuming activity~\autocite{camposMultinationalCaseStudy2012,cheangAutomatedGradingProgramming2003, keuningSystematicLiteratureReview2018,haoUnderstandingEffectiveDesign2021,zavalaUseSemanticBasedAIG2018,staubitzRepositoryOpenAutogradable2017,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDataDrivenTestCase2016,edwardsDevelopingCommonFormat2008a}.
+Providing such feedback by hand is a challenge for educators since it is a time-consuming activity~\autocite{camposMultinationalCaseStudy2012,cheangAutomatedGradingProgramming2003, keuningSystematicLiteratureReview2018,haoUnderstandingEffectiveDesign2021,zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016,edwardsDevelopingCommonFormat2008a}.
 The challenge is further exacerbated by a large number of students who work on multiple exercises~\autocite{campGenerationCSGrowth2017,saxExaminingEnrollmentGrowth2017}.
 Any laborious and time-consuming activity is a prime target for automation, and providing feedback is no different.
-The computer science education field therefore has a long history of applying software test frameworks or general-purpose software tools (linters, formatters, etc.) on source code to automatically generate feedback~\autocite{haoUnderstandingEffectiveDesign2021,edwardsUsingSoftwareTesting2004,paivaAutomatedAssessmentComputer2022a,keuningSystematicLiteratureReview2018}.
+The computer science education field therefore has a long history of applying software test frameworks or general-purpose software tools (linters, formatters, etc.) on source code to automatically generate feedback~\autocite{haoUnderstandingEffectiveDesign2021,edwardsUsingSoftwareTesting2004,paivaAutomatedAssessmentComputer2022,keuningSystematicLiteratureReview2018}.
 
 Off-the-shelf tools such as linters are low effort for educators, but only provide generic feedback: there is no exercise-specific feedback.
 Software testing frameworks require an accompanying test suite for each individual programming exercise, but can provide much more specific feedback.
 A test suite typically contains a set of tests that verify if the submission satisfies the requirements in the problem statement of the exercise.
 This is similar to the practice of unit tests or integration tests in the software engineering field.
-Beside general testing frameworks, computer science education also uses judge systems~\autocite{paivaAutomatedAssessmentComputer2022a,wasikSurveyOnlineJudge2018}: specialized learning environments that provide rich feedback.
-Defining an adequate test suite for an exercise is part of the reason why creating programming exercises is so time-consuming~\autocite{zavalaUseSemanticBasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDataDrivenTestCase2016}.
+Beside general testing frameworks, computer science education also uses judge systems~\autocite{paivaAutomatedAssessmentComputer2022,wasikSurveyOnlineJudge2018}: specialized learning environments that provide rich feedback.
+Defining an adequate test suite for an exercise is part of the reason why creating programming exercises is so time-consuming~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
 
 An apparent solution to reduce the amount of time needed to create programming exercises is to create fewer exercises.
 To achieve this without reducing the number of exercises available to students, maximal reuse of existing exercises is necessary.
@@ -77,7 +78,7 @@ Other manuscripts focus specifically on judge platforms~\autocite{gusukumaPedalI
 However, we believe this distinction is relevant for this manuscript, as evaluating submissions (the test framework) has a separate set of challenges compared to judge platforms (e.g.\ displaying feedback in a constructive way).
 This manuscript focuses on test frameworks.
 
-In educational contexts, software testing frameworks typically use either \textbf{output comparison} or \textbf{unit testing}~\autocite{paivaAutomatedAssessmentComputer2022a} to evaluate submissions.
+In educational contexts, software testing frameworks typically use either \textbf{output comparison} or \textbf{unit testing}~\autocite{paivaAutomatedAssessmentComputer2022} to evaluate submissions.
 Programming language support of test frameworks generally depends on the approach they adopt.
 With unit testing, the test suite is often written in the same programming language as the submission, e.g.\ with tools based on xUnit~\autocite{meszarosXUnitTestPatterns2007}.
 Since the test suite is often written in the same programming language as the submission, it has full access to the submission.
@@ -298,7 +299,7 @@ As a result of its evaluation, TESTed outputs a feedback report (\cref{sec:teste
 
 \section{Test suites}\label{sec:test-suites}
 
-Despite multiple proposals on generic formats for programming exercises~\autocite{edwardsDevelopingCommonFormat2008a,paivaAnotherProgrammingExercises2020,queirosPexilProgrammingExercises2011,verhoeffProgrammingTaskPackages2008} or exercise classifications~\autocite{leOperationalizingContinuumWellDefined2013,simoesNatureProgrammingExercises2020}, there seems to be no generally accepted standard for test suites of programming exercises.
+Despite multiple proposals on generic formats for programming exercises~\autocite{edwardsDevelopingCommonFormat2008a,paivaAnotherProgrammingExercises2020,queirosPexilProgrammingExercises2011,verhoeffProgrammingTaskPackages2008} or exercise classifications~\autocite{leOperationalizingContinuumWelldefined2013,simoesNatureProgrammingExercises2020}, there seems to be no generally accepted standard for test suites of programming exercises.
 Additionally, none of the proposed formats meets the requirements that we identified for language-agnostic test frameworks.
 Existing formats focus mostly on the description of the problem statement, whereas we also focus on the specification of the test suite itself.
 
