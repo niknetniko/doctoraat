@@ -32,7 +32,7 @@
         };
         ugent2016 = pkgs.stdenvNoCC.mkDerivation rec {
             pname = "ugent2016";
-            version = "0.11.0";
+            version = "0.12.0";
             outputs = ["tex" "out"];
 
             passthru.tlDeps = with pkgs.texlive; [
@@ -52,7 +52,7 @@
 
             src = pkgs.fetchurl {
               url = "https://github.com/niknetniko/ugent2016/releases/download/${version}/ugent2016.zip";
-              hash = "sha256-4SY6F1DKnkaWWlFfVzxxZLFpqDrAnmbQ3uPCqi9doLQ=";
+              hash = "sha256-9yax8pH0L9/fNbRM9lOcauYVa6GbxeDwquCMFhLMXpE=";
             };
 
             nativeBuildInputs = [

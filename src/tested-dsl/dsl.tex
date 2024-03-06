@@ -761,14 +761,16 @@ Compared to the approach taken by TESTed-DSL, this feels like a poor man's versi
 It forces students to reveal internal interfaces via standard I/O-streams and at the same time asks authors to design and maintain alternative instances of an exercise.
 An accumulation of extra work, where what we actually seek are ways to reduce the work of authoring and solving programming exercises~\autocite{douceAutomaticTestbasedAssessment2005}.
 
-ACM/ICPC programming contests and derivatives are another area where I/O-stream based programming exercises are regularly used.
+\textsc{acm/icpc} programming contests and derivatives are another area where I/O-stream based programming exercises are regularly used.
 These exercises often follow a specific style, with multiple test cases bundled in a single input stream.
 This style dates back from times where judges -- as automated software testing frameworks are commonly called in the context of programming contests -- were restricted to a single execution of the submission's main function.
 These platforms are heavily used in classrooms~\autocite{wasikSurveyOnlineJudge2018,zinovievaUseOnlineCoding2021}.
-Although the ACM/ICPC style of testing can be expressed in TESTed-DSL test suites, it forces students to implement a main function that loops over test cases and bundles their output in a single output stream.
+
+Although the \textsc{acm/icpc} style of testing can be expressed using TESTed-DSL test suites, it forces students to implement a main function that loops over test cases and bundles their output in a single output stream.
 This approach of packing multiple test cases into a single test case further increases the black-box nature of testing.
 Additionally, it may propagate faults in the implementation of submissions as a failure for one test case to failures for successive test cases, making it harder to report feedback that easily discerns which individual test cases pass or fail.
 In programming contests, limiting feedback to reporting whether all test cases passed is not a concern.
+
 However, in an educational context, we do strive for rich and fine-grained feedback, meaning an automated testing framework designed for contests is less ideal.
 In TESTed-DSL, we essentially move the responsibility for processing multiple test cases from the student to the test framework.
 This is useful for all students, but especially benefits those students with limited programming experience.

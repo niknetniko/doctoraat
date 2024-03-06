@@ -26,14 +26,12 @@
 \usepackage{standalone}
 
 % Andere
-\usepackage{lipsum}
 \usepackage{showframe}
 \usepackage{xcolor}
 \usepackage{circledsteps}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{luacode}
-\usepackage{csquotes}
 \usepackage[inline]{enumitem}
 
 % We want modern numbers here
@@ -44,8 +42,6 @@
 \renewcommand{\dictumwidth}{0.80\textwidth}
 \setkomafont{dictum}{\rmfamily\itshape}
 \setkomafont{dictumauthor}{\upshape}
-\usepackage[style=long]{glossaries}
-\setacronymstyle{long-sc-short}
 
 \usepackage{fontspec}
 \setmainfont{Source Serif 4}[
@@ -99,8 +95,8 @@
 \usepackage{unicode-math}
 \setmathfont{Erewhon Math}
 
-\usepackage{layouts}
-\usepackage{layout}
+%\usepackage{layouts}
+%\usepackage{layout}
 \usepackage{scrlayer-scrpage}
 \usepackage{scrlayer-notecolumn}
 \addtokomafont{notecolumn.marginpar}{\footnotesize\raggedright}
@@ -136,22 +132,16 @@
 \usepackage[soul]{lua-ul}
 \LuaULSetHighLightColor{ugent-we!20!white}
 
-
-\usepackage{microtype}
-
 \usepackage{polyglossia}
 \setdefaultlanguage[variant=british]{english}
-\setotherlanguages{latin,dutch,french}
+\setotherlanguages{dutch}
 
 \usepackage[autocite=inline]{biblatex}
 \addbibresource{main.bib}
 % Smaller font for bibliography
 \renewcommand*{\bibfont}{\normalfont\small}
 
-% Lettertypes
-\usepackage[nospace]{varioref}
-\usepackage[colorlinks,pdfusetitle]{hyperref}
-\usepackage{cleveref}
+\usepackage{microtype}
 
 \usepackage{siunitx}
 \sisetup{detect-all}
@@ -159,16 +149,17 @@
 % Voorblad
 \usepackage[type=report]{ugent2016-title}
 
-\newcommand{\todo}[1]{\textcolor{orange}{\textsc{Todo}: #1}}
+\usepackage[nospace]{varioref}
+\usepackage[colorlinks,pdfusetitle]{hyperref}
+\usepackage{cleveref}
 
 % Figuren
-\include{tikz-preamble}
+\input{tikz-preamble}
 
 % Taalinstellingen.
 \definecolor{input-green}{rgb}{0.32941,0.5098,0.20784}
 \definecolor{output-blue}{rgb}{0.18039,0.45882,0.71373}
 
-\usepackage[type=report]{ugent2016-title}
 \author{Niko Strijbol}
 \title{De Technologiae in Curabitur Aliquet Ultricies}
 \subtitle{Quaedam loca debugging et aestimationes}
@@ -220,7 +211,6 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \newcommand{\software}[1]{\textit{#1}}
 
-% Document
 \begin{document}
 
 \frontmatter
@@ -241,32 +231,12 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \mainmatter
 
-\layout{}
-
 \part{\tested{}}\label{part:tested}
 \subfile{tested-glue.tex}
 
-% Introduction about this part.
-%This part of the thesis concerns TESTed, an educational testing framework that enables creating programming-language-agnostic programming exercises.
-%The first chapter (TODO) is an almost identical copy of TODO.
-%It discusses TESTed-DSL, our system for creating test suites.
-%
-%The second chapter discusses TESTed itself.
-%This is based largely on TODO, but with significant changes.
-%For example, some parts are greatly expanded.
-%
-%The reader might note that source for the first chapter is newer than the second chapter.
-
 \subfile{tested-engine/engine.tex}
 \subfile{tested-dsl/dsl.tex}
-%\subfile{tested-chapter1/tested-chapter1.tex}
 
-
-%\subfile{chapter5}
-
-
-%\bibliography{main}
-%\bibliographystyle{plain}
 \printbibliography[heading=bibintoc]
 
 \end{document}
