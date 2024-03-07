@@ -1,0 +1,34 @@
+\documentclass[tikz,crop]{standalone}
+
+\include{../tikz-preamble}
+
+\begin{document}
+
+\begin{tikzpicture}[x=0.75cm,y=0.75cm,fill fraction/.style={path picture={
+  \fill[#1]
+  (path picture bounding box.west) rectangle
+  (path picture bounding box.south east);
+}},
+  fill fraction/.default=gray!50]
+
+  \node[hnode,minimum width=2\block,greenbox] at (0, 0) (stdin) {stdin};
+
+  \node[executable,label={[label distance=-0.44cm,anchor=south,fill fraction=gray!30,fill=white,text depth=.5ex]127:submission},minimum width=4\block,minimum height=1.5\block] at (3.75, 0) (subm) {};
+  \draw[arrow] (stdin) -- (subm);
+  \node[inner-exec, anchor=center,below=0mm of subm.center, anchor=center, fill=none] (main) {main};
+
+  \node[hnode,minimum width=2\block,bluebox] at (7.5, 0) (out) {stdout\\stderr};
+  \draw[arrow] (subm) -- (out);
+
+  \node[executable,minimum width=4\block,minimum height=1.5\block] at (11.5, 1) (builtin) {};
+  \node[executable,minimum width=4\block,minimum height=1.5\block] at (11.5, -1) (custom) {};
+
+  \node[inner-exec, anchor=center,below=0mm of builtin.center, anchor=center, fill=none] (mor) {built-in oracle};
+  \node[inner-exec, anchor=center,below=0mm of custom.center, anchor=center, fill=none] (cor) {custom oracle};
+
+  \draw[arrow] (out) -| (builtin.west-|9,0) -- (builtin);
+  \draw[arrow] (out) -| (custom.west-|9,0) -- (custom);
+
+\end{tikzpicture}
+
+\end{document}
