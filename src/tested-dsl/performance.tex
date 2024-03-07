@@ -1,0 +1,76 @@
+%! Suppress = MultipleIncludes
+\documentclass[tikz,crop]{standalone}
+
+%\usepackage{pgfplots}
+%\usepgfplotslibrary{statistics}
+%\usetikzlibrary{calc}
+%\usepackage{textcomp}
+%\pgfplotsset{compat=1.18}
+
+\input{../tikz-preamble}
+
+\begin{document}
+
+\begin{tikzpicture}
+    \begin{axis}[
+        ybar,
+        ymin=0,
+        ymax=13,
+        ytick={0,2,...,13},
+        minor y tick num=1,
+        ymajorgrids,
+        xmin=0,
+        xtick={0,200,...,2400},
+        xmax=2400,
+        width=\textwidth,
+        height=6cm,
+        tick label style={font=\footnotesize},
+        xlabel={Execution time in milliseconds},
+        ylabel={\textnumero{} of exercises},
+        xtick pos=left,
+        name=hist,
+        xticklabel={\addfontfeature{Numbers={Lining}}\num[round-mode=places, round-precision=0]{\tick}},
+        yticklabel={\addfontfeature{Numbers={Lining}}\num[round-mode=places, round-precision=0]{\tick}}
+    ]
+        \addplot[fill=ugent-ps] coordinates {
+            (150,2)
+            (250,10)
+            (350,12)
+            (450,12)
+            (550,9)
+            (650,6)
+            (750,9)
+            (850,1)
+            (950,3)
+            (1050,1)
+            (1150,1)
+            (1350,4)
+            (1450,1)
+            (2250,1)
+        };
+    \end{axis}
+    \begin{axis}[
+        at={($(hist.south)-(0,1.3cm)$)},
+        anchor=north,
+        xmin=0,
+        xtick={0,200,...,2400},
+        xmax=2400,
+        width=\textwidth,
+        height=2.5cm,
+        ytick=\empty,
+        xtick pos=right,
+        xticklabels=\empty,
+        ymin=0.5, ymax=1.5
+    ]
+        \addplot+ [boxplot prepared={
+            lower whisker=152.5999725,
+            lower quartile=363.02634409999996,
+            median=512.23714275,
+            upper quartile=725.250321875,
+            upper whisker=1113.508318,
+            box extend=0.5
+        },draw=ugent-ps,fill=ugent-ps,fill opacity=0.3] coordinates {(0,1319.759644) (0,1356.797906) (0,1369.516804) (0,1388.407927) (0,1482.881139) (0,2206.955292)};
+    \end{axis}
+\end{tikzpicture}
+
+\end{document}
