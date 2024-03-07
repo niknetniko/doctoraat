@@ -682,7 +682,7 @@ TESTed allows to specify language-specific test suites expressed in TESTed-DSL t
 TESTed simply has to copy the language-specific attributes when generating language-specific test harnesses.
 As an example, \vref{lst:javascript-test-suite} shows a JavaScript-specific version of the test suite from \vref{lst:cipher-example}.
 Test suites guiding automated assessment for the same exercise in other programming languages supported by TESTed, only differ in their representation for statements of the test scripts (\texttt{expression}, \texttt{statement}), expected values for strongly typed outputs (\texttt{return}, \texttt{exception}) and strongly typed arguments passed to custom oracles (\texttt{arguments}).
-The programming language in which these attributes (blizzard blue background) are expressed is specified with the \texttt{language} attribute (line 2) that is inherited across the hierarchy of the test suite.
+The programming language in which these attributes (blue background) are expressed is specified with the \texttt{language} attribute (line 2) that is inherited across the hierarchy of the test suite.
 
 \begin{listing}
     \begin{minted}[escapeinside=@@]{yaml}
