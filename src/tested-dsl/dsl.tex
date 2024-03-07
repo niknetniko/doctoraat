@@ -104,7 +104,7 @@ This not only duplicates work, but unit testing frameworks for different languag
 
 \begin{figure}
     \centering
-    \includegraphics[width=\textwidth]{unit-testing}
+    \includestandalone{unit-testing}
     \caption{Architecture of a unit test execution engine. Assessing a submission for a single test case comes down to compiling the submission along with the test code (including test script and oracles) into an executable test harness (thick-bordered box). The test script consists of a set of statements and expressions. The harness executes the test script, whose statements and expressions may access public interfaces of a narrow section of the submitted code (unit), captures \textcolor{output-blue}{outputs} (return values, exceptions) when executing statements and expressions in the script, and runs oracles to validate these outputs.\label{fig:unit-testing}}
 \end{figure}
 

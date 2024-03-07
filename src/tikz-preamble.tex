@@ -44,11 +44,6 @@
 \tikzstyle{comp}=[box,draw=ugent-re,fill=ugent-re,fill opacity=0.05]
 \tikzstyle{exec}=[box,draw=ugent-we,fill=ugent-we,fill opacity=0.10]
 
-% Minted environments for use in Tikz
-\newminted[tikzjava]{java}{autogobble,linenos=false,fontsize=\tiny,stripall}
-\newminted[tikzpython]{python}{autogobble,linenos=false,fontsize=\tiny,stripall}
-\newminted[tikztext]{text}{autogobble,linenos=false,fontsize=\tiny,stripall}
-
 % Stuff from tested-engine/concept.tex
 \tikzstyle{process}=[node,rectangle]
 \tikzstyle{terminator}=[node,rectangle,rounded corners=0.5cm]
@@ -62,7 +57,13 @@
 \tikzstyle{compop}=[comp,text opacity=1]
 \tikzstyle{execop}=[exec,text opacity=1]
 
-
 \tikzstyle{hnode}=[draw,anchor=center,minimum height=\block,text depth=.25ex,align=center]
 \tikzstyle{executable}=[hnode,ultra thick,fill=gray!30]
-\tikzstyle{inner-exec}=[node,anchor=center,minimum width=3.25\block,densely dotted]
+\tikzstyle{inner-exec}=[node,anchor=center,minimum width=3.25\block,densely dotted,font=\footnotesize,fill=none]
+\tikzstyle{stmt}=[node,anchor=center,fill=gray!30,minimum width=4.5\block,font=\footnotesize]
+\tikzstyle{fieldset}=[minimum height=\block,fill=white,text depth=.5ex,fill=white]
+
+% Minted environments for use in Tikz
+\newminted[tikzjava]{java}{autogobble,linenos=false,fontsize=\tiny,stripall}
+\newminted[tikzpython]{python}{autogobble,linenos=false,fontsize=\tiny,stripall}
+\newminted[tikztext]{text}{autogobble,linenos=false,fontsize=\tiny,stripall}
