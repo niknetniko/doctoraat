@@ -27,7 +27,7 @@
 
   \node[inner-exec, anchor=center,left=1\block of subm.center,fill=none,minimum width=2\block] (interface) {interfaces};
 
-  \node[hnode,minimum width=2\block,bluebox] at (interface|-testsc4) (out) {exception\\value};
+  \node[hnode,minimum width=3\block,bluebox] at (interface|-testsc4) (out) {exception\\return value};
   \draw[arrow] (testsc4) -- (out);
 
   \draw[arrow,densely dotted] (out-|4.5,0) |- (interface);

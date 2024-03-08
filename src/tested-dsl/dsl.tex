@@ -118,8 +118,9 @@ Executing a language-specific test harness yields strongly typed objects in a la
 The language-specific test harness then converts these objects back into abstract form before exporting them to a language-agnostic test harness for validation by oracles that run independent of the language-specific test harness.
 
 \begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{tested-testing}
+    \begin{wide}
+        \includestandalone[width=\linewidth]{tested-testing}
+    \end{wide}
     \caption{
         Architecture of the test execution engine of TESTed.
         Since TESTed supports both I/O-stream testing and unit testing, its architecture is a combination of Figures~\ref{fig:io-testing}~and~\ref{fig:unit-testing}.
