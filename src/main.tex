@@ -39,9 +39,10 @@
     \CircledParamOpts{inner color=none, outer color=none, #1}{1}{\liningnums{#2}}%
 }
 
-\renewcommand{\dictumwidth}{0.80\textwidth}
-\setkomafont{dictum}{\rmfamily\itshape}
-\setkomafont{dictumauthor}{\upshape}
+\renewcommand{\dictumwidth}{0.75\textwidth}
+\setkomafont{dictum}{\rmfamily\small}
+\setkomafont{dictumauthor}{\rmfamily\footnotesize}
+\renewcommand*{\dictumauthorformat}[1]{#1}
 
 \usepackage{fontspec}
 \setmainfont{Source Serif 4}[
@@ -183,10 +184,12 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
     s = string.gsub(s, "%f[%w_]API%f[^%w_]", "\\textsc{api}")
     s = string.gsub(s, "%f[%w_]SVG%f[^%w_]", "\\textsc{svg}")
     s = string.gsub(s, "%f[%w_]NDJSON%f[^%w_]", "\\textsc{ndjson}")
-    s = string.gsub(s, "%f[%w_]MIT%f[^%w_]", "\\textsc{MIT}")
-    s = string.gsub(s, "%f[%w_]GIL%f[^%w_]", "\\textsc{GIL}")
-    s = string.gsub(s, "%f[%w_]ABC%f[^%w_]", "\\textsc{ABC}")
-    s = string.gsub(s, "%f[%w_]ASCII%f[^%w_]", "\\textsc{ASCII}")
+    s = string.gsub(s, "%f[%w_]MIT%f[^%w_]", "\\textsc{mit}")
+    s = string.gsub(s, "%f[%w_]GIL%f[^%w_]", "\\textsc{gil}")
+    s = string.gsub(s, "%f[%w_]ABC%f[^%w_]", "\\textsc{abc}")
+    s = string.gsub(s, "%f[%w_]ASCII%f[^%w_]", "\\textsc{ascii}")
+    s = string.gsub(s, "%f[%w_]IDE%f[^%w_]", "\\textsc{ide}")
+    s = string.gsub(s, "%f[%w_]GUI%f[^%w_]", "\\textsc{gui}")
     return s
   end
 \end{luacode}
@@ -232,9 +235,11 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \part{\tested{}}\label{part:tested}
 \subfile{tested-glue.tex}
-
 \subfile{tested-engine/engine.tex}
 \subfile{tested-dsl/dsl.tex}
+
+\part{Scratch}\label{part:scratch}
+\subfile{scratch-blink/blink.tex}
 
 \printbibliography[heading=bibintoc]
 
