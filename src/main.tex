@@ -158,6 +158,18 @@
 
 % Figuren
 \input{tikz-preamble}
+\usepackage{scratch3}
+%\newcommand{scratchinline}[1]{
+%    \begin{scratch}
+%        yes
+%    \end{scratch}
+%}
+\usepackage{xparse}
+\NewDocumentCommand\scratchinline{m}{%
+    \begin{scratch}[scale=0.4,baseline=c]%
+        #1
+    \end{scratch}%
+}
 
 \author{Niko Strijbol}
 \title{De Instrumentis Docendae Programmaturae Computatralis}
@@ -191,6 +203,7 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
     s = string.gsub(s, "%f[%w_]ASCII%f[^%w_]", "\\textsc{ascii}")
     s = string.gsub(s, "%f[%w_]IDE%f[^%w_]", "\\textsc{ide}")
     s = string.gsub(s, "%f[%w_]GUI%f[^%w_]", "\\textsc{gui}")
+    s = string.gsub(s, "%f[%w_]FPS%f[^%w_]", "\\textsc{fps}")
     return s
   end
 \end{luacode}
@@ -241,6 +254,7 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \part{Scratch}\label{part:scratch}
 \subfile{scratch-blink/blink.tex}
+\subfile{scratch-execution-model/execution-model.tex}
 
 \printbibliography[heading=bibintoc]
 

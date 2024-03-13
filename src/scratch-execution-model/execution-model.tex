@@ -1,0 +1,154 @@
+\documentclass[../main]{subfiles}
+
+\begin{document}
+
+\chapter{The Scratch execution model}\label{ch:scratch-execution-model}
+
+During our work on Blink, our Scratch debugger (\vref{ch:blink}), we encountered some fundamental issues with the current Scratch execution model.
+These prevent us from allowing the debugger to behave as we would want: either the debugger would be less usable, or it would deviate from how Scratch executes in normal mode.
+Both are not desirable.
+Since these issues are, although in practice infrequently, also present during normal execution of Scratch code, we decided the execution model itself should be modified.
+
+We first begin with an in-depth explanation of how the current execution model of Scratch works and behaves.
+This is necessary for a good understanding of the next section, where we discuss what the issues with it are.
+
+Next, we detail what a solution would look like and propose a family of modified execution models.
+We then evaluate these models with a set of metrics to illustrate how their modifications affect Scratch's behaviour in real-life projects.
+\marginnote{That was the whole point after all.}Finally, we apply one of these models to the debugger to illustrate that we can now use the debugger without the execution deviating from the normal mode.
+
+\section{The current Scratch execution model}\label{sec:the-current-scratch-execution-model}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \begin{scratch}[scale=1]
+            \blockinit{when \greenflag{} clicked}
+            \blockmove{move  \ovalnum{100} steps}
+            \blockmove{turn \turnleft{} \ovalnum{90} degrees}
+            \blockmove{move  \ovalnum{100} steps}
+            \blockmove{turn \turnleft{} \ovalnum{90} degrees}
+            \blockmove{move  \ovalnum{100} steps}
+            \blockmove{turn \turnleft{} \ovalnum{90} degrees}
+            \blockmove{move  \ovalnum{100} steps}
+            \blockmove{turn \turnleft{} \ovalnum{90} degrees}
+        \end{scratch}
+        \caption{Unrolled version.}
+        \label{subfig:unrolled-scratch-code}
+    \end{subfigure}
+    \begin{subfigure}{0.45\textwidth}
+        \begin{scratch}[scale=1]
+            \blockinit{when \greenflag{} clicked}
+            \blockrepeat{repeat \ovalnum{4}}{
+                \blockmove{move  \ovalnum{100} steps}
+                \blockmove{turn \turnleft{} \ovalnum{90} degrees}
+            }
+        \end{scratch}
+        \caption{Version with repeat block.}
+        \label{subfig:repeat-scratch-code}
+    \end{subfigure}
+    \caption{Two Scratch programs that produce the same result: the sprite moves in a square of 100 steps.}\label{fig:scratch-two-programs}
+\end{figure}
+
+\subsection{Elements of a Scratch program}\label{subsec:elements-of-a-scratch-program}
+
+A Scratch program consists of sprites and a stage.
+The stage is the background and is always present.
+The other visual entities are the sprites: these are drawn on the stage.
+Together, these are called targets.
+For the most part, the stage can be considered as another sprite, albeit with a special function.
+
+All sprites have their own local state: the variables and visual properties of the sprite (e.g.\ position, size, bounding box, colour, direction).
+Due to its special role, the stage misses some of these properties (e.g.\ it does not have a size, direction, or position).
+The variables of the stage are also global: all sprites can access and change this variable.
+
+Code-wise, each target has its own code, which consists of a set of blocks.
+Every set of connected blocks forms a script (\vref{fig:scratch-two-programs}).
+Blocks can be categorized by their subject or goal (as shown in the Scratch development environment): \textcolor{scrmove}{motion}, \textcolor{scrlook}{looks}, \textcolor{scrsound}{sound}, \textcolor{screvent}{events}, \textcolor{scrcontrol}{control}, \textcolor{scrsensing}{sensing}, \textcolor{scroperator}{operators}, \textcolor{scrvariable}{variables}, and \textcolor{scrmoreblocks}{my blocks} (not counting extensions).
+These correspond broadly to their colours (although there are exceptions, for example, the \textcolor{scrvariable}{variables} category also contains blocks for working with lists, which have a different colour.)
+
+However, in our case, it might be more useful to look at their technical type, which corresponds to their shape.
+In total, there are seven types of blocks:
+
+\begin{enumerate}
+    \item Hat blocks \scratchinline{\blockinit{\hspace{1em}\dots\hspace*{1em}}}, which are placed at the start of a script (they are named hat blocks since they visually sit on top of a script).
+        A script can only have one hat block.
+        They function as event listeners, which trigger execution of the script if the event occurs.
+    \item Stack blocks \scratchinline{\blockmove{\hspace{1em}\dots\hspace*{0.5cm}}}, representing program statements.
+        These are the most common blocks.
+    \item C blocks \scratchinline{\blockif{\hspace{1em}\dots\hspace*{1em}}{\blockspace[0.2]}}, which are named after their shape.
+        They are used for most of the control flow blocks: loops and branches.
+    \item Reporter blocks \setscratch{baseline=c,scale=0.5}\ovalmove{\hspace{1em}\dots\hspace*{1em}}, act as variables or values and can be slotted into other blocks.
+        Operators that result in a value also have this shape.
+    \item Boolean blocks \setscratch{baseline=c,scale=0.5}\boolsensing{\hspace{1em}\dots\hspace*{1em}}, which are analogous to reporter blocks, but result in a boolean.
+    \item Cap blocks \scratchinline{\blockstop{\hspace{1em}\dots\hspace*{1em}}}, which end a script: no blocks can be added afterwards.
+        Note that the infinite loop block, for example, is both a C block and a cap block.
+    \item Custom blocks \scratchinline{\initmoreblocks{define\hspace{1em}\dots\hspace*{1em}}}, which define ``procedures''.
+\end{enumerate}
+
+\subsection{Related work}\label{subsec:execution-related-work}
+
+There exists no full formal description of the Scratch execution model.
+Instead, the execution model is defined informally, based on the implementation of the Scratch Virtual Machine (VM).
+
+However, in a series of papers, the \emph{Chair of Software Engineering II} group, led by Gordon Fraser, has done some on investigating and describing the execution model of Scratch.
+
+First, in~\citetitle{stahlbauerTestingScratchPrograms2019} (\citeyear{stahlbauerTestingScratchPrograms2019}), \citeauthor{stahlbauerTestingScratchPrograms2019} propose a formalization of three aspects of Scratch: the user perspective, a syntactic model and a semantic model.
+They propose that the semantics of Scratch can be described using a memory model based on message passing~\autocite{stahlbauerTestingScratchPrograms2019}.
+
+Then, in~\citetitle{stahlbauerVerifiedScratchProgram2020} (\citeyear{stahlbauerVerifiedScratchProgram2020}), \citeauthor{stahlbauerVerifiedScratchProgram2020} develop LeILa, an intermediate language to which Scratch projects can be translated, with an intended use of performing analysis on Scratch projects.
+The authors also provide formalizations of LeILa, but use approximations in some areas~\autocite{stahlbauerVerifiedScratchProgram2020}.
+
+Also, in~\citetitle{gotzModelbasedTestingScratch2022} (\citeyear{gotzModelbasedTestingScratch2022}), \citeauthor{gotzModelbasedTestingScratch2022} model the state-based behaviour of Scratch programs using a finite state machine~\autocite{gotzModelbasedTestingScratch2022}.
+
+Finally, in~\citetitle{deinerAutomatedTestGeneration2023} (\citeyear{deinerAutomatedTestGeneration2023}), \citeauthor{deinerAutomatedTestGeneration2023} delve deeper into the actual execution of the Scratch VM, while also proposing some modifications to the VM, for example, to make execution deterministic~\autocite{deinerAutomatedTestGeneration2023}.
+
+%?
+%The semantics of the Scratch execution model can be seen as a variant of message passing~\autocite{stahlbauerTestingScratchPrograms2019}.
+%Additionally, it has some characteristics of the actor model, where the sprites represent actors.
+%However, since scripts run indepently, this is not
+
+\subsection{Execution of a Scratch program}\label{subsec:execution-of-a-scratch-program}
+
+\marginnote{Arguably, it is more of a concrete syntax tree, as e.g. the position of blocks is also saved. However, in Scratch's case, the differences are minimal, so we call it an abstract syntax tree, as Scratch themselves do.}
+The Scratch Virtual Machine transforms the blocks into an abstract syntax tree.
+These are organized by target, and every script of every target results in a thread inside the virtual machine.
+These are green threads: implemented fully in the virtual machine.
+
+The virtual machine is thus also responsible for scheduling these threads.
+It uses a cooperative threading model (although \citeauthor{maloneyScratchProgrammingLanguage2010a} call it the ``Scratch threading model''~\autocite{maloneyScratchProgrammingLanguage2010a}).
+This means it is non-preemptive: the virtual machine will not interrupt threads at arbitrary points in their execution.
+The threads must voluntarily yield control.
+The rational is also given by \citeauthor{maloneyScratchProgrammingLanguage2010a}: ``Scratch builds concurrency control into its threading model in a way that avoids most race conditions, so that users do not need to think about these issues.
+This is done by constraining where thread switches can occur.''~\autocite{maloneyScratchProgrammingLanguage2010a}
+At two well-defined points, a thread always yields, thus causing said thread switching:
+
+\begin{enumerate}
+    \item When a block is executed that has a fixed duration.
+        There are a number of blocks that fall under this category.
+        \scratchinline{\blockcontrol{wait \ovalnum{}}} is an obvious inclusion, but this also applies to \scratchinline{\blockmove{glide \ovalnum{} secs to x: \ovalnum{} y: \ovalnum{}}}, for example.
+        \scratchinline{\blocksound{play sound \ovalsound*{} until done}} also falls under this category, even if there is no explicit time.
+    \item The last block of a loop (thus \scratchinline{\blockinfloop{forever}{\blockspace[0.2]}}, \scratchinline{\blockrepeat{repeat \ovalnum{}}{\blockspace[0.2]}}, and \scratchinline{\blockrepeat{repeat until \boolempty[1em]{}}{\blockspace[0.2]}}).
+        This means thread switching will occur after every loop iteration.
+\end{enumerate}
+
+The threads are executed in a first-come, first-serve manner: there are no priorities nor changes in thread order.
+The first thread is executed until it yields or ends, then the next thread, and so on.
+A thread can have one of three conceptual states: \emph{done}, \emph{running}, and \emph{yield}.
+In the actual implementation of the virtual machine, there are a few more (like \emph{wait} or \emph{yield tick}), but those are not relevant here.
+
+The virtual machine uses a \emph{fixed-time step with synchronization} main loop~\autocite{nystromGameProgrammingPatterns2014} (also called a \emph{synchronized coupled model}~\autocite{valenteRealTimeGame2005}).
+\marginnote{Scratch 3 should actually run at 60 FPS; however Scratch enables a compatability mode by default, resulting in the 30 FPS.}
+This means that the virtual machine runs in \emph{steps}: internally, the \texttt{step} function is called every \qty{33}{\milli\second} (so 30 times a second, commonly known as 30 frames per second (FPS)).
+
+In each step, the virtual machine will first one (or more) ticks.
+A tick is one execution of every thread: the first thread is run until it yields or terminates, then the second thread and so on.
+After the tick, a redraw is performed if needed (in practice this is always done, as the source code contains a to-do to implement selective redrawing).
+
+After the first tick is finished, the virtual machine decides whether or not to run another tick.
+A new tick is started if less than \qty{75}{\percent} of the step time (the time one step has to complete, \qty{33}{\milli\second}) has been used and a redraw has not been requested.
+
+Note that once a tick has started, it is run completely and cannot be stopped.
+The arbitrary \qty{75}{\percent} is thus intended to prevent frame drops: steps that take longer than their allocated step time, meaning the next step is delayed.
+Also, in practice, many blocks request a redraw, so in many Scratch projects, a step only every runs one tick.
+
+\end{document}
