@@ -21,6 +21,7 @@ We then evaluate these models with a set of metrics to illustrate how their modi
 \begin{figure}
     \centering
     \begin{subfigure}{0.45\textwidth}
+        \centering
         \begin{scratch}[scale=1]
             \blockinit{when \greenflag{} clicked}
             \blockmove{move  \ovalnum{100} steps}
@@ -32,10 +33,11 @@ We then evaluate these models with a set of metrics to illustrate how their modi
             \blockmove{move  \ovalnum{100} steps}
             \blockmove{turn \turnleft{} \ovalnum{90} degrees}
         \end{scratch}
-        \caption{Unrolled version.}
-        \label{subfig:unrolled-scratch-code}
+%        \caption{Unrolled version.}
+%        \label{subfig:unrolled-scratch-code}
     \end{subfigure}
     \begin{subfigure}{0.45\textwidth}
+        \centering
         \begin{scratch}[scale=1]
             \blockinit{when \greenflag{} clicked}
             \blockrepeat{repeat \ovalnum{4}}{
@@ -43,10 +45,10 @@ We then evaluate these models with a set of metrics to illustrate how their modi
                 \blockmove{turn \turnleft{} \ovalnum{90} degrees}
             }
         \end{scratch}
-        \caption{Version with repeat block.}
-        \label{subfig:repeat-scratch-code}
+%        \caption{Version with repeat block.}
+%        \label{subfig:repeat-scratch-code}
     \end{subfigure}
-    \caption{Two Scratch programs that produce the same result: the sprite moves in a square of 100 steps.}\label{fig:scratch-two-programs}
+    \caption{Two Scratch programs that produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the progam.}\label{fig:scratch-two-programs}
 \end{figure}
 
 \subsection{Elements of a Scratch program}\label{subsec:elements-of-a-scratch-program}
@@ -150,5 +152,30 @@ A new tick is started if less than \qty{75}{\percent} of the step time (the time
 Note that once a tick has started, it is run completely and cannot be stopped.
 The arbitrary \qty{75}{\percent} is thus intended to prevent frame drops: steps that take longer than their allocated step time, meaning the next step is delayed.
 Also, in practice, many blocks request a redraw, so in many Scratch projects, a step only every runs one tick.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.40\textwidth}
+        \includestandalone{threading-no-loop}
+%        \caption{Unrolled version.}
+%        \label{subfig:unrolled-scratch-execution}
+    \end{subfigure}
+    \begin{subfigure}{0.59\textwidth}
+        \includestandalone{threading-with-loop}
+%        \caption{Version with repeat block.}
+%        \label{subfig:repeat-scratch-execution}
+    \end{subfigure}
+    \caption{The execution of the two programs from \vref{fig:scratch-two-programs}.}\label{fig:scratch-two-execution}
+\end{figure}
+
+A concrete example of the execution model is given by \vref{fig:scratch-two-execution}, which shows the execution of the programs of \vref{fig:scratch-two-programs}.
+These programs have only one thread.
+Since none of the blocks in the unrolled program yield the thread, the full program is executed in one step.
+In the other version, with a loop, the thread yields after each iteration of the loop, meaning the program needs four steps.
+This does result in an observable difference: in the unrolled program, the sprite does not move visually.
+As a redraw only happens between steps, the sprite is back at its original position.
+In the looped version, the sprite moves four times (albeit very fast), as there is a redraw between each step.
+
+
 
 \end{document}
