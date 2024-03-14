@@ -4,7 +4,7 @@
 
 \begin{document}
 
-\chapter{The \tested{} educational test framework}\label{ch:tested1}
+\chapter{The \tested{} educational testing framework}\label{ch:tested1}
 
 We begin the chapter by giving a brief introduction and consider some related work.
 Then, we look at the architectural design of the TESTed framework.
@@ -32,7 +32,7 @@ Feedback is formative (and most valuable) if learners receive rich and qualitati
 Providing such feedback by hand is a challenge for educators since it is a time-consuming activity~\autocite{camposMultinationalCaseStudy2012,cheangAutomatedGradingProgramming2003, keuningSystematicLiteratureReview2018,haoUnderstandingEffectiveDesign2021,zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016,edwardsDevelopingCommonFormat2008a}.
 The challenge is further exacerbated by a large number of students who work on multiple exercises~\autocite{campGenerationCSGrowth2017,saxExaminingEnrollmentGrowth2017}.
 Any laborious and time-consuming activity is a prime target for automation, and providing feedback is no different.
-The computer science education field therefore has a long history of applying software test frameworks or general-purpose software tools (linters, formatters, etc.) on source code to automatically generate feedback~\autocite{haoUnderstandingEffectiveDesign2021,edwardsUsingSoftwareTesting2004,paivaAutomatedAssessmentComputer2022,keuningSystematicLiteratureReview2018}.
+The computer science education field therefore has a long history of applying software testing frameworks or general-purpose software tools (linters, formatters, etc.) on source code to automatically generate feedback~\autocite{haoUnderstandingEffectiveDesign2021,edwardsUsingSoftwareTesting2004,paivaAutomatedAssessmentComputer2022,keuningSystematicLiteratureReview2018}.
 
 Off-the-shelf tools such as linters are low effort for educators, but only provide generic feedback: there is no exercise-specific feedback.
 Software testing frameworks require an accompanying test suite for each individual programming exercise, but can provide much more specific feedback.
@@ -49,16 +49,16 @@ In existing judge systems, exercises are tightly coupled to the programming lang
 Alternatively, test suites without such a tight coupling impose stringent restrictions on exercise specifications, e.g.\ only reading from stdin and writing to stdout.
 Because of these restrictions, they often generate feedback of a lower quality than programming-language specific test suites.
 
-To reuse programming exercises written for another programming language, exercise designers first have to learn a new test framework for that programming language.
-Then, they have to write a new test suite for the exercise according to the specifications of the new test framework.
-Alternatively, due to the vast number of programming languages~\autocite{bissyandePopularityInteroperabilityImpact2013}, it might be necessary to implement a new test framework to support educational software testing, which is no small undertaking.
+To reuse programming exercises written for another programming language, exercise designers first have to learn a new testing framework for that programming language.
+Then, they have to write a new test suite for the exercise according to the specifications of the new testing framework.
+Alternatively, due to the vast number of programming languages~\autocite{bissyandePopularityInteroperabilityImpact2013}, it might be necessary to implement a new testing framework to support educational software testing, which is no small undertaking.
 
 We focus on facilitating easy reuse of programming exercises across programming languages.
-Our contributions include defining requirements for a test framework to support multiple programming languages, without imposing strict restrictions on programming exercises.
+Our contributions include defining requirements for a testing framework to support multiple programming languages, without imposing strict restrictions on programming exercises.
 We also introduce TESTed, a proof-of-concept of a system that satisfies these requirements.
-TESTed directly supports multiple programming languages for the same exercise, meaning the conversion of exercises to multiple test frameworks is no longer needed.
-Exercise designers working on exercises for a single programming language can also benefit from TESTed, as it no longer forces them to learn new test frameworks for each new target language.
-Finally, implementing support for new programming languages in TESTed is less work than implementing a complete test framework for each individual language, reducing the software development and maintenance cost dramatically.
+TESTed directly supports multiple programming languages for the same exercise, meaning the conversion of exercises to multiple testing frameworks is no longer needed.
+Exercise designers working on exercises for a single programming language can also benefit from TESTed, as it no longer forces them to learn new testing frameworks for each new target language.
+Finally, implementing support for new programming languages in TESTed is less work than implementing a complete testing framework for each individual language, reducing the software development and maintenance cost dramatically.
 
 \section{Related work}\label{sec:tested1-related-work}
 
@@ -69,41 +69,41 @@ When students attempt to solve the exercise using the instructions from the prob
 The test suite is used by a judge system to \textbf{evaluate} the submission.
 This results in \textbf{feedback} that is shown to the student.
 
-We consider it useful to split a judge system into a \textbf{judge platform} and a \textbf{test framework}.
+We consider it useful to split a judge system into a \textbf{judge platform} and a \textbf{testing framework}.
 A judge platform is the graphical user interface that allows students and educators to upload and store submissions, display feedback, organize exercises into courses, and so on.
-A test framework is responsible for generating feedback, by executing and evaluating submissions based on an exercise-specific test suite.
+A testing framework is responsible for generating feedback, by executing and evaluating submissions based on an exercise-specific test suite.
 In existing literature, the distinction between these two is not always made, nor is it always relevant.
 For example, some review manuscripts~\autocite{keuningSystematicLiteratureReview2018,wasikSurveyOnlineJudge2018} or individual tools~\autocite{bezURIOnlineJudge2014,petitJutgeOrgCharacteristics2018} consider the entire system as a whole.
 Other manuscripts focus specifically on judge platforms~\autocite{gusukumaPedalInfrastructureAutomated2020,strieweArchitectureModularGrading2016}.
-However, we believe this distinction is relevant for this manuscript, as evaluating submissions (the test framework) has a separate set of challenges compared to judge platforms (e.g.\ displaying feedback in a constructive way).
-This manuscript focuses on test frameworks.
+However, we believe this distinction is relevant for this manuscript, as evaluating submissions (the testing framework) has a separate set of challenges compared to judge platforms (e.g.\ displaying feedback in a constructive way).
+This manuscript focuses on testing frameworks.
 
 In educational contexts, software testing frameworks typically use either \textbf{output comparison} or \textbf{unit testing}~\autocite{paivaAutomatedAssessmentComputer2022} to evaluate submissions.
-Programming language support of test frameworks generally depends on the approach they adopt.
+Programming language support of testing frameworks generally depends on the approach they adopt.
 With unit testing, the test suite is often written in the same programming language as the submission, e.g.\ with tools based on xUnit~\autocite{meszarosXUnitTestPatterns2007}.
 Since the test suite is often written in the same programming language as the submission, it has full access to the submission.
 The test suite can use function calls, data structures (e.g.\ lists, maps), primitive data types (e.g.\ integers, strings), examine return values, exceptions, runtime inspections (e.g.\ reflection), etc.
 As a result, the test suite is tightly coupled to a specific programming language.
-Evaluating a submission for the same exercise in another programming language would require a new test suite, often also involving another test framework.
+Evaluating a submission for the same exercise in another programming language would require a new test suite, often also involving another testing framework.
 
 With output comparison, the judge system imposes stringent restrictions on the programming exercise: only stdin, stdout, stderr and files can be used for input and output.
-Prominent examples are the test frameworks used in \textsc{icpc}-style (\emph{International Collegiate Programming Contest}, sometimes still referred to as \textsc{acm/icpc})~\autocite{ICPCFactSheet2020} programming contests.
+Prominent examples are the testing frameworks used in \textsc{icpc}-style (\emph{International Collegiate Programming Contest}, sometimes still referred to as \textsc{acm/icpc})~\autocite{ICPCFactSheet2020} programming contests.
 While this approach makes test suites independent of any programming language, the restrictions yield that testing is limited to data passed through stdin/stdout/stderr or via files.
 All aspects of the submission that the test suite needs to check must be converted to a textual representation.
 Files can contain binary data, but the same limitations apply.
 Another disadvantage is the lack of granular testing: with these systems, tests are limited to the program as a whole.
 It is, for example, not possible to add distinct tests for different functions inside the same program without obligating students to artificially split the program.
 
-\section{Programming-language-agnostic test frameworks}\label{sec:tested1-programming-language-agnostic-test-frameworks}
+\section{Programming-language-agnostic testing frameworks}\label{sec:tested1-programming-language-agnostic-test-frameworks}
 
-Intuitively, an ideal test framework that supports multiple programming languages is a test framework with the testing capabilities of unit testing and the programming language support of output comparison.
+Intuitively, an ideal testing framework that supports multiple programming languages is a testing framework with the testing capabilities of unit testing and the programming language support of output comparison.
 First, we define the two requirements a framework needs to satisfy to achieve this.
 We also look at the consequences of those requirements on the framework.
-We call a test framework that satisfies these requirements a \emph{programming-language-agnostic test framework}.
+We call a testing framework that satisfies these requirements a \emph{programming-language-agnostic testing framework}.
 
 The \textbf{first requirement} is that test suites must be programming language independent.
 A test suite must be usable to evaluate submissions in every programming language supported by the framework, without making changes to the test suite or adding languages-specific tests to it.
-As a consequence of this requirement, adding support for new programming languages to the test framework must not demand changes to existing test suites.
+As a consequence of this requirement, adding support for new programming languages to the testing framework must not demand changes to existing test suites.
 All existing test suites must work with the new programming language without changes.
 
 The \textbf{second requirement} is similar testing capabilities as unit testing.
@@ -119,15 +119,15 @@ Some concrete examples of what should be possible are:
 \end{itemize}
 
 Support for these two requirements should not have disproportionately large drawbacks.
-Therefore, we also consider the following soft requirements for a programming-language-agnostic test framework:
+Therefore, we also consider the following soft requirements for a programming-language-agnostic testing framework:
 
 \begin{itemize}
-    \item Configuring or creating exercises using the framework should not be significantly more difficult than configuring exercises using a language-specific test framework.
-    \item Runtime and memory overhead should be minimal: the framework cannot be unacceptably slow or have a large memory footprint compared to a language-specific test framework.
+    \item Configuring or creating exercises using the framework should not be significantly more difficult than configuring exercises using a language-specific testing framework.
+    \item Runtime and memory overhead should be minimal: the framework cannot be unacceptably slow or have a large memory footprint compared to a language-specific testing framework.
     Providing feedback to students in a timely manner is important.
     \item Submissions should follow their language-specific conventions as closely as possible.
     For example, we want to support asynchronous and synchronous functions in JavaScript, or top-level functions should be implemented as a static function in Java, but not in Python or Kotlin that have proper support for top-level functions.
-    \item Adding support for new programming languages to the framework should ideally be faster than implementing language-specific test frameworks for those languages, due to the ability to reuse shared parts of the implementation.
+    \item Adding support for new programming languages to the framework should ideally be faster than implementing language-specific testing frameworks for those languages, due to the ability to reuse shared parts of the implementation.
 \end{itemize}
 
 \section{Using the framework}\label{sec:tested1-using-the-framework}
@@ -226,7 +226,7 @@ A judge platform may then use this output to display a human-readable representa
 The feedback starts with a description of what has been tested (a function call in the programming language of the submission, in this case Python), followed by the expected return value and the actual return value (in a human-readable string representation).
 With the actual return value, a decision is also given: in this case, the return value is correct.
 
-While the output for correct submissions is important, the output for wrong submissions is at least as important in the context of an educational test framework.
+While the output for correct submissions is important, the output for wrong submissions is at least as important in the context of an educational testing framework.
 Assume a submission is wrong in that it only removes the first occurrence of the integer $v$ from the list $l$ (example in JavaScript):
 
 
@@ -300,13 +300,13 @@ As a result of its evaluation, TESTed outputs a feedback report (\cref{sec:teste
 \section{Test suites}\label{sec:test-suites}
 
 Despite multiple proposals on generic formats for programming exercises~\autocite{edwardsDevelopingCommonFormat2008a,paivaAnotherProgrammingExercises2020,queirosPexilProgrammingExercises2011,verhoeffProgrammingTaskPackages2008} or exercise classifications~\autocite{leOperationalizingContinuumWelldefined2013,simoesNatureProgrammingExercises2020}, there seems to be no generally accepted standard for test suites of programming exercises.
-Additionally, none of the proposed formats meets the requirements that we identified for language-agnostic test frameworks.
+Additionally, none of the proposed formats meets the requirements that we identified for language-agnostic testing frameworks.
 Existing formats focus mostly on the description of the problem statement, whereas we also focus on the specification of the test suite itself.
 
 We therefore feel it is appropriate to introduce a new format for test suites, specifically developed for TESTed.
 It is designed to be machine and human-readable and easy to generate.
 Making it ergonomic to write by hand was only a secondary goal.
-While the format is not framework specific, and could thus be adopted by other test frameworks, this was not an explicit design goal.
+While the format is not framework specific, and could thus be adopted by other testing frameworks, this was not an explicit design goal.
 
 Test suites for TESTed are written in JSON, which was chosen because there is broad support in programming languages.
 Additionally, it is human editable and readable, especially compared to binary formats.
@@ -397,15 +397,12 @@ This structure mirrors the output generated by TESTed (\vref{sec:tested-and-dodo
 For example, the executed input for each test is also included in the output.
 A possible visualization of these levels is given in \vref{fig:dodona}, which shows the output rendered in Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
 
-Note that in this manuscript, we use the Dodona naming scheme for the test hierarchy.
-TESTed also supports an alternative, which is more in line with the terminology used in the literature: tabs, contexts, testcases, and tests are called \textbf{units}, \textbf{testcases}, \textbf{tests}, and \textbf{scripts} respectively.
-
 \begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{dodona-rendering}
     \caption{A way to visually render the feedback (as done in Dodona) resulting from evaluating a submission (in Python) with the test suite from \vref{lst:expanded-json-fragment}.
     There are four levels: \CircledText{1} tabs, \CircledText{2} contexts, \CircledText{3} units, and \CircledText{4} the tests.
-    Here, each context consists of two testcases, the first of which has no tests, while the second has one test (the expected return value).}
+    Here, each context consists of two test cases, the first of which has no tests, while the second has one test (the expected return value).}
     \label{fig:dodona}
 \end{figure}
 
@@ -875,8 +872,8 @@ Currently, all supported languages (except C\#, where the compiler acts a linter
 Dodona~\autocite{vanpetegemDodonaLearnCode2023} is an online platform for solving and submitting programming exercises.
 It is developed by Team Dodona (which TESTed is also a part of) at Ghent University, originally for use in our own courses.
 However, the platform has enjoyed a wide adoption within Flanders, and is now used by over a thousand colleges, universities, and schools.
-The distinction between a judge platform and test framework (\vref{sec:tested1-related-work}) is relevant here: Dodona is the judge platform in which different test frameworks can be run.
-Within Dodona, the test frameworks are called judges, but we will use the term test framework for consistency.
+The distinction between a judge platform and testing framework (\vref{sec:tested1-related-work}) is relevant here: Dodona is the judge platform in which different testing frameworks can be run.
+Within Dodona, the testing frameworks are called judges, but we will use the term testing framework for consistency.
 
 While TESTed is available as a standalone tool, it was primarily developed with Dodona in mind.
 Therefore, some design decisions made by the Dodona platform still apply to TESTed as well.
@@ -885,24 +882,24 @@ We also look at Dodona's feedback format, which is also used by TESTed.
 
 \subsection{Architecture}\label{subsec:dodona-architecture}
 
-Dodona enforces a complete separation of the platform code and the test framework.
-Communication between the platform and the test frameworks is done via a well-defined API, which are discussed in the next two sections.
-As test frameworks run student code, they must be particularly immune to bad code.
+Dodona enforces a complete separation of the platform code and the testing framework.
+Communication between the platform and the testing frameworks is done via a well-defined API, which are discussed in the next two sections.
+As testing frameworks run student code, they must be particularly immune to bad code.
 For example, a submission with an infinite loop should not bring down the platform.
 Neither should malevolent submissions: a fork bomb should similarly have no impact on the platform.
-To achieve this, the test frameworks are executed in \software{Docker}.
-This ensures the test frameworks are isolated from the platform and allows us to easily impose resource limits on the execution of submissions (such as memory limits, time limits, disk speed limits, network access or not).
+To achieve this, the testing frameworks are executed in \software{Docker}.
+This ensures the testing frameworks are isolated from the platform and allows us to easily impose resource limits on the execution of submissions (such as memory limits, time limits, disk speed limits, network access or not).
 
-When code is submitted, the platform will create a Docker container using the test framework's associated Docker image.
+When code is submitted, the platform will create a Docker container using the testing framework's associated Docker image.
 Then, relevant files for the exercise and the submission are mounted into the container's file system.
-Finally, the container is run, which will start the test framework inside the container with relevant options (\cref{subsec:dodona-input}).
+Finally, the container is run, which will start the testing framework inside the container with relevant options (\cref{subsec:dodona-input}).
 Dodona then reads the feedback from the standard output of the container (\cref{subsec:dodona-output}).
 This feedback is then saved into Dodona's database and shown to the user who submitted the code.
 
-\subsection{Dodona-provided input for test frameworks}\label{subsec:dodona-input}
+\subsection{Dodona-provided input for testing frameworks}\label{subsec:dodona-input}
 
-When a test framework is started by Dodona, a JSON object is provided on standard input.
-This configuration object contains all information needed by the test framework to evaluate a submission.
+When a testing framework is started by Dodona, a JSON object is provided on standard input.
+This configuration object contains all information needed by the testing framework to evaluate a submission.
 An annotated example is provided in \vref{lst:dodona-input-object}.
 
 \begin{listing}
@@ -931,14 +928,14 @@ An annotated example is provided in \vref{lst:dodona-input-object}.
 }
     \end{minted}
     \caption{
-        Annotated example of the input provided to test frameworks by Dodona.
+        Annotated example of the input provided to testing frameworks by Dodona.
         This is also the input expected by TESTed.
     }
     \label{lst:dodona-input-object}
 \end{listing}
 
 Most of the options are pretty straightforward.
-Of the generic options, the memory and time limit are informational: they are provided so that a test framework can make an effort to limit submissions.
+Of the generic options, the memory and time limit are informational: they are provided so that a testing framework can make an effort to limit submissions.
 However, Dodona will enforce these limits if the limits are exceeded.
 A common use-case is to provide better or more detailed feedback about the issue (since Dodona, by design, can only indicate a global memory or time limit exceeded error).
 
@@ -998,14 +995,14 @@ The structure of the feedback is indicated by commands, with \texttt{start} comm
     \end{minted}
     \caption{
         Example of the output generated by TESTed, which is rendered in \vref{fig:dodona}.
-        As before, each context consists of two testcases, the first of which has no tests, while the second has one test (the expected return value).
+        As before, each context consists of two test cases, the first of which has no tests, while the second has one test (the expected return value).
     }
     \label{lst:tested-output-example}
 \end{listing}
 
 The Dodona feedback format is a simple, yet flexible format.
-It has been used by a variety of test frameworks for general purpose programming languages (like TESTed, but also dedicated frameworks for JavaScript, Bash, Python, C, C\#, Prolog, Haskell, R, and Scheme).
-It has also been used successfully for more niche test frameworks (such as \textsc{html}/\textsc{css}, \textsc{sql}, and Turtle).
+It has been used by a variety of testing frameworks for general purpose programming languages (like TESTed, but also dedicated frameworks for JavaScript, Bash, Python, C, C\#, Prolog, Haskell, R, and Scheme).
+It has also been used successfully for more niche testing frameworks (such as \textsc{html}/\textsc{css}, \textsc{sql}, and Turtle).
 This illustrates that TESTed is neither limited by this choice of output format, nor would it be challenging to support this format in other platforms.
 
 \section{Programming language support}\label{sec:programming-language-support}
@@ -1113,10 +1110,10 @@ For example, most languages include a separate file to deal with encoding return
 def filter_dependencies(self, files: list[Path], context_name: str) -> list[Path]:
 \end{minted}
 
-Used to filter the results of the compilation step to the files needed for one testcase.
-In most cases, a single compilation step is used for all testcase.
+Used to filter the results of the compilation step to the files needed for one test case.
+In most cases, a single compilation step is used for all test case.
 However, not all languages need all resulting files for each execution.
-By default, the name of the testcase is used to filter the files.
+By default, the name of the test case is used to filter the files.
 
 \begin{minted}{python}
 def find_main_file(self, files: list[Path], name: str) -> tuple[Path | None, Status]
@@ -1315,7 +1312,7 @@ For example, an execution unit probably needs to generate code for a statement s
 When generating the code for an execution unit, a few things must be taken into account (\vref{fig:generated-code}):
 
 \begin{itemize}
-    \item TESTed expects two sentinel values to be present in all outputs (stdout, stderr, return values, exceptions): a secret value outputted between the outputs for testcases and another secret value between the outputs for contexts.
+    \item TESTed expects two sentinel values to be present in all outputs (stdout, stderr, return values, exceptions): a secret value outputted between the outputs for test cases and another secret value between the outputs for contexts.
     \item Return values and exceptions must be serialized in JSON, using the internal data form from TESTed.
     \item The generated code should be robust against unexpected output, including exceptions.
 \end{itemize}
@@ -1328,8 +1325,8 @@ When generating the code for an execution unit, a few things must be taken into 
         Its main function has one job: selecting the correct function for the relevant execution unit.
         This is illustrated here with a \mintinline{python}{case}.
         Each of these execution functions will write a secret (to seperate the outputs) to all outputs (return values, stdout, stderr, exceptions) and will then call the function for the contexts in that execution unit.
-        This function for the context does something very similar: it writes the context secret to the outputs and execute the testcases.
-        The final results for each output are a set of captured values separated by the context and testcase separators.
+        This function for the context does something very similar: it writes the context secret to the outputs and execute the test cases.
+        The final results for each output are a set of captured values separated by the context and test case separators.
     }
     \label{fig:generated-code}
 \end{figure}
@@ -1342,8 +1339,8 @@ Each experiment specifically focused on a particular aspect of TESTed we wanted 
 
 \subsection{Programming language independence}\label{subsec:programming-language-independence}
 
-The goal of a programming-language-agnostic test framework is to allow unit testing with a programming-language-agnostic test suite.
-We therefore wanted to verify that this goal can be achieved with a test framework that implements the formulated requirements.
+The goal of a programming-language-agnostic testing framework is to allow unit testing with a programming-language-agnostic test suite.
+We therefore wanted to verify that this goal can be achieved with a testing framework that implements the formulated requirements.
 We asked higher education students to solve a set of three programming exercises in one or more programming languages supported by TESTed at that time (C, Haskell, Java, JavaScript, Kotlin, Python).
 One exercise required solutions to read data from standard output and generate results on standard output, i.e.\ the classic \textsc{acm/icpc} style programming challenges.
 The other exercises required implementing one or more functions that are called many times from the test suite with different arguments to cover different corner cases.
@@ -1396,7 +1393,7 @@ On a daily basis from December 1 to December 25, we could publish the two AoC ch
 This required a single test suite designer to implement a solution for an AoC challenge, design an interface (functions or methods) for solving the challenge, generate 50 test cases that call each function/method with a diverse set of arguments (using the implemented solution to compute the expected return value).
 In addition, the same test suite designer also translated the description of the challenge in Dutch because our learning platform supports programming challenges both in Dutch and English.
 Meanwhile, some of the other authors of this manuscript were validating the test suite design and the feedback provided by TESTed using their own implementations of the AoC challenge in a variation of programming languages.
-We found that generating generic test suites for TESTed was not more time-consuming than generating test suites for the test framework of a specific programming language.
+We found that generating generic test suites for TESTed was not more time-consuming than generating test suites for the testing framework of a specific programming language.
 We have been able to design test suites for all AoC challenges without discovering any limitations or needs to find workarounds.
 All test suites rely only on the built-in checks of TESTed, so for the AoC challenges we never had to rely on the programmed checks or language-specific checks.
 The latter underscores that more advanced or language-specific techniques for automatic evaluations are indeed only needed in specific cases.
@@ -1414,7 +1411,7 @@ The latter has the advantage that the DSL does not necessarily need to cover all
 We are also investigating the option to support multiple DSLs for different types of programming exercises, for example a DSL for stdin/stdout exercises and another DSL for test suites built around function calls.
 Also of interest is supporting previous attempts at standardizing descriptions of programming exercises such as YAPExIL~\autocite{paivaAnotherProgrammingExercises2020} and PEML~\autocite{cssplicepemlworkinggroupProgrammingExerciseMarkup2021}, and extending BabelO~\autocite{queirosBabeLOExtensibleConverter2013} with support for TESTed.
 
-Designing a programming exercise that can be solved in multiple programming languages not only requires a programming-language-agnostic test framework, but also a description of the problem statement that adapts itself to selected programming languages.
+Designing a programming exercise that can be solved in multiple programming languages not only requires a programming-language-agnostic testing framework, but also a description of the problem statement that adapts itself to selected programming languages.
 Particular differences between languages that need to be taken into account in expressing problem statements are naming conventions (e.g.\ camel case or snake case), names for data types (e.g. lists in Python or arrays in Java), representation of literals (e.g.\ single quotes or double quotes as string delimiters) and grammar for expressions and statements (e.g.\ in sample code snippets).
 We are currently investigating the use of a templating system to describe problem statements in a programming-language-agnostic way, in combination with TESTed as an engine to replace generic placeholders with language specific descriptions on the fly.
 In this context we are also looking into extending the restricted support for expressions and statements that TESTed uses to denote literals, variables, assignments, function calls and object creation in a generic way, into a more expressive abstract language that, for example, also supports mathematical and logical operators.
@@ -1423,9 +1420,9 @@ Such an extended abstract language might also come with its own DSL, which becom
 \subsection{\tested{} in educational practice}\label{subsec:tested-in-educational-practice}
 
 Where previous experiments were primarily conducted with higher education students, the experiments themselves were run outside regular educational practice.
-Therefore, we ran a third experiment where we replaced the automatic evaluation using a test framework for JavaScript with evaluations provided by TESTed for some of the exercises halfway through the semester of a course with higher education students.
-Students were not informed beforehand that the automated feedback would be provided by another test framework.
-The existing test suite for the JavaScript test framework was replaced with a test suite for TESTed, using exactly the same test cases, so that we could immediately switch back to the JavaScript test framework in case any blocking issues would occur.
+Therefore, we ran a third experiment where we replaced the automatic evaluation using a testing framework for JavaScript with evaluations provided by TESTed for some of the exercises halfway through the semester of a course with higher education students.
+Students were not informed beforehand that the automated feedback would be provided by another testing framework.
+The existing test suite for the JavaScript testing framework was replaced with a test suite for TESTed, using exactly the same test cases, so that we could immediately switch back to the JavaScript testing framework in case any blocking issues would occur.
 We configured TESTed to evaluate all submissions as JavaScript code, so students could not solve exercises in any other programming language than JavaScript.
 
 In total, \num{95} students submitted \num{6696} JavaScript solutions for five programming exercises.
@@ -1442,19 +1439,19 @@ Students were asked to submit their solutions twice and compare the feedback the
 Except for the additional linter information provided by TESTed, students did not observe any significant differences in the quality of the feedback they received.
 However, some students did notice that it took somewhat longer to get feedback from TESTed than from the JavaScript judge.
 
-Prompted by this feedback, we investigated the performance of TESTed and compared it against the language-specific test frameworks we routinely use in our educational practice.
-We measured execution time of the evaluation of a correct submission for one exercise, using both TESTed and and a language-specific test framework (\vref{fig:performance}).
+Prompted by this feedback, we investigated the performance of TESTed and compared it against the language-specific testing frameworks we routinely use in our educational practice.
+We measured execution time of the evaluation of a correct submission for one exercise, using both TESTed and and a language-specific testing framework (\vref{fig:performance}).
 This way we were able to compare timings for Bash, Python, Java, JavaScript, Haskell and C\@.
-We did not include Kotlin in this experiment, a language that is also supported in TESTed, as we do not use a language-specific test framework for Kotlin.
+We did not include Kotlin in this experiment, a language that is also supported in TESTed, as we do not use a language-specific testing framework for Kotlin.
 The exercise used is simple: it requires implementing a function \mintinline{python}{echo} that returns its argument.
-As a result, the time measured is almost completely test framework overhead, as the execution time of the submission is negligible.
+As a result, the time measured is almost completely testing framework overhead, as the execution time of the submission is negligible.
 The implemented function was called 50 times with different arguments.
 
 % TODO: figuur hermaken in nieuwe stijl!
 \begin{figure}[t]
     \centering
     \includestandalone{performance}
-    \caption{Runtime performance of TESTed versus language-specific test frameworks. For each programming language, we evaluated a correct submission for the same exercise with a language specific test framework and with TESTed.}
+    \caption{Runtime performance of TESTed versus language-specific testing frameworks. For each programming language, we evaluated a correct submission for the same exercise with a language specific testing framework and with TESTed.}
     \label{fig:performance}
 \end{figure}
 
@@ -1463,12 +1460,12 @@ This does not come as a surprise, since TESTed needs to do additional work in ge
 In addition, there are also differences in what evaluations are performed.
 For example, the JavaScript judge does not lint submissions where TESTed systematically applies linting for all supported languages.
 However, evaluations by TESTed are faster for Java, Haskell and C\@.
-This is mainly due to implementation differences in the test frameworks, especially in the compilation step.
+This is mainly due to implementation differences in the testing frameworks, especially in the compilation step.
 In TESTed, we have implemented the compilation step (and code generation) with as little overhead as possible, which is not always possible in language-specific judges.
 For example, the Java framework relies on jUnit, while TESTed does not have any Java dependencies.
 
 Performance remains a focus area for future work.
-Automated test frameworks often deliver just-in-time feedback and are integrated into highly interactive learning environments.
+Automated testing frameworks often deliver just-in-time feedback and are integrated into highly interactive learning environments.
 As a result, students who frequently submit solutions during hands-on sessions or while working on homework assignments expect immediate results and get frustrated by poor response times.
 Performance is therefore critical in educational software testing.
 When implementing TESTed, we paid specific attention to reduce overhead during test code generation, compilation and execution, for example by bundling multiple contexts in a single compilation and execution step, making the performance of TESTed acceptable.
@@ -1478,22 +1475,22 @@ Performance could also be boosted by linting submissions in parallel to testing 
 
 \section{Conclusion}\label{sec:tested1-conclusion}
 
-Educational software testing is the application of test frameworks to provide automated feedback on solutions that students submit for programming exercises.
+Educational software testing is the application of testing frameworks to provide automated feedback on solutions that students submit for programming exercises.
 We identified output comparison and unit testing as two opposing strategies commonly used in educational practice, and investigated the impact of both approaches on programming language support of the frameworks.
-Test frameworks adopting unit testing enable fine-grained software testing, but are highly language specific.
+Testing frameworks adopting unit testing enable fine-grained software testing, but are highly language specific.
 The output comparison approach, on the other hand, is more generic in that it supports multiple programming languages, but imposes severe restrictions on programming exercises, granularity of testing and quality of feedback.
 
 Our goal was to combine the best of both worlds.
-We formulated requirements for programming-language-agnostic test frameworks that combine unit testing with support for multiple programming languages.
+We formulated requirements for programming-language-agnostic testing frameworks that combine unit testing with support for multiple programming languages.
 We see three clear benefits for the adoption of such frameworks.
-First, exercise designers only need to know and use a single test framework to create programming exercises with support for automated feedback, irrespective of the target programming language, instead of switching to a new test framework for each programming language, taking into account restrictions on what can be tested or giving up on the quality of feedback.
+First, exercise designers only need to know and use a single testing framework to create programming exercises with support for automated feedback, irrespective of the target programming language, instead of switching to a new testing framework for each programming language, taking into account restrictions on what can be tested or giving up on the quality of feedback.
 Second, programming exercises only need a single test suite to evaluate solutions in a multitude of programming languages.
 This allows teachers to reuse the same programming exercise for a language of their choice or to give students the freedom to solve exercises in their preferred language.
-Third, it also saves time and effort to support educational software testing for new programming languages as common functionality of test frameworks is implemented once in a generic way, and only needs to be complemented with a thin layer of language specific configurations for each individual programming language.
+Third, it also saves time and effort to support educational software testing for new programming languages as common functionality of testing frameworks is implemented once in a generic way, and only needs to be complemented with a thin layer of language specific configurations for each individual programming language.
 
-To validate the feasibility of designing programming-language-agnostic test frameworks, we implemented a proof-of-concept framework called TESTed.
+To validate the feasibility of designing programming-language-agnostic testing frameworks, we implemented a proof-of-concept framework called TESTed.
 Having such a prototype also enabled us to evaluate the framework in educational practice.
-The realization of TESTed confirms that the requirements for programming-language-agnostic test frameworks can be met and provides a framework that can be used in educational practice.
+The realization of TESTed confirms that the requirements for programming-language-agnostic testing frameworks can be met and provides a framework that can be used in educational practice.
 At the same time, working on and with TESTed also brought forward some areas for improvement and further research.
 
 \end{document}
