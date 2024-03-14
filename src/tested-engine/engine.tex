@@ -36,7 +36,7 @@ The computer science education field therefore has a long history of applying so
 
 Off-the-shelf tools such as linters are low effort for educators, but only provide generic feedback: there is no exercise-specific feedback.
 Software testing frameworks require an accompanying test suite for each individual programming exercise, but can provide much more specific feedback.
-A test suite typically contains a set of tests that verify if the submission satisfies the requirements in the problem statement of the exercise.
+A test suite typically contains a set of tests that verify if the submission satisfies the requirements in the task description of the exercise.
 This is similar to the practice of unit tests or integration tests in the software engineering field.
 Beside general testing frameworks, computer science education also uses judge systems~\autocite{paivaAutomatedAssessmentComputer2022,wasikSurveyOnlineJudge2018}: specialized learning environments that provide rich feedback.
 Defining an adequate test suite for an exercise is part of the reason why creating programming exercises is so time-consuming~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
@@ -64,8 +64,8 @@ Finally, implementing support for new programming languages in TESTed is less wo
 
 Since the terminology related to automated feedback on programming exercises is not used consistently within the field,
 we begin by defining the terms used in this chapter.
-A programming exercise is the combination of a \textbf{problem statement} and a \textbf{test suite}.
-When students attempt to solve the exercise using the instructions from the problem statement, they create a \textbf{submission} for the exercise.
+A programming exercise is the combination of a \textbf{task description} and a \textbf{test suite}.
+When students attempt to solve the exercise using the instructions from the task description, they create a \textbf{submission} for the exercise.
 The test suite is used by a judge system to \textbf{evaluate} the submission.
 This results in \textbf{feedback} that is shown to the student.
 
@@ -101,7 +101,7 @@ First, we define the two requirements a framework needs to satisfy to achieve th
 We also look at the consequences of those requirements on the framework.
 We call a testing framework that satisfies these requirements a \emph{programming-language-agnostic testing framework}.
 
-The \textbf{first requirement} is that test suites must be programming language independent.
+The \textbf{first requirement} is that test suites must be programming language agnostic.
 A test suite must be usable to evaluate submissions in every programming language supported by the framework, without making changes to the test suite or adding languages-specific tests to it.
 As a consequence of this requirement, adding support for new programming languages to the testing framework must not demand changes to existing test suites.
 All existing test suites must work with the new programming language without changes.
@@ -284,7 +284,7 @@ Therefore, the language-specific aspects are isolated in language modules, as il
     A Python module is a \texttt{.py} file, while a Python package is a folder containing modules.
 }%
 TESTed is written in Python and organized into a set of Python modules and packages.
-An import package is the \emph{core} package, which contains modules that are responsible for all language-independent tasks, such as scheduling tests.
+An import package is the \emph{core} package, which contains modules that are responsible for all language-agnostic tasks, such as scheduling tests.
 We provide an in-depth description of the full evaluating process in \cref{subsec:execution-planning}.
 In most cases, the core is also responsible for checking the collected test results and generating the feedback.
 This is discussed in \cref{subsec:checking-results}.
@@ -301,7 +301,7 @@ As a result of its evaluation, TESTed outputs a feedback report (\cref{sec:teste
 
 Despite multiple proposals on generic formats for programming exercises~\autocite{edwardsDevelopingCommonFormat2008a,paivaAnotherProgrammingExercises2020,queirosPexilProgrammingExercises2011,verhoeffProgrammingTaskPackages2008} or exercise classifications~\autocite{leOperationalizingContinuumWelldefined2013,simoesNatureProgrammingExercises2020}, there seems to be no generally accepted standard for test suites of programming exercises.
 Additionally, none of the proposed formats meets the requirements that we identified for language-agnostic testing frameworks.
-Existing formats focus mostly on the description of the problem statement, whereas we also focus on the specification of the test suite itself.
+Existing formats focus mostly on the description of the task description, whereas we also focus on the specification of the test suite itself.
 
 We therefore feel it is appropriate to introduce a new format for test suites, specifically developed for TESTed.
 It is designed to be machine and human-readable and easy to generate.
@@ -408,8 +408,8 @@ A possible visualization of these levels is given in \vref{fig:dodona}, which sh
 
 \subsection{Data serialization}\label{subsec:data-serialization}
 
-TESTed uses data serialization to convert between the language-independent format of the test suite, and the generated test code.
-Additionally, the same data serialization is used to convert return values from the submission into the language-independent format for checking (as described in \vref{subsec:checking-results}).
+TESTed uses data serialization to convert between the language-agnostic format of the test suite, and the generated test code.
+Additionally, the same data serialization is used to convert return values from the submission into the language-agnostic format for checking (as described in \vref{subsec:checking-results}).
 
 \begin{table}
     \caption{
@@ -582,7 +582,7 @@ Having both available as an advanced type allows exercises to use either in Java
 \subsection{Statements and expressions}\label{subsec:tested1-statements-and-expressions}
 
 We return once more to the test suite from \vref{lst:simple-json-test-suite}, which evaluates a function call.
-It illustrates the need for TESTed to support a language-independent description of expressions and statements.
+It illustrates the need for TESTed to support a language-agnostic description of expressions and statements.
 Evaluation of an expression yields a value, where TESTed allows to describe expected values as identifiers (referring to a variable that was previously defined), function calls or literal values (using the data serialization format described in the previous section).
 A statement in TESTed is either an assignment (defining a new variable) or an expression (similarly to Python: every expression on its own is also a statement).
 
@@ -745,7 +745,7 @@ Therefore, a new execution unit is started based on the type of context: if a co
 \subsection{Generating test code}\label{subsec:code-generation}
 
 Depending on the execution plan, the appropriate code is generated for the test suite.
-In concept, this step converts the language-independent test suite into actual source code, in the programming language of the test suite (an example of this is shown in \vref{sec:tested1-using-the-framework}).
+In concept, this step converts the language-agnostic test suite into actual source code, in the programming language of the test suite (an example of this is shown in \vref{sec:tested1-using-the-framework}).
 For example, a submission in JavaScript requires generating code in JavaScript.
 
 Code is generated for each compilation unit.
@@ -1411,9 +1411,9 @@ The latter has the advantage that the DSL does not necessarily need to cover all
 We are also investigating the option to support multiple DSLs for different types of programming exercises, for example a DSL for stdin/stdout exercises and another DSL for test suites built around function calls.
 Also of interest is supporting previous attempts at standardizing descriptions of programming exercises such as YAPExIL~\autocite{paivaAnotherProgrammingExercises2020} and PEML~\autocite{cssplicepemlworkinggroupProgrammingExerciseMarkup2021}, and extending BabelO~\autocite{queirosBabeLOExtensibleConverter2013} with support for TESTed.
 
-Designing a programming exercise that can be solved in multiple programming languages not only requires a programming-language-agnostic testing framework, but also a description of the problem statement that adapts itself to selected programming languages.
-Particular differences between languages that need to be taken into account in expressing problem statements are naming conventions (e.g.\ camel case or snake case), names for data types (e.g. lists in Python or arrays in Java), representation of literals (e.g.\ single quotes or double quotes as string delimiters) and grammar for expressions and statements (e.g.\ in sample code snippets).
-We are currently investigating the use of a templating system to describe problem statements in a programming-language-agnostic way, in combination with TESTed as an engine to replace generic placeholders with language specific descriptions on the fly.
+Designing a programming exercise that can be solved in multiple programming languages not only requires a programming-language-agnostic testing framework, but also a task description that adapts itself to selected programming languages.
+Particular differences between languages that need to be taken into account in expressing task descriptions are naming conventions (e.g.\ camel case or snake case), names for data types (e.g. lists in Python or arrays in Java), representation of literals (e.g.\ single quotes or double quotes as string delimiters) and grammar for expressions and statements (e.g.\ in sample code snippets).
+We are currently investigating the use of a templating system to describe task descriptions in a programming-language-agnostic way, in combination with TESTed as an engine to replace generic placeholders with language specific descriptions on the fly.
 In this context we are also looking into extending the restricted support for expressions and statements that TESTed uses to denote literals, variables, assignments, function calls and object creation in a generic way, into a more expressive abstract language that, for example, also supports mathematical and logical operators.
 Such an extended abstract language might also come with its own DSL, which becomes part of a bigger DSL for test suites.
 
