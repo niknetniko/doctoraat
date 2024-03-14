@@ -64,12 +64,12 @@ Finally, implementing support for new programming languages in TESTed is less wo
 
 Since the terminology related to automated feedback on programming exercises is not used consistently within the field,
 we begin by defining the terms used in this chapter.
-A programming exercise is the combination of a \textbf{task description} and a \textbf{test suite}.
-When students attempt to solve the exercise using the instructions from the task description, they create a \textbf{submission} for the exercise.
-The test suite is used by a judge system to \textbf{evaluate} the submission.
-This results in \textbf{feedback} that is shown to the student.
+A programming exercise is the combination of a \term{task description} and a \term{test suite}.
+When students attempt to solve the exercise using the instructions from the task description, they create a \term{submission} for the exercise.
+The test suite is used by a judge system to \term{evaluate} the submission.
+This results in \term{feedback} that is shown to the student.
 
-We consider it useful to split a judge system into a \textbf{judge platform} and a \textbf{testing framework}.
+We consider it useful to split a judge system into a \term{judge platform} and a \term{testing framework}.
 A judge platform is the graphical user interface that allows students and educators to upload and store submissions, display feedback, organize exercises into courses, and so on.
 A testing framework is responsible for generating feedback, by executing and evaluating submissions based on an exercise-specific test suite.
 In existing literature, the distinction between these two is not always made, nor is it always relevant.
@@ -78,7 +78,7 @@ Other papers focus specifically on judge platforms~\autocite{gusukumaPedalInfras
 However, we believe this distinction is relevant for this chapter, as evaluating submissions (the testing framework) has a separate set of challenges compared to judge platforms (e.g.\ displaying feedback in a constructive way).
 This chapter focuses on testing frameworks.
 
-In educational contexts, software testing frameworks typically use either \textbf{output comparison} or \textbf{unit testing}~\autocite{paivaAutomatedAssessmentComputer2022} to evaluate submissions.
+In educational contexts, software testing frameworks typically use either \term{output comparison} (or \term{input/output testing}) or \term{unit testing}~\autocite{paivaAutomatedAssessmentComputer2022} to evaluate submissions.
 Programming language support of testing frameworks generally depends on the approach they adopt.
 With unit testing, the test suite is often written in the same programming language as the submission, e.g.\ with tools based on xUnit~\autocite{meszarosXUnitTestPatterns2007}.
 Since the test suite is often written in the same programming language as the submission, it has full access to the submission.
@@ -86,7 +86,7 @@ The test suite can use function calls, data structures (e.g.\ lists, maps), prim
 As a result, the test suite is tightly coupled to a specific programming language.
 Evaluating a submission for the same exercise in another programming language would require a new test suite, often also involving another testing framework.
 
-With output comparison, the judge system imposes stringent restrictions on the programming exercise: only stdin, stdout, stderr and files can be used for input and output.
+With input/output testing, the judge system imposes stringent restrictions on the programming exercise: only stdin, stdout, stderr and files can be used for input and output.
 Prominent examples are the testing frameworks used in \textsc{icpc}-style (\emph{International Collegiate Programming Contest}, sometimes still referred to as \textsc{acm/icpc})~\autocite{ICPCFactSheet2020} programming contests.
 While this approach makes test suites independent of any programming language, the restrictions yield that testing is limited to data passed through stdin/stdout/stderr or via files.
 All aspects of the submission that the test suite needs to check must be converted to a textual representation.
@@ -96,17 +96,17 @@ It is, for example, not possible to add distinct tests for different functions i
 
 \section{Programming-language-agnostic testing frameworks}\label{sec:tested1-programming-language-agnostic-test-frameworks}
 
-Intuitively, an ideal testing framework that supports multiple programming languages is a testing framework with the testing capabilities of unit testing and the programming language support of output comparison.
+Intuitively, an ideal testing framework that supports multiple programming languages is a testing framework with the testing capabilities of unit testing and the programming language support of input/output testing.
 First, we define the two requirements a framework needs to satisfy to achieve this.
 We also look at the consequences of those requirements on the framework.
 We call a testing framework that satisfies these requirements a \emph{programming-language-agnostic testing framework}.
 
-The \textbf{first requirement} is that test suites must be programming language agnostic.
+The \emph{first requirement} is that test suites must be programming language agnostic.
 A test suite must be usable to evaluate submissions in every programming language supported by the framework, without making changes to the test suite or adding languages-specific tests to it.
 As a consequence of this requirement, adding support for new programming languages to the testing framework must not demand changes to existing test suites.
 All existing test suites must work with the new programming language without changes.
 
-The \textbf{second requirement} is similar testing capabilities as unit testing.
+The \emph{second requirement} is similar testing capabilities as unit testing.
 Some concrete examples of what should be possible are:
 
 \begin{itemize}[noitemsep]
@@ -376,17 +376,17 @@ While omitted for brevity in the examples, a test suite can organize test cases 
 The full hierarchy of the test suite thus consists of four levels, from top to bottom (\vref{fig:dodona}):
 
 \begin{enumerate}
-    \item \textbf{Tabs} are the top-level grouping mechanism.
+    \item \term{Tabs} are the top-level grouping mechanism.
           It allows logically grouping contexts together.
           While the name of this group suggests how to display these groups, it is but a suggestion.
           The example only has one tab, but a test suite with test cases for multiple functions might for example have one tab per function.
-    \item \textbf{Contexts} are meant to group dependent test cases together.
+    \item \term{Contexts} are meant to group dependent test cases together.
           In our example, declaring a variable and using that variable must be done within the same context.
-    \item \textbf{Test cases} are the basic building blocks of the test suite.
+    \item \term{Test cases} are the basic building blocks of the test suite.
           The ``input'' for a test case is what exactly is being checked.
           For example, text via stdin, a function call or an expression.
           In the example, the first test case of each context has an assignment, while the second has a function call.
-    \item \textbf{Tests} are used for each type of output.
+    \item \term{Tests} are used for each type of output.
           TESTed currently supports return values, standard output (stdout), standard error (stderr), exceptions, generated files and exit codes.
           In the example there is one test for the return value.
           If a test is not defined (e.g.\ for stderr in the example), a sensible default is used.
@@ -446,7 +446,7 @@ TESTed therefore defines a set of rules to denote data types and their support i
 This allows TESTed to convert types between programming languages.
 
 TESTed uses two categories of data types.
-The first category is a limited set of \textbf{basic types} that are abstract and map to concepts.
+The first category is a limited set of \term{basic types} that are abstract and map to concepts.
 Currently, the following basic types are supported:
 
 \begin{description}[noitemsep]
@@ -467,7 +467,7 @@ When a test suite contains a literal value of a basic type, it will be serialize
 An overview of all basic types and their implementation is given in \vref{tab:tested-basic-types}.
 For example, a literal value with data type \texttt{map} will become a \texttt{Map} in Java or a \texttt{dict} in Python.
 
-The second category consists of \textbf{advanced types}, which are more detailed or programming language specific.
+The second category consists of \term{advanced types}, which are more detailed or programming language specific.
 Each advanced type is associated with a basic type, acting as a fallback.
 For example, \texttt{int64} is an advanced type with the basic type \texttt{integer} as a fallback.
 If a programming language does not support a particular advanced type, the corresponding basic type will be used.
@@ -654,7 +654,7 @@ The next step is planning the execution of the evaluation.
 As discussed before, a test suite contains a number of contexts, which must be independent of each other.
 As a side-effect, this independence allows TESTed to implement optimisations to improve performance.
 
-TESTed partitions the test suite into compilation units (a set of contexts that are compiled together), which are in turn partitioned into execution units (a set of contexts that are executed together).
+TESTed partitions the test suite into \term{compilation units} (a set of contexts that are compiled together), which are in turn partitioned into execution units (a set of contexts that are executed together).
 While different compilation units cannot be executed as one execution unit, it is possible that one compilation unit represents multiple execution units.
 
 \begin{figure}
@@ -729,7 +729,7 @@ Compiling at the tab level is a good compromise between fain-grained compilation
 
 \subsubsection{Execution units}
 
-Next, the compilation units from the previous steps are partitioned into execution units.
+Next, the compilation units from the previous steps are partitioned into \term{execution units}.
 \marginnote{
 All programming languages, including the non-compiled ones, are handled the same way.
 This allows the most consistency between programming languages.
@@ -750,7 +750,7 @@ For example, a submission in JavaScript requires generating code in JavaScript.
 
 Code is generated for each compilation unit.
 The main purpose of the generated code is to execute the tests specified in the test suite.
-For this reason, we also call the generated code the \textbf{test code}.
+For this reason, we also call the generated code the \term{test code}.
 Besides executing the tests from the test suite, the generated code also contains some ceremonial code required by TESTed.
 Some examples of this ceremonial code are:
 
@@ -1476,9 +1476,9 @@ Performance could also be boosted by linting submissions in parallel to testing 
 \section{Conclusion}\label{sec:tested1-conclusion}
 
 Educational software testing is the application of testing frameworks to provide automated feedback on solutions that students submit for programming exercises.
-We identified output comparison and unit testing as two opposing strategies commonly used in educational practice, and investigated the impact of both approaches on programming language support of the frameworks.
+We identified input/output testing and unit testing as two opposing strategies commonly used in educational practice, and investigated the impact of both approaches on programming language support of the frameworks.
 Testing frameworks adopting unit testing enable fine-grained software testing, but are highly language specific.
-The output comparison approach, on the other hand, is more generic in that it supports multiple programming languages, but imposes severe restrictions on programming exercises, granularity of testing and quality of feedback.
+Input/output testing, on the other hand, is more generic in that it supports multiple programming languages, but imposes severe restrictions on programming exercises, granularity of testing and quality of feedback.
 
 Our goal was to combine the best of both worlds.
 We formulated requirements for programming-language-agnostic testing frameworks that combine unit testing with support for multiple programming languages.
