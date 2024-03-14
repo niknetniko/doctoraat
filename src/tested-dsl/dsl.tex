@@ -183,13 +183,13 @@ The structure of test suites is formally specified in a JSON Schema\footnote{\ur
 Note that this schema can be plugged into text editors or integrated development environments (IDE) for syntax highlighting, autocompletion, and validation.
 \Vref{lst:yaml-basic-example} shows a minimal example of a test suite.
 More elaborate examples are discussed in \vref{sec:dsl-illustrative-examples}.
-% TODO: use dodona terms or reverse?
 The test suites have a hierarchical structure: a test suite may have multiple \textbf{units}.
 Each unit is tested by multiple \textbf{test cases}.
 A test case consists of \textbf{setup} code, an optional \textbf{main call}, a \textbf{script}, and \textbf{teardown} code.
-The DSL has an identical structure to JSON test suites (\vref{subsec:structure-of-a-test-suite}).
 The minimal example has a single unit with a single test case, and no setup, main call, nor teardown.
 The main call and the script together comprise the \textbf{tests} for the test case (Figure~\ref{fig:tested-testing}).
+The structure of the DSL test suites is identical to JSON test suites (\vref{subsec:structure-of-a-test-suite}), but the terminology used by the DSL aligns more with the literature.
+The Dodona terminology is also supported by the DSL (thus using tab, context, test case, and test respectively).
 
 The input data for the main call is made available as \textbf{files}, passed as \textbf{arguments}, streamed through standard input (\textbf{stdin}), or any combination thereof.
 The input data for the script are the \textbf{statements} and \textbf{expressions} it consists of.
@@ -773,7 +773,7 @@ Additionally, it may propagate faults in the implementation of submissions as a 
 In programming contests, limiting feedback to reporting whether all test cases passed is not a concern.
 
 However, in an educational context, we do strive for rich and fine-grained feedback, meaning an automated testing framework designed for contests is less ideal.
-In TESTed-DSL, we essentially move the responsibility for processing multiple test cases from the student to the test framework.
+In TESTed-DSL, we essentially move the responsibility for processing multiple test cases from the student to the testing framework.
 This is useful for all students, but especially benefits those students with limited programming experience.
 
 \subsection{Language-agnostic testing}\label{subsec:language-agnostic-testing}
