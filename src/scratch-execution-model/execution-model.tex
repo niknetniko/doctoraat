@@ -176,6 +176,58 @@ This does result in an observable difference: in the unrolled program, the sprit
 As a redraw only happens between steps, the sprite is back at its original position.
 In the looped version, the sprite moves four times (albeit very fast), as there is a redraw between each step.
 
+\section{Limitations of the execution model for the debugger}\label{sec:limitations-of-the-execution-model-for-the-debugger}
+
+One of the most basic features of any debugger is the ability to step through the code: executing one statement and then pausing the execution to allow the user to inspect the program state.
+A debugger for Scratch also needs this functionality, and the debuggers that exist for Scratch all implement a stepping feature.
+
+As described in \vref{sec:blink-software-architecture}, our debugger Blink takes a different approach to the stepping feature.
+While most debuggers only execute one statement in a step, we believe it is useful to maintain the observed parallelism of Scratch in the debugger.
+We thus aim to execute one step in every thread at the same time.
+More concretely, we execute one block in every thread.
+This approach allows users to keep focus on relevant threads without distractions from thread switches, which can be cumbersome in complex programs.
+Users can thus focus on the script(s) they believe are involved in the failure while ignoring (correct) scripts running at the same time.
+
+This approach does come at a price: it changes the execution model of Scratch.
+This basically changes the threading model from a non-preemptive one to a preemptive one: threads can be interrupted at any moment.
+Changing the execution model is not trivial due to two main considerations:
+
+\begin{enumerate}
+    \item If the execution model is only changed when debugging, the debugger does not debug the same program as when running the program.
+        This can result in different behaviour, meaning the bugs for which the debugger is used are no longer present or new bugs, unique to the debugger, could be introduced.
+    \item If the execution model is changed, we need to ensure that existing Scratch programs keep working and that we do not introduce concurrency problems, as the current execution model of Scratch was explicitly chosen to avoid those.
+\end{enumerate}
+
+\section{Proposed changes to the execution models}\label{sec:a-family-of-new-execution-models}
+
+When changing the execution model of Scratch, there are a multitude of parameters to change.
+For our debugger, the most important change is that we execute a single block at a time.
+A tick will thus execute a single block in each thread, before the thread yields.
+Since this has an impact on the execution speed (as more time is spent idling in each step), we need to intervene and change the ticks.
+There are multiple choices on how to do this, mainly variants of how many ticks are executed per step.
+
+\paragraph{More ticks per step}
+For example, we could decide to always execute two ticks per step.
+Since executing a single block per thread makes the execution time of a tick less variable, we could also execute as many ticks as possible in a step.
+This number would need to be determined and will be somewhat arbitrary.
+However, the existing limit of \qty{75}{\percent} is also somewhat arbitrary, so this need not be a problem.
+
+\paragraph{Run as fast as possible}
+Another approach is to remove the fixed-time step from Scratch: executing ticks as fast as possible.
+This can be achieved by running exactly one tick each step, and running the next step as soon as the previous one is ready.
+A consequence of this last change is that a Scratch program will run as fast as possible on the given hardware.
+Slower hardware and faster hardware will thus result in slower and faster executions respectively.
+This also potentially means that there will be a lot of redraws, of which some are useless as there were no visual changes.
+
+The built-in turbo mode in Scratch is a combination of both: while the \qty{75}{\percent} is still honoured (thus a new tick will not be started if more than \qty{75}{\percent} of the step time is used), requests for redraws are ignored.
+Normally, a request for a redraw stops execution of new ticks, but in turbo mode, this is not the case.
+
+\paragraph{Redraw only if necessary}
+Another possibility is again letting go of the fixed-time step, but only doing a redraw if requested.
+It would thus be possible to execute a bunch of ticks and only end the step if something changed visually.
+\marginnote{It is a \emph{visual} programming language after all.}
+However, this will probably be similar to the first proposal in practice, as a lot of blocks in Scratch cause visual changes.
+
 
 
 \end{document}
