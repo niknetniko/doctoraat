@@ -74,7 +74,7 @@
     \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (-7, -3) (scratch-l10n) {\footnotesize\texttt{scratch-l10n}};
     \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (-3.5, -3) (scratch-blocks) {\footnotesize\texttt{scratch-blocks}};
     \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (0, -3) (scratch-vm) {\footnotesize\texttt{scratch-vm}};
-    \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (3.5, -3) (scratch-render-fonts) {\footnotesize\texttt{scratch-render-} \\ \texttt{fonts}};
+    \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (3.5, -3) (scratch-render-fonts) {\footnotesize\texttt{scratch-render-} \\ \footnotesize\texttt{fonts}};
     \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (7, -3) (scratch-paint) {\footnotesize\texttt{scratch-paint}};
 
     \draw[arrow] (scratch-gui) -- (scratch-vm);
@@ -84,7 +84,7 @@
     \draw[arrow] (scratch-gui) -- (scratch-gui|-0,-1.5) -- (0,-1.5-|scratch-l10n) -- (scratch-l10n);
 
     \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (-7, -6) (scratch-storage) {\footnotesize\texttt{scratch-storage}};
-    \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (-3.5, -6) (scratch-sb1) {\footnotesize\texttt{scratch-sb1-} \\ \texttt{converter}};
+    \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (-3.5, -6) (scratch-sb1) {\footnotesize\texttt{scratch-sb1-} \\ \footnotesize\texttt{converter}};
     \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (0, -6) (scratch-render) {\footnotesize\texttt{scratch-render}};
     \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (3.5, -6) (scratch-audio) {\footnotesize\texttt{scratch-audio}};
     \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (7, -6) (scratch-parser) {\footnotesize\texttt{scratch-parser}};
@@ -95,7 +95,7 @@
     \draw[arrow] (scratch-vm) -- (scratch-vm|-0,-4.5) -- (0,-4.5-|scratch-sb1) -- (scratch-sb1);
     \draw[arrow] (scratch-vm) -- (scratch-vm|-0,-4.5) -- (0,-4.5-|scratch-storage) -- (scratch-storage);
 
-    \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (0, -9) (scratch-svg-render) {\footnotesize\texttt{scratch-svg-} \\ \texttt{render}};
+    \node[box,hnode,minimum width=4\block,minimum height=1.5\block] at (0, -9) (scratch-svg-render) {\footnotesize\texttt{scratch-svg-} \\ \footnotesize\texttt{render}};
 
     \draw[arrow] (scratch-render) -- (scratch-svg-render);
 
