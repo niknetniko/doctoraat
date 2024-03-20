@@ -97,8 +97,6 @@
 \usepackage{unicode-math}
 \setmathfont{Erewhon Math}
 
-%\usepackage{layouts}
-%\usepackage{layout}
 \usepackage{scrlayer-scrpage}
 \usepackage{scrlayer-notecolumn}
 \addtokomafont{notecolumn.marginpar}{\footnotesize\raggedright}
@@ -206,6 +204,8 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
     s = string.gsub(s, "%f[%w_]FPS%f[^%w_]", "\\textsc{fps}")
     s = string.gsub(s, "%f[%w_]HTML%f[^%w_]", "\\textsc{html}")
     s = string.gsub(s, "%f[%w_]CSS%f[^%w_]", "\\textsc{css}")
+    s = string.gsub(s, "%f[%w_]FTRPRF%f[^%w_]", "\\textsc{ftrprf}")
+    s = string.gsub(s, "%f[%w_]TIOBE%f[^%w_]", "\\textsc{tiobe}")
     return s
   end
 \end{luacode}
@@ -257,6 +257,7 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \part{Scratch}\label{part:scratch}
 \subfile{itch-glue.tex}
+\subfile{scratch-introduction/scratch-introduction.tex}
 \subfile{scratch-itch/itch.tex}
 \subfile{scratch-blink/blink.tex}
 \subfile{scratch-execution-model/execution-model.tex}
