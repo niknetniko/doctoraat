@@ -53,7 +53,7 @@ We then evaluate these models with a set of metrics to illustrate how their modi
 
 \subsection{Elements of a Scratch program}\label{subsec:elements-of-a-scratch-program}
 
-A Scratch program consists of sprites and a stage.
+A Scratch program consists of sprites and a stage (see also \vref{sec:scratch-as-a-user}).
 The stage is the background and is always present.
 The other visual entities are the sprites: these are drawn on the stage.
 Together, these are called targets.
@@ -116,7 +116,8 @@ The Scratch Virtual Machine transforms the blocks into an abstract syntax tree.
 These are organized by target, and every script of every target results in a thread inside the virtual machine.
 These are green threads: implemented fully in the virtual machine.
 
-The virtual machine is thus also responsible for scheduling these threads.
+The virtual machine is thus responsible for scheduling these threads.
+A schematic overview of the interaction between the different parts is \vref{fig:blink-architecture}.
 It uses a cooperative threading model (although \citeauthor{maloneyScratchProgrammingLanguage2010a} call it the ``Scratch threading model''~\autocite{maloneyScratchProgrammingLanguage2010a}).
 This means it is non-preemptive: the virtual machine will not interrupt threads at arbitrary points in their execution.
 The threads must voluntarily yield control.

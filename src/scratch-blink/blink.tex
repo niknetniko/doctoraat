@@ -27,9 +27,9 @@ A notable trend in European computer science education is the increasing integra
 Countries such as Estonia, France, Spain, Slovakia, and the UK are leading the way in this integration.
 
 With the increasing emphasis on computer science education, the need for effective tools to facilitate coding education has also grown.
-The Lifelong Kindergarten group at MIT has played a crucial role in this area by developing Scratch~\autocite{resnickScratchProgrammingAll2009}, a widely used programming language designed to teach programming to children aged 8 to 16.
+The Lifelong Kindergarten group at MIT has played a crucial role in this area by developing Scratch~\autocite{resnickScratchProgrammingAll2009}, a widely used programming language designed to teach programming to children aged 8 to 16 (see \vref{sec:scratch-as-a-user}).
 Many computer science curricula have adopted Scratch to teach children the basics of computer science.
-With more than 110 million users, Scratch is by far the most popular programming language for computer science education~\autocite{TIOBEIndexSeptember2023a}.
+%With more than 110 million users, Scratch is by far the most popular programming language for computer science education~\autocite{TIOBEIndexSeptember2023a}.
 
 As students navigate the programming landscape, they will inevitably encounter bugs that cause unexpected behavior during code execution~\autocite{zellerWhyProgramsFail2009a}, and Scratch is no exception.
 The difficulty in detecting the root cause of a failure is that when a bug is activated, the system will arrive in an erroneous state, but might still behave as expected.
@@ -46,31 +46,32 @@ By integrating these features into the Scratch programming language, the Blink d
 
 \section{Software description}\label{sec:blink-software-description}
 
-\subsection{Context}\label{subsec:blink-context}
-The Blink debugger is built on top of the Scratch programming language.
-Before diving into the details of Blink, we first provide a short overview of Scratch.
-Scratch is a block-based programming language, meaning code is represented by blocks with different shapes.
-Blocks can be dragged from the toolbox on the left side of the integrated development environment (IDE, \vref{fig:scratch}) to the workspace in the middle and can be stacked together to form scripts.
-Each executable script has a hat block that defines when the script should start executing.
-Scripts can be started as a result of a user action or when a certain criterium is met during the execution of a program, for example, when a clone is started or a message is broadcast.
-Each script is connected to a sprite.
-Sprites are objects that are drawn on the screen.
-The bottom right corner of the IDE contains an editor for sprites and the background, which is a special sprite called Stage that is present in every Scratch project.
-All scripts corresponding to the selected sprite are shown in the workspace (middle).
-The canvas in the top right corner of the IDE shows the execution of the project.
+%\subsection{Context}\label{subsec:blink-context}
+%The Blink debugger is built on top of the Scratch programming language.
+%Before diving into the details of Blink, we first provide a short overview of Scratch.
+%Scratch is a block-based programming language, meaning code is represented by blocks with different shapes.
+%Blocks can be dragged from the toolbox on the left side of the integrated development environment (IDE, \vref{fig:scratch}) to the workspace in the middle and can be stacked together to form scripts.
+%Each executable script has a hat block that defines when the script should start executing.
+%Scripts can be started as a result of a user action or when a certain criterium is met during the execution of a program, for example, when a clone is started or a message is broadcast.
+%Each script is connected to a sprite.
+%Sprites are objects that are drawn on the screen.
+%The bottom right corner of the IDE contains an editor for sprites and the background, which is a special sprite called Stage that is present in every Scratch project.
+%All scripts corresponding to the selected sprite are shown in the workspace (middle).
+%The canvas in the top right corner of the IDE shows the execution of the project.
+%
+%\begin{figure}
+%    \centering
+%    \begin{wide}
+%        \includegraphics[width=\linewidth]{scratch-normal-ide}
+%    \end{wide}
+%    \caption{The Scratch IDE running an example project.
+%    The toolbox with the available blocks is underlined in red, the workspace is underlined in green, the editors for the sprites and the stage are underlined in blue, and the canvas is underlined in yellow.}
+%    \label{fig:scratch}
+%\end{figure}
 
-\begin{figure}
-    \centering
-    \begin{wide}
-        \includegraphics[width=\linewidth]{scratch-normal-ide}
-    \end{wide}
-    \caption{The Scratch IDE running an example project.
-    The toolbox with the available blocks is underlined in red, the workspace is underlined in green, the editors for the sprites and the stage are underlined in blue, and the canvas is underlined in yellow.}
-    \label{fig:scratch}
-\end{figure}
+%\subsection{Blink}\label{subsec:blink}
 
-\subsection{Blink}\label{subsec:blink}
-
+The Blink debugger is built on top of the Scratch programming language (see \vref{sec:scratch-as-a-user}).
 Blink adds extra functionality to the Scratch IDE (\vref{fig:blink-ide}).
 When the debugger is disabled, all functionalities of the base Scratch IDE remain unchanged.
 To activate (and deactivate) debug mode, the user must press the bug-shaped button above the canvas.
