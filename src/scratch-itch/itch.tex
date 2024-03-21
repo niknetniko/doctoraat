@@ -17,7 +17,267 @@ TODO
 
 \section{Test suites}\label{sec:itch-test-suites}
 
-TODO
+Test suites for Itch are written in JavaScript.
+A test suite for Itch is split into three phases:
+
+\begin{enumerate}
+    \item The \term{before execution} phase, which is run before the execution of the Scratch project.
+    \item The \term{during execution} phase, where the test suite controls the Scratch project and simulates user interaction.
+    \item The \term{after execution} phase, where tests are run on the log, which was collected during the previous phase.
+\end{enumerate}
+
+All phases are optional, but a test suite without any phases will not test anything.
+However, it is perfectly valid to not have a before execution, or only a before execution, depending on the types of tests you want to run.
+They are implemented with ``magic'' functions: these have a fixed signature (name and arguments) and will be called in the relevant phases (\cref{lst:itch-test-suite-skeleton}).
+
+\begin{listing}
+    \begin{minted}{javascript}
+/** @param {Evaluation} e */
+function beforeExecution(e) {
+    // Tests go here
+}
+
+/** @param {Evaluation} e */
+function duringExecution(e) {
+    // Tests go here
+}
+
+/** @param {Evaluation} e */
+function afterExecution(e) {
+    // Tests go here
+}
+    \end{minted}
+    \caption[]{
+        A skeleton of a test suite for Itch that shows the three phases.
+        Each phase is implemented as separate function that will be called at the appropriate time by Itch.
+        The argument to these functions is an instance of the \mintinline{javascript}{Evaluation} class, which provides various methods to help testing, such as the test structure, assertion functions, etc.
+    }
+    \label{lst:itch-test-suite-skeleton}
+\end{listing}
+
+Broadly, the tests can thus also be split according to their type: there are \term{static tests} and \term{dynamic tests}.
+Static tests do not require execution of the Scratch project.
+They are generally easier to write and faster to execute, but are severely limited in what they can test.
+Assessing whether a project uses a certain block (e.g.\ a loop block) somewhere in the project is typically done with static tests.
+Assessing whether a preprogrammed sprite (e.g.\ blocks that are provided in the starter project) was not modified is also done with static tests.
+Static tests can be done completely in the before execution phase.
+
+Checking more high-level goals, such as ``Does the sprite move when clicked?'', are more challenging with static tests.
+At least, without severely limiting the accepted solutions.
+For example, there are multiple ways to implement a sprite that moves when clicked, and a good test will want to accept all implementations.
+For these kinds of behavioural tests, dynamic tests can be used.
+These require the project to execute.
+For these, the during and after execution phases are needed.
+In the during execution phase, user interaction is simulated and the behaviour is captured.
+This captured behaviour can then be inspected in the after execution phase to see if the actual behaviour matches with the required behaviour.
+
+
+\subsection{Before execution}\label{subsec:before-execution}
+
+The before execution phase allows for executing static tests.
+Itch provides access to representations of two projects: the submission, created by the students, and the starter project, which is the project the students started with.
+
+Providing both of these allows an easy way to assess whether some sprites, or blocks in a sprite, where modified by the students.
+Itch provides helpers to ensure that students only modified certain sprites, or only certain code within sprites.
+While this does limit the students in their ability to creatively modify the project, it makes behavioural tests for complex projects easier.
+By limiting where the students are allowed to modify blocks, later tests can rely on certain functionality or sprites being available and working.
+For example, if the project contains blocks that check if a sprite touches another sprite, these can be relied on.
+
+This functionality of checking a set of predefined blocks and sprites is exposed with the function \mintinline{javascript}{Itch.checkPredefinedBlocks} to test suite authors.
+For example:
+
+\begin{minted}{javascript}
+    Itch.checkPredefinedBlocks({
+      spriteConfig: {
+        SpriteA: script(whenIReceive('Start'), setEffectTo('brightness', 0)),
+        SpriteB: {
+          pattern: script(whenIReceive('Start'), setEffectTo('ghost', 0)),
+          allowedBlocks: [forever()],
+          allowAdditionalScripts: true,
+        },
+      },
+      debug: false,
+    }, e);
+\end{minted}
+
+The example above contains the test for two sprites.
+All other sprites must be unchanged.
+
+For the sprite \texttt{SpriteA}, students are allowed to change, add, or remove blocks in the script starting with the two blocks \scratchinline{\blockinit{when I receive \selectmenu{Start}}} and \scratchinline{\blocklook{set \selectmenu{ghost} effect to \ovalnum{0}}}.
+Students are allowed to change blocks after these two predefined blocks.
+
+The second sprite, \texttt{SpriteB}, allows modifications to scripts starting with the same blocks, but it uses the full version of the config object.
+With the full version, it is also possible to also specify if additional scripts are allowed and limit the blocks they can use.
+In this example, only the \scratchinline{\blockinfloop{forever}{\blockspace[0.2]}} block can be used (so this is not very useful test).
+Finally, additional scripts (thus new ones created by the students) are also allowed.
+These are free of restrictions: the check for allowed blocks does not apply.
+
+\begin{figure}
+    \centering
+    \begin{wide}
+        \begin{subfigure}{0.49\linewidth}
+            \begin{scratch}[scale=0.8]
+                \blockinit{when I receive \selectmenu{Start}}
+                \blocklook{set \selectmenu{ghost} effect to \ovalnum{0}}
+                \blockrepeat{repeat \ovalnum{15}}
+                {
+                    \blocklook{change size by \ovalnum{3}}
+                    \blockmove{change y by \ovalnum{-2}}
+                }
+                \blockrepeat{repeat \ovalnum{15}}
+                {
+                    \blocklook{change \selectmenu{ghost} effect by \ovalnum{5}}
+                    \blockmove{change size by \ovalnum{3}}
+                }
+                \blocklook{hide}
+
+            \end{scratch}
+            \caption{A script in Scratch.}
+        \end{subfigure}
+        \begin{subfigure}{0.5\linewidth}
+            \begin{minted}{javascript}
+            script(
+              whenIReceive('Start'),
+              setEffectTo(ghost(), 0),
+              repeat(15, script(
+                changeSizeBy(3),
+                changeYBy(-2))
+              ),
+              repeat(20,script(
+                changeEffectBy(ghost(), 5),
+                changeSizeBy(3))
+              ),
+              hide(),
+            );
+            \end{minted}
+            \caption{The equivalent in JavaScript.}
+        \end{subfigure}
+    \end{wide}
+    \caption{An example of how a Scratch program can be represented using the abstractions provided by Itch.}\label{fig:itch-block-abstraction}
+\end{figure}
+
+Itch also includes an abstraction to represent Scratch blocks in JavaScript, as used in the example above.
+For each Scratch block, a corresponding function exists (see an example in \vref{fig:itch-block-abstraction}).
+
+The functions representing blocks can also be used to construct block patterns.
+Two additional are provided for patterns.
+The first is \mintinline{javascript}{anything()}, which can be used in any location (as a block, or value) and matches any block or value.
+The reverse, \mintinline{javascript}{nothing()}, matches no block or value.
+It can be useful to ensure that a script terminates (i.e.\ that there are no more blocks afterwards).
+Additionally, an array of blocks or patterns can also be used in most places.
+This represents a choice: it will match any of the patterns in the array.
+
+For example, the pattern \mintinline{javascript}{repeat([15, 30], script(changeSizeBy(any()), never()))}, will match a \texttt{repeat} block that repeats 15 or 30 times, with a body with exactly one block, the \texttt{change size by} block, whose argument can be anything.
+
+Since scripts form a tree of blocks, there are also helpers to match and test against a script of blocks.
+
+
+
+%## Output of a "test"
+%
+%After a test of an exercise, you need some kind of feedback, to indicate which tests passed and which didn't.
+%The result of a test is a hierarchical structure of groups and tests.
+%A test is, as the name implies, a check on some property of the exercise.
+%It can be correct or wrong, and contains feedback for both cases.
+%Additionally, a test also has a name and can include additional information, such as diffs, messages, etc.
+%However, most of the additional information is not used at the moment.
+%
+%Structure is added by grouping the tests into, again the aptly named, groups.
+%Groups can be nested, so groups inside groups inside groups ... is possible.
+%While there is no hard limit, we generally try to keep the number of levels small (think 3 or less).
+%
+%Groups are used for more than just structure though.
+%They also support a notion of visibility, with three modes:
+%
+%- Visible: the group is expanded, all children are visible.
+%- Hidden: the group is completely hidden, unless one of the tests fails.
+%- Summary: the group is collapsed by default and a summary message is shown, unless one of the tests fails.
+%
+%The Scratch judge offers a set of functions that will take care of outputting the result in the correct format.
+%An example of a test inside a group is:
+
+%```javascript
+%e.group.group('Tests for sprite A', () => {
+%    e.group
+%    .test('Sprite A does stuff right')
+%    .feedback({
+%        correct: 'Good job, sprite A does get stuff right!',
+%        wrong: 'Oh no, sprite A does not get it right, take another look.',
+%    })
+%    .expect('some value')
+%    .toBe('another value');
+%});
+%```
+%
+%The double `group.group` is not a typo, but needed for backwards compatibility with older testplans.
+%At some point, it will be removed.
+%
+%The example above is a group with a single test.
+%The test, as written in the example, will always fail, since it expects the string `"some value"` to be equal to `"another value"`.
+%Users of Jest will recognize the `expect`/`toBe` notation.
+%
+%A more conceptual overview of the output format is given in the [_Output format_](./feedback.html) document.
+%The documentation for use in the testplans resides in the [JavaScript docs for the `hierarchy` module](../modules/testplan_hierarchy.html).
+
+%### Before execution
+%
+%The _before execution_ phase allows for execution static tests.
+%In general, if possible to test statically, you should use static tests, as they are very fast.
+%
+%The Scratch judge has tools specifically to facilitate testing that the students did not modify the existing code (or, for example, that they didn't remove some sprites).
+%This is implemented a function called `checkPredefinedBlocks`.
+%More details can be found in the [JavaScript docs for the `checkPredefinedBlocks`](../functions/testplan_predefined_blocks.checkPredefinedBlocks.html) function.
+%
+%Abstractions also exist to statically test for a set blocks.
+%For example, you might want to verify that a certain sprite has a specific script of blocks.
+%This is achieved by having a set of functions that represent blocks, and accompanying functions that allow comparing those block representations against the Scratch project.
+%
+%For example, consider the following script:
+%
+%![image](../media/stack.png)
+%
+%This can be represented in a testplan as follows:
+
+%```javascript
+%script(
+%whenIReceive('Start'),
+%setEffectTo(transparent(), 0),
+%repeat(15, script(changeSizeBy(3), changeYBy(-2))),
+%repeat(20, script(changeEffectBy(transparent(), 5), changeSizeBy(3))),
+%hide(),
+%);
+%```
+%
+%The relevant documentation for these features is:
+%
+%- The [`differ` module](../modules/matcher_differ.html), which contains the code to compare a set of blocks against a Scratch project.
+%- A list of all available blocks in the [`patterns` module](../modules/matcher_patterns.html) docs.
+%
+%## During execution
+
+%In this phase, the main objective is to simulate user interaction and command the Scratch VM to do stuff.
+%This is achieved by using the [`Scheduler` instance](../classes/scheduler_scheduled_event.ScheduledEvent.html), which allows you to "schedule" (i.e. plan) which events will be executed on the Scratch project.
+%
+%For example, a small example where the green flag is pressed, a wait of 800 ms and then pressing the `s` key:
+%
+%```javascript
+%/** @param {Evaluation} e */
+%function duringExecution(e) {
+%    e.scheduler.greenFlag(true).wait(800).pressKey('s');
+%}
+%```
+%
+%Tests themselves are seldom written in the _during execution_ phase, as all information is stored in the log.
+%This log can then be queried in the _after execution_ phase.
+%
+%## After execution
+%
+%Each scheduled event and a set of actions in the Scratch VM are logged in the log.
+%In this phase, most tests will examine the log and derive a conclusion from the information found in the log.
+%
+%A good starting point for information on the log is the [JavaScript docs for the `Log` class](../classes/log.Log.html).
+%Of course, you should click through to find information on other available types.
+
 
 \section{Evaluating projects}\label{sec:itch-evaluating-projects}
 
