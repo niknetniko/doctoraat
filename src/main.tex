@@ -157,6 +157,23 @@
 % Figuren
 \input{tikz-preamble}
 \usepackage{scratch3}
+%! parser = off
+% Extend Scratch3 with blocks for the debugger.
+\catcode`\_11
+\definecolor{debuggerbool}{HTML}{0B8E69}
+\definecolor{debuggerboold}{HTML}{0B8E69}
+\definecolor{debuggerbooldd}{HTML}{0B8E69}
+\definecolor{srcdebugger}{HTML}{0FBD8C}
+\definecolor{srcdebuggerd}{HTML}{0DA57A}
+\definecolor{srcdebuggerdd}{HTML}{0B8E69}
+
+\newcommand*\blockdebug{\scr_normalblock{scrpen}}
+\newcommand*\emptybooldebug[1][2em]{\_boolemptytrue\scr_boolbox{debuggerbool}{#1}}
+\newcommand*\booldebug[1]{\scr_boolbox{srcdebugger}{#1}}
+\scr_restorecatcode
+%! parser = on
+
+
 %\newcommand{scratchinline}[1]{
 %    \begin{scratch}
 %        yes

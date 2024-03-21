@@ -115,11 +115,11 @@ This includes the entire visual state of all sprites and their clones.
 While back-in-time debugging is a quite complex debugger feature, our experimental study in \vref{subsec:blink-experimental-study} shows that providing a simple video-player-like interface is very intuitive for children.
 
 \paragraph{Programmed breakpoints}
-Blink adds custom blocks to Scratch to manually program breakpoints: \texttt{pause}, \texttt{pause if}, \texttt{wait until and pause}, and \texttt{debugger is enabled?}.
+Blink adds custom blocks to Scratch to manually program breakpoints: \scratchinline{\blockdebug{pause}}, \scratchinline{\blockdebug{pause if \emptybooldebug}}, \scratchinline{\blockdebug{wait unitl \emptybooldebug{} and pause}}, and \setscratch{scale=0.5}\booldebug{debugger is enabled?}.
 When in debug mode, the execution of the \texttt{pause} block suspends the Scratch program.
-In contrast, the \texttt{pause if} block represents a conditional breakpoint that only pauses the execution if its corresponding condition evaluates to true.
-The \texttt{wait until and pause} block waits until a condition holds and then suspends the execution.
-Finally, the \texttt{debugger is enabled?} block is a boolean block that can be used to check whether the debugger is currently active or not.
+In contrast, the \scratchinline{\blockdebug{pause if \emptybooldebug}} block represents a conditional breakpoint that only pauses the execution if its corresponding condition evaluates to true.
+The \scratchinline{\blockdebug{wait unitl \emptybooldebug{} and pause}} block waits until a condition holds and then suspends the execution.
+Finally, the \setscratch{scale=0.5}\booldebug{debugger is enabled?} block is a boolean block that can be used to check whether the debugger is currently active or not.
 
 \section{Software architecture}\label{sec:blink-software-architecture}
 
@@ -177,7 +177,7 @@ Pausing the execution of a running program by manually stepping and pausing the 
 Therefore, many debuggers include the ability to set user-defined breakpoints.
 In Blink, we have extended the block language to include four additional blocks to pause the execution of a program, to inspect whether the debugger is active and to stop the program based on a condition.
 
-In our original design, we experimented with a large set of highly specific debugging blocks, for example, \texttt{stop the execution when a sprite hits the wall}.
+In our original design, we experimented with a large set of highly specific debugging blocks, for example, \scratchinline{\blockdebug{stop execution when sprite hits the wall}}.
 However, we came to the conclusion that it would be impossible to account for every possible use-case.
 Therefore, we decided it would be better to provide a small set of fundamental debugging blocks, which can be composed with existing Scratch blocks to express more specific debugging blocks.
 
@@ -237,7 +237,7 @@ The aim of this exercise is to walk over a star-shaped figure surrounded by wate
 Any program that directs the player into the water is buggy.
 By making use of Blink's custom debugging blocks, it is quite easy to pause the execution of the program when the player touches something blue (\vref{fig:star-exercise}).
 As soon as the green flag is pressed, the code repeatedly checks whether the player is touching something blue.
-If it does, program execution is paused by using the \texttt{pause if} block.
+If it does, program execution is paused by using the \scratchinline{\blockdebug{pause if \emptybooldebug}} block.
 
 \section{Impact}\label{sec:blink-impact}
 
@@ -276,15 +276,7 @@ A five-point scale, represented as a row of smiley faces, was provided for each 
 The results of this questionnaire are shown in \vref{fig:blink-results}.
 
 \begin{figure}
-%    % https://observablehq.com/d/b50757d4920f2318
-%    \begin{subfigure}[b]{\textwidth}
-%        \centering
-%        \includegraphics[width=0.6\linewidth]{likert1}
-%    \end{subfigure}
-%    \begin{subfigure}[b]{\textwidth}
-%        \centering
-%        \includegraphics[width=0.6\linewidth]{likert2}
-%    \end{subfigure}
+    % https://observablehq.com/d/b50757d4920f2318
     \centering
     \includestandalone{likert}
     \caption{
