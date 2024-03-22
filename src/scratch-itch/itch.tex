@@ -71,6 +71,64 @@ For these, the during and after execution phases are needed.
 In the during execution phase, user interaction is simulated and the behaviour is captured.
 This captured behaviour can then be inspected in the after execution phase to see if the actual behaviour matches with the required behaviour.
 
+\subsection{Structure of a test suite}\label{subsec:structure-of-a-test-suite2}
+
+A test suite consists of groups and tests, which can be nested.
+A test suite consists of a hierarchical structure of groups and tests.
+A test is a check on some property of the exercise.
+It can be correct or wrong, and can contain feedback for both cases.
+Additionally, a test also has a name and can include additional information, such as diffs, messages, etc.
+
+Structure is added by grouping the tests into groups.
+Groups can be nested, so groups inside groups etc.\ is possible.
+While there is no hard limit, the recommendation is to not go deeper than three levels in most cases.
+
+Groups are used for more than just structure.
+They also support a notion of visibility, with three modes:
+
+\begin{itemize}
+    \item \emph{Visible}: the group is expanded (all children are visible).
+    \item \emph{Hidden}: the group is completely hidden, unless one of the tests in the group fails.
+    \item \emph{Summary}: the group is collapsed by default and a summary is shown unless one of the tests fails (in which case the group is expanded).
+\end{itemize}
+
+\begin{figure}
+    \centering
+    \begin{minted}{javascript}
+        e.group.group('Tests for sprite A', () => {
+          e.group
+            .test('Sprite A does stuff right')
+            .feedback({
+              correct: 'Good job, sprite A does get stuff right!',
+              wrong: 'Oh no, sprite A does not get it right, take another look.',
+            })
+           .expect('some value')
+           .toBe('another value');
+        });
+    \end{minted}
+    \caption{An example showing how the test suites are structured using groups and tests.}\label{fig:itch-test-suite-structure}
+\end{figure}
+
+Groups and tests in the JavaScript test suites are inspired by the Jest\footnote{\url{https://jestjs.io/}} testing framework.
+The two relevant methods, \mintinline{javascript}{group} and \mintinline{javascript}{test} are available on the \mintinline{javascript}{Evaluation.group} property passed to the test suite.
+\Cref{fig:itch-test-suite-structure} shows an example of this, containing a single test.
+\marginnote{Backwards compatibility is one of the downsides of using software in production.}
+The double \mintinline{javascript}{group.group} is not a typo, but needed for backwards compatibility with older test suites.
+The test, as written in the example, will always fail, since it expects the string \mintinline{javascript}{"some value"} to be equal to \mintinline{javascript}{"another value"}.
+The \mintinline{javascript}{expect}/\mintinline{javascript}{toBe} notation specifically will be familiar to Jest users.
+
+Groups can be given just a name, as in the example, but it is also possible to provide more structured data to a group.
+For example, it is possible to link a group to a certain sprite.
+This information is also provided in the generated feedback, which means the code responsible for showing the feedback can, for example, show an image of the sprite with the group.
+
+More details on how this structure is reflected in the generated feedback can be found in \cref{sec:format-of-the-generated-feedback}.
+More metadata includes the visibility, a summary (used if the group's visibility is set to summary), some tags (which allows to tag groups with arbitrary strings), and an option to ignore wrong tests.
+This last option means that if a test fails, it will be ignored completely and will not be outputted in the generated feedback.
+This can be useful in cases where there are multiple possibilities: this allows trying each possibility until a passed test is found.
+
+%\subsection{The execution log}\label{subsec:the-execution-log}
+%
+%TODO
 
 \subsection{Before execution}\label{subsec:before-execution}
 
@@ -157,7 +215,7 @@ These are free of restrictions: the check for allowed blocks does not apply.
 \end{figure}
 
 Itch also includes an abstraction to represent Scratch blocks in JavaScript, as used in the example above.
-For each Scratch block, a corresponding function exists (see an example in \vref{fig:itch-block-abstraction}).
+For each Scratch block, a corresponding function exists (see an example in \cref{fig:itch-block-abstraction}).
 
 The functions representing blocks can also be used to construct block patterns.
 Two additional are provided for patterns.
@@ -170,118 +228,250 @@ This represents a choice: it will match any of the patterns in the array.
 For example, the pattern \mintinline{javascript}{repeat([15, 30], script(changeSizeBy(any()), never()))}, will match a \texttt{repeat} block that repeats 15 or 30 times, with a body with exactly one block, the \texttt{change size by} block, whose argument can be anything.
 
 Since scripts form a tree of blocks, there are also helpers to match and test against a script of blocks.
+This supports error messages for each block (meaning they each show up as a failed assertion in the output).
 
+\subsection{During execution}\label{subsec:during-execution}
 
+\begin{figure}
+    \begin{minted}{javascript}
+        /** @param {Evaluation} e */
+        function duringExecution(e) {
+          e.scheduler
+           .greenFlag(true)
+           .wait(800)
+           .pressKey('s')
+           .end();
+        }
+    \end{minted}
+    \caption{An example of the during execution phase where the scheduler is used to first press the green flag, wait \qty{800}{\milli\second}, press the ``s'' key, and finally end execution.}\label{fig:itch-scheduler-example}
+\end{figure}
 
-%## Output of a "test"
-%
-%After a test of an exercise, you need some kind of feedback, to indicate which tests passed and which didn't.
-%The result of a test is a hierarchical structure of groups and tests.
-%A test is, as the name implies, a check on some property of the exercise.
-%It can be correct or wrong, and contains feedback for both cases.
-%Additionally, a test also has a name and can include additional information, such as diffs, messages, etc.
-%However, most of the additional information is not used at the moment.
-%
-%Structure is added by grouping the tests into, again the aptly named, groups.
-%Groups can be nested, so groups inside groups inside groups ... is possible.
-%While there is no hard limit, we generally try to keep the number of levels small (think 3 or less).
-%
-%Groups are used for more than just structure though.
-%They also support a notion of visibility, with three modes:
-%
-%- Visible: the group is expanded, all children are visible.
-%- Hidden: the group is completely hidden, unless one of the tests fails.
-%- Summary: the group is collapsed by default and a summary message is shown, unless one of the tests fails.
-%
-%The Scratch judge offers a set of functions that will take care of outputting the result in the correct format.
-%An example of a test inside a group is:
+The during execution phase is actually run just before the project is executed by Itch.
+The main purpose of this phase is to use the \mintinline{javascript}{e.scheduler} (an instance of the \mintinline{javascript}{Scheduler} class) to schedule the execution of the project.
+Using the scheduler, the test suite must specify how the project should be executed.
+This includes starting execution, stopping execution, manipulating the Scratch Virtual Machine, and simulating user interaction, like clicking, key presses, input, and so on.
+\Cref{fig:itch-scheduler-example} shows a minimal example of a schedule, where the green flag is pressed, some time must pass, and finally the ``s'' key is pressed.
 
-%```javascript
-%e.group.group('Tests for sprite A', () => {
-%    e.group
-%    .test('Sprite A does stuff right')
-%    .feedback({
-%        correct: 'Good job, sprite A does get stuff right!',
-%        wrong: 'Oh no, sprite A does not get it right, take another look.',
-%    })
-%    .expect('some value')
-%    .toBe('another value');
-%});
-%```
-%
-%The double `group.group` is not a typo, but needed for backwards compatibility with older testplans.
-%At some point, it will be removed.
-%
-%The example above is a group with a single test.
-%The test, as written in the example, will always fail, since it expects the string `"some value"` to be equal to `"another value"`.
-%Users of Jest will recognize the `expect`/`toBe` notation.
-%
-%A more conceptual overview of the output format is given in the [_Output format_](./feedback.html) document.
-%The documentation for use in the testplans resides in the [JavaScript docs for the `hierarchy` module](../modules/testplan_hierarchy.html).
+The scheduler receives a set of actions to perform.
+Each next action is executed after the previous one has been completed.
+Because Scratch is a highly concurrent language, the scheduler also supports this.
+First, most actions support a synchronous and asynchronous variant.
+In the asynchronous variant, the action is executed and immediately finished.
+For example, the action to press the green flag is almost instant: the green flag is pressed in the virtual machine, and the action is complete.
 
-%### Before execution
-%
-%The _before execution_ phase allows for execution static tests.
-%In general, if possible to test statically, you should use static tests, as they are very fast.
-%
-%The Scratch judge has tools specifically to facilitate testing that the students did not modify the existing code (or, for example, that they didn't remove some sprites).
-%This is implemented a function called `checkPredefinedBlocks`.
-%More details can be found in the [JavaScript docs for the `checkPredefinedBlocks`](../functions/testplan_predefined_blocks.checkPredefinedBlocks.html) function.
-%
-%Abstractions also exist to statically test for a set blocks.
-%For example, you might want to verify that a certain sprite has a specific script of blocks.
-%This is achieved by having a set of functions that represent blocks, and accompanying functions that allow comparing those block representations against the Scratch project.
-%
-%For example, consider the following script:
-%
-%![image](../media/stack.png)
-%
-%This can be represented in a testplan as follows:
+The synchronous actions will only finish after all activated scripts in Scratch have terminated.
+For example, the action to press the green flag will wait on all scripts with a head block \scratchinline{\blockinit{when \greenflag clicked}} are done executing.
+Of course, there are scenarios where this is not possible.
+If one of the scripts contains an infinite loop (\scratchinline{\blockinfloop{forever}{\blockspace[0.2]}}), the next action would never be performed, as the script will never end.
 
-%```javascript
-%script(
-%whenIReceive('Start'),
-%setEffectTo(transparent(), 0),
-%repeat(15, script(changeSizeBy(3), changeYBy(-2))),
-%repeat(20, script(changeEffectBy(transparent(), 5), changeSizeBy(3))),
-%hide(),
-%);
-%```
-%
-%The relevant documentation for these features is:
-%
-%- The [`differ` module](../modules/matcher_differ.html), which contains the code to compare a set of blocks against a Scratch project.
-%- A list of all available blocks in the [`patterns` module](../modules/matcher_patterns.html) docs.
-%
-%## During execution
+Since the project that is run comes from students with unknown code, synchronous actions also support a timeout.
+After this time has passed, a failed assertion will be added to the generated feedback, and the scheduler will continue.
 
-%In this phase, the main objective is to simulate user interaction and command the Scratch VM to do stuff.
-%This is achieved by using the [`Scheduler` instance](../classes/scheduler_scheduled_event.ScheduledEvent.html), which allows you to "schedule" (i.e. plan) which events will be executed on the Scratch project.
-%
-%For example, a small example where the green flag is pressed, a wait of 800 ms and then pressing the `s` key:
-%
-%```javascript
-%/** @param {Evaluation} e */
-%function duringExecution(e) {
-%    e.scheduler.greenFlag(true).wait(800).pressKey('s');
-%}
-%```
-%
-%Tests themselves are seldom written in the _during execution_ phase, as all information is stored in the log.
-%This log can then be queried in the _after execution_ phase.
-%
-%## After execution
-%
-%Each scheduled event and a set of actions in the Scratch VM are logged in the log.
-%In this phase, most tests will examine the log and derive a conclusion from the information found in the log.
-%
-%A good starting point for information on the log is the [JavaScript docs for the `Log` class](../classes/log.Log.html).
-%Of course, you should click through to find information on other available types.
+Every action in the scheduler returns the last scheduled action: this return value can be used to schedule a next action after the previous one.
+To create a non-linear schedule (e.g.\ multiple actions are performed simultaneously), there are a few options.
+First, the return value of one of the previous actions can be used multiple times to schedule new actions.
+All of these will be run in parallel.
+
+% TODO: visualise this?
+
+The other option is to use the method \mintinline{javascript}{forEach}: this is an implementation of the ``fold'' function on the events.
+By deciding what event is used as the accumulator, either a linear (by returning the new action) or non-linear schedule (by returning the existing action) can be created.
+
+While most actions are equivalent to their counter-parts in Scratch (like clicking a sprite, pressing a key, etc.), the wait action has more features.
+In addition to waiting a set amount of time (like in the example), the wait action can also wait on the fulfillment of a certain condition.
+The wait condition can be either waiting on a certain broadcast being sent, or a sprite fulfilling some condition.
+The possible sprite conditions are moving, reaching a certain position, touching another sprite, no longer touching another sprite, touching the edge, and touching the mouse.
+These conditions are added as needed, so with use, we envision more conditions being added.
+
+A final special action is the \mintinline{javascript}{log} action.
+This action saves the current state in the log (\cref{subsec:after-execution}) and executes a custom function at that time.
+This action is intended to mark certain events in the log, but can also be used to execute a certain test during the execution of the project, instead of beforehand or afterwards.
+
+\subsection{After execution}\label{subsec:after-execution}
+
+\begin{figure}
+    \begin{minted}{javascript}
+        /** @param {Evaluation} e */
+        function afterExecution(e) {
+          // Get all click events on the Hat
+          const clicks = e.log.events.filter((e) => e.type === 'click' && e.data.target === 'Hat');
+          for (const click of clicks) {
+            const costumeNrBefore = click.previous.target(click.data.target).currentCostume;
+            const costumeNrAfter = click.next.target(click.data.target).currentCostume;
+
+            // Check that the costume cycles.
+            const correctCostumeNr = (costumeNrBefore + 1) % 1;
+            e.group.test('Click on Hat')
+              .expect(costumeNrAfter)
+              .toBe(correctCostumeNr);
+          }
+        }
+    \end{minted}
+    \caption{An after execution phase, where the log is used to check if the costume of the sprite ``Hat'' changes after each click (there are two costumes and the costumes need to cycle).}\label{fig:itch-hat-costum-change}
+\end{figure}
+
+The schedule from the during execution phase results in the project being executed.
+During the execution, a log is constructed of the execution.
+This is done by hand (using the \mintinline{javascript}{log} scheduler action) and automatically at interesting points.
+The log consists of snapshots (which are taken every time something changes in the virtual machine) and events (which denote interesting snapshots).
+For example, every action in the scheduler is saved as an event, meaning there is a snapshot before the action and after the action has been completed.
+
+For example, the action to click a sprite is saved in the log.
+Now, in the after execution phase, the event in the log provides access to the snapshot from just before the sprite was clicked and just after the sprite was clicked (or when scripts have terminated if synchronous).
+This allows for a test to check if the costumes changes when a sprite is clicked, regardless of the implementation.
+This is illustrated in \cref{fig:itch-hat-costum-change}.
 
 
 \section{Evaluating projects}\label{sec:itch-evaluating-projects}
 
 TODO
+
+\section{Format of the generated feedback}\label{sec:format-of-the-generated-feedback}
+
+%This document describes the output format of the judge.
+%It is a high-level document;
+%see below where to find more detailed documentation.
+%
+%## Structure
+%
+%There are three structural objects in the feedback:
+%
+%- `Judgement` - the top level object.
+%- `Group` - groups one or more tests or subgroups.
+%- `Test` - one condition or test that is evaluated.
+%
+%For example, the structure might look like this for a very simple test plan.
+%All 5 tests are in one group.
+%
+%```yaml
+%# The judgement object
+%children:
+%- name: All tests
+%children:
+%- Test 1
+%- Test 2
+%- Test 3
+%- Test 4
+%- Test 5
+%```
+%
+%A more complex test plan might have subgroups of different levels.
+%The first 2 tests are again in one group.
+%The second group does not contain other groups, each with 3 tests.
+%
+%```yaml
+%# The judgement object
+%children:
+%- name: Normal tests (group 1)
+%children:
+%- Test 1
+%- Test 2
+%- name: Advanced tests (group 2)
+%children:
+%- name: Group 2.1
+%children:
+%- Test 3
+%- Test 4
+%- Test 5
+%- name: Group 2.2
+%children:
+%- Test 6
+%- Test 7
+%- Test 8
+%```
+%
+%The format does not limit the amount of nesting, but of course very deeply
+%nested groups may not be practical.
+%
+%## Collapsing groups
+%
+%There are currently 3 visibility modes. From the docs:
+%
+%- `show` means display this group and expand it.
+%- `summary` means display this group, collapse or hide the children by default, unless
+%one of the tests in this group (or its subgroups) fails.
+%- `hide` means do not show the group by default, unless one of the tests in
+%this group (or its subgroups) fails.
+%
+%When counting tests, the recommended way is to always count all groups that are
+%visible. For example, groups with `show` and `summary` are both counted, while
+%groups with `hide` are only counted if displayed. This works the same for nested
+%groups. For example, assume we have the following structure of groups:
+%
+%```yaml
+%children:
+%- name: Group 1
+%visibility: 'show'
+%children:
+%- name: Group 1.1
+%visibility: 'summary'
+%- name: Group 1.2
+%visibility: 'hide'
+%```
+%
+%## Status propagation
+%
+%Each test has a status.
+%However, `Group` (and `Judgement`) objects can also have an optional status override.
+%
+%The status for a group is thus the status property if it exists. If none is
+%provided, the status of the group is the worst status of its children, again
+%calculated recursively. For example, a group's tests might all be OK, but if an
+%error occurred during testing, the group's status might be fail, while no
+%individual test is failed.
+%
+%The order of "badness" of statuses is:
+%
+%1. internal error (something unexpected went wrong)
+%2. testplan error (there is a bug in the test plan)
+%3. time limit exceeded (something took too long)
+%4. wrong (there is an error in the solution)
+%5. correct (the test passes)
+%
+%For example, you have a group with three tests:
+%
+%```yaml
+%- name: Test 1
+%status: testplan error
+%- name: Test 2
+%status: correct
+%- name: Test 3
+%status: wrong
+%```
+%
+%The status of this group would be `testplan error`, unless overridden by a
+%status attribute on the group itself.
+%
+%## Detailed documentation
+%
+%For ease of use, there is also a generated version committed in this folder.
+%There is also a full example in `schema.json`.
+%
+%For more information about every attribute, you can do two things:
+%
+%- Read the source & docs in `src/output/full-schema.ts`.
+%- Generate a JSON Schema file from that source code, using the following
+%command, which will generate a JSON Schema on stdout:
+%```bash
+%$ npm run generate:output
+%```
+%
+%The reason the JSON Schema is generated from the source code is to ensure it is
+%(more) up to date, as it is very easy to forget to update a separate JSON Schema
+%document.
+%
+%## Compatibility
+%
+%The intention is that if a backwards incompatible change needs to be made, the
+%`version` attribute will be increased. This attribute can then be used to change
+%the behaviour of the code using the results if needed.
+%
+%Note that code using these results should be built with forward compatibility in mind.
+%For example, unknown attributes or values should be ignored, rather than erroring.
+%For example, we might add a new visibility mode in the future.
+%All existing code should still accept the results, on a best-efforts basis,
+%i.e. by using a default visibility.
+
 
 \section{Evaluation of the Itch framework}\label{sec:itch-evaluation}
 
