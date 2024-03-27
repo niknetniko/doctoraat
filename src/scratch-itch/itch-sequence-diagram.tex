@@ -1,0 +1,43 @@
+\documentclass[tikz,crop]{standalone}
+
+\include{../tikz-preamble}
+
+\begin{document}
+
+\begin{tikzpicture}[x=0.75cm,y=0.75cm,every node/.style={font=\small}]
+  \begin{umlseqdiag}
+    \umlobject[no ddots,fill=none]{Itch runner}
+    \umlobject[no ddots,fill=none]{Puppeteer}
+    \umlobject[no ddots,fill=none]{Itch core}
+    \umlobject[no ddots,fill=none]{Test suite}
+    \umlobject[no ddots,fill=none]{Scratch VM}
+
+    \begin{umlcall}[op=launch,return=feedback]{Itch runner}{Puppeteer}
+      \begin{umlcall}[op=evaluate]{Itch runner}{Puppeteer}
+        \begin{umlcall}[op=load]{Puppeteer}{Itch core}
+        \end{umlcall}
+        \begin{umlcall}[op=run(config),return=feedback]{Puppeteer}{Itch core}
+          \begin{umlcall}[op=load projects,return=projects]{Itch core}{Scratch VM}
+
+          \end{umlcall}
+          \begin{umlcall}[op=beforeExecution,return=feedback,dt=6]{Itch core}{Test suite}
+
+          \end{umlcall}
+          \begin{umlcall}[op=duringExecution,return=schedule,dt=6]{Itch core}{Test suite}
+
+          \end{umlcall}
+          \begin{umlcall}[op=run(schedule),return=log,dt=6]{Itch core}{Scratch VM}
+
+          \end{umlcall}
+          \begin{umlcall}[op=afterExecution,return=feedback,dt=6]{Itch core}{Test suite}
+
+          \end{umlcall}
+        \end{umlcall}
+      \end{umlcall}
+
+    \end{umlcall}
+
+  \end{umlseqdiag}
+\end{tikzpicture}
+
+\end{document}

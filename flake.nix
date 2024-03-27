@@ -87,7 +87,7 @@
         };
         tikz-uml = pkgs.stdenvNoCC.mkDerivation rec {
           pname = "tikz-uml";
-          version = "v1.0-2016-03-29";
+          version = "v1.0b-2013-02-01";
           outputs = ["tex" "texdoc" "out"];
 
           passthru.tlDeps = with pkgs.texlive; [
@@ -99,7 +99,7 @@
 
           src = pkgs.fetchurl {
             url = "https://perso.ensta-paris.fr/~kielbasi/tikzuml/var/files/src/tikzuml-${version}.tbz";
-            hash = "sha256-DLxKIMjtQBYrO5qxQAsXQpPsGtdQjmQMqHnnjEWhBdA=";
+            hash = "sha256-dKF5ssMqDYKuqPKGHXAQ4k42LlvnosVrbDbVQblgC20=";
           };
 
           dontConfigure = true;
@@ -166,7 +166,7 @@
 #          fancyvrb
 #          upquote
           ugent2016
-          tikz-uml
+#          tikz-uml
         ]);
         font_dir = builtins.concatStringsSep "//:" [
           "${ugent-panno}/share/fonts"

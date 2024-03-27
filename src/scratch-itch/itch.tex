@@ -126,10 +126,6 @@ More metadata includes the visibility, a summary (used if the group's visibility
 This last option means that if a test fails, it will be ignored completely and will not be outputted in the generated feedback.
 This can be useful in cases where there are multiple possibilities: this allows trying each possibility until a passed test is found.
 
-%\subsection{The execution log}\label{subsec:the-execution-log}
-%
-%TODO
-
 \subsection{Before execution}\label{subsec:before-execution}
 
 The before execution phase allows for executing static tests.
@@ -383,166 +379,72 @@ For these reasons, there are two ways to run Itch:
 Itch consists of two JavaScript packages, of which the core package implements the testing framework itself.
 This package can be loaded into the browser and run.
 The exposed interface to run Itch is limited to one function and a configuration object (\cref{fig:itch-library-interface}).
-Most of the options are self-explanatory, but the output format option is explained in \cref{sec:format-of-the-generated-feedback}.
+Most of the options are self-explanatory, and the output format option is explained in \cref{sec:format-of-the-generated-feedback}.
 
 \subsection{Running Itch as a command line tool}\label{subsec:running-itch-as-a-command-line-tool}
 
-When there is no browser available, Itch provides a command line interface.
-\marginnote{A headless browser means a full browser but without user interface.}
-In this mode, Itch will run a headless browser, load the projects and test suites, run the judge, and finally collect the results from the browser.
+\begin{figure}
+    \begin{wide}
+        \includestandalone[width=\linewidth]{itch-sequence-diagram}
+    \end{wide}
+    \caption{Sequence diagram showing the process of evaluating a project with Itch. When run as a library, there is no itch core or Puppeteer.}\label{fig:itch-sequence-diagram}
+\end{figure}
 
-\begin{tikzpicture}
-    \begin{umlpackage}[x=0, y=0]{package-name}
-    \end{umlpackage}
-\end{tikzpicture}
+When there is no browser available, Itch provides a command line interface.
+\marginnote{A headless browser is a full browser, but without user interface.}
+In this mode, Itch will run a headless browser, load the projects and test suites, run the judge, and finally collect the results from the browser.
+\Cref{fig:itch-sequence-diagram} shows the complete process.
+
+First, the command line interface (\texttt{itch-runner}) launches a Puppeteer instance.
+There is support for supplying an existing Puppeteer instance, which can be useful on servers.
+Then, the evaluation is started.
+The Puppeteer instance runs a script, which first launches \texttt{itch-core}.
+The script calls Itch as it would be used as a library: the \mintinline{typescript}{run(config)} function is called.
+This will first load the Scratch projects, using the virtual machine.
+The phases are then executed, with the before and during execution phase going first.
+The during execution phase results in a schedule, which is then run: the virtual machine is now active and runs the projects with the scheduled actions.
+Finally, the after execution phase is run, with the log from the execution before.
 
 
 \section{Format of the generated feedback}\label{sec:format-of-the-generated-feedback}
 
-%This document describes the output format of the judge.
-%It is a high-level document;
-%see below where to find more detailed documentation.
-%
-%## Structure
-%
-%There are three structural objects in the feedback:
-%
-%- `Judgement` - the top level object.
-%- `Group` - groups one or more tests or subgroups.
-%- `Test` - one condition or test that is evaluated.
-%
-%For example, the structure might look like this for a very simple test plan.
-%All 5 tests are in one group.
-%
-%```yaml
-%# The judgement object
-%children:
-%- name: All tests
-%children:
-%- Test 1
-%- Test 2
-%- Test 3
-%- Test 4
-%- Test 5
-%```
-%
-%A more complex test plan might have subgroups of different levels.
-%The first 2 tests are again in one group.
-%The second group does not contain other groups, each with 3 tests.
-%
-%```yaml
-%# The judgement object
-%children:
-%- name: Normal tests (group 1)
-%children:
-%- Test 1
-%- Test 2
-%- name: Advanced tests (group 2)
-%children:
-%- name: Group 2.1
-%children:
-%- Test 3
-%- Test 4
-%- Test 5
-%- name: Group 2.2
-%children:
-%- Test 6
-%- Test 7
-%- Test 8
-%```
-%
-%The format does not limit the amount of nesting, but of course very deeply
-%nested groups may not be practical.
-%
-%## Collapsing groups
-%
-%There are currently 3 visibility modes. From the docs:
-%
-%- `show` means display this group and expand it.
-%- `summary` means display this group, collapse or hide the children by default, unless
-%one of the tests in this group (or its subgroups) fails.
-%- `hide` means do not show the group by default, unless one of the tests in
-%this group (or its subgroups) fails.
-%
-%When counting tests, the recommended way is to always count all groups that are
-%visible. For example, groups with `show` and `summary` are both counted, while
-%groups with `hide` are only counted if displayed. This works the same for nested
-%groups. For example, assume we have the following structure of groups:
-%
-%```yaml
-%children:
-%- name: Group 1
-%visibility: 'show'
-%children:
-%- name: Group 1.1
-%visibility: 'summary'
-%- name: Group 1.2
-%visibility: 'hide'
-%```
-%
-%## Status propagation
-%
-%Each test has a status.
-%However, `Group` (and `Judgement`) objects can also have an optional status override.
-%
-%The status for a group is thus the status property if it exists. If none is
-%provided, the status of the group is the worst status of its children, again
-%calculated recursively. For example, a group's tests might all be OK, but if an
-%error occurred during testing, the group's status might be fail, while no
-%individual test is failed.
-%
-%The order of "badness" of statuses is:
-%
-%1. internal error (something unexpected went wrong)
-%2. testplan error (there is a bug in the test plan)
-%3. time limit exceeded (something took too long)
-%4. wrong (there is an error in the solution)
-%5. correct (the test passes)
-%
-%For example, you have a group with three tests:
-%
-%```yaml
-%- name: Test 1
-%status: testplan error
-%- name: Test 2
-%status: correct
-%- name: Test 3
-%status: wrong
-%```
-%
-%The status of this group would be `testplan error`, unless overridden by a
-%status attribute on the group itself.
-%
-%## Detailed documentation
-%
-%For ease of use, there is also a generated version committed in this folder.
-%There is also a full example in `schema.json`.
-%
-%For more information about every attribute, you can do two things:
-%
-%- Read the source & docs in `src/output/full-schema.ts`.
-%- Generate a JSON Schema file from that source code, using the following
-%command, which will generate a JSON Schema on stdout:
-%```bash
-%$ npm run generate:output
-%```
-%
-%The reason the JSON Schema is generated from the source code is to ensure it is
-%(more) up to date, as it is very easy to forget to update a separate JSON Schema
-%document.
-%
-%## Compatibility
-%
-%The intention is that if a backwards incompatible change needs to be made, the
-%`version` attribute will be increased. This attribute can then be used to change
-%the behaviour of the code using the results if needed.
-%
-%Note that code using these results should be built with forward compatibility in mind.
-%For example, unknown attributes or values should be ignored, rather than erroring.
-%For example, we might add a new visibility mode in the future.
-%All existing code should still accept the results, on a best-efforts basis,
-%i.e. by using a default visibility.
+The format of the generated feedback is in structure very similar to the structure of the tests in the test suite (\cref{subsec:structure-of-a-test-suite}).
+The three levels of the feedback are:
 
+\begin{itemize}[nosep]
+    \item \term{Judgement}: the top-level object of the feedback.
+    \item \term{Group}: contains one or more tests or subgroups (equivalent to a group from the test suite). Each group has the same options as in the test suite (e.g.\ visibility, sprites).
+    \item \term{Test}: one condition or requirement that is evaluated (equivalent to a test from the test suite).
+\end{itemize}
+
+When running Itch as a library, it is possible to provide a callback function that will be called when feedback is available.
+There are two modes for this: the partial model or the full mode.
+In the partial feedback mode, feedback is streamed to the callback: it is called whenever feedback is available.
+In the full mode, the callback is called once at the end with a fully constructed feedback object that contains all feedback for the evaluation.
+
+When running Itch on the command line, the feedback is outputted to the standard output stream (this is also possible when using Itch as a library).
+Depending on the feedback mode, the format is slightly different.
+
+\begin{figure}
+    \begin{minted}{json}
+        {"command": "start-judgement", "version": 2}
+        {"command": "start-group", "name": "Check on existing code", "visibility": "summary"}
+        {"command": "start-group", "name": "Stage", "sprite": "Stage", "visibility": "summary"}
+        {"command": "start-test", "name": "Sprite exists"}
+        {"command": "close-test", "feedback": "The sprite exists", "status": "correct"}
+        {"command": "close-group"}
+        {"command": "close-group"}
+        {"command": "close-judgement"}
+    \end{minted}
+    \caption{Example of the output generated by Itch for a test suite with two nested groups, with one test. Note the similarity to \cref{lst:tested-output-example}.}\label{lst:itch-output-example-partial}
+\end{figure}
+
+The partial feedback format is very similar to the Dodona feedback format used by TESTed (\cref{subsec:dodona-output}).
+An example of this feedback is given in \cref{lst:itch-output-example-partial}.
+The format is newline-delimited JSON: JSON objects are separated by a newline, and each line is a valid JSON object.
+The structure of the feedback is indicated by commands, with \texttt{start} commands to begin a new level in the hierarchy and \texttt{close} commands to finish a level.
+
+In full feedback mode, the output is a single JSON object that represents a nested tree of the same feedback.
 
 \section{Evaluation of the Itch framework}\label{sec:itch-evaluation}
 
