@@ -85,6 +85,49 @@
               platforms = platforms.all;
             };
         };
+        tikz-uml = pkgs.stdenvNoCC.mkDerivation rec {
+          pname = "tikz-uml";
+          version = "v1.0-2016-03-29";
+          outputs = ["tex" "texdoc" "out"];
+
+          passthru.tlDeps = with pkgs.texlive; [
+            pgf
+            xstring
+            tools
+            pgfopts
+          ];
+
+          src = pkgs.fetchurl {
+            url = "https://perso.ensta-paris.fr/~kielbasi/tikzuml/var/files/src/tikzuml-${version}.tbz";
+            hash = "sha256-DLxKIMjtQBYrO5qxQAsXQpPsGtdQjmQMqHnnjEWhBdA=";
+          };
+
+          dontConfigure = true;
+          dontBuild = true;
+
+          installPhase = ''
+            runHook preInstall
+
+            mkdir -p "$out"
+            path="$tex/tex/latex/tikz-uml"
+            mkdir -p "$path"
+            cp *.{cls,def,clo,sty} "$path/"
+            cp *.{cls,def,clo,sty} "$out/"
+
+            path="$texdoc/doc/tex/latex/tikz-uml"
+            mkdir -p "$path"
+            cp doc/*.pdf "$path/"
+
+            runHook postInstall
+          '';
+
+          meta = with pkgs.lib; {
+            description = "TikZ-UML";
+            license = licenses.unfreeRedistributable;
+            maintainers = [ ];
+            platforms = platforms.all;
+          };
+      };
         latex_with_ugent = pkgs.texliveFull.withPackages (ps: with ps; [
 #          luatex
 #          luatexbase
@@ -123,6 +166,7 @@
 #          fancyvrb
 #          upquote
           ugent2016
+          tikz-uml
         ]);
         font_dir = builtins.concatStringsSep "//:" [
           "${ugent-panno}/share/fonts"

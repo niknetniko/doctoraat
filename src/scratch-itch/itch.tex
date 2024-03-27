@@ -295,9 +295,10 @@ This action is intended to mark certain events in the log, but can also be used 
         function afterExecution(e) {
           // Get all click events on the Hat
           const clicks = e.log.events.filter((e) => e.type === 'click' && e.data.target === 'Hat');
-          for (const click of clicks) {
-            const costumeNrBefore = click.previous.target(click.data.target).currentCostume;
-            const costumeNrAfter = click.next.target(click.data.target).currentCostume;
+          for (const cl of clicks) {
+            const target = cl.data.target;
+            const costumeNrBefore = cl.previous.target(target).currentCostume;
+            const costumeNrAfter = cl.next.target(target).currentCostume;
 
             // Check that the costume cycles.
             const correctCostumeNr = (costumeNrBefore + 1) % 1;
@@ -316,15 +317,85 @@ This is done by hand (using the \mintinline{javascript}{log} scheduler action) a
 The log consists of snapshots (which are taken every time something changes in the virtual machine) and events (which denote interesting snapshots).
 For example, every action in the scheduler is saved as an event, meaning there is a snapshot before the action and after the action has been completed.
 
-For example, the action to click a sprite is saved in the log.
-Now, in the after execution phase, the event in the log provides access to the snapshot from just before the sprite was clicked and just after the sprite was clicked (or when scripts have terminated if synchronous).
-This allows for a test to check if the costumes changes when a sprite is clicked, regardless of the implementation.
-This is illustrated in \cref{fig:itch-hat-costum-change}.
-
+For example (\cref{fig:itch-hat-costum-change}), the action to click a sprite (which was scheduled in the previous phase) has a corresponding event in the log.
+That event gives access to a snapshot from before the sprite was clicked and after the sprite was clicked (in this case, the scheduled action was synchronous).
+In the actual test suite, the previous phase did not schedule one click, but a bunch of clicks.
+Each of these events provides before and after snapshots, which are then used to determine if the costume changes as expected when the sprite was clicked.
+As the example shows, the test suite is not concerned with the actual implementation in Scratch: the behaviour is tested.
 
 \section{Evaluating projects}\label{sec:itch-evaluating-projects}
 
-TODO
+The evaluation of a submission goes through the following process:
+
+\begin{enumerate}
+    \item The submission, the starter project, and the test suite are made available (see later, as this depends on how Itch is run).
+    \item Itch loads both projects, and runs the before execution phase.
+    \item If the before execution phase does not result in an error, Itch initialises the virtual machine, inserts hooks for the log, and loads the submission into the virtual machine.
+    \item The during execution phase is run, and the scheduled actions are captured from the test suite.
+    \item Itch starts the virtual machine and executes the scheduled actions.
+          While executing, the logs are captured.
+    \item If the execution did not result in an error, Itch shuts down the virtual machine, and runs the after execution phase.
+\end{enumerate}
+
+Scratch is built using browser technologies.
+For the full capabilities, it has to be run in the browser.
+While the virtual machine is pure JavaScript and could thus run without a browser, the renderer is not: it uses the HTML canvas and WebGL technologies.
+The renderer is used to calculate things like sprite collisions and checking if sprites touch certain colours.
+While it is theoretically possible to create a renderer that does not use WebGL, this would be a big undertaking and imply a big maintenance burden.
+The re-implemented renderer will have to be kept up to date with the upstream one and replicate all behaviour exactly.
+
+For these reasons, there are two ways to run Itch:
+
+\begin{itemize}
+    \item As a library in the browser.
+          This is useful for contexts where you already have a browser, e.g.\ running along the Scratch environment on the device of the student.
+    \item As a command line tool.
+          This is for cases where Itch runs as a service in the backend, e.g.\ to check submissions after students are done.
+\end{itemize}
+
+\subsection{Running Itch as a library}\label{subsec:running-itch-as-a-library}
+
+\begin{figure}
+    \begin{minted}{typescript}
+        export interface EvalConfig {
+          /** The submission sb3 data. */
+          submission: ArrayBuffer;
+          /** The starter project sb3 file. */
+          template: ArrayBuffer;
+          /** If the output should be partial or full. */
+          fullFormat: boolean;
+          /* The canvas for the renderer. */
+          canvas: HTMLCanvasElement;
+          /** The test suite to use. */
+          testplan: string | TestplanSource;
+          /** Callback for the results. */
+          callback: OutputHandler;
+          /** The language of the exercise. */
+          language: string;
+        }
+
+        /** Run the judge. */
+        export async function run(config: EvalConfig): Promise<void>;
+    \end{minted}
+    \caption{The exposed interface to run Itch. It consists of one function and a configuration object.}\label{fig:itch-library-interface}
+\end{figure}
+
+Itch consists of two JavaScript packages, of which the core package implements the testing framework itself.
+This package can be loaded into the browser and run.
+The exposed interface to run Itch is limited to one function and a configuration object (\cref{fig:itch-library-interface}).
+Most of the options are self-explanatory, but the output format option is explained in \cref{sec:format-of-the-generated-feedback}.
+
+\subsection{Running Itch as a command line tool}\label{subsec:running-itch-as-a-command-line-tool}
+
+When there is no browser available, Itch provides a command line interface.
+\marginnote{A headless browser means a full browser but without user interface.}
+In this mode, Itch will run a headless browser, load the projects and test suites, run the judge, and finally collect the results from the browser.
+
+\begin{tikzpicture}
+    \begin{umlpackage}[x=0, y=0]{package-name}
+    \end{umlpackage}
+\end{tikzpicture}
+
 
 \section{Format of the generated feedback}\label{sec:format-of-the-generated-feedback}
 
