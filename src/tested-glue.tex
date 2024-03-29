@@ -2,45 +2,48 @@
 
 \begin{document}
 
-\dictum[Attributed to Burt Rutan]{
-    Testing leads to failure, and failure leads to understanding.
-}
+\chapter*{Preface}
+
+%\dictum[Attributed to Burt Rutan]{
+%    Testing leads to failure, and failure leads to understanding.
+%}
 
 This part of the thesis deals with TESTed, an educational software testing framework.
 One of its defining features is the ability to create programming-language-agnostic exercises.
 This means that the same exercise (with one test suite) can be solved in multiple programming languages, without loosing automated assessment.
 
 %\marginnote{TESTed was first started in my master's thesis.}
-TESTed has produced two publications:
+Research on TESTed has produced two publications:
 
 \begin{itemize}
     \item \fullcite{strijbolTESTedEducationalTesting2023}
-    \item TODO
+    \item TODO: if published, otherwise preprint?
 \end{itemize}
 
-The first paper is the answer to the research question: ``Is it possible to create an educational software testing framework for programming-language-agnostic exercises?''.
-The answer is yes.
-\Cref{ch:tested1} is based on that article.
-\marginnote{This thesis doesn't have a page limit, after all.}
+The first publication answers the research question: ``Is it possible to create an educational software testing framework that supports programming-language-agnostic exercises?''.
+The answer is, spoilers, yes.
+This publication is included as \cref{ch:tested1}.
+\marginnote{A doctoral thesis doesn't have a page limit, after all.}
 It has been expanded with more information about the inner workings of TESTed, in addition to going more in-depth on technical aspects of the framework.
 
-With a working prototype, we then took a step back to look at what is required to go from the prototype to a viable option for creating programming exercises.
+With a working prototype, we then took a step back to look at what is required to go from a prototype to a viable option for creating programming exercises.
 We want TESTed to be suitable for both educators in higher education and secondary education.
 Our ambition was to make TESTed the default options for creating programming exercises in Dodona~\autocite{vanpetegemDodonaLearnCode2023}, our platform for programming exercises.
 
-This resulted in the second paper (\cref{ch:tested-dsl}).
-We looked at software testing more broadly, and we conclude that an important part is an ergonomic and approachable way to author test suites for exercises.
-The result of this is TESTed-DSL, a domain-specific language for authoring programming-language-agnostic exercises with support for automated assessment.
-We also provide a solution to language-agnostic task descriptions.
+The result of this research is presented in the second publication, which is included as \cref{ch:tested-dsl}.
+By looking at (educational) software testing more broadly, we find two missing parts of the process of creating programming exercises.
+The first missing, but important, part is an ergonomic and approachable way of creating test suites for exercises.
+Our solution is TESTed-DSL, a domain-specific language for authoring programming-language-agnostic exercises with support for automated assessment.
+The second missing part is support for language-agnostic task descriptions.
+We show that TESTed-DSL can also be used for task descriptions.
 
 One consequence of this approach is that there is some overlap in both chapters: for example, the introductions in both chapters broadly cover the same topic.
-However, the focus in both is different enough that we feel there is no problem including both: they are not verbatim copies.
-Another example is the terminology used for the levels in the test suites (\vref{subsec:structure-of-a-test-suite} and \vref{subsec:dsl-test-suite-structure}), which have different names.
-The first chapter uses the terminology as used by Dodona, while the second chapter changes those in the DSL to align more with the terminology used in the literature.
-
+However, the focus of both is different enough that we feel there is no problem: they are not verbatim copies.
+Another example is the terminology used for the levels in the test suites (\vref{subsec:structure-of-a-test-suite} and \vref{subsec:dsl-test-suite-structure}), which differs.
+The first chapter uses the terminology as used by Dodona, while the second chapter changes the terminology in the DSL to align more closely with the terminology used in the literature.
 
 As a software project, the source code for TESTed is important.
-It is published\footnote{\url{https://github.com/dodona-edu/universal-judge}} under the \textsc{mit} licence, which is the tradition at Team Dodona (of which TESTed is a part).
+TESTed is developed as part of team Dodona and us published\footnote{\url{https://github.com/dodona-edu/universal-judge}} under the \textsc{mit} licence.
 
 Two ``types'' of documentation are also available:
 
