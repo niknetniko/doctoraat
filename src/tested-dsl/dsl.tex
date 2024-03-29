@@ -108,7 +108,7 @@ This not only duplicates work, but unit testing frameworks for different languag
     \caption{Architecture of a unit test execution engine. Assessing a submission for a single test case comes down to compiling the submission along with the test code (including test script and oracles) into an executable test harness (thick-bordered box). The test script consists of a set of statements and expressions. The harness executes the test script, whose statements and expressions may access public interfaces of a narrow section of the submitted code (unit), captures \textcolor{ugent-we}{outputs} (return values, exceptions) when executing statements and expressions in the script, and runs oracles to validate these outputs.\label{fig:unit-testing}}
 \end{figure}
 
-\subsection{TESTed 1.0}\label{subsec:tested-1.0}
+\subsection{\tested{} 1.0}\label{subsec:tested-1.0}
 
 We introduced TESTed~\autocite{strijbolTESTedEducationalTesting2023} (see also \vref{ch:tested1}) as an open-source educational software testing framework that accepts submissions in multiple programming languages and performs both input/output testing and unit testing, based on a single language-agnostic test suite.
 Currently, TESTed supports evaluating submissions in Bash, C, C\#, Haskell, Java, JavaScript, Kotlin, and Python.
@@ -729,7 +729,7 @@ A single TESTed-DSL test suite can also specify language-specific alternatives f
 \Vref{lst:multiple-test-suite} shows an example with Python and JavaScript alternatives for the same test expression.
 This gives access to language-specific features that are not (yet) supported in the abstract programming language of TESTed-DSL or are not (yet) supported by a language-specific module of TESTed.
 Here, the former is the case for passing anonymous functions as arguments to functions and converting strings to uppercase.
-This example also shows that TESTed-DSL test suites can mix language-specific (lines 2-4) and language-agnostic (line 5) sections.
+This example also shows that TESTed-DSL test suites can mix language-specific (lines 2--4) and language-agnostic (line 5) sections.
 
 % TODO: text colors...
 \begin{listing}
