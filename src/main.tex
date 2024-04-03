@@ -167,9 +167,24 @@
 \definecolor{srcdebuggerd}{HTML}{0DA57A}
 \definecolor{srcdebuggerdd}{HTML}{0B8E69}
 
+\definecolor{srcpoke}{HTML}{797270}
+\definecolor{srcpoked}{HTML}{605B59}
+\definecolor{srcpokedd}{HTML}{605B59}
+
 \newcommand*\blockdebug{\scr_normalblock{scrpen}}
 \newcommand*\emptybooldebug[1][2em]{\_boolemptytrue\scr_boolbox{debuggerbool}{#1}}
 \newcommand*\booldebug[1]{\scr_boolbox{srcdebugger}{#1}}
+\newcommand*\blockpoke{\scr_normalblock{srcpoke}}
+\newcommand*\drawicon{%
+
+\kern.6em
+\begingroup
+    \color{penvline}%
+    \vrule width0.5pt
+\endgroup
+\kern.6em
+}
+\newcommand*\blockpokehat{\scr_initblock{srcpoke}}
 \scr_restorecatcode
 %! parser = on
 
