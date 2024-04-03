@@ -536,13 +536,31 @@ The user-facing part of the Poke software testing framework consists of three pa
 
 \subsection{Poke-provided blocks}\label{subsec:poke-provided-blocks}
 
-Poke provides five categories of blocks: a hat block (which starts the tests if the button is pressed), feedback blocks, user interaction blocks, observation blocks, and blocks to execute code in another sprite.
+Poke provides five categories of blocks: a hat block (\scratchinline{\blockpokehat{when \drawtesttube clicked}}, which starts the tests if the button is pressed), feedback blocks, user interaction blocks, observation blocks, and blocks to execute code in another sprite.
 
 \subsubsection{Feedback blocks}
 
+\begin{scratch}[scale=0.7]
+    \blockpokegroup{test group \ovalnum{name}}{\blockspace[0.5]}
+\end{scratch}
+
 The structure of a test suite in Poke is identical to the structure in Itch (\cref{subsec:structure-of-a-test-suite2}): a test suite consists of groups, which can contain tests or other groups.
-The block for creating groups is a C block (TODO) that takes the name of the group as an argument.
+The block for creating groups is a C block that takes the name of the group as an argument.
+The body of the block outputs its test results in the group.
 Differing from Itch, the only property of a group is its name: for example, a group in Poke cannot be linked to a sprite at the moment.
+
+TODO: assert
+
+\begin{minipage}{0.49\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawfeedbackcorrect} correct: \ovalnum{feedback}}
+    \end{scratch}
+\end{minipage}%
+\begin{minipage}{0.49\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawfeedbackwrong} wrong: \ovalnum{feedback}}
+    \end{scratch}
+\end{minipage}
 
 For the tests, there are three blocks, the main of which is the assertion block.
 It takes a boolean value and a name.
