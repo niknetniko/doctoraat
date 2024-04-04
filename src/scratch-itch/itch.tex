@@ -541,7 +541,7 @@ Poke provides five categories of blocks: a hat block (\scratchinline{\blockpokeh
 \subsubsection{Feedback blocks}
 
 \begin{scratch}[scale=0.7]
-    \blockpokegroup{test group \ovalnum{name}}{\blockspace[0.5]}
+    \blockpokegroup{\drawicon{\drawfeedback} test group \ovalnum{name}}{\blockspace[0.5]}
 \end{scratch}
 
 The structure of a test suite in Poke is identical to the structure in Itch (\cref{subsec:structure-of-a-test-suite2}): a test suite consists of groups, which can contain tests or other groups.
@@ -549,46 +549,99 @@ The block for creating groups is a C block that takes the name of the group as a
 The body of the block outputs its test results in the group.
 Differing from Itch, the only property of a group is its name: for example, a group in Poke cannot be linked to a sprite at the moment.
 
-TODO: assert
-
-\begin{minipage}{0.49\linewidth}
-    \begin{scratch}[scale=0.7]
-        \blockpoke{\drawicon{\drawfeedbackcorrect} correct: \ovalnum{feedback}}
-    \end{scratch}
-\end{minipage}%
-\begin{minipage}{0.49\linewidth}
-    \begin{scratch}[scale=0.7]
-        \blockpoke{\drawicon{\drawfeedbackwrong} wrong: \ovalnum{feedback}}
-    \end{scratch}
-\end{minipage}
+\begin{wide}
+    \begin{varwidth}{0.40\linewidth}
+        \begin{scratch}[scale=0.7]
+            \blockpoke{\drawicon{\drawfeedback} assert \boolpokeempty[3em] named \ovalnum{feedback}}
+        \end{scratch}
+    \end{varwidth}%
+    \hspace{1em}%
+    \begin{varwidth}{0.28\linewidth}
+        \begin{scratch}[scale=0.7]
+            \blockpoke{\drawicon{\drawfeedbackcorrect} correct: \ovalnum{feedback}}
+        \end{scratch}
+    \end{varwidth}%
+    \hspace{1em}%
+    \begin{varwidth}{0.25\linewidth}
+        \begin{scratch}[scale=0.7]
+            \blockpoke{\drawicon{\drawfeedbackwrong} wrong: \ovalnum{feedback}}
+        \end{scratch}
+    \end{varwidth}
+\end{wide}
 
 For the tests, there are three blocks, the main of which is the assertion block.
 It takes a boolean value and a name.
 The name is shown in the output, together with a status depending on the value of the boolean block.
 There are also the correct and wrong blocks, which act as a test that always passes or always fails respectively.
 
-A special block is the wait until or x seconds block (TODO).
+\begin{scratch}[scale=0.7,else word={}]
+    \blockpokedgroup{\drawicon{\drawfeedback} wait until \boolpokeempty[3em] or \ovalnum{} seconds}{\blockspace[0.5]}{\blockspace[0.5]}
+\end{scratch}
+
+A special block is the wait until or timeout block.
 This block will wait until the condition evaluates to true or the specified number of seconds has passed.
-If the condition evaluates to true within the time limit, the positive feedback is used.
-Otherwise, the negative feedback is used.
-Note that this is a double C block, like an if block.
-The two branches can also contain other blocks; it need not be a feedback block.
+If the condition evaluates to true within the time limit, the first slot is used, which will often contain a \scratchinline{\blockpoke{\drawicon{\drawfeedbackcorrect} correct: \ovalnum{}}} block.
+Otherwise, the second slot is used, which will often contain a \scratchinline{\blockpoke{\drawicon{\drawfeedbackwrong} wrong: \ovalnum{}}} block.
+The two slots can also contain other blocks.
 
 \subsubsection{User interaction blocks}
 
-At the moment, five user interaction blocks are implemented (TODO):
+% TODO: oval sprites...
+\begin{varwidth}{0.20\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawinteract} click \greenflag}
+    \end{scratch}
+\end{varwidth}%
+\hspace{1em}%
+\begin{varwidth}{0.28\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawinteract} click \selectmenu{Sprite}}
+    \end{scratch}
+\end{varwidth}%
+\hspace{1em}%
+\begin{varwidth}{0.3\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawinteract} click \selectmenu{Sprite} and wait}
+    \end{scratch}
+\end{varwidth}
 
-\begin{itemize}
-    \item Click the green flag
-    \item Click a sprite
-    \item Move the mouse
-    \item Press a key
-    \item Answer a question
-\end{itemize}
+\begin{varwidth}{0.5\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawinteract} press \selectmenu{space} key}
+    \end{scratch}
+\end{varwidth}%
+\hspace{1em}%
+\begin{varwidth}{0.5\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawinteract} press \selectmenu{space} key and wait}
+    \end{scratch}
+\end{varwidth}%
 
-The click a sprite and press a key blocks each have a variant that also waits for activated scripts to finish executing, similar to the synchronous/asynchronous actions in the scheduler (\cref{subsec:during-execution}).
+\begin{varwidth}{0.5\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawinteract} move mouse to x: \ovalnum{} y: \ovalnum{}}
+    \end{scratch}
+\end{varwidth}%
+\hspace{1em}%
+\begin{varwidth}{0.5\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawinteract} answer \ovalnum{answer text}}
+    \end{scratch}
+\end{varwidth}%
+
+The user interaction blocks will simulate user interaction, similar to the scheduler in Itch (\cref{subsec:during-execution}).
+Currently, there are blocks to click the green flag, click a sprite, move the mouse, press a key, and answer a question.
+The block to click a sprite and block to press a key also have a synchronous variant, which will wait until all activated scripts have finished, again similar to the synchronous/asynchronous actions in the scheduler from Itch.
 
 \subsubsection{Observation blocks}
+
+\begin{varwidth}{0.5\linewidth}
+    \setscratch{scale=0.7}\ovalpoke{\drawicon{\drawobserve} snapshot}
+\end{varwidth}%
+\hspace{1em}%
+\begin{varwidth}{0.5\linewidth}
+    \setscratch{scale=0.7}\ovalpoke{\drawicon{\drawobserve} \selectmenu{property} of \selectmenu{Sprite} in \ovalnum{snapshot variable}}
+\end{varwidth}%
 
 The observation blocks are very similar to sensing blocks from Scratch, as they allow the tests to save and query the environment.
 A special sensing block (which also acts as a variable) reflects the current state of the virtual machine.
@@ -597,12 +650,23 @@ Two more reporter blocks (one for sprite-specific properties and one for the sta
 
 \subsubsection{Executing blocks in another sprite}
 
+\begin{varwidth}{0.5\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpokegroup{\drawicon{\drawsquarearrow} with \selectmenu{Sprite} do}{\blockspace[0.5]}{}
+    \end{scratch}
+\end{varwidth}%
+\hspace{1em}%
+\begin{varwidth}{0.5\linewidth}
+    \begin{scratch}[scale=0.7]
+        \blockpoke{\drawicon{\drawsquarearrow} add sprites to \selectmenu{list} where \boolpokeempty[3em]}
+    \end{scratch}
+\end{varwidth}%
+
 While the test blocks can be placed in any sprite, it is our experience that the most convenient place is a dedicated sprite with only test code.
 However, this introduces an additional complication: how can the test sprite execute blocks on other sprites?
 For example, the test sprite might want to move a certain sprite, which is not possible in vanilla Scratch.
 
 To this end, Poke provides a C block, whose contents will be executed in the selected sprite.
-TODO
 Technically, this re-uses the broadcasting mechanism built into Scratch:
 
 \begin{enumerate}
@@ -616,21 +680,10 @@ When actually executing this code, the broadcast will be sent and the blocks are
 This happens behind the scenes: the copied blocks are not visible to the user, and special care has been taken to ensure that there are no performance issues.
 For example, the blocks are only copied once (or when they are changed).
 
-
-
-
-TODO: over de verschillende blokken
--> categoriën
--> feedback
--> User interaction
--> Observation (snahpshots)
--> UBAS?
-
 TODO: vermelden feedback
 TODO: validatie voor testing
 TODO: future work voor dit
 
-\scratchinline{\blockpoke{hello \drawsquarearrow}}
 
 
 \end{document}
