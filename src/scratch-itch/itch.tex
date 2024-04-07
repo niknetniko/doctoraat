@@ -5,7 +5,57 @@
 
 \chapter{Itch: a testing framework for Scratch}\label{ch:itch}
 
-Todo: introductie.
+Visual block-based languages like Scratch are popular tools for introducing computer science concepts to students.
+The intuitive interface and focus on visuals make Scratch an engaging and accessible programming environment.
+Due to its visual nature, syntactical programming errors are eliminated and students can quickly create games, stories, or other projects.
+This approach gives students a lot of flexibility to express their creativity.
+However, functional errors still arise.
+The process of teaching to code is often slowed down by the delay in providing feedback on and solutions to these errors.
+
+When done manually, assessment of Scratch projects is time-consuming and impractical, especially in large classes, where educators often lack the time to give individual feedback to each student.
+That is why it is important to equip students with tools that can provide immediate feedback and thus enhance their independent learning skills.
+In this chapter, we introduce Itch, a testing framework for Scratch, that can act as an automated assessment tool.
+
+Itch provides flexible testing capabilities: it supports both static and dynamic testing of Scratch projects.
+It provides tools to make common scenarios easy to test, allowing the educators to focus on testing the interesting parts of an exercise.
+
+We also reflect on Itch's use in educational context and discuss what testing of Scratch exercises should look like.
+On the one hand, Scratch strives to allow maximal creative expression for students, while on the other hand, testable exercises need a well-defined goal and limits.
+
+\section{Related work}\label{sec:related-work}
+
+There are few testing frameworks for Scratch.
+In this section, we look at the few existing ones, but also consider some other tools with similar aims.
+We begin with the linter-like tools that perform static analysis.
+
+The first one is Hairball~\autocite{boeHairballLintinspiredStatic2013}, and its web interface, Dr. Scratch~\autocite{moreno-leonDrScratchWeb2015}.
+Hairball analyses the blocks of a provided Scratch project, with multiple rules and analyzers available.
+For example, Dr. Scratch uses it to assign a ``computational thinking score'' to the project, although the creators of Scratch are not a fan of this approach (\autocite{resnickCodingCrossroads2020}, \cref{subsec:how-to-evaluate-scratch-exercises}).
+
+Scrape was a tool that visualized the use of blocks in a Scratch project.
+This is useful to determine which blocks are used, and which are not.
+This tool is no longer available and only works reliably with Scratch 1, but was used by the Scratch team to analyse uploaded Scratch projects~\autocite{brennan2012new}.
+
+QualityHound~\autocite{techapalokulQualityHoundOnline2017} is a linter that detects code smells like ``duplicate code'' or ``broad variable scope''.
+In total, twelve code smells are detected.
+LitterBox~\autocite{fraserLitterBoxLinterScratch2021} is a newer linter that shares some goals with QualityHound.
+For example, it will also detect code smells.
+LitterBox supports significant more patterns, and also finds potential bugs~\autocite{fradrichCommonBugsScratch2020}, by looking for code that seems suspicious (for example, comparing two literal values).
+Subsequent research has expanded LitterBox to find ``code perfumes''~\autocite{obermullerCodePerfumesReporting2021}, which provides positive feedback to students, for example, by noting good use of loops.
+
+LitterBox can also translate code to LeILa, an intermediate language of the Bastet framework~\autocite{stahlbauerVerifiedScratchProgram2020}.
+Bastet uses this intermediate language to enable more traditional and advanced analysis and verification of Scratch programs.
+Examples of what the authors envision are automated test generation, data-flow analysis, unbounded model checking on predicate abstraction, and concolic testing.
+
+\marginnote{The naming is unfortunate here.}
+\textsc{itch}~\autocite{johnsonITCHIndividualTesting2016} is the first automatic testing framework to the knowledge of the authors.
+It translates a very limited subset of Scratch programs to Python.
+\textsc{itch} uses the Scratch say and ask functionality to perform input/output-based testing on Scratch projects.
+Of course, being limited to input/ouput, only a subset of the functionality of Scratch can be used.
+
+Finally, Whisker~\autocite{stahlbauerTestingScratchPrograms2019} is a full automated testing framework for Scratch, and the only most similar to Itch.
+While manual test suites (also written in JavaScript) are possible, Whisker focuses on automated testing~\autocite{deinerAutomatedTestGeneration2023}.
+For example, Whisker (and subsequent research), supports property-based testing, search-based testing~\autocite{deinerSearchBasedTestingScratch2020}, and model-based testing~\autocite{gotzModelbasedTestingScratch2022}.
 
 \section{Using the framework}\label{sec:itch-using-the-framework}
 
