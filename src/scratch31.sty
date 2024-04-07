@@ -85,7 +85,7 @@
     \begin{tikzpicture}[scale=0.9,baseline=-14pt,yscale=-1]
         \draw[draw=white,line join=round,line width=1.444pt] svg {M18.3944 7C18.9574 7 19.2389 7 19.4711 7.05628C20.199 7.2327 20.7673 7.801 20.9437 8.52887C21 8.76107 21 9.04256 21 9.60555L21 16C21 17.8856 21 18.8284 20.4142 19.4142C19.8284 20 18.8856 20 17 20L16 20L8 20L7 20C5.11438 20 4.17157 20 3.58579 19.4142C3 18.8284 3 17.8856 3 16L3 9.60555C3 9.04256 3 8.76107 3.05628 8.52887C3.23271 7.801 3.80101 7.2327 4.52887 7.05628C4.76107 7 5.04257 7 5.60555 7V7C5.92098 7 6.07869 7 6.2261 6.9779C6.68235 6.90952 7.10092 6.6855 7.4109 6.34382C7.51105 6.23342 7.59853 6.1022 7.7735 5.83975L8 5.5C8.39637 4.90544 8.59456 4.60816 8.86549 4.40367C9.03094 4.27879 9.2148 4.18039 9.41048 4.112C9.73092 4 10.0882 4 10.8028 4L13.1972 4C13.9118 4 14.2691 4 14.5895 4.112C14.7852 4.18039 14.9691 4.27879 15.1345 4.40367C15.4054 4.60816 15.6036 4.90544 16 5.5L16.2265 5.83975C16.4015 6.1022 16.4889 6.23342 16.5891 6.34382C16.8991 6.6855 17.3177 6.90952 17.7739 6.9779C17.9213 7 18.079 7 18.3944 7V7Z};
         \draw[draw=white,line join=round,line width=1.44pt] svg {M15 13C15 14.6569 13.6569 16 12 16C10.3431 16 9 14.6569 9 13C9 11.3431 10.3431 10 12 10C13.6569 10 15 11.3431 15 13Z};
-        \node[fit=(current bounding box), inner ysep=8pt]{};
+        \node[fit=(current bounding box), inner ysep=4pt]{};
     \end{tikzpicture}%
     \kern0.2em\relax\space
 }
@@ -99,10 +99,168 @@
     \kern0.2em\relax\space
 }
 
+\colorlet{ctrl}{scrcontrol}
+\colorlet{ctrld}{scrcontrold}
+\colorlet{ctrldd}{scrcontroldd}
+
 
 % Special commands that use the underscore...
 %! parser = off
 \catcode`\_11
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                dessine un bloc de répétition ou test                 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\def\scr_blocklooppoke#1#2#3#4#5{% #1=texte  #2=instructions sup  #3=instructions inf #4=boucle infinie (1 ou 0)  #5=fleche de répétition (1 ou 0)
+	\def\scr_current_blockcolor{srcpoke}
+	\edef\scr_blocminheight{\dimexpr\scr_loopblockheight+\scr_ysepinf+\scr_ysepsup+\scr_corner\relax}% hauteur minimale d'un bloc normal
+	\setbox\scr_box\hbox{%
+		\pgfinterruptpicture
+		\useKV[\scrname]{pre text}%
+		\_inpicturetrue
+		#1%
+		\scr_blockstrut
+		\endpgfinterruptpicture
+	}%
+	\scr_csedef{scr_txtloopwd\number\scr_loopnest}{\scr_maxdim(\wd\scr_box,\scr_minwd+\scr_corner*2+\scr_notch*2)}%
+	\scr_csedef{scr_txtloopht\number\scr_loopnest}{\the\ht\scr_box}%
+	\scr_csedef{scr_txtlooptotht\number\scr_loopnest}{\the\dimexpr\ht\scr_box+\dp\scr_box\relax}%
+	\scr_csedef{toploopx\number\scr_loopnest}{\the\scr_xoffset}% coordonnées du point nord-west
+	\scr_csedef{toploopy\number\scr_loopnest}{\the\scr_yoffset}%
+	\scr_csedef{blocnum\number\scr_loopnest}{\number\scr_blocknum}%
+	\advance\scr_xoffset\scr_loopblockwidth
+	\advance\scr_yoffset\dimexpr-\scr_corner-\scr_ysepsup-\csname scr_txtlooptotht\number\scr_loopnest\endcsname-\scr_ysepinf\relax
+	\ifboolKV[\scrname]{num blocks}
+		{\scr_csdef{scr_numblockif\number\scr_loopnest}{%
+			\node[
+					at=(origin),
+					draw=none,
+					anchor=base east,
+					xshift=-\scr_numsep,
+					yshift=\csname toploopy\number\scr_loopnest\endcsname-\csname scr_txtloopht\number\scr_loopnest\endcsname-\scr_corner-\scr_ysepsup
+				]
+				(num)
+				{\scr_eeearg\numblock{\csname blocnum\number\scr_loopnest\endcsname}};%
+			}%
+		}
+		{\scr_cslet{scr_numblockif\number\scr_loopnest}\empty
+		}%
+	\advance\scr_loopnest1
+	\advance\scr_blocknum1
+	#2%
+	\advance\scr_loopnest-1
+	\scr_cslet{scr_blockstopif_\number\scr_loopnest}\scr_blockstop
+	\scr_csedef{bottomifx\number\scr_loopnest}{\the\scr_xoffset}%
+	\scr_csedef{bottomify\number\scr_loopnest}{\the\scr_yoffset}%
+	\ifcat\relax\detokenize{#3}\relax\else% si instruction #3
+		\advance\scr_yoffset\dimexpr-\scr_blocminheight\relax% épaisseur théorique de la branche "sinon"
+		\scr_csedef{blocelsenum\number\scr_loopnest}{\number\scr_blocknum}%
+		\ifboolKV[\scrname]{num blocks}
+			{\scr_csdef{scr_numblockelse\number\scr_loopnest}{%
+				\node[
+						at=(origin),
+						draw=none,
+						anchor=base east,
+						xshift=-\scr_numsep,
+						yshift=\csname bottomify\number\scr_loopnest\endcsname-\scr_loopblockheight-\scr_corner
+					]
+					(num)
+					{\scr_eeearg\numblock{\csname blocelsenum\number\scr_loopnest\endcsname}};}%
+			}
+			{\scr_cslet{scr_numblockelse\number\scr_loopnest}\empty
+			}%
+		\advance\scr_loopnest1
+		\advance\scr_blocknum1
+		#3%
+		\advance\scr_loopnest-1
+		\scr_csedef{bottomelsex\number\scr_loopnest}{\the\scr_xoffset}%
+		\scr_csedef{bottomelsey\number\scr_loopnest}{\the\scr_yoffset}%
+	\fi
+	\advance\scr_yoffset by \dimexpr-\scr_blocminheight\relax% épaisseur de la branche du bas
+	\def\scr_current_blockcolor{srcpoke}%
+%	############## dessin du corps ##############
+	\edef\scr_current_linecolor{\ifboolKV[\scrname]{print}{scr_linegray!\scr_contrast!black}{\scr_current_blockcolor dd}}%
+	\draw[
+			draw=\scr_current_linecolor,
+			line width=\scr_linewidth,
+			rounded corners=0.4*\scr_ex*\scr_scale,
+			fill={%
+				\ifboolKV[\scrname]{print}
+					{\ifboolKV[\scrname]{fill blocks}
+						{scr_fillgray}
+						{none}%
+					}
+					{\scr_current_blockcolor}%
+			}
+		]
+		(\csname toploopx\number\scr_loopnest\endcsname,\csname toploopy\number\scr_loopnest\endcsname)--++(0.66666*\scr_notch,0)--++(\scr_corner,-\scr_corner)--++(\scr_notch,0)--++(\scr_corner,\scr_corner)--++(\csname scr_txtloopwd\number\scr_loopnest\endcsname+2*\scr_xsep-\scr_corner*2-\scr_notch*1.66666,0)% ligne sup
+		--++(0,-\csname scr_txtlooptotht\number\scr_loopnest\endcsname-\scr_ysepsup-\scr_ysepinf-\scr_corner)% ligne est "|"
+		--++(-\csname scr_txtloopwd\number\scr_loopnest\endcsname-2*\scr_xsep+\scr_corner*2+\scr_notch*1.66666+\scr_loopblockwidth,0)--++(-\scr_corner,-\scr_corner)--++(-\scr_notch,0)--++(-\scr_corner,\scr_corner)--++(-\scr_notch*.66666,0)% ligne sud "--\__/---------"
+		--(\csname bottomifx\number\scr_loopnest\endcsname,\csname bottomify\number\scr_loopnest\endcsname)% descente gauche bloc "if"
+		\ifcat\relax\detokenize{#3}\relax\else% tracé de la branche du else
+			\ifnum\csname scr_blockstopif_\number\scr_loopnest\endcsname=1
+				--++(\csname scr_txtloopwd\number\scr_loopnest\endcsname+2*\scr_xsep-\scr_loopblockwidth,0)% ligne haut de la barre else "-----------------"
+			\else
+				--++(\scr_notch*0.66666,0)--++(\scr_corner,-\scr_corner)--++(\scr_notch,0)--++(\scr_corner,\scr_corner)--++(\csname scr_txtloopwd\number\scr_loopnest\endcsname+2*\scr_xsep-\scr_corner*2-\scr_notch*1.66666-\scr_loopblockwidth,0)% ligne haut de la barre else "--\__/---------"
+			\fi
+			--++(0,-\scr_loopblockheight-\scr_ysepsup-\scr_ysepinf-\scr_corner)% descente barre else
+			--++(-\csname scr_txtloopwd\number\scr_loopnest\endcsname-2*\scr_xsep+\scr_corner*2+\scr_notch*1.66666+\scr_loopblockwidth,0)--++(-\scr_corner,-\scr_corner)--++(-\scr_notch,0)--++(-\scr_corner,\scr_corner)--++(-.66666*\scr_notch,0)% ligne sud "/--\__/---------"
+			--(\csname bottomelsex\number\scr_loopnest\endcsname,\csname bottomelsey\number\scr_loopnest\endcsname)% descente gauche bloc "else"
+		\fi
+		\ifnum\scr_blockstop=1
+			--++(\csname scr_txtloopwd\number\scr_loopnest\endcsname+2*\scr_xsep-\scr_loopblockwidth,0)% ligne haut de la barre de fin "----------------"
+		\else
+			--++(.66666*\scr_notch,0)--++(\scr_corner,-\scr_corner)--++(\scr_notch,0)--++(\scr_corner,\scr_corner)--++(\csname scr_txtloopwd\number\scr_loopnest\endcsname+2*\scr_xsep-\scr_corner*2-\scr_notch*1.66666-\scr_loopblockwidth,0)% ligne haut de la barre de fin "--\__/---------"
+		\fi
+		--++(0,-\scr_loopblockheight-\scr_ysepsup-\scr_ysepinf-\scr_corner)% ligne Est "\ + | + /"
+		\ifnum#4=1 %infiniteloop
+			--++(-\csname scr_txtloopwd\number\scr_loopnest\endcsname-2*\scr_xsep,0)% ligne Sud "\---------------"
+		\else
+			--++(-\csname scr_txtloopwd\number\scr_loopnest\endcsname-2*\scr_xsep+\scr_corner*2+\scr_notch*1.66666,0)--++(-\scr_corner,-\scr_corner)--++(-\scr_notch,0)--++(-\scr_corner,\scr_corner)--++(-.66666*\scr_notch,0)% ligne Sud "\--\__/---------"
+		\fi
+		--cycle;% remontée tout en haut et cycle ## bugfix 0.14
+	\advance\scr_xoffset\dimexpr-\scr_loopblockwidth\relax
+	\csname scr_numblockif\number\scr_loopnest\endcsname% numérote ou pas le texte dans le bandeau du haut
+	\node[
+			at=(origin),
+			draw=none,
+			anchor=base west,
+			xshift=\csname toploopx\number\scr_loopnest\endcsname+\scr_xsep,
+			yshift=\csname toploopy\number\scr_loopnest\endcsname-\csname scr_txtloopht\number\scr_loopnest\endcsname-\scr_corner-\scr_ysepsup,
+			text={%
+				\ifboolKV[\scrname]{print}
+					{\useKV[\scrname]{text color}}
+					{white}%
+			}
+		]
+		(txt\csname blocnum\number\scr_loopnest\endcsname)
+		{%
+			\useKV[\scrname]{pre text}%
+			\_inpicturetrue
+			#1%
+			\scr_blockstrut
+		};
+	\ifcat\relax\detokenize{#3}\relax\else
+		\node[
+				at=(origin),
+				draw=none,
+				anchor=base west,
+				xshift=\csname toploopx\number\scr_loopnest\endcsname+\scr_xsep,
+				yshift=\csname bottomify\number\scr_loopnest\endcsname-\scr_loopblockheight-\scr_corner,
+				text={%
+					\ifboolKV[\scrname]{print}
+						{\useKV[\scrname]{text color}}
+						{white}%
+				}
+			]
+			(txt\csname blocelsenum\number\scr_loopnest\endcsname)
+			{%
+				\useKV[\scrname]{pre text}%
+				\useKV[\scrname]{else word}%
+			};
+		\csname scr_numblockelse\number\scr_loopnest\endcsname% numérotation bloc else ou pas
+	\fi
+	\xdef\scr_blockstop{\ifnum#4=1 1\else0\fi}%
+}
 \newcommand*\blockdebug{\scr_normalblock{scrpen}}
 \newcommand*\emptybooldebug[1][2em]{\_boolemptytrue\scr_boolbox{debuggerbool}{#1}}
 \newcommand*\booldebug[1]{\scr_boolbox{srcdebugger}{#1}}
@@ -117,8 +275,8 @@
     \kern.6em
 }
 \newcommand*\blockpokehat{\scr_initblock{srcpoke}}
-\newcommand*\blockpokegroup[2]{\colorlet{scrcontrol}{srcpoke}\colorlet{scrcontrold}{srcpoked}\colorlet{scrcontroldd}{srcpokedd}\scr_blockloop{#1}{#2}{}00}
-\newcommand*\blockpokedgroup[3]{\colorlet{scrcontrol}{srcpoke}\colorlet{scrcontrold}{srcpoked}\colorlet{scrcontroldd}{srcpokedd}\scr_blockloop{#1}{#2}{#3}00}
+\newcommand*\blockpokegroup[2]{\scr_blocklooppoke{#1}{#2}{}00}
+\newcommand*\blockpokedgroup[3]{\scr_blocklooppoke{#1}{#2}{#3}00}
 \newcommand*\boolpoke[1]{\scr_boolbox{srcpoke}{#1}}
 \newcommand*\boolpokeempty[1][2em]{\_boolemptytrue\scr_boolbox{srcpokeempty}{#1}}
 \newcommand*\ovalpoke[1]{\scr_ovalbox{0}{srcpoke}{#1}}

@@ -9,11 +9,86 @@ Todo: introductie.
 
 \section{Using the framework}\label{sec:itch-using-the-framework}
 
-TODO
+To illustrate Itch, we will use one exercise as a running example: the ``Grow and shrink'' exercise (\cref{fig:itch-grow-shrink-code}).
+In this exercise, there are three sprites: each sprite must grow if the ``g'' key is pressed.
+Additionally, the sprites must shrink if the ``k'' key is pressed.
 
-\section{Architectural design of the framework}\label{sec:itch-architecture}
+\begin{figure}
+    \centering
+    \includegraphics{itch-grow-and-shrink-code}
+    \caption{The ``Grow and shrink'' exercise. A correct implementation of the exercise for the sprite ``Nano'' is seen here.}
+    \label{fig:itch-grow-shrink-code}
+\end{figure}
 
-TODO
+To test this exercise, we design a test suite that will verify the behaviour of the sprites (\cref{lst:itch-grow-and-shrink}).
+The test suite does this in concept:
+
+\begin{enumerate}[noitemsep]
+    \item Save the existing size of the sprites.
+    \item Press the key that we are testing.
+    \item Verify if the new size of the sprite is larger or smaller than the previously saved size.
+    \item Save the new size as the existing size for the next test.
+\end{enumerate}
+
+Since this is a dynamic test suite (we do not look at the blocks), only one of the phases of the test suite is used (see \cref{sec:itch-test-suites}).
+
+\begin{listing}
+    \begin{minted}{javascript}
+function duringExecution(e) {
+  const rt = e.vm.runtime;
+  // Save the original sizes of the sprites.
+  const oldSizes = {
+    "Giga": rt.getSpriteTargetByName("Giga").size,
+    "Pico": rt.getSpriteTargetByName("Pico").size,
+    "Nano": rt.getSpriteTargetByName("Nano").size
+  }
+  e.scheduler
+    // Execute 4 events after each other.
+    .forEach([1, 2, 3, 4], (prev) => {
+      // Press the "g" key
+      return prev.pressKey('g').log(() => {
+        e.out.group("Test if sprites get bigger", () => {
+          for (const sprite in oldSizes) {
+            // Check if the new size is more than the old size.
+            const newSize = rt.getSpriteTargetByName(sprite).size;
+            e.out
+              .test(`${sprite} got bigger`)
+              .expect(newSize > oldSizes[sprite])
+              .toBe(true);
+            // Save the new size as the old one.
+            oldSizes[sprite] = newSize
+          }
+        })
+      });
+    }).forEach([1, 2, 3, 4], (prev) => {
+    return prev.pressKey('k').log(() => {
+      e.out.group("Test if sprites get smaller", () => {
+        for (const sprite in oldSizes) {
+          const newSize = rt.getSpriteTargetByName(sprite).size;
+          e.out
+            .test(`${sprite} got smaller`)
+            .expect(newSize < oldSizes[sprite])
+            .toBe(true);
+          oldSizes[sprite] = newSize
+        }
+      })
+    });
+  })
+    .end();
+}
+    \end{minted}
+    \caption{The complete test suite for the ``Grow and shrink'' exercise in Itch.}
+    \label{lst:itch-grow-and-shrink}
+\end{listing}
+
+As a result of running this test suite, feedback is generated.
+The structure of the test suite (\cref{subsec:structure-of-a-test-suite2}) is reflected in the output (\cref{sec:format-of-the-generated-feedback}).
+It also contains the groups and the tests.
+
+
+%\section{Design of the framework}\label{sec:itch-architecture}
+%
+%Itch inserts itself into the Scratch Virtu
 
 \section{Test suites}\label{sec:itch-test-suites}
 
@@ -49,8 +124,8 @@ function afterExecution(e) {
     \end{minted}
     \caption[]{
         A skeleton of a test suite for Itch that shows the three phases.
-        Each phase is implemented as separate function that will be called at the appropriate time by Itch.
-        The argument to these functions is an instance of the \mintinline{javascript}{Evaluation} class, which provides various methods to help testing, such as the test structure, assertion functions, etc.
+        Each phase is implemented as a separate function that will be called at the appropriate time by Itch.
+        The argument to these functions is an instance of the \mintinline{javascript}{Evaluation} class, which provides various methods to help with testing, such as the test structure, assertion functions, etc.
     }
     \label{lst:itch-test-suite-skeleton}
 \end{listing}
@@ -450,6 +525,17 @@ In full feedback mode, the output is a single JSON object that represents a nest
 
 In this section, we discuss Itch's use in educational practice, insights from creating test suites for Scratch exercises.
 
+\subsection{Capabilities of the testing framework}\label{subsec:capabilities-of-the-testing-framework}
+
+The initial development of Itch used a set of 13 Scratch exercises from the 2017 edition of the Flemish Programming Contest (\textdutch{Vlaamse Programmeerwedstrijd}).
+The Flemish Programming contest is split into different categories, depending on age or education level.
+The Scratch exercises were used in a special category for students aged 10 to 12.
+
+These 13 exercises were used as a reference for the initial feature set and capabilities of Itch.
+For 12 of the 13 exercises, a test suite was created that tested the submissions sufficiently that it would have been usable in the programming contest.
+The remaining exercise was not testable due to its open-ended nature.
+The problem statement of the exercises boils down to ``draw a house'', which results in a vast variety of houses.
+
 \subsection{Itch in educational practice}\label{subsec:itch-in-educational-practice}
 
 From a relatively early point in the development of Itch, it has been used in educational practice.
@@ -518,9 +604,20 @@ In \cref{sec:poke:-a-testing-framework-written-in-scratch}, we explore an experi
 
 \section{Poke: writing test suites in Scratch}\label{sec:poke:-a-testing-framework-written-in-scratch}
 
-As mentioned previously, we are aware of one other testing framework for Scratch, called Whisker.
-Similarly to Itch, it originally supported only writing test suites in JavaScript.
-Again similarly to Itch, there is now an experimental extension to Whisker that allows writing test suites in Scratch itself.\footnote{\url{https://scratch.fim.uni-passau.de/whisker-scratch/}}.
+As mentioned in the previous subsection, creating test suites in JavaScript for Scratch exercises can be challenging for educators without computer science background or experience.
+To fill this gap, we have developed Poke: a prototype of a testing framework for Scratch implemented in Scratch itself.
+This means that test suites are written with Scratch blocks, tests are executed in the Scratch environment, and the results are also shown in the Scratch environment.
+
+For this prototype, our focus was on two research questions: ``Is it possible to create a testing framework for Scratch in Scratch?'' and ``If possible, which testing facilities should be present?''.
+The answer to the first question is yes, and the remainder of this section discusses the details of Poke, along with answers for the second question.
+These considerations include what blocks to provide, how tests should be run, etc.
+
+
+
+
+%As mentioned previously, we are aware of one other testing framework for Scratch, called Whisker.
+%Similarly to Itch, it originally supported only writing test suites in JavaScript.
+%Again similarly to Itch, there is now an experimental extension to Whisker that allows writing test suites in Scratch itself.\footnote{\url{https://scratch.fim.uni-passau.de/whisker-scratch/}}.
 
 \subsection{Introduction to Poke}\label{subsec:introduction-to-poke}
 
@@ -676,15 +773,116 @@ Technically, this re-uses the broadcasting mechanism built into Scratch:
     \item The original blocks are replaced with a send broadcast block.
 \end{enumerate}
 
-When actually executing this code, the broadcast will be sent and the blocks are then executed in the correct sprite.
+When the virtual machine executes this code, it will send the broadcast, after which it will trigger the blocks in the correct sprite.
 This happens behind the scenes: the copied blocks are not visible to the user, and special care has been taken to ensure that there are no performance issues.
 For example, the blocks are only copied once (or when they are changed).
 
-TODO: vermelden feedback
-TODO: validatie voor testing
-TODO: future work voor dit
+\subsection{Feedback in the Scratch environment}\label{subsec:feedback-in-the-scratch-environment}
 
+% TODO: update Scratch environment?
+\begin{figure}
+\begin{wide}
+    \includegraphics[width=\linewidth]{scratch-poke-feedback}
+\end{wide}
+\caption{
+    Feedback for the ``Grow and shrink'' exercise.
+    Our solution contains an error: the sprite ``Giga'' does not implement the shrinking behaviour (with the ``k'' key).
+    In the feedback, there are two test groups: one for checking that sprites grow and one for checking that sprites shrink.
+    In each of these groups, the relevant key is pressed four times and each sprite is checked.
+    In the ``grow'' group, everything is correct (indicated by the green checkmark).
+    As expected, the second group reports that some tests have failed (indicated by the yellow triangle).
+    Two of the subgroups are open: while the tests for ``Nano'' and ``Pico'' were correct, the one for ``Giga'' failed as expected (indicated by a red cross).
+}
+\label{fig:poke-feedback-result}
+\end{figure}
 
+For this prototype, showing the feedback to students was not a priority.
+As such, the feedback is shown in a rudimentary interface, which shows the feedback in tree format (\cref{fig:poke-feedback-result}).
+While usable, it is not the most intuitive layout, especially considering the target demographic of Scratch.
+
+\subsection{Comparing Poke to Itch}\label{subsec:comparing-poke-to-itch}
+
+To verify that Poke is usable as a testing framework, we compared it to the set of Scratch problems from the Flemish Programming Contest (\cref{subsec:capabilities-of-the-testing-framework}) that were testable by Itch.
+
+Three of the exercises could not be tested with Poke, but this was expected.
+Poke does not support extensions at the moment, and these exercises used the pen extension.
+One of these three exercises would not be testable anyway for the same reason Itch could not test it: drawing a house is a very open-ended exercise.
+The other exercises could be tested with Poke.
+
+For a comparison, \cref{lst:itch-grow-and-shrink} contains the test suite for the ``Grow and shrink'' exercise in Itch, while \cref{lst:poke-grow-and-shrink} contains the test suite used in Poke.
+
+\begin{listing}
+    \begin{wide}
+    \begin{scratch}[scale=0.6]
+        \blockpokehat{when \drawtesttube clicked}
+        \blockpokegroup{\drawicon{\drawfeedback} test group \ovalnum{Test if sprites get bigger}}{
+            \blockrepeat{repeat \ovalnum{4}}{
+                \blockpokegroup{\drawicon{\drawfeedback} test group \ovalnum{Pressing the ``g'' key}}{
+                    \blockvariable{set \selectmenu{snapshot-before} to \ovalpoke{\drawicon{\drawobserve} snapshot}}
+                    \blockpoke{\drawicon{\drawinteract} press \selectmenu{g} key and wait}
+                    \blockpoke{\drawicon{\drawfeedback} assert \booloperator{\boolsensing{\selectmenu{size} of \selectmenu{Giga}} > \ovalpoke{\drawicon{\drawobserve} \selectmenu{size} of \selectmenu{Giga} in \ovalvariable{snapshot-before}}} named \ovalnum{Gigga got bigger}}
+                    \blockpoke{\drawicon{\drawfeedback} assert \booloperator{\boolsensing{\selectmenu{size} of \selectmenu{Nano}} > \ovalpoke{\drawicon{\drawobserve} \selectmenu{size} of \selectmenu{Nano} in \ovalvariable{snapshot-before}}} named \ovalnum{Nano got bigger}}
+                    \blockpoke{\drawicon{\drawfeedback} assert \booloperator{\boolsensing{\selectmenu{size} of \selectmenu{Pico}} > \ovalpoke{\drawicon{\drawobserve} \selectmenu{size} of \selectmenu{Pico} in \ovalvariable{snapshot-before}}} named \ovalnum{Pico got bigger}}
+                }
+            }
+        }
+        \blockpokegroup{\drawicon{\drawfeedback} test group \ovalnum{Test if sprites get smaller}}{
+            \blockrepeat{repeat \ovalnum{4}}{
+                \blockpokegroup{\drawicon{\drawfeedback} test group \ovalnum{Pressing the ``k'' key}}{
+                    \blockvariable{set \selectmenu{snapshot-before} to \ovalpoke{\drawicon{\drawobserve} snapshot}}
+                    \blockpoke{\drawicon{\drawinteract} press \selectmenu{k} key and wait}
+                    \blockpoke{\drawicon{\drawfeedback} assert \booloperator{\boolsensing{\selectmenu{size} of \selectmenu{Giga}} < \ovalpoke{\drawicon{\drawobserve} \selectmenu{size} of \selectmenu{Giga} in \ovalvariable{snapshot-before}}} named \ovalnum{Gigga got smaller}}
+                    \blockpoke{\drawicon{\drawfeedback} assert \booloperator{\boolsensing{\selectmenu{size} of \selectmenu{Nano}} < \ovalpoke{\drawicon{\drawobserve} \selectmenu{size} of \selectmenu{Nano} in \ovalvariable{snapshot-before}}} named \ovalnum{Nano got smaller}}
+                    \blockpoke{\drawicon{\drawfeedback} assert \booloperator{\boolsensing{\selectmenu{size} of \selectmenu{Pico}} < \ovalpoke{\drawicon{\drawobserve} \selectmenu{size} of \selectmenu{Pico} in \ovalvariable{snapshot-before}}} named \ovalnum{Pico got smaller}}
+                }
+            }
+        }
+    \end{scratch}
+    \end{wide}
+    \caption{The complete test suite for the ``Grow and shrink'' exercise in Poke.}
+    \label{lst:poke-grow-and-shrink}
+\end{listing}
+
+\subsection{Conclusion and future work}\label{subsec:conclusion-and-future-work}
+
+Poke shows that it is possible to create a testing framework for Scratch implemented in Scratch.
+While not as powerful as a JavaScript-based framework like Itch, it is much easier to use, especially for educators without experience in JavaScript.
+In addition, besides some known limitations, Poke is able to test real-world exercises.
+
+Poke is a prototype, which means that we intentionally did not consider some important aspects, especially for use in educational practice.
+We identify three major areas where further work is needed.
+
+\subsubsection{Support for Scratch features}
+While normal for a prototype, Poke misses support for various Scratch features.
+For example, there is no support for sound blocks.
+The pen extension is also widely used and not supported at the moment.
+
+\subsubsection{Representation of the feedback}
+The manner in which feedback is shown to students must be improved.
+Currently, the feedback is very text-heavy and dry, which does not integrate well with the game-like nature of Scratch.
+In addition, we envision that a different representation might be needed for educators and for students.
+
+\subsubsection{Organisational aspects of Poke}
+We have currently not considered any of the organisational aspects that arise when attempting to use a testing framework in an educational setting.
+
+The tests are currently included in the Scratch project itself.
+While useful if students want to create and use their own tests, it is less ideal for educator-provided test suites.
+For example, there is currently no way of preventing students from modyfying the test code.
+There is also no support for updating the tests after the fact.
+For example, in many settings, students receive a ``starter'' Scratch project in which some code is already present.
+If the test suite is included in that project, there is no way of updating the test suite after the starter project has been distributed to students.
+
+Poke also has no support for automatically running tests.
+This would be required, for example, if the Scratch exercises are used as part of an online judge platform.
+
+\section{Conclusion and future work}\label{sec:conclusion-and-future-work}
+
+In this chapter, we have presented Itch (and Poke) as an educational testing framework for Scratch.
+With the three phases of the test suites, Itch is able to perform static testing, emulate user interaction, and perform post-mortem testing.
+Itch provides various helper functions to make testing common scenarios easier.
+
+The combination of the three phases allows for a lot of flexibility in how an exercise can be tested: from fully static to completely dynamic.
+However, while technically possible, it remains a challenge to design Scratch exercises that are both easy to test dynamically and open-ended enough to go well with the game-like and tinkering nature of Scratch.
 
 \end{document}
 
