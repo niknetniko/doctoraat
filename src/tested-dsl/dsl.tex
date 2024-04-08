@@ -2,7 +2,11 @@
 \documentclass[../main]{subfiles}
 
 \begin{document}
-\chapter[\tested{}-\dsl: a \dsl{} for creating programming exercises]{\tested{}-\dsl: a domain-specific language for creating programming exercises}\label{ch:tested-dsl}
+\chapter{A domain-specific language for creating programming exercises}\label{ch:tested-dsl}
+
+\dictum[H. Abelson, G.\,J. Sussman, and J. Sussman \\ \textit{Structure and Interpretation of Computer Programs}]{
+    Programs must be written for people to read, and only incidentally for machines to execute.
+}
 
 Automated software testing is widely used in programming education to validate the correct behavior of submissions for programming exercises.
 There are two dominant testing approaches: input/output testing and unit testing.
@@ -84,6 +88,7 @@ As students can only use the execution entry point (often the main function), on
 Individual steps (e.g.\ functions or classes) are not reachable.
 Feedback can thus only be provided at a holistic level.
 
+\marginnote{Binary data via standard input and ouput are not fun, as anyone who has tried it will attest to.}
 Although standard input and output may in theory consume and produce binary data, programming exercises commonly use text-formatted input and output data.
 Implementing the interface thus involves parsing a weakly typed external string representation of input data into a strongly typed internal representation, and converting a strongly typed internal representation of output data into a properly formatted external string representation that is used for validation.
 As a result, test oracles have to process weakly typed output data as well.
@@ -110,7 +115,7 @@ This not only duplicates work, but unit testing frameworks for different languag
 
 \subsection{\tested{} 1.0}\label{subsec:tested-1.0}
 
-We introduced TESTed~\autocite{strijbolTESTedEducationalTesting2023} (see also \vref{ch:tested1}) as an open-source educational software testing framework that accepts submissions in multiple programming languages and performs both input/output testing and unit testing, based on a single language-agnostic test suite.
+We introduced TESTed~\autocite{strijbolTESTedEducationalTesting2023} (\cref{ch:tested1}) as an open-source educational software testing framework that accepts submissions in multiple programming languages and performs both input/output testing and unit testing, based on a single language-agnostic test suite.
 Currently, TESTed supports evaluating submissions in Bash, C, C\#, Haskell, Java, JavaScript, Kotlin, and Python.
 Its abstract programming language engine transforms between language-agnostic and language-specific representations of strongly typed values, expressions, and statements.
 This allows TESTed to generate language-specific test harnesses by converting language-agnostic test scripts on the fly into the programming language of a submission (\vref{fig:tested-testing}).
@@ -259,7 +264,7 @@ In addition to language-specific statements and expressions, TESTed also allows 
 Because such oracles run inside the language-specific harness, they also bypass the need for transforming return values, as is the case for traditional language-specific unit testing frameworks.
 
 However, these language-specific features have to be used sparingly, as they restrict testing to programming languages for which language-specific representations and custom oracles are specified.
-\Vref{lst:javascript-test-suite} (in \vref{subsec:dsl-declarative-structure}) contains an example of a test suite that uses language-specific representations.
+\Vref{lst:javascript-test-suite} contains an example of a test suite that uses language-specific representations.
 
 \subsection{Language-agnostic task descriptions}\label{subsec:dsl-language-agnostic-task-descriptions}
 
@@ -284,7 +289,7 @@ All are represented as a statement.
 For example, an expected return value of a function or method call is a statement.
 To reference a named function, the snake case version of its identifier is passed to the function identifying the interface in TESTed-DSL's abstract programming language: variables (\texttt{variable}), functions (\texttt{function}), classes (\texttt{class}), methods (\texttt{method}), properties (\texttt{property}) and parameters (\texttt{parameter}).
 The engine formats these according to the naming conventions for the target programming language.
-For example, \mintinline{python}{function('the\_function')} will result in the string \texttt{TheFunction} in C\#.
+For example, \mintinline{python}{function('the_function')} will result in the string \texttt{TheFunction} in C\#.
 
 In addition, the engine also exposes a \texttt{datatype} function, which can be passed the name of a basic or advanced data type.
 For example, \mintinline{python}{datatype('integer')} denotes the basic type \texttt{integer}.
@@ -381,6 +386,7 @@ For educational purposes, however, TESTed streams richer and more structured fee
 }}.
 The online learning environment Dodona~\autocite{vanpetegemDodonaLearnCode2023}, for example, renders each unit of test cases (from \vref{lst:cipher-example}) in a separate tab and visually groups all tests from the same test case inside a card (\vref{fig:dodona-render-cipher}).
 Because JavaScript code was submitted in this case, TESTed adopted the syntax and conventions configured in its JavaScript module to format all statements, expressions, and return values in the feedback.
+The JavaScript-specific syntax highlighting is done by Dodona as part of the process of rendering the feedback.
 
 \begin{figure}
     \centering
@@ -490,12 +496,6 @@ Additionally, extra arguments taken from the test suite can be passed (in this c
     \label{lst:sum-example}
 \end{listing}
 
-\begin{enumerate*}[label=\emph{\roman*})]
-    \item share the same declarative structure and testing functionality across programming languages,
-    \item bridge the gap between input/output testing and unit testing, and
-    \item allow for expressing test code in a language-agnostic way.
-\end{enumerate*}
-
 The custom oracle needs to
 \begin{enumerate*}[label=\emph{\roman*})]
     \item check the output string has the correct format (three lines containing one integer each),
@@ -541,11 +541,12 @@ This is done by taking into account language-specific conventions (naming, quoti
 This dual use between test suites and task description keeps the language-specific modules of TESTed lightweight and guarantees consistency between the generation of language-specific tests and descriptions.
 
 \begin{figure}
-    \centering
-    \begin{tikzpicture}
-        \node[anchor=south west,inner sep=0] (image1) at (0,0) {\includegraphics[width=0.65\textwidth]{recoupling-py}};
-        \node[anchor=south west,inner sep=0] (image2) at (0.35\textwidth,-5) {\includegraphics[width=0.65\textwidth]{recoupling-js}};
-    \end{tikzpicture}
+    \begin{wide}
+        \begin{tikzpicture}
+            \node[anchor=south west,inner sep=0] (image1) at (0,0) {\includegraphics[width=0.65\linewidth]{recoupling-py}};
+            \node[anchor=south west,inner sep=0] (image2) at (0.35\linewidth,-5) {\includegraphics[width=0.65\linewidth]{recoupling-js}};
+        \end{tikzpicture}
+    \end{wide}
     \caption{Dodona rendering the Python (top left) and JavaScript (bottom right) versions of the task description as generated by the template engine of TESTed.\label{fig:dodona-render-task-description}}
 \end{figure}
 
@@ -631,7 +632,7 @@ The latter specifications closely reflect the internal structure and functionali
 
 The benchmark was run on a laptop running Linux (NixOS version 24.05) with \qty{32}{\gibi\byte} \textsc{ram}, an Intel i7-11850H processor, and a \qty{1}{\tebi\byte} \textsc{ssd}.
 No power-saving features were active during the benchmark.
-It turns out that parsing and processing of TESTed-DSL test suites take \qty{20}{\percent} less time on average compared to the original \textsc{json}-formatted test suites.
+It turns out that parsing and processing of TESTed-DSL test suites takes \qty{20}{\percent} less time on average compared to the original \textsc{json}-formatted test suites.
 We believe this is mainly due to using a more performant YAML parsing library compared to the Python built-in JSON parsing library.
 However, this illustrates TESTed-DSL does not incur any additional overhead compared to the original JSON format.
 Because the DSL still supports all features of TESTed, we decided to deprecate support for JSON-formatted test suites in favor of TESTed-DSL\@.
@@ -785,7 +786,7 @@ The need for language-agnostic software testing is relatively unique to programm
 Beyond this educational context, we do not see many use cases for having a single specification to test multiple implementations that differ in programming language.
 Those use cases do exist (e.g.\ testing multiple implementations of the same standard), but they are often limited to input/output testing.
 
-Besides online learning platforms supporting computer sciences courses in secondary and higher education, some platforms target self-learning, programming contests or recruitment~\autocite{hidalgo-cespedesEvaluationOnlineJudge2023}.
+Besides online learning platforms supporting computer science courses in secondary and higher education, some platforms target self-learning, programming contests or recruitment~\autocite{hidalgo-cespedesEvaluationOnlineJudge2023}.
 Examples include CodeWars\footnote{\url{https://www.codewars.com/}}, Edabit\footnote{\url{https://edabit.com/}}, LeetCode\footnote{\url{https://leetcode.com/}}, CheckIO\footnote{\url{https://checkio.org/}}, Exercism\footnote{\url{https://exercism.org/}} and CodingBat\footnote{\url{https://codingbat.com/}}.
 As far as we know, TESTed is the only existing framework that bridges unit testing with language-agnostic testing.
 Most other frameworks are either restricted to input/output testing or rely on general-purpose unit testing frameworks.

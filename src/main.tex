@@ -1,3 +1,4 @@
+%! suppress = Makeatletter
 %! Author = niko
 %! Date = 5/10/2023
 
@@ -41,8 +42,8 @@
 }
 
 \renewcommand{\dictumwidth}{0.75\textwidth}
-\setkomafont{dictum}{\rmfamily\small}
-\setkomafont{dictumauthor}{\rmfamily\footnotesize}
+\setkomafont{dictum}{\rmfamily}
+\setkomafont{dictumauthor}{\rmfamily\small}
 \renewcommand*{\dictumauthorformat}[1]{#1}
 
 \usepackage{fontspec}
@@ -101,6 +102,14 @@
 \usepackage{scrlayer-notecolumn}
 \addtokomafont{notecolumn.marginpar}{\footnotesize\raggedright}
 \newcommand*{\marginnote}{\makenote}
+\makeatletter
+\ModifyLayer[
+    contents = {%
+    \textheight = 2\textheight%
+    \slnc@processnotes{marginpar}%
+    }
+]{notecolumn.marginpar}
+\makeatother
 \renewcommand*{\captionformat}{~}
 \setkomafont{captionlabel}{\small\bfseries}
 \setkomafont{caption}{\small}
@@ -136,7 +145,10 @@
 \setdefaultlanguage[variant=british]{english}
 \setotherlanguages{dutch,latin}
 
-\usepackage[autocite=inline,style=authoryear-comp]{biblatex}
+\usepackage[
+    autocite=inline,
+    style=authoryear-comp
+]{biblatex}
 \addbibresource{main.bib}
 % Smaller font for bibliography
 \renewcommand*{\bibfont}{\normalfont\small}
