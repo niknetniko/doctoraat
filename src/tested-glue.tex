@@ -10,25 +10,26 @@
 
 This part of the thesis deals with TESTed, an educational software testing framework.
 One of its defining features is the ability to create programming-language-agnostic exercises.
-This means that the same exercise (with one test suite) can be solved in multiple programming languages, without loosing automated assessment.
+This means that the same exercise (with one test suite) can be solved in multiple programming languages, with support for automated assessment.
 
 %\marginnote{TESTed was first started in my master's thesis.}
 Research on TESTed has produced two publications:
 
 \begin{itemize}
     \item \fullcite{strijbolTESTedEducationalTesting2023}
-    \item TODO: if published, otherwise preprint?
+    \item \fullcite{strijbolTESTedDSLDomainspecificLanguage2024}
 \end{itemize}
 
 The first publication answers the research question: ``Is it possible to create an educational software testing framework that supports programming-language-agnostic exercises?''.
 The answer is, spoilers, yes.
 This publication is included as \cref{ch:tested1}.
 \marginnote{A doctoral thesis doesn't have a page limit, after all.}
-It has been expanded with more information about the inner workings of TESTed, in addition to going more in-depth on technical aspects of the framework.
+Compared to the original publication, it has been expanded with more information about the inner workings of TESTed, in addition to going more in-depth on technical aspects of the framework.
 
-With a working prototype, we then took a step back to look at what is required to go from a prototype to a viable option for creating programming exercises.
+With a working prototype at hand, we then took a step back to look at what is required to go from a prototype to a viable option for creating programming exercises.
+This analysis aimed to ensure the exercises could be used in educational practice, including high-stakes tests such as exams.
 We want TESTed to be suitable for both educators in higher education and secondary education.
-Our ambition was to make TESTed the default options for creating programming exercises in Dodona~\autocite{vanpetegemDodonaLearnCode2023}, our platform for programming exercises.
+Our ambition was to make TESTed the default option for creating programming exercises in Dodona~\autocite{vanpetegemDodonaLearnCode2023}, our platform for programming exercises.
 
 The result of this research is presented in the second publication, which is included as \cref{ch:tested-dsl}.
 By looking at (educational) software testing more broadly, we find two missing parts of the process of creating programming exercises.
@@ -37,21 +38,26 @@ Our solution is TESTed-DSL, a domain-specific language for authoring programming
 The second missing part is support for language-agnostic task descriptions.
 We show that TESTed-DSL can also be used for task descriptions.
 
-One consequence of this approach is that there is some overlap in both chapters: for example, the introductions in both chapters broadly cover the same topic.
+One consequence of this approach is that there is some overlap between both chapters: for example, the introductions in both chapters broadly cover the same topic.
 However, the focus of both is different enough that we feel there is no problem: they are not verbatim copies.
 Another example is the terminology used for the levels in the test suites (\vref{subsec:structure-of-a-test-suite} and \vref{subsec:dsl-test-suite-structure}), which differs.
 The first chapter uses the terminology as used by Dodona, while the second chapter changes the terminology in the DSL to align more closely with the terminology used in the literature.
+This illustrates the progressive insight that came when working on a tool, and the interplay between the design stages and its application in practice.
+
+As another witness of this process, we initially saw TESTed as a solution to avoid duplicating efforts when forking programming courses in Dodona~\autocite{vanpetegemDodonaLearnCode2023} to target different programming languages.
+We now also advertise it as the easiest way to author programming exercises with support for automated assessment, even if the exercises (initially) target only a single programming language.
+Support for multiple languages is a (free) side effect.
 
 As a software project, the source code for TESTed is important.
-TESTed is developed as part of team Dodona and us published\footnote{\url{https://github.com/dodona-edu/universal-judge}} under the \textsc{mit} licence.
+TESTed is developed as part of team Dodona and is published\footnote{\url{https://github.com/dodona-edu/universal-judge}} under the \textsc{mit} licence.
 
-Two ``types'' of documentation are also available:
+Two sets of documentation are available, aimed at a different target audience:
 
 \begin{itemize}
     \item The guides for educators wanting to create programming exercises\footnote{\url{https://docs.dodona.be/en/guides/exercises/}}.
           Most of these guides are currently only available in Dutch.
-    \item The reference documentation, for a more in-depth look or more technical subjects\footnote{\url{https://docs.dodona.be/en/references/tested/}}.
-          For example, this includes the documentation on how to extend TESTed to add support for more programming languages.
+    \item The reference documentation, for a more in-depth look into more technical subjects\footnote{\url{https://docs.dodona.be/en/references/tested/}}.
+          For example, this includes the documentation on how to extend TESTed to add support for additional programming languages.
 \end{itemize}
 
 \end{document}

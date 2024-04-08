@@ -4,6 +4,9 @@
 
 \chapter{The Scratch execution model}\label{ch:scratch-execution-model}
 
+\dictum[John Maloney, Mitchel Resnick, et al. \\ \textit{The Scratch Programming Language and Environment}]{Concurrency is often considered an advanced programming technique. Yet our everyday world is highly concurrent, so Scratch users
+are not surprised that a sprite can do several things at once.}
+
 During our work on Blink, our Scratch debugger (\vref{ch:blink}), we encountered some fundamental issues with the current Scratch execution model.
 These prevent us from allowing the debugger to behave as we would want: either the debugger would be less usable, or it would deviate from how Scratch executes in normal mode.
 Both are not desirable.
