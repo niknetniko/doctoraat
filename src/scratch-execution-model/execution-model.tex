@@ -4,10 +4,10 @@
 
 \chapter{The Scratch execution model}\label{ch:scratch-execution-model}
 
-\dictum[John Maloney, Mitchel Resnick, et al. \\ \textit{The Scratch Programming Language and Environment}]{Concurrency is often considered an advanced programming technique. Yet our everyday world is highly concurrent, so Scratch users
+\dictum[J. Maloney, M. Resnick, et al. \\ \textit{The Scratch Programming Language and Environment}]{Concurrency is often considered an advanced programming technique. Yet our everyday world is highly concurrent, so Scratch users
 are not surprised that a sprite can do several things at once.}
 
-During our work on Blink, our Scratch debugger (\vref{ch:blink}), we encountered some fundamental issues with the current Scratch execution model.
+During our work on Blink, our Scratch debugger (\cref{ch:blink}), we encountered some fundamental issues with the current Scratch execution model.
 These prevent us from allowing the debugger to behave as we would want: either the debugger would be less usable, or it would deviate from how Scratch executes in normal mode.
 Both are not desirable.
 Since these issues are, although in practice infrequently, also present during normal execution of Scratch code, we decided the execution model itself should be modified.
@@ -19,13 +19,13 @@ Next, we detail what a solution would look like and propose a family of modified
 We then evaluate these models with a set of metrics to illustrate how their modifications affect Scratch's behaviour in real-life projects.
 \marginnote{That was the whole point after all.}Finally, we apply one of these models to the debugger to illustrate that we can now use the debugger without the execution deviating from the normal mode.
 
-\section{The current Scratch execution model}\label{sec:the-current-scratch-execution-model}
+\section{The current execution model}\label{sec:the-current-scratch-execution-model}
 
 \begin{figure}
     \centering
     \begin{subfigure}{0.45\textwidth}
         \centering
-        \begin{scratch}[scale=1]
+        \begin{scratch}[scale=0.7]
             \blockinit{when \greenflag{} clicked}
             \blockmove{move  \ovalnum{100} steps}
             \blockmove{turn \turnleft{} \ovalnum{90} degrees}
@@ -36,22 +36,18 @@ We then evaluate these models with a set of metrics to illustrate how their modi
             \blockmove{move  \ovalnum{100} steps}
             \blockmove{turn \turnleft{} \ovalnum{90} degrees}
         \end{scratch}
-%        \caption{Unrolled version.}
-%        \label{subfig:unrolled-scratch-code}
     \end{subfigure}
     \begin{subfigure}{0.45\textwidth}
         \centering
-        \begin{scratch}[scale=1]
+        \begin{scratch}[scale=0.7]
             \blockinit{when \greenflag{} clicked}
             \blockrepeat{repeat \ovalnum{4}}{
                 \blockmove{move  \ovalnum{100} steps}
                 \blockmove{turn \turnleft{} \ovalnum{90} degrees}
             }
         \end{scratch}
-%        \caption{Version with repeat block.}
-%        \label{subfig:repeat-scratch-code}
     \end{subfigure}
-    \caption{Two Scratch programs that produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the progam.}\label{fig:scratch-two-programs}
+    \caption{Two Scratch programs that seeminlgy produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the progam.}\label{fig:scratch-two-programs}
 \end{figure}
 
 \subsection{Elements of a Scratch program}\label{subsec:elements-of-a-scratch-program}

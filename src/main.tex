@@ -147,7 +147,8 @@
 
 \usepackage[
     autocite=inline,
-    style=authoryear-comp
+    style=authoryear-comp,
+    maxbibnames=20
 ]{biblatex}
 \addbibresource{main.bib}
 % Smaller font for bibliography
@@ -264,12 +265,12 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \subfile{tested-engine/engine.tex}
 \subfile{tested-dsl/dsl.tex}
 
-%\part{Scratch}\label{part:scratch}
-%\subfile{itch-glue.tex}
-%\subfile{scratch-introduction/scratch-introduction.tex}
-%\subfile{scratch-itch/itch.tex}
+\part{Scratch}\label{part:scratch}
+\subfile{itch-glue.tex}
+\subfile{scratch-introduction/scratch-introduction.tex}
+\subfile{scratch-itch/itch.tex}
 %\subfile{scratch-blink/blink.tex}
-%\subfile{scratch-execution-model/execution-model.tex}
+\subfile{scratch-execution-model/execution-model.tex}
 
 \printbibliography[heading=bibintoc]
 
