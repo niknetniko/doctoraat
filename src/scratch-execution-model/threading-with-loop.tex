@@ -10,7 +10,7 @@
 
   % Draw horizontal lines
   \foreach \y [count=\yi] in {0,5.75,11.5,17.25} {
-    \node[draw=none,anchor=east] at (-0.4,-\y) {\qty[evaluate-expression]{\fpeval{\yi*0.33}}{\milli\second}};
+    \node[draw=none,anchor=east] at (-0.4,-\y) {\qty[evaluate-expression]{\fpeval{(\yi-1)*0.33}}{\milli\second}};
     \draw (-0.3,-\y) -- (0,-\y);
   }
 
@@ -27,8 +27,7 @@
         \blockmove{move  \ovalnum{100} steps}
         \blockmove{turn \turnleft{} \ovalnum{90} degrees}
       }
-    \end{scratch} \\
-    Thread 1
+    \end{scratch}
   };
 
   \node[hnode, minimum height=5\block, minimum width=5\block,label={[fieldset,above left=-0.53\block and 0.6\block]Step 2}] at (3, -8.25) {};
@@ -39,8 +38,7 @@
         \blockmove{move  \ovalnum{100} steps}
         \blockmove{turn \turnleft{} \ovalnum{90} degrees}
       }
-    \end{scratch} \\
-    Thread 1
+    \end{scratch}
   };
 
   \node[hnode, minimum height=5\block, minimum width=5\block,label={[fieldset,above left=-0.53\block and 0.6\block]Step 3}] at (3, -14) {};
@@ -51,8 +49,7 @@
         \blockmove{move  \ovalnum{100} steps}
         \blockmove{turn \turnleft{} \ovalnum{90} degrees}
       }
-    \end{scratch} \\
-    Thread 1
+    \end{scratch}
   };
 
   \node[hnode, minimum height=5\block, minimum width=5\block,label={[fieldset,above left=-0.53\block and 0.6\block]Step 4}] at (3, -19.75) {};
@@ -63,8 +60,7 @@
         \blockmove{move  \ovalnum{100} steps}
         \blockmove{turn \turnleft{} \ovalnum{90} degrees}
       }
-    \end{scratch} \\
-    Thread 1
+    \end{scratch}
   };
 \end{tikzpicture}
 
