@@ -52,7 +52,7 @@ We then evaluate these models with a set of metrics to illustrate how their modi
 
 \subsection{Elements of a Scratch program}\label{subsec:elements-of-a-scratch-program}
 
-A Scratch program consists of sprites and a stage (see also \vref{sec:scratch-as-a-user}).
+A Scratch program consists of sprites and a stage (see also \cref{sec:scratch-as-a-user}).
 The stage is the background and is always present.
 The other visual entities are the sprites: these are drawn on the stage.
 Together, these are called targets.
@@ -63,7 +63,7 @@ Due to its special role, the stage misses some of these properties (e.g.\ it doe
 The variables of the stage are also global: all sprites can access and change this variable.
 
 Code-wise, each target has its own code, which consists of a set of blocks.
-Every set of connected blocks forms a script (\vref{fig:scratch-two-programs}).
+Every set of connected blocks forms a script (\cref{fig:scratch-two-programs}).
 Blocks can be categorized by their subject or goal (as shown in the Scratch development environment): \textcolor{scrmove}{motion}, \textcolor{scrlook}{looks}, \textcolor{scrsound}{sound}, \textcolor{screvent}{events}, \textcolor{scrcontrol}{control}, \textcolor{scrsensing}{sensing}, \textcolor{scroperator}{operators}, \textcolor{scrvariable}{variables}, and \textcolor{scrmoreblocks}{my blocks} (not counting extensions).
 These correspond broadly to their colours (although there are exceptions, for example, the \textcolor{scrvariable}{variables} category also contains blocks for working with lists, which have a different colour.)
 
@@ -116,7 +116,7 @@ These are organized by target, and every script of every target results in a thr
 These are green threads: implemented fully in the virtual machine.
 
 The virtual machine is thus responsible for scheduling these threads.
-A schematic overview of the interaction between the different parts is \vref{fig:blink-architecture}.
+A schematic overview of the interaction between the different parts is \cref{fig:blink-architecture}.
 It uses a cooperative threading model (although \citeauthor{maloneyScratchProgrammingLanguage2010a} call it the ``Scratch threading model''~\autocite{maloneyScratchProgrammingLanguage2010a}).
 This means it is non-preemptive: the virtual machine will not interrupt threads at arbitrary points in their execution.
 The threads must voluntarily yield control.
@@ -165,10 +165,10 @@ Also, in practice, many blocks request a redraw, so in many Scratch projects, a 
 %        \caption{Version with repeat block.}
 %        \label{subfig:repeat-scratch-execution}
     \end{subfigure}
-    \caption{The execution of the two programs from \vref{fig:scratch-two-programs}.}\label{fig:scratch-two-execution}
+    \caption{The execution of the two programs from \cref{fig:scratch-two-programs}.}\label{fig:scratch-two-execution}
 \end{figure}
 
-A concrete example of the execution model is given by \vref{fig:scratch-two-execution}, which shows the execution of the programs of \vref{fig:scratch-two-programs}.
+A concrete example of the execution model is given by \cref{fig:scratch-two-execution}, which shows the execution of the programs of \cref{fig:scratch-two-programs}.
 These programs have only one thread.
 Since none of the blocks in the unrolled program yield the thread, the full program is executed in one step.
 In the other version, with a loop, the thread yields after each iteration of the loop, meaning the program needs four steps.
@@ -181,7 +181,7 @@ In the looped version, the sprite moves four times (albeit very fast), as there 
 One of the most basic features of any debugger is the ability to step through the code: executing one statement and then pausing the execution to allow the user to inspect the program state.
 A debugger for Scratch also needs this functionality, and the debuggers that exist for Scratch all implement a stepping feature.
 
-As described in \vref{sec:blink-software-architecture}, our debugger Blink takes a different approach to the stepping feature.
+As described in \cref{sec:blink-software-architecture}, our debugger Blink takes a different approach to the stepping feature.
 While most debuggers only execute one statement in a step, we believe it is useful to maintain the observed parallelism of Scratch in the debugger.
 We thus aim to execute one step in every thread at the same time.
 More concretely, we execute one block in every thread.

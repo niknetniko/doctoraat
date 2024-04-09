@@ -27,7 +27,7 @@ The TIOBE index for March 2024 ranks it as the ninth most used programming langu
     \label{fig:scratch-environment}
 \end{figure}
 
-Blocks can be dragged from the toolbox on the left side of the integrated development environment (\vref{fig:scratch-environment}) to the workspace in the middle and can be stacked together to form scripts.
+Blocks can be dragged from the toolbox on the left side of the integrated development environment (\cref{fig:scratch-environment}) to the workspace in the middle and can be stacked together to form scripts.
 Each executable script has a hat block that defines when the script should start executing.
 Scripts can be started as a result of a user action or when a certain criterium is met during the execution of a program, for example, when a clone is started or a message is broadcast.
 Each script is connected to a sprite.
@@ -75,14 +75,14 @@ There is no return value.
 \subsection{Parallelism}\label{subsec:parallelism}
 
 Scratch is a highly parallel language: every script is akin to a thread and can run in parallel to other scripts, even in other sprites.
-The chosen concurrency model of Scratch has a few advantages but also disadvantages, which we discuss in \vref{subsec:execution-of-a-scratch-program}.
+The chosen concurrency model of Scratch has a few advantages but also disadvantages, which we discuss in \cref{subsec:execution-of-a-scratch-program}.
 
 Due to JavaScript's single-threaded nature (the language in which Scratch is implemented), the actual execution of a Scratch program will not be in parallel.
 
 \section{Internal workings and organization of Scratch}\label{sec:scratch-internal}
 
 Scratch consists of a set of independent source code modules that work together to form the complete Scratch experience.
-Below is an overview of the different modules (their relationship is shown in \vref{fig:scratch-dependencies}).
+Below is an overview of the different modules (their relationship is shown in \cref{fig:scratch-dependencies}).
 In 2019, Scratch 3.0 was released.
 This version is a complete rewrite, using web technologies, such as JavaScript, HTML, and CSS.
 Scratch now runs in the browser.

@@ -27,7 +27,7 @@ A notable trend in European computer science education is the increasing integra
 Countries such as Estonia, France, Spain, Slovakia, and the UK are leading the way in this integration.
 
 With the increasing emphasis on computer science education, the need for effective tools to facilitate coding education has also grown.
-The Lifelong Kindergarten group at MIT has played a crucial role in this area by developing Scratch~\autocite{resnickScratchProgrammingAll2009}, a widely used programming language designed to teach programming to children aged 8 to 16 (see \vref{sec:scratch-as-a-user}).
+The Lifelong Kindergarten group at MIT has played a crucial role in this area by developing Scratch~\autocite{resnickScratchProgrammingAll2009}, a widely used programming language designed to teach programming to children aged 8 to 16 (see \cref{sec:scratch-as-a-user}).
 Many computer science curricula have adopted Scratch to teach children the basics of computer science.
 %With more than 110 million users, Scratch is by far the most popular programming language for computer science education~\autocite{TIOBEIndexSeptember2023a}.
 
@@ -50,7 +50,7 @@ By integrating these features into the Scratch programming language, the Blink d
 %The Blink debugger is built on top of the Scratch programming language.
 %Before diving into the details of Blink, we first provide a short overview of Scratch.
 %Scratch is a block-based programming language, meaning code is represented by blocks with different shapes.
-%Blocks can be dragged from the toolbox on the left side of the integrated development environment (IDE, \vref{fig:scratch}) to the workspace in the middle and can be stacked together to form scripts.
+%Blocks can be dragged from the toolbox on the left side of the integrated development environment (IDE, \cref{fig:scratch}) to the workspace in the middle and can be stacked together to form scripts.
 %Each executable script has a hat block that defines when the script should start executing.
 %Scripts can be started as a result of a user action or when a certain criterium is met during the execution of a program, for example, when a clone is started or a message is broadcast.
 %Each script is connected to a sprite.
@@ -71,8 +71,8 @@ By integrating these features into the Scratch programming language, the Blink d
 
 %\subsection{Blink}\label{subsec:blink}
 
-The Blink debugger is built on top of the Scratch programming language (see \vref{sec:scratch-as-a-user}).
-Blink adds extra functionality to the Scratch IDE (\vref{fig:blink-ide}).
+The Blink debugger is built on top of the Scratch programming language (see \cref{sec:scratch-as-a-user}).
+Blink adds extra functionality to the Scratch IDE (\cref{fig:blink-ide}).
 When the debugger is disabled, all functionalities of the base Scratch IDE remain unchanged.
 To activate (and deactivate) debug mode, the user must press the bug-shaped button above the canvas.
 While the debugger is active, the navigation bar turns green as a visual aid.
@@ -97,7 +97,7 @@ This way, a clear distinction is made between the default Scratch execution mode
 \paragraph{Stepwise execution}
 While the debugger is active, the execution of the Scratch project can be paused.
 In this state, execution can be continued in a stepwise manner, with the step button.
-Pressing this button will execute exactly one block in all scripts for which there is a corresponding thread in the \texttt{Runtime} (see \vref{sec:blink-software-architecture}: VM instrumentation for stepping).
+Pressing this button will execute exactly one block in all scripts for which there is a corresponding thread in the \texttt{Runtime} (see \cref{sec:blink-software-architecture}: VM instrumentation for stepping).
 After each step, the execution will pause again.
 This way, the programmer can execute the program at their own pace, providing greater understanding of the impact of each block on the program state and making it easier to identify where errors may occur.
 To return to the normal execution of the program, the resume button can be used (the same button as the pause button: which changes shape based on the execution state).
@@ -112,7 +112,7 @@ These debuggers allow the programmer to go back in the execution, often by recor
 When the debugger is active, a recording is automatically made, as can be seen on the slider below the canvas.
 Selecting a point on the slider or pressing the back button will pause execution, and the selected point in the recording will be restored.
 This includes the entire visual state of all sprites and their clones.
-While back-in-time debugging is a quite complex debugger feature, our experimental study in \vref{subsec:blink-experimental-study} shows that providing a simple video-player-like interface is very intuitive for children.
+While back-in-time debugging is a quite complex debugger feature, our experimental study in \cref{subsec:blink-experimental-study} shows that providing a simple video-player-like interface is very intuitive for children.
 
 \paragraph{Programmed breakpoints}
 Blink adds custom blocks to Scratch to manually program breakpoints: \scratchinline{\blockdebug{pause}}, \scratchinline{\blockdebug{pause if \emptybooldebug}}, \scratchinline{\blockdebug{wait unitl \emptybooldebug{} and pause}}, and \setscratch{scale=0.5}\booldebug{debugger is enabled?}.
@@ -126,7 +126,7 @@ Finally, the \setscratch{scale=0.5}\booldebug{debugger is enabled?} block is a b
 Internally, Scratch consists of several interconnected components implemented in JavaScript, namely Scratch VM, Scratch GUI, Scratch Blocks, Scratch Renderer, Scratch Audio, and Scratch Storage.
 However, for the integration of Blink, changes were only made in the VM and the GUI components.
 The VM implements the runtime engine, and the GUI components implement the Scratch IDE\@.
-The interaction between these two components is shown in \vref{fig:blink-architecture}.
+The interaction between these two components is shown in \cref{fig:blink-architecture}.
 
 The Blink debugger consists of three main components: VM instrumentation for stepping, recording of the execution state, and the custom debug extension, which implements the breakpoints.
 
@@ -146,7 +146,7 @@ The \texttt{Runtime} module maintains a list of active threads.
 These objects embody the execution state of a script.
 Threads are created when certain events trigger (i.e.\ a green flag is clicked), but can also be removed from the runtime (i.e.\ when deleting a clone).
 A Scratch program is executed by repeatedly calling the \texttt{\_step} method of the \texttt{Runtime}, typically 30 times per second.
-This method subsequently creates threads \CircledText{1}, destroys threads \CircledText{2} and calls \texttt{stepThreads} \CircledText{3} as shown in \vref{fig:blink-architecture}.
+This method subsequently creates threads \CircledText{1}, destroys threads \CircledText{2} and calls \texttt{stepThreads} \CircledText{3} as shown in \cref{fig:blink-architecture}.
 
 Blink implements the pause, step and resume commands of the debugger by instrumenting the \texttt{\_step} method of the \texttt{Runtime}.
 The instrumentation consists of injecting the code for recording state into this \texttt{\_step} method in the Blink fork of the Scratch VM\@.
@@ -169,7 +169,7 @@ Users can thus focus on the script(s) they believe are involved in the failure w
 Blink also offers back-in-time debugging capabilities.
 During a debugging session, it instruments the VM and constructs a snapshot of the program state each time a step is executed.
 These snapshots contain the entire state of the Scratch program, including the position of the sprites, the active blocks, clones, and the pen.
-To implement this feature, we modified the \texttt{Execute} component (\vref{fig:blink-architecture}) to create a snapshot at the end of the \texttt{execute} method.
+To implement this feature, we modified the \texttt{Execute} component (\cref{fig:blink-architecture}) to create a snapshot at the end of the \texttt{execute} method.
 Once a debugging session has been completed, these snapshots can be consulted in order to restore the program state.
 
 \paragraph{Programmed breakpoints}
@@ -210,7 +210,7 @@ These projects are typical Scratch exercises where we believe the debugger can b
 The Maze exercise\footnote{\url{https://scratch.ugent.be/blink/editor?project=/blink/maze.sb3}} involves a single sprite in the shape of a red triangle representing the player.
 The goal of the exercise is to write a program that navigates the player through the maze when the user presses the green flag.
 Correctly navigating consists of not letting the player navigate through the walls of the maze.
-In \vref{fig:maze} we show code, which seems to navigate the player through the maze correctly when executing the project.
+In \cref{fig:maze} we show code, which seems to navigate the player through the maze correctly when executing the project.
 Unfortunately, there is a small mistake towards the end of the solution, which is difficult to see when executing the program at full speed.
 By making use of the debugger, it becomes easy to navigate through the execution of the program step-by-step, which makes it apparent where the player has taken a misstep.
 Additionally, due to back-in-time debugging, it is easy to trace back to precisely where the bug emerged in the code.
@@ -235,7 +235,7 @@ With more traditional debuggers, which only provide step-wise execution, program
 While the Maze exercise demonstrates the capabilities of Blink in regard to step-wise execution and back-in-time debugging, the Star exercise\footnote{\url{https://scratch.ugent.be/blink/editor?project=/blink/star.sb3}} demonstrates the helpfulness of our custom debugging blocks.
 The aim of this exercise is to walk over a star-shaped figure surrounded by water.
 Any program that directs the player into the water is buggy.
-By making use of Blink's custom debugging blocks, it is quite easy to pause the execution of the program when the player touches something blue (\vref{fig:star-exercise}).
+By making use of Blink's custom debugging blocks, it is quite easy to pause the execution of the program when the player touches something blue (\cref{fig:star-exercise}).
 As soon as the green flag is pressed, the code repeatedly checks whether the player is touching something blue.
 If it does, program execution is paused by using the \scratchinline{\blockdebug{pause if \emptybooldebug}} block.
 
@@ -264,7 +264,7 @@ To validate the usefulness of the debugger in helping children understand their 
 The test group consisted of 16 children aged 8 to 11, which is at the lower end of Scratch's target audience.
 
 Our experiment started with a short introduction explaining the different features of Blink and how they can be used.
-Subsequently, we provided the children with two projects as discussed in \vref{sec:blink-illustrative-examples}.
+Subsequently, we provided the children with two projects as discussed in \cref{sec:blink-illustrative-examples}.
 Both projects contained an error leading to unwanted behavior during the execution of the program.
 During each exercise, we encouraged the children to make use of the features of the debugger to correct the implementation.
 
@@ -273,7 +273,7 @@ During each exercise, we encouraged the children to make use of the features of 
 Our study aimed to determine the ease of use and usefulness of Blink.
 Participants were asked to rate both aspects for three different aspects of the debugger tool: traditional debugger operations, usage of breakpoints, and back-in-time debugger.
 A five-point scale, represented as a row of smiley faces, was provided for each statement.
-The results of this questionnaire are shown in \vref{fig:blink-results}.
+The results of this questionnaire are shown in \cref{fig:blink-results}.
 
 \begin{figure}
     % https://observablehq.com/d/b50757d4920f2318
