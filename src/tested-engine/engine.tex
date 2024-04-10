@@ -466,8 +466,10 @@ The first category is a limited set of \term{basic types} that are abstract and 
 Currently, the following basic types are supported:
 
 \begin{description}[noitemsep]
-    \item[\texttt{integer}] An integer. The size of the integer is left undefined.
-    \item[\texttt{real}] A real number. The size and precision of the real is left undefined.
+    \item[\texttt{integer}] An integer.
+        The size of the integer is left undefined.
+    \item[\texttt{real}] A real number.
+        The size and precision of the real is left undefined.
     \item[\texttt{boolean}] A Boolean value.
     \item[\texttt{text}] Textual data (e.g.\ strings).
           The intention is important here: for example, an ASCII character can be represented as both an integer or as text.
@@ -960,14 +962,16 @@ For example, with TESTed, the name of the test suite is often such an option.
 Other usable options for TESTed are\footnote{These are also described in our documentation at \url{https://docs.dodona.be/en/references/tested/exercise-config/}}:
 
 \begin{description}
-    \item[\texttt{parallel}] If contexts should be executed in parallel or not (default false). See \cref{subsec:executing-test-code} for more information on this option.
-    \item[\texttt{allow\_fallback}] Determines if unit compilation should be attempted if the global compilation fails (default true). See \cref{subsubsec:compilation-units} for more information about this option.
+    \item[\texttt{parallel}] If contexts should be executed in parallel or not (default false).
+        See \cref{subsec:executing-test-code} for more information on this option.
+    \item[\texttt{allow\_fallback}] Determines if unit compilation should be attempted if the global compilation fails (default true).
+        See \cref{subsubsec:compilation-units} for more information about this option.
     \item[\texttt{linter}] Enables or disables linting of the submissions (default true).
     \item[\texttt{language}] An object mapping programming languages to objects containing language-specific options.
-    As an example use-case of this option, some languages allow customizing the linter configuration\footnote{\url{https://docs.dodona.be/en/references/tested/exercise-config/\#linters}}.
+        As an example use-case of this option, some languages allow customizing the linter configuration\footnote{\url{https://docs.dodona.be/en/references/tested/exercise-config/\#linters}}.
     \item[\texttt{compiler\_optimizations}] If compiler optimizations should be enabled if available or not (default false).
-    By enabling this option, compile speed is sacrificed for better execution speed of the submission.
-    This option can be useful for exercises where the submission is expected to be computationally heavy.
+        By enabling this option, compile speed is sacrificed for better execution speed of the submission.
+        This option can be useful for exercises where the submission is expected to be computationally heavy.
 \end{description}
 
 \subsection{The Dodona feedback format}\label{subsec:dodona-output}
@@ -1062,7 +1066,7 @@ As an example, consider the C language.
 When compiling C, we are only interested in the resulting binary, which also has a predictable name.
 The list of generated files can thus contain a single string: the name of the generated binary.
 
-However, it is not always possile to predict the list of generated files, nor is it possible to predict their names.
+However, it is not always possible to predict the list of generated files, nor is it possible to predict their names.
 For example, in Java, compiling a file will result in one or more class files, depending on the content of the Java file (a nested class will result in more class files).
 In that case, the file filter can be used, which will be called for each file in the compilation directory after compilation has completed.
 

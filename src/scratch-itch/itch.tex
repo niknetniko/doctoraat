@@ -16,7 +16,7 @@ The process of teaching to code is often slowed down by the delay in providing f
 
 When done manually, assessment of submissions for Scratch exercises is time-consuming and impractical, especially in large classes, where educators often lack the time to give individual feedback to each student.
 That is why it is important to equip students with tools that can provide immediate feedback and thus enhance their independent learning skills.
-In this chapter, we introduce Itch, a testing framework for Scratch, that can act as an automated assessment tool.
+In this chapter, we introduce Itch, a testing framework for Scratch that can act as an automated assessment tool.
 
 Itch provides flexible testing capabilities: it supports both static and dynamic testing of Scratch projects.
 It provides tools to make common scenarios easy to test, allowing the educators to focus on testing the interesting parts of an exercise.
@@ -54,7 +54,7 @@ Examples of what the authors envision are automated test generation, data-flow a
 \textsc{itch}~\autocite{johnsonITCHIndividualTesting2016} is the first automatic testing framework to the knowledge of the authors.
 It translates a very limited subset of Scratch programs to Python.
 \textsc{itch} uses the Scratch say and ask functionality to perform input/output-based testing on Scratch projects.
-Of course, being limited to input/ouput, only a subset of the functionality of Scratch can be used.
+Of course, being limited to input/output, only a subset of the functionality of Scratch can be used.
 
 Finally, Whisker~\autocite{stahlbauerTestingScratchPrograms2019} is a full automated testing framework for Scratch, and the only most similar to Itch.
 While manually written test suites (also in JavaScript) are possible, Whisker focuses on automated testing~\autocite{deinerAutomatedTestGeneration2023}.
@@ -158,7 +158,7 @@ A test suite for Itch is split into three phases:
 \end{enumerate}
 
 All phases are optional, but a test suite without any phases will not test anything.
-However, it is perfectly valid to not have a before execution, or only a before execution, depending on the types of tests you want to run.
+However, it is perfectly valid to not have a before execution, or only a before execution, depending on the types of tests that need to be run.
 They are implemented with ``magic'' functions: these have a fixed signature (name and arguments) and will be called in the relevant phases (\cref{lst:itch-test-suite-skeleton}).
 
 \begin{listing}
@@ -210,7 +210,7 @@ It can be correct or wrong, and can contain feedback for both cases.
 Additionally, a test also has a name and can include additional information, such as diffs, messages, etc.
 
 Structure is added by grouping the tests into groups.
-Groups can be nested, so groups inside groups etc.\ is possible.
+Groups can be nested, so groups inside groups etc.\ are possible.
 While there is no hard limit, the recommendation is to not go deeper than three levels in most cases.
 Groups are used for more than just structure.
 They also support a notion of visibility, with three modes:
@@ -291,7 +291,7 @@ Students are allowed to change blocks after these two predefined blocks.
 
 The second sprite, \texttt{SpriteB}, allows modifications to scripts starting with the same blocks, but it uses the full version of the config object.
 With the full version, it is also possible to also specify if additional scripts are allowed and limit the blocks they can use.
-In this example, only the \scratchinline{\blockinfloop{forever}{\blockspace[0.2]}} block can be used (so this is not very useful test).
+In this example, only the \scratchinline{\blockinfloop{forever}{\blockspace[0.2]}} block can be used (so this is not a very useful test).
 Finally, additional scripts (thus new ones created by the students) are also allowed.
 These are free of restrictions: the check for allowed blocks does not apply.
 
@@ -396,8 +396,6 @@ To create a non-linear schedule (e.g.\ multiple actions are performed simultaneo
 First, the return value of one of the previous actions can be used multiple times to schedule new actions.
 All of these will be run in parallel.
 
-% TODO: visualise this?
-
 The other option is to use the method \mintinline{javascript}{forEach}: this is an implementation of the ``fold'' function on the events.
 By deciding what event is used as the accumulator, either a linear (by returning the new action) or non-linear schedule (by returning the existing action) can be created.
 
@@ -432,7 +430,8 @@ This action is intended to mark certain events in the log, but can also be used 
           }
         }
     \end{minted}
-    \caption{An after execution phase, where the log is used to check if the costume of the sprite \texttt{Hat} changes after each click (there are two costumes and the costumes need to cycle).}\label{lst:itch-hat-costum-change}
+    \caption{An after execution phase, where the log is used to check if the costume of the sprite \texttt{Hat} changes after each click (there are two costumes and the costumes need to cycle).}
+    \label{lst:itch-hat-costum-change}
 \end{listing}
 
 Itch uses the schedule from the during execution phase to execute the submission.
@@ -441,7 +440,7 @@ This is done by hand (using the \mintinline{javascript}{log} scheduler action) a
 The log consists of snapshots (which are taken every time something changes in the virtual machine) and events (which denote interesting snapshots).
 For example, every action in the scheduler is saved as an event, meaning there is a snapshot before the action and after the action has been completed.
 
-For example in \cref{lst:itch-hat-costum-change}, the action to click a sprite (which was scheduled in the previous phase) has a corresponding event in the log.
+In \cref{lst:itch-hat-costum-change}, for example, the action to click a sprite (which was scheduled in the previous phase) has a corresponding event in the log.
 That event gives access to a snapshot from before the sprite was clicked and after the sprite was clicked (in this case, the scheduled action was synchronous).
 In the actual test suite, the previous phase did not schedule one click, but a bunch of clicks.
 Each of these events provides before and after snapshots, which are then used to determine if the costume changes as expected when the sprite was clicked.
@@ -452,13 +451,13 @@ As the example shows, the test suite is not concerned with the actual implementa
 The evaluation of a submission goes through the following process:
 
 \begin{enumerate}
-    \item The submission, the starter project, and the test suite are made available (see later, as this depends on how Itch is run).
+    \item The submission, the starter project, and the test suite are made available.
     \item Itch loads both projects, and runs the before execution phase.
     \item If the before execution phase does not result in an error, Itch initialises the virtual machine, inserts hooks for the log, and loads the submission into the virtual machine.
     \item The during execution phase is run, and the scheduled actions are captured from the test suite.
     \item Itch starts the virtual machine and executes the scheduled actions.
           While executing, the logs are captured.
-    \item If the execution did not result in an error, Itch shuts down the virtual machine, and runs the after execution phase.
+    \item If the execution does not result in an error, Itch shuts down the virtual machine, and runs the after execution phase.
     \item All feedback is sent to the output.
 \end{enumerate}
 
@@ -473,7 +472,7 @@ For these reasons, there are two ways to run Itch:
 
 \begin{itemize}
     \item As a library in the browser.
-          This is useful for contexts where you already have a browser, e.g.\ running along the Scratch environment on the device of the student.
+          This is useful for contexts where there already is a browser, e.g.\ running along the Scratch environment on the device of the student.
     \item As a command line tool.
           This is for cases where Itch runs as a service in the backend, e.g.\ to check submissions after students are done.
 \end{itemize}
@@ -543,7 +542,8 @@ The three levels of the feedback are:
 
 \begin{itemize}[nosep]
     \item \term{Judgement}: the top-level object of the feedback.
-    \item \term{Group}: contains one or more tests or subgroups (equivalent to a group from the test suite). Each group has the same options as in the test suite (e.g.\ visibility, sprites).
+    \item \term{Group}: contains one or more tests or subgroups (equivalent to a group from the test suite).
+        Each group has the same options as in the test suite (e.g.\ visibility, sprites).
     \item \term{Test}: one condition or requirement that is evaluated (equivalent to a test from the test suite).
 \end{itemize}
 
@@ -600,7 +600,7 @@ There are two different ways in which their programming exercises are used.
 The first is as part of a ``teaching pack'', which is bought and used by schools.
 These packs implement the ``attainment descriptors''\marginnote{Called \textenglish{eindtermen} in Dutch.}, which are documents that describe the learning objectives of the lessons and what skills students should possess after taking the courses.
 Here, the teaching pack provides a full learning path for the students, with suitable exercises at each stage of the process.
-The second way is as an extracurricular activity, where students either follow weekly lessons or join a ``coding camp'' of a few weeks in the summer.
+The second way is as an extracurricular activity, where students either follow weekly lessons or join a ``coding camp'' for a few weeks in the summer.
 
 In both cases, many of the same exercises are used, but the context in which they are used differs.
 In total, there are 139 exercises with a test suite.
@@ -633,7 +633,7 @@ While we share the sentiment of \citeauthor{resnickCodingCrossroads2020}, our ex
 There are a few factors that contribute to this:
 
 \begin{itemize}
-    \item Exercises (especially in Scratch) that were not created with testability in mind are often very hard, if not impossible, to properly test without resorting to static analysis of the code.
+    \item Exercises (especially in Scratch) that were not created with testability in mind are often hard, if not impossible, to properly test without resorting to static analysis of the code.
     \item Scratch projects, especially complex ones, are technically challenging to test within an acceptable time frame (we cannot spend minutes evaluating a single submission), as feedback must be fast~\autocite{sarsaSpeedingAutomatedAssessment2022}.
     \item Educators want simple metrics to easily see if students have mastered some concept.
           For example, determining if a student has mastered the concepts of loops (or repetition in general) is challenging to do automatically.
@@ -666,13 +666,6 @@ This means that test suites are written with Scratch blocks, tests are executed 
 For this prototype, our focus was on two research questions: ``Is it possible to create a testing framework for Scratch in Scratch?'' and ``If possible, which testing facilities should be present?''.
 The answer to the first question is yes, and the remainder of this section discusses the details of Poke, along with answers for the second question.
 These considerations include what blocks to provide, how tests should be run, etc.
-
-
-
-
-%As mentioned previously, we are aware of one other testing framework for Scratch, called Whisker.
-%Similarly to Itch, it originally supported only writing test suites in JavaScript.
-%Again similarly to Itch, there is now an experimental extension to Whisker that allows writing test suites in Scratch itself.\footnote{\url{https://scratch.fim.uni-passau.de/whisker-scratch/}}.
 
 \subsection{Introduction to Poke}\label{subsec:introduction-to-poke}
 
@@ -864,7 +857,7 @@ Poke does not support extensions at the moment, and these exercises used the pen
 One of these three exercises would not be testable anyway for the same reason Itch could not test it: drawing a house is a very open-ended exercise.
 The other exercises could be tested with Poke.
 
-For a comparison, \cref{lst:itch-grow-and-shrink} contains the test suite for the \emph{Grow and shrink} exercise in Itch, while \cref{lst:poke-grow-and-shrink} contains the test suite used in Poke.
+For comparison, \cref{lst:itch-grow-and-shrink} contains the test suite for the \emph{Grow and shrink} exercise in Itch, while \cref{lst:poke-grow-and-shrink} contains the test suite used in Poke.
 
 \begin{listing}
     \begin{wide}
@@ -921,7 +914,7 @@ We have currently not considered any of the organisational aspects that arise wh
 
 The tests are currently included in the Scratch project itself.
 While useful if students want to create and use their own tests, it is less ideal for educator-provided test suites.
-For example, there is currently no way of preventing students from modyfying the test code.
+For example, there is currently no way of preventing students from modifying the test code.
 There is also no support for updating the tests after the fact.
 For example, in many settings, students receive a ``starter'' Scratch project in which some code is already present.
 If the test suite is included in that project, there is no way of updating the test suite after the starter project has been distributed to students.

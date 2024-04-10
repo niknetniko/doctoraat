@@ -93,7 +93,7 @@ In total, there are seven types of blocks:
 
 There exists no full formal description of the Scratch execution model.
 Instead, the execution model is defined informally, based on the implementation of the Scratch Virtual Machine.
-However, in a series of papers, the \emph{Chair of Software Engineering II} group, has published some work investigating and describing the execution model of Scratch.
+However, in a series of papers, the \emph{Chair of Software Engineering II} group has published some work investigating and describing the execution model of Scratch.
 
 First, in~\autocite{stahlbauerTestingScratchPrograms2019}, the authors propose a formalization of three aspects: the user perspective, a syntactic model and a semantic model.
 They propose that the semantics of Scratch can be described using a memory model based on message passing.
@@ -181,12 +181,14 @@ In the looped version, the sprite moves four times (albeit very fast), as there 
 
 How different parts of the virtual machine implement the execution model from the previous section (\cref{subsec:execution-of-a-scratch-program}), is shown in \cref{fig:blink-architecture}.
 When the user interface loads a project, it also starts the virtual machine.
-This means that the game loop is active (this done in the class \texttt{Runtime}).
+This means that the game loop is active (this is done in the class \texttt{Runtime}).
 
 New threads are only created in two scenarios:
 \begin{itemize}[noitemsep]
     \item Code needs to be executed, either because an event triggered some hat blocks (green flag, key press, etc.) or because the user clicked on some blocks.
-    \item When ``stage monitors'' or watchers are active. These are used in the user interface to show the value of variables or properties. The watchers for variables also allow the user to change the value of the variable.
+    \item When ``stage monitors'' or watchers are active.
+        These are used in the user interface to show the value of variables or properties.
+        The watchers for variables also allow the user to change the value of the variable.
 \end{itemize}
 
 The \texttt{Runtime} calls the method \mintinline{javascript}{stepThreads} in the \texttt{Sequencer} class.
