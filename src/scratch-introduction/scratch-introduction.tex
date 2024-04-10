@@ -8,18 +8,21 @@
 
 This chapter is a short introduction to Scratch, both the programming language and the environment.
 It also explains how the source code for Scratch is organized.
+The main goal is to familiarize the reader with the Scratch environment.
+Technical details are given in later chapters where relevant.
 
 \section{The Scratch environment}\label{sec:scratch-environment}
 
+
 Scratch is a visual programming language and environment~\autocite{resnickScratchProgrammingAll2009}.
 It is block-based, meaning code is represented by blocks with different shapes.
-Developed by the Lifelong Kindergarten research group at the MIT Media Lab, beginning in 2002.
+\makenote*{The TIOBE index is not that useful: it is based on the number of reported results in search engines~\autocite{bunceTIOBENotTIOBE2008,sundarramPleaseStopCiting2022}. For example, it is known that the system is gamed.~\autocite{bunceTIOBEIndexBeing2009}.}
+Development on Scratch began in 2002, by the Lifelong Kindergarten research group at the MIT Media Lab.
 Scratch became publicly available in 2007, and has been developed by the Scratch Foundation since 2009.
 Its target audience is ages 8 to 16, although it is most commonly used for ages 10 to 14.
 
-\makenote*{The TIOBE index is not that useful: it is based on the number of reported results in search engines~\autocite{bunceTIOBENotTIOBE2008,sundarramPleaseStopCiting2022}. For example, it is known that the Delphi community games or gamed the system~\autocite{bunceTIOBEIndexBeing2009}.}
-It is a widely used programming language: the 2022 annual report of the Scratch Foundation~\autocite{GrowingGlobalCreative2022} states that there are over 50 million users in the online Scratch community, with 120 new projects (the programs) being made.
-The TIOBE index for March 2024 ranks it as the ninth most used programming language~\autocite{TIOBEIndexMarch2024}.
+It is a widely used programming language: the 2022 annual report of the Scratch Foundation~\autocite{scratchfoundationGrowingGlobalCreative2022} states that there are over 50 million users in the online Scratch community, with 120 new projects (the programs) being made.
+The TIOBE index for March 2024 ranks it as the ninth most used programming language~\autocite{tiobeTIOBEIndexMarch2024}.
 
 \begin{figure}
     \begin{wide}
@@ -33,7 +36,7 @@ The TIOBE index for March 2024 ranks it as the ninth most used programming langu
 \subsection{Using the environment and the blocks}\label{subsec:using-the-environment-and-the-blocks}
 
 Blocks can be dragged from the toolbox on the left side of the integrated development environment (\cref{fig:scratch-environment}) to the workspace in the middle and can be stacked together to form scripts.
-Blocks can be categorized by their subject or goal: \textcolor{scrmove}{motion}, \textcolor{scrlook}{looks}, \textcolor{scrsound}{sound}, \textcolor{screvent}{events}, \textcolor{scrcontrol}{control}, \textcolor{scrsensing}{sensing}, \textcolor{scroperator}{operators}, \textcolor{scrvariable}{variables}, and \textcolor{scrmoreblocks}{my blocks} (not counting extensions).
+Blocks can be categorized by their subject or goal: \textcolor{scrmove}{Motion}, \textcolor{scrlook}{Looks}, \textcolor{scrsound}{Sound}, \textcolor{screvent}{Events}, \textcolor{scrcontrol}{Control}, \textcolor{scrsensing}{Sensing}, \textcolor{scroperator}{Operators}, \textcolor{scrvariable}{Variables}, and \textcolor{scrmoreblocks}{My blocks} (not counting extensions).
 Each category has its own colour, except for the blocks that handle lists, as these appear in the \textcolor{scrvariable}{Variables} category, but have a different colour.
 
 Each script starts with a hat block that defines when the script should execute.
@@ -43,7 +46,7 @@ The red stop button next to the green flag also stops all currently running scri
 The green flag button has another functionality: when there are active scripts, the button gets a darker background colour, even if those scripts were not started by the green flag.
 
 Blocks (or parts of scripts) can also be run independently by clicking them.
-This indicates already that Scratch is always live: once a project has been loaded, the virtual machine is always running.
+This illustrates that Scratch is always live: once a project has been loaded, the virtual machine is always running.
 Sprites can be moved or manipulated by the user at any time, even if scripts are running.
 
 Each script is connected to a sprite.
@@ -64,25 +67,29 @@ Note that the stage cannot be removed.
 
 \subsection{Available data types}\label{subsec:scratch-data-types}
 
-Scratch has support for three data types: strings, booleans, and numbers~\autocite{maloneyScratchProgrammingLanguage2010a}.
+Scratch has support for three basic data types: strings, booleans, and numbers~\autocite{maloneyScratchProgrammingLanguage2010a}.
 A different shape is used for booleans (a mix between rectangle and diamond) and strings/numbers (round oval).
 Variables and reporter blocks (which are special blocks that result in some value) can only be slotted in boolean slots if the shapes match.
 The string/number slots are less strict: if necessary, Scratch will coerce the variable into the right type.
 
+In addition, Scratch also supports lists with their own set of blocks to manipulate them.
+Lists can only contain strings or numbers; booleans are cast to strings.
+
 \subsection{Sprites, the object model}\label{subsec:sprites-the-object-model}
 
-Sprites are very similar to objects in Scratch~\autocite{maloneyScratchProgrammingLanguage2010a}.
+Sprites are the Scratch equivalent to objects~\autocite{maloneyScratchProgrammingLanguage2010a}.
 As all scripts belong to a particular sprite, almost all blocks only work for the current sprite.
 Apparently, an earlier version of Scratch had cross-sprite commands, but users found it confusing.
 
-The strict separation of code between sprites means there is a lot of work needed to make a bunch of sprites behave the same way.
+The strict separation of code between sprites means there is a lot of work needed to make a set of sprites behave the same way.
 For example, a firework might need hundreds of sprites to represent the particles.
-Copying all clones by hand quickly becomes tedious.
-That is why Scratch has a clone feature: a ``shadow'' sprite is created, whose code is a clone of the original.
-This clone is not visible in the sprite overview, only on the canvas.
+Creating copies of the sprites by hand quickly becomes tedious.
+That is why Scratch has a clone feature: a ``shadow'' sprite is created that shares its code with the original sprite.
+While the code is shared, the execution is not: each clone can execute code independently.
+A clone is not visible in the sprite overview, only on the canvas.
 
 Variables are normally also limited to the sprite that defined them and are not visible to other sprites.
-There is an exception: the variables of the stage are visible to all sprites, and could thus also be used for inter-sprite communications.
+There is an exception: the variables of the stage are visible to all sprites, and could thus be used for inter-sprite communications.
 
 \subsection{Inter-sprite communications}\label{subsec:intersprite-communications}
 
@@ -93,43 +100,48 @@ It is a one-to-many broadcasting system~\autocite{maloneyScratchProgrammingLangu
 
 \subsection{Defining custom blocks with procedures}\label{subsec:defining-custom-blocks-with-procedures}
 
-Scratch allows defining \textcolor{scrmoreblocks}{custom blocks}, often called procedures.
-This allows the user to define custom blocks, that consist of other blocks, similar to procedures in other languages.
+Scratch allows defining custom blocks, sometimes called procedures.
+This allows the user to define blocks that consist of other blocks, similar to procedures in other languages.
 Procedures in Scratch can have arguments, which are available as variables to the blocks of the procedure.
 There is no return value.
 
 \subsection{Parallelism and concurrency}\label{subsec:parallelism}
 
-Scratch is a highly parallel language: every script is akin to a thread and can run in parallel to other scripts, even in other sprites.
+Scratch is a highly parallel language: every script is akin to a thread and can run in parallel to other scripts, even within the same sprite.
 The chosen concurrency model of Scratch has a few advantages but also disadvantages, which we discuss in \cref{subsec:execution-of-a-scratch-program}.
 
-Due to JavaScript's single-threaded nature (the language in which Scratch is implemented), the actual execution of a Scratch program will not be in parallel.
+Due to JavaScript's single-threaded nature (the language in which Scratch is implemented), the actual execution of a Scratch program will not be concurrent.
 
 \section{Organization of the source code}\label{sec:scratch-internal}
 
 In 2019, Scratch 3.0 was released.
 This version is a complete rewrite, using web technologies, such as JavaScript, HTML, and CSS\@.
 Scratch 3.0 is fully browser-based.
-Scratch consists of a set of independent source code modules that work together to form the complete Scratch experience.
+It consists of a set of independent source code modules that work together to form the complete Scratch experience.
 Below is an overview of the different modules (their relationship is shown in \cref{fig:scratch-dependencies}).
 
 A few important components are:
 
 \begin{description}
-    \item[Scratch Blocks\footnote{\url{https://github.com/scratchfoundation/scratch-blocks}}] A fork of Google's Blockly, a library for building block-based computing interfaces.
-    \item[Scratch Virtual Machine\footnote{\url{https://github.com/scratchfoundation/scratch-vm}}] The engine behind Scratch and responsible for running the programs created by the blocks.
-    \item[Scratch User Interface\footnote{\url{https://github.com/scratchfoundation/scratch-gui}}] A React-based web application that consists of the Scratch programming environment. It uses and builds on the other components.
-    \item[Scratch Renderer\footnote{\url{https://github.com/scratchfoundation/scratch-render}}] A WebGL-based renderer, responsible for rendering the canvas.
+    \item[Scratch Blocks] A fork of Google's Blockly, a library for building block-based computing interfaces.\footnote{\url{https://github.com/scratchfoundation/scratch-blocks}}
+    \item[Scratch Virtual Machine] The engine behind Scratch and responsible for running the programs created by the blocks.\footnote{\url{https://github.com/scratchfoundation/scratch-vm}}
+    \item[Scratch User Interface] A React-based web application that consists of the Scratch programming environment. It uses and builds on the other components.\footnote{\url{https://github.com/scratchfoundation/scratch-gui}}
+    \item[Scratch Renderer] A WebGL-based renderer, responsible for rendering the canvas.\footnote{\url{https://github.com/scratchfoundation/scratch-render}}
 \end{description}
 
+\footnotetext{}
+
 \begin{figure}
-    \includestandalone[width=\linewidth]{dependencies}
-    \caption{Overview of the depdencies of the Scratch repositories (using their repository name). The repositories that are purely for the hostend instance, such as the website, account system and forum are left out. An arrow indicates a depdency, for example, the \texttt{scratch-gui} has five dependencies.}
+    \begin{wide}
+        \includestandalone[width=\linewidth]{dependencies}
+    \end{wide}
+    \caption{
+        Overview of the depdencies between the Scratch repositories (using their repository name).
+        The repositories that are purely for the hostend instance, such as the website, account system, and forum are left out.
+        An arrow indicates a depdency.
+        For example, the \texttt{scratch-gui} package has five dependencies.
+    }
     \label{fig:scratch-dependencies}
 \end{figure}
-
-% TODO:
-%Too often, researchers and educators are adopting automated assessment tools that evaluate student programming projects only by analyzing the code, without considering the project goals, content, design, interface, usability, or documentation. For example, many are using an online Scratch assessment tool that gives students a “computational thinking score” based on the assumption that code with more types of programming blocks is an indication of more advanced computational thinking. This form of assessment doesn’t take into consideration what the student’s program is intended to do, how well it accomplishes the student’s goals, whether the code works as intended, whether people are able to interact with it, or how the student’s thinking develops over a series of projects. We see greater potential in other research and evaluation approaches, such as those that document and analyze teachers’ facilitation practices and students’ learning trajectories over time.6,8
-%% https://cacm.acm.org/research/coding-at-a-crossroads/
 
 \end{document}
