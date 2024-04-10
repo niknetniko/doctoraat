@@ -280,7 +280,7 @@ If compilation fails, the submission will not be executed and testing is stopped
 
 \section{Architectural design of the framework}\label{sec:tested1-architectural-design}
 
-\begin{figure}[t]
+\begin{figure}
     \centering
     \includestandalone{concept}
     \caption{
@@ -1465,7 +1465,7 @@ The exercise used is simple: it requires implementing a function \mintinline{pyt
 As a result, the time measured is almost completely testing framework overhead, as the execution time of the submission is negligible.
 The implemented function was called 50 times with different arguments.
 
-\begin{figure}[t]
+\begin{figure}
     \centering
     \includestandalone{performance}
     \caption{Runtime performance of TESTed versus language-specific testing frameworks. For each programming language, we evaluated a correct submission for the same exercise with a language-specific testing framework and with TESTed.}

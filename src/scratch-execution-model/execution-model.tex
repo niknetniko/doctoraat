@@ -28,7 +28,7 @@ We then evaluate these models with a set of metrics to illustrate how their modi
 
 \section{The current execution model}\label{sec:the-current-scratch-execution-model}
 
-\begin{figure}
+\begin{listing}
     \centering
     \begin{subfigure}{0.45\textwidth}
         \centering
@@ -54,8 +54,9 @@ We then evaluate these models with a set of metrics to illustrate how their modi
             }
         \end{scratch}
     \end{subfigure}
-    \caption{Two Scratch programs that seeminlgy produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the progam.}\label{fig:scratch-two-programs}
-\end{figure}
+    \caption{Two Scratch programs that seeminlgy produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the progam.}
+    \label{lst:scratch-two-programs}
+\end{listing}
 
 \subsection{Elements of a Scratch program}\label{subsec:elements-of-a-scratch-program}
 
@@ -164,10 +165,11 @@ Also, in practice, many blocks request a redraw, so in many Scratch projects, a 
     \begin{subfigure}{0.59\textwidth}
         \includestandalone{threading-with-loop}
     \end{subfigure}
-    \caption{The execution of the two programs from \cref{fig:scratch-two-programs}. In the unrolled version (left), all code is executed in the first turn, meaning only one tick and step is needed. In the version with loop (right), the loop yields after each iteration, meaning the rest of the step is filled with idle time. In total, four steps are needed. }\label{fig:scratch-two-execution}
+    \caption{The execution of the two programs from \cref{lst:scratch-two-programs}. In the unrolled version (left), all code is executed in the first turn, meaning only one tick and step is needed. In the version with loop (right), the loop yields after each iteration, meaning the rest of the step is filled with idle time. In total, four steps are needed. }
+    \label{fig:scratch-two-execution}
 \end{figure}
 
-A concrete example of the execution model is given by \cref{fig:scratch-two-execution}, which shows the execution of the programs of \cref{fig:scratch-two-programs}.
+A concrete example of the execution model is given by \cref{fig:scratch-two-execution}, which shows the execution of the programs of \cref{lst:scratch-two-programs}.
 These programs have only one thread.
 Since none of the blocks in the unrolled program yield the thread, the full program is executed in one step.
 In the other version, with a loop, the thread yields after each iteration of the loop, meaning the program needs four steps.
@@ -218,37 +220,38 @@ This section illustrates a few limitations of the current execution model, first
 
 \subsection{In general}\label{subsec:in-general}
 
+\begin{listing}
+    \centering
+    \begin{scratch}[scale=0.6]
+        \blockinit{when \greenflag{} clicked}
+        \blockmove{go to x: \ovalnum{0} y: \ovalnum{112}}
+        \blockpen{erase all}
+        \blockpen{set pen color to \pencolor{ppcolor}}
+        \blockpen{set pen size to \ovalnum{5}}
+        \blockpen{pen down}
+        \blockmove{point in direction \ovalnum{108}}
+        \blockrepeat{repeat \ovalnum{4}}{
+            \blockmove{move \ovalnum{80} steps}
+            \blockmove{turn \turnright{} \ovalnum{36} degrees}
+            \blockmove{move \ovalnum{80} steps}
+            \blockmove{turn \turnright{} \ovalnum{36} degrees}
+        }
+        \blockpen{pen up}
+    \end{scratch}
+    \hspace{3em}
+    \begin{scratch}[scale=0.6]
+        \blockinit{when \greenflag{} clicked}
+        \blockinfloop{forever}{
+            \blockif{if \boolsensing{touching color \pencolor{blue}} then}{
+                \blockstop{stop \selectmenu{all}}
+            }
+        }
+    \end{scratch}
+    \caption{The implementation, with a bug in the first script (left) and a non-working second script (right).}
+    \label{lst:star-model-implementation}
+\end{listing}
+
 \begin{figure}
-    \begin{subfigure}[b]{\textwidth}
-        \centering
-        \begin{scratch}[scale=0.6]
-            \blockinit{when \greenflag{} clicked}
-            \blockmove{go to x: \ovalnum{0} y: \ovalnum{112}}
-            \blockpen{erase all}
-            \blockpen{set pen color to \pencolor{ppcolor}}
-            \blockpen{set pen size to \ovalnum{5}}
-            \blockpen{pen down}
-            \blockmove{point in direction \ovalnum{108}}
-            \blockrepeat{repeat \ovalnum{4}}{
-                \blockmove{move \ovalnum{80} steps}
-                \blockmove{turn \turnright{} \ovalnum{36} degrees}
-                \blockmove{move \ovalnum{80} steps}
-                \blockmove{turn \turnright{} \ovalnum{36} degrees}
-            }
-            \blockpen{pen up}
-        \end{scratch}
-        \hspace{3em}
-        \begin{scratch}[scale=0.6]
-            \blockinit{when \greenflag{} clicked}
-            \blockinfloop{forever}{
-                \blockif{if \boolsensing{touching color \pencolor{blue}} then}{
-                    \blockstop{stop \selectmenu{all}}
-                }
-            }
-        \end{scratch}
-        \caption{The implementation, with a bug in the first script (top) and a non-working second script (bottom).}
-        \label{fig:star-model-implementation}
-    \end{subfigure}
     \begin{subfigure}{0.45\textwidth}
         \includegraphics[width=\textwidth]{star-before}
         \caption{The stage before execution.}
@@ -260,14 +263,14 @@ This section illustrates a few limitations of the current execution model, first
         \caption{The stage after execution.}
         \label{fig:star-exercise-model-after}
     \end{subfigure}
-    \caption{The implementation and result of a variant of the \emph{Star} exercise.}
+    \caption{Result of running the implementation from \cref{lst:star-model-implementation} for the \emph{Star} exercise.}
     \label{fig:star-exercise-model}
 \end{figure}
 
 As \citeauthor{maloneyScratchProgrammingLanguage2010a} already mentioned, the Scratch threading model does not solve all issues with concurrency.
 To illustrate this point, we will consider a variant on the \emph{Star} exercise from \cref{subsec:star-exercise} (in \cref{fig:star-exercise-model}).
 In this exercise, the goal is to let a sprite move around on a path without falling into the water (read touching a blue colour.)
-\Cref{fig:star-model-implementation} shows an implementation for this exercise with an additional script that will stop execution if the sprite touches something blue.
+\Cref{lst:star-model-implementation} shows an implementation for this exercise with an additional script that will stop execution if the sprite touches something blue.
 However, as can be seen in \cref{fig:star-exercise-model-before,fig:star-exercise-model-after}, where the canvas is shown before and after running the code, the second script that should have stopped execution did not work.
 
 The reason for this is the non-preemptive thread switching: the body of the loop is always executed atomically.

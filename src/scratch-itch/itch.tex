@@ -3,15 +3,15 @@
 
 \begin{document}
 
-\chapter{Itch: a testing framework for Scratch}\label{ch:itch}
+\chapter{A testing framework for Scratch}\label{ch:itch}
 
 \dictum[Larry Flon \\ \textit{On research in structured programming}]{There does not now, nor will there ever, exist a programming language in which it is the least bit hard to write bad programs.}
 
-Visual block-based languages like Scratch are popular tools for introducing computer science concepts to students.
+Block-based languages like Scratch are popular tools for introducing computer science concepts to students~\autocite{bauLearnableProgrammingBlocks2017}.
 The intuitive interface and focus on visuals make Scratch an engaging and accessible programming environment.
-Due to its visual nature, syntactical programming errors are eliminated and students can quickly create games, stories, or other projects.
+Due to this visual nature, syntactical programming errors are eliminated and students can quickly create games, stories, or other projects.
 This approach gives students a lot of flexibility to express their creativity.
-However, functional errors still arise.
+However, functional errors will still occur~\autocite{zellerWhyProgramsFail2009a}.
 The process of teaching to code is often slowed down by the delay in providing feedback on and solutions to these errors.
 
 When done manually, assessment of submissions for Scratch exercises is time-consuming and impractical, especially in large classes, where educators often lack the time to give individual feedback to each student.
@@ -22,7 +22,7 @@ Itch provides flexible testing capabilities: it supports both static and dynamic
 It provides tools to make common scenarios easy to test, allowing the educators to focus on testing the interesting parts of an exercise.
 
 We also reflect on Itch's use in an educational context and discuss what testing of Scratch exercises should look like.
-On the one hand, Scratch strives to allow maximal creative expression for students, while on the other hand, testable exercises need a well-defined goal and limits.
+On the one hand, Scratch strives to allow maximal creative expression for students, while on the other hand, testable exercises need a well-defined goal and reasonable limits.
 
 \section{Related work}\label{sec:related-work}
 
@@ -30,19 +30,20 @@ There are few testing frameworks for Scratch.
 In this section, we look at the few existing ones, but also consider some other tools with similar aims.
 We begin with the linter-like tools that perform static analysis.
 
-The first one is Hairball~\autocite{boeHairballLintinspiredStatic2013}, and its web interface, Dr. Scratch~\autocite{moreno-leonDrScratchWeb2015}.
+The first one is Hairball~\autocite{boeHairballLintinspiredStatic2013}.
 Hairball analyses the blocks of a provided Scratch project, with multiple rules and analyzers available.
-For example, Dr. Scratch uses it to assign a ``computational thinking score'' to the project, although the creators of Scratch are not a fan of this approach (\autocite{resnickCodingCrossroads2020}, \cref{subsec:how-to-evaluate-scratch-exercises}).
+Dr. Scratch~\autocite{moreno-leonDrScratchWeb2015} allows analysing a Scratch project to provide various insights.
+For example, Dr. Scratch uses Hairball to assign a ``computational thinking score'' to the project, although the creators of Scratch are not a fan of this approach~\autocite{resnickCodingCrossroads2020}, see \cref{subsec:how-to-evaluate-scratch-exercises}.
 
 Scrape was a tool that visualized the use of blocks in a Scratch project.
 This is useful to determine which blocks are used, and which are not.
-This tool is no longer available and only works reliably with Scratch 1, but was used by the Scratch team to analyse uploaded Scratch projects~\autocite{brennan2012new}.
+This tool only works reliably with Scratch 1, but was used by the Scratch team to analyse uploaded Scratch projects~\autocite{brennan2012new}.
 
 QualityHound~\autocite{techapalokulQualityHoundOnline2017} is a linter that detects code smells like ``duplicate code'' or ``broad variable scope''.
 In total, twelve code smells are detected.
 LitterBox~\autocite{fraserLitterBoxLinterScratch2021} is a newer linter that shares some goals with QualityHound.
 For example, it will also detect code smells.
-LitterBox supports significant more patterns, and also finds potential bugs~\autocite{fradrichCommonBugsScratch2020}, by looking for code that seems suspicious (for example, comparing two literal values).
+LitterBox supports significantly more patterns, and also finds potential bugs~\autocite{fradrichCommonBugsScratch2020}, by looking for code that seems suspicious (for example, comparing two literal values).
 Subsequent research has expanded LitterBox to find ``code perfumes''~\autocite{obermullerCodePerfumesReporting2021}, which provides positive feedback to students, for example, by noting good use of loops.
 
 LitterBox can also translate code to LeILa, an intermediate language of the Bastet framework~\autocite{stahlbauerVerifiedScratchProgram2020}.
@@ -61,20 +62,22 @@ For example, Whisker (and subsequent research), supports property-based testing,
 
 \section{Using the framework}\label{sec:itch-using-the-framework}
 
-To illustrate Itch, we will use one exercise as a running example: the ``Grow and shrink'' exercise (\cref{fig:itch-grow-shrink-code}).
-In this exercise, there are three sprites: each sprite must grow if the ``g'' key is pressed.
-Additionally, the sprites must shrink if the ``k'' key is pressed.
-
 \begin{figure}
     \begin{wide}
         \includegraphics[width=\linewidth]{itch-grow-and-shrink-code}
     \end{wide}
-    \caption{The ``Grow and shrink'' exercise. A correct implementation of the exercise for the sprite ``Nano'' is seen here.}
+    \caption{
+        The \emph{Grow and shrink} exercise.
+        A correct implementation of the exercise for the sprite \texttt{Nano} is seen here.
+    }
     \label{fig:itch-grow-shrink-code}
 \end{figure}
 
+To illustrate Itch, we will use one exercise as a running example: the \emph{Grow and shrink} exercise (\cref{fig:itch-grow-shrink-code}).
+In this exercise, there are three sprites: each sprite must grow if the ``g'' key is pressed.
+Additionally, the sprites must shrink if the ``k'' key is pressed.
 To test this exercise, we design a test suite that will verify the behaviour of the sprites (\cref{lst:itch-grow-and-shrink}).
-The test suite does this in concept:
+It will:
 
 \begin{enumerate}[noitemsep]
     \item Save the existing size of the sprites.
@@ -82,8 +85,6 @@ The test suite does this in concept:
     \item Verify if the new size of the sprite is larger or smaller than the previously saved size.
     \item Save the new size as the existing size for the next test.
 \end{enumerate}
-
-Since this is a dynamic test suite (we do not look at the blocks), only one of the phases of the test suite is used (see \cref{sec:itch-test-suites}).
 
 \begin{listing}
     \begin{minted}{javascript}
@@ -130,15 +131,17 @@ function duringExecution(e) {
     .end();
 }
     \end{minted}
-    \caption{The complete test suite for the ``Grow and shrink'' exercise in Itch.}
+    \caption{The complete test suite for the \emph{Grow and shrink} exercise in Itch.}
     \label{lst:itch-grow-and-shrink}
 \end{listing}
 
+Since this is a dynamic test suite (we do not look at the blocks), only one of the phases of the test suite is used (see \cref{sec:itch-test-suites}).
 As a result of running this test suite, feedback is generated.
 The structure of the test suite (\cref{subsec:structure-of-a-test-suite2}) is reflected in the output (\cref{sec:format-of-the-generated-feedback}).
 It also contains the groups and the tests.
 
 
+% TODO
 %\section{Design of the framework}\label{sec:itch-architecture}
 %
 %Itch inserts itself into the Scratch Virtu
@@ -183,7 +186,7 @@ function afterExecution(e) {
     \label{lst:itch-test-suite-skeleton}
 \end{listing}
 
-Broadly, the tests can thus also be split according to their type: there are \term{static tests} and \term{dynamic tests}.
+Broadly, the tests can also be split according to their type: there are \term{static tests} and \term{dynamic tests}.
 Static tests do not require execution of the Scratch project.
 They are generally easier to write and faster to execute, but are severely limited in what they can test.
 Assessing whether a project uses a certain block (e.g.\ a loop block) somewhere in the project is typically done with static tests.
@@ -201,8 +204,7 @@ This captured behaviour can then be inspected in the after execution phase to se
 
 \subsection{Structure of a test suite}\label{subsec:structure-of-a-test-suite2}
 
-A test suite consists of groups and tests, which can be nested.
-A test suite consists of a hierarchical structure of groups and tests.
+A test suite consists of a hierarchical structure of groups and tests, which can be nested.
 A test is a check on some property of the exercise.
 It can be correct or wrong, and can contain feedback for both cases.
 Additionally, a test also has a name and can include additional information, such as diffs, messages, etc.
@@ -210,17 +212,16 @@ Additionally, a test also has a name and can include additional information, suc
 Structure is added by grouping the tests into groups.
 Groups can be nested, so groups inside groups etc.\ is possible.
 While there is no hard limit, the recommendation is to not go deeper than three levels in most cases.
-
 Groups are used for more than just structure.
 They also support a notion of visibility, with three modes:
 
-\begin{itemize}
+\begin{itemize}[noitemsep]
     \item \emph{Visible}: the group is expanded (all children are visible).
     \item \emph{Hidden}: the group is completely hidden, unless one of the tests in the group fails.
     \item \emph{Summary}: the group is collapsed by default and a summary is shown unless one of the tests fails (in which case the group is expanded).
 \end{itemize}
 
-\begin{figure}
+\begin{listing}
     \centering
     \begin{minted}{javascript}
         e.group.group('Tests for sprite A', () => {
@@ -228,26 +229,26 @@ They also support a notion of visibility, with three modes:
             .test('Sprite A does stuff right')
             .feedback({
               correct: 'Good job, sprite A does get stuff right!',
-              wrong: 'Oh no, sprite A does not get it right, take another look.',
+              wrong: 'Oh no, sprite A does not get it right.',
             })
            .expect('some value')
            .toBe('another value');
         });
     \end{minted}
-    \caption{An example showing how the test suites are structured using groups and tests.}\label{fig:itch-test-suite-structure}
-\end{figure}
+    \caption{An example showing how the test suites are structured using groups and tests.}\label{lst:itch-test-suite-structure}
+\end{listing}
 
 Groups and tests in the JavaScript test suites are inspired by the Jest\footnote{\url{https://jestjs.io/}} testing framework.
 The two relevant methods, \mintinline{javascript}{group} and \mintinline{javascript}{test} are available on the \mintinline{javascript}{Evaluation.group} property passed to the test suite.
-\Cref{fig:itch-test-suite-structure} shows an example of this, containing a single test.
+\Cref{lst:itch-test-suite-structure} shows an example of this, containing a single test.
 \marginnote{Backwards compatibility is one of the downsides of using software in production.}
 The double \mintinline{javascript}{group.group} is not a typo, but needed for backwards compatibility with older test suites.
 The test, as written in the example, will always fail, since it expects the string \mintinline{javascript}{"some value"} to be equal to \mintinline{javascript}{"another value"}.
 The \mintinline{javascript}{expect}/\mintinline{javascript}{toBe} notation specifically will be familiar to Jest users.
 
-Groups can be given just a name, as in the example, but it is also possible to provide more structured data to a group.
+Groups can be given just a name, as in the example, but it is also possible to provide more structured data.
 For example, it is possible to link a group to a certain sprite.
-This information is also provided in the generated feedback, which means the code responsible for showing the feedback can, for example, show an image of the sprite with the group.
+This information is also provided in the generated feedback, which means the platform responsible for showing the feedback can, for example, show an image of the sprite with the group.
 
 More details on how this structure is reflected in the generated feedback can be found in \cref{sec:format-of-the-generated-feedback}.
 More metadata includes the visibility, a summary (used if the group's visibility is set to summary), some tags (which allows to tag groups with arbitrary strings), and an option to ignore wrong tests.
@@ -259,7 +260,7 @@ This can be useful in cases where there are multiple possibilities: this allows 
 The before execution phase allows for executing static tests.
 Itch provides access to representations of two projects: the submission, created by the students, and the starter project, which is the project the students started with.
 
-Providing both of these allows an easy way to assess whether some sprites, or blocks in a sprite, where modified by the students.
+Providing both of these allows an easy way to assess whether the students modified some sprites or blocks in a sprite.
 Itch provides helpers to ensure that students only modified certain sprites, or only certain code within sprites.
 While this does limit the students in their ability to creatively modify the project, it makes behavioural tests for complex projects easier.
 By limiting where the students are allowed to modify blocks, later tests can rely on certain functionality or sprites being available and working.
@@ -294,8 +295,7 @@ In this example, only the \scratchinline{\blockinfloop{forever}{\blockspace[0.2]
 Finally, additional scripts (thus new ones created by the students) are also allowed.
 These are free of restrictions: the check for allowed blocks does not apply.
 
-\begin{figure}
-    \centering
+\begin{listing}
     \begin{wide}
         \begin{subfigure}{0.49\linewidth}
             \begin{scratch}[scale=0.8]
@@ -335,15 +335,15 @@ These are free of restrictions: the check for allowed blocks does not apply.
             \caption{The equivalent in JavaScript.}
         \end{subfigure}
     \end{wide}
-    \caption{An example of how a Scratch program can be represented using the abstractions provided by Itch.}\label{fig:itch-block-abstraction}
-\end{figure}
+    \caption{An example of how a Scratch program can be represented using the abstractions provided by Itch.}\label{lst:itch-block-abstraction}
+\end{listing}
 
 Itch also includes an abstraction to represent Scratch blocks in JavaScript, as used in the example above.
-For each Scratch block, a corresponding function exists (see an example in \cref{fig:itch-block-abstraction}).
+For each Scratch block, a corresponding function exists (see an example in \cref{lst:itch-block-abstraction}).
 
 The functions representing blocks can also be used to construct block patterns.
 Two additional are provided for patterns.
-The first is \mintinline{javascript}{anything()}, which can be used in any location (as a block, or value) and matches any block or value.
+The first is \mintinline{javascript}{anything()}, which can be used in any location (as a block or value) and matches any block or value.
 The reverse, \mintinline{javascript}{nothing()}, matches no block or value.
 It can be useful to ensure that a script terminates (i.e.\ that there are no more blocks afterwards).
 Additionally, an array of blocks or patterns can also be used in most places.
@@ -356,7 +356,7 @@ This supports error messages for each block (meaning they each show up as a fail
 
 \subsection{During execution}\label{subsec:during-execution}
 
-\begin{figure}
+\begin{listing}
     \begin{minted}{javascript}
         /** @param {Evaluation} e */
         function duringExecution(e) {
@@ -367,14 +367,14 @@ This supports error messages for each block (meaning they each show up as a fail
            .end();
         }
     \end{minted}
-    \caption{An example of the during execution phase where the scheduler is used to first press the green flag, wait \qty{800}{\milli\second}, press the ``s'' key, and finally end execution.}\label{fig:itch-scheduler-example}
-\end{figure}
+    \caption{An example of the during execution phase where the scheduler is used to first press the green flag, wait \qty{800}{\milli\second}, press the ``s'' key, and finally end execution.}\label{lst:itch-scheduler-example}
+\end{listing}
 
 The during execution phase is actually run just before the project is executed by Itch.
 The main purpose of this phase is to use the \mintinline{javascript}{e.scheduler} (an instance of the \mintinline{javascript}{Scheduler} class) to schedule the execution of the project.
 Using the scheduler, the test suite must specify how the project should be executed.
-This includes starting execution, stopping execution, manipulating the Scratch Virtual Machine, and simulating user interaction, like clicking, key presses, input, and so on.
-\Cref{fig:itch-scheduler-example} shows a minimal example of a schedule, where the green flag is pressed, some time must pass, and finally the ``s'' key is pressed.
+This includes starting execution, stopping execution, manipulating the virtual machine, and simulating user interaction, like clicking, key presses, input, and so on.
+\Cref{lst:itch-scheduler-example} shows a minimal example of a schedule where the green flag is pressed, some time must pass, and finally the ``s'' key is pressed.
 
 The scheduler receives a set of actions to perform.
 Each next action is executed after the previous one has been completed.
@@ -384,9 +384,9 @@ In the asynchronous variant, the action is executed and immediately finished.
 For example, the action to press the green flag is almost instant: the green flag is pressed in the virtual machine, and the action is complete.
 
 The synchronous actions will only finish after all activated scripts in Scratch have terminated.
-For example, the action to press the green flag will wait on all scripts with a head block \scratchinline{\blockinit{when \greenflag clicked}} are done executing.
+For example, the action to press the green flag will wait on all scripts with the hat block \scratchinline{\blockinit{when \greenflag clicked}} are done executing.
 Of course, there are scenarios where this is not possible.
-If one of the scripts contains an infinite loop (\scratchinline{\blockinfloop{forever}{\blockspace[0.2]}}), the next action would never be performed, as the script will never end.
+If one of the scripts contains an infinite loop, the next scheduled action would never be performed, as the script will never end.
 
 Since the project that is run comes from students with unknown code, synchronous actions also support a timeout.
 After this time has passed, a failed assertion will be added to the generated feedback, and the scheduler will continue.
@@ -413,7 +413,7 @@ This action is intended to mark certain events in the log, but can also be used 
 
 \subsection{After execution}\label{subsec:after-execution}
 
-\begin{figure}
+\begin{listing}
     \begin{minted}{javascript}
         /** @param {Evaluation} e */
         function afterExecution(e) {
@@ -432,16 +432,16 @@ This action is intended to mark certain events in the log, but can also be used 
           }
         }
     \end{minted}
-    \caption{An after execution phase, where the log is used to check if the costume of the sprite ``Hat'' changes after each click (there are two costumes and the costumes need to cycle).}\label{fig:itch-hat-costum-change}
-\end{figure}
+    \caption{An after execution phase, where the log is used to check if the costume of the sprite \texttt{Hat} changes after each click (there are two costumes and the costumes need to cycle).}\label{lst:itch-hat-costum-change}
+\end{listing}
 
-The schedule from the during execution phase results in the project being executed.
+Itch uses the schedule from the during execution phase to execute the submission.
 During the execution, a log is constructed of the execution.
 This is done by hand (using the \mintinline{javascript}{log} scheduler action) and automatically at interesting points.
 The log consists of snapshots (which are taken every time something changes in the virtual machine) and events (which denote interesting snapshots).
 For example, every action in the scheduler is saved as an event, meaning there is a snapshot before the action and after the action has been completed.
 
-For example (\cref{fig:itch-hat-costum-change}), the action to click a sprite (which was scheduled in the previous phase) has a corresponding event in the log.
+For example in \cref{lst:itch-hat-costum-change}, the action to click a sprite (which was scheduled in the previous phase) has a corresponding event in the log.
 That event gives access to a snapshot from before the sprite was clicked and after the sprite was clicked (in this case, the scheduled action was synchronous).
 In the actual test suite, the previous phase did not schedule one click, but a bunch of clicks.
 Each of these events provides before and after snapshots, which are then used to determine if the costume changes as expected when the sprite was clicked.
@@ -459,6 +459,7 @@ The evaluation of a submission goes through the following process:
     \item Itch starts the virtual machine and executes the scheduled actions.
           While executing, the logs are captured.
     \item If the execution did not result in an error, Itch shuts down the virtual machine, and runs the after execution phase.
+    \item All feedback is sent to the output.
 \end{enumerate}
 
 Scratch is built using browser technologies.
@@ -479,7 +480,7 @@ For these reasons, there are two ways to run Itch:
 
 \subsection{Running Itch as a library}\label{subsec:running-itch-as-a-library}
 
-\begin{figure}
+\begin{listing}
     \begin{minted}{typescript}
         export interface EvalConfig {
           /** The submission sb3 data. */
@@ -501,12 +502,12 @@ For these reasons, there are two ways to run Itch:
         /** Run the judge. */
         export async function run(config: EvalConfig): Promise<void>;
     \end{minted}
-    \caption{The exposed interface to run Itch. It consists of one function and a configuration object.}\label{fig:itch-library-interface}
-\end{figure}
+    \caption{The exposed interface to run Itch. It consists of one function and a configuration object.}\label{lst:itch-library-interface}
+\end{listing}
 
 Itch consists of two JavaScript packages, of which the core package implements the testing framework itself.
 This package can be loaded into the browser and run.
-The exposed interface to run Itch is limited to one function and a configuration object (\cref{fig:itch-library-interface}).
+The exposed interface to run Itch is limited to one function and a configuration object (\cref{lst:itch-library-interface}).
 Most of the options are self-explanatory, and the output format option is explained in \cref{sec:format-of-the-generated-feedback}.
 
 \subsection{Running Itch as a command line tool}\label{subsec:running-itch-as-a-command-line-tool}
@@ -515,7 +516,8 @@ Most of the options are self-explanatory, and the output format option is explai
     \begin{wide}
         \includestandalone[width=\linewidth]{itch-sequence-diagram}
     \end{wide}
-    \caption{Sequence diagram showing the process of evaluating a project with Itch. When run as a library, there is no itch core or Puppeteer.}\label{fig:itch-sequence-diagram}
+    \caption{Sequence diagram showing the process of evaluating a project with Itch. When run as a library, there is no itch core or Puppeteer.}
+    \label{fig:itch-sequence-diagram}
 \end{figure}
 
 When there is no browser available, Itch provides a command line interface.
@@ -834,19 +836,19 @@ For example, the blocks are only copied once (or when they are changed).
 
 % TODO: update Scratch environment?
 \begin{figure}
-\begin{wide}
-    \includegraphics[width=\linewidth]{scratch-poke-feedback}
-\end{wide}
-\caption{
-    Feedback for the ``Grow and shrink'' exercise.
-    Our solution contains an error: the sprite ``Giga'' does not implement the shrinking behaviour (with the ``k'' key).
-    In the feedback, there are two test groups: one for checking that sprites grow and one for checking that sprites shrink.
-    In each of these groups, the relevant key is pressed four times and each sprite is checked.
-    In the ``grow'' group, everything is correct (indicated by the green checkmark).
-    As expected, the second group reports that some tests have failed (indicated by the yellow triangle).
-    Two of the subgroups are open: while the tests for ``Nano'' and ``Pico'' were correct, the one for ``Giga'' failed as expected (indicated by a red cross).
-}
-\label{fig:poke-feedback-result}
+    \begin{wide}
+        \includegraphics[width=\linewidth]{scratch-poke-feedback}
+    \end{wide}
+    \caption{
+        Feedback for the \emph{Grow and shrink} exercise.
+        Our solution contains an error: the sprite \texttt{Giga} does not implement the shrinking behaviour (with the ``k'' key).
+        In the feedback, there are two test groups: one for checking that sprites grow and one for checking that sprites shrink.
+        In each of these groups, the relevant key is pressed four times and each sprite is checked.
+        In the ``grow'' group, everything is correct (indicated by the green checkmark).
+        As expected, the second group reports that some tests have failed (indicated by the yellow triangle).
+        Two of the subgroups are open: while the tests for \texttt{Nano} and \texttt{Pico} were correct, the one for \texttt{Giga} failed as expected (indicated by a red cross).
+    }
+    \label{fig:poke-feedback-result}
 \end{figure}
 
 For this prototype, showing the feedback to students was not a priority.
@@ -862,7 +864,7 @@ Poke does not support extensions at the moment, and these exercises used the pen
 One of these three exercises would not be testable anyway for the same reason Itch could not test it: drawing a house is a very open-ended exercise.
 The other exercises could be tested with Poke.
 
-For a comparison, \cref{lst:itch-grow-and-shrink} contains the test suite for the ``Grow and shrink'' exercise in Itch, while \cref{lst:poke-grow-and-shrink} contains the test suite used in Poke.
+For a comparison, \cref{lst:itch-grow-and-shrink} contains the test suite for the \emph{Grow and shrink} exercise in Itch, while \cref{lst:poke-grow-and-shrink} contains the test suite used in Poke.
 
 \begin{listing}
     \begin{wide}
@@ -892,8 +894,7 @@ For a comparison, \cref{lst:itch-grow-and-shrink} contains the test suite for th
         }
     \end{scratch}
     \end{wide}
-    \caption{The complete test suite for the ``Grow and shrink'' exercise in Poke.}
-    \label{lst:poke-grow-and-shrink}
+    \caption{The complete test suite for the \emph{Grow and shrink} exercise in Poke.}\label{lst:poke-grow-and-shrink}
 \end{listing}
 
 \subsection{Conclusion and future work}\label{subsec:conclusion-and-future-work}
@@ -937,22 +938,6 @@ Itch provides various helper functions to make testing common scenarios easier.
 The combination of the three phases allows for a lot of flexibility in how an exercise can be tested: from fully static to completely dynamic.
 However, while technically possible, it remains a challenge to design Scratch exercises that are both easy to test dynamically and open-ended enough to go well with the game-like and tinkering nature of Scratch.
 
+Poke is a promising experiment for writing tests for Scratch with Scratch, but needs more work to be a viable alternative.
+
 \end{document}
-
-
-%The notion of computational thinking is not new to the education community. Studies related to computational thinking in education can be traced back
-%to the 1960s when Logo programming language was first constructed (Feurzeig
-%& Papert, 2011). The main purpose of the language was to help students learn
-%mathematical and logical ways of thinking. It was assumed that Logo can be
-%learned easily by children. The educational theory behind the utilization of Logo
-%was constructionism (Papert, 1990), an interpretation of constructivism.
-%Constructivism posits that individuals actively construct knowledge through
-%experience. Piaget (1964) explained his ideas by stating, “To know is to
-%modify, to transform the object, and to understand the process of this transformation, and as a consequence to understand the way the object is constructed” (p. 176). Papert (1993) emphasized the rich learning environments
-%provided by the culture in which learners use existing tools to actively construct
-%an entity. Learners then can share this entity and communicate with others
-%through their own expressions. Therefore, students internalize what is outside
-%and then externalize what is inside in the construction process. Although the
-%Logo language was seen as a potential vehicle to transform education, it was
-%not successful in fulfilling this goal. Eventually, it lost its place in the mainstream schools of the United States and United Kingdom (Agalianos, Noss, &
-%Whitty, 2001).
