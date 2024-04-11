@@ -7,26 +7,20 @@
 \dictum[J. Maloney, M. Resnick, et al. \\ \textit{The Scratch Programming Language and Environment}]{Concurrency is often considered an advanced programming technique. Yet our everyday world is highly concurrent, so Scratch users
 are not surprised that a sprite can do several things at once.}
 
-TODO
-
 The current Scratch execution model makes some choices which make it difficult to implement certain features of debuggers.
 \marginnote{We encountered those difficulties in our work on Blink (\cref{ch:blink}).}
-The root cause is the cooperative threading model implemented by the current execution model.
+The root cause is the almost-cooperative threading model implemented by the current execution model.
 
 These prevent us from allowing the debugger to behave as we would want: either the debugger would be less usable, or it would deviate from how Scratch executes in normal mode.
 Both are not desirable.
-
 Since these issues are also present during normal execution of Scratch code, although in practice infrequently, we decided the execution model itself should be modified.
-
 
 We begin this chapter with an in-depth exploration of how the current execution model of Scratch works and behaves.
 This is necessary for a good understanding of the next section, where we discuss what the issues with it are.
 
 Next, we detail what a solution would look like and propose a family of modified execution models.
 We then evaluate these models with a set of metrics to illustrate how their modifications affect Scratch's behaviour in real-life projects.
-\marginnote{That was the whole point after all.}Finally, we apply one of these models to the debugger to illustrate that we can now use the debugger without the execution deviating from the normal mode.
-
-\section{The current execution model}\label{sec:the-current-scratch-execution-model}
+Finally, we apply one of these models to the debugger to illustrate that we can now use the debugger without the execution deviating from the normal mode.
 
 \begin{listing}
     \centering
@@ -58,9 +52,9 @@ We then evaluate these models with a set of metrics to illustrate how their modi
     \label{lst:scratch-two-programs}
 \end{listing}
 
-\subsection{Elements of a Scratch program}\label{subsec:elements-of-a-scratch-program}
+\section{Elements of a Scratch program}\label{sec:elements-of-a-scratch-program}
 
-A Scratch program consists of sprites and a stage (see also \cref{sec:scratch-environment}).
+A Scratch program consists of zero or more sprites and a stage (see also \cref{ch:scratch-the-programming-language}).
 The stage is the background and is always present.
 The other visual entities are the sprites: these are drawn on the stage.
 Together, these are called targets.
@@ -70,17 +64,19 @@ Due to its special role, the stage misses some of these properties (e.g.\ it doe
 The variables of the stage are also global: all sprites can access and change this variable.
 
 Code-wise, the Scratch blocks are organized into categories (see \cref{subsec:using-the-environment-and-the-blocks}).
-However, in this case, it might be more useful to look at their technical type, which corresponds to their shape.
+However, in this case, it is useful to look at their technical type, which corresponds to their shape.
 In total, there are seven types of blocks:
 
-\begin{enumerate}
+\begin{enumerate}[noitemsep]
     \item Hat blocks \scratchinline{\blockinit{\hspace{1em}\dots\hspace*{1em}}}, which are placed at the start of a script (they are named hat blocks since they visually sit on top of a script).
         A script can only have one hat block.
         They function as event listeners, which trigger execution of the script if the event occurs.
     \item Stack blocks \scratchinline{\blockmove{\hspace{1em}\dots\hspace*{0.5cm}}}, representing program statements.
         These are the most common blocks.
+        They are called stack blocks since they are stacked on top of each other.
     \item C blocks \scratchinline{\blockif{\hspace{1em}\dots\hspace*{1em}}{\blockspace[0.2]}}, which are named after their shape.
         They are used for most of the control flow blocks: loops and branches.
+        The variant for the if/else block is sometimes named an E block, since it has two slots.
     \item Reporter blocks \setscratch{baseline=c,scale=0.5}\ovalmove{\hspace{1em}\dots\hspace*{1em}}, act as variables or values and can be slotted into other blocks.
         Operators that result in a value also have this shape.
     \item Boolean blocks \setscratch{baseline=c,scale=0.5}\boolsensing{\hspace{1em}\dots\hspace*{1em}}, which are analogous to reporter blocks, but result in a boolean.
@@ -89,18 +85,21 @@ In total, there are seven types of blocks:
     \item Custom blocks \scratchinline{\initmoreblocks{define\hspace{1em}\dots\hspace*{1em}}}, which define ``procedures''.
 \end{enumerate}
 
-\subsection{Related work}\label{subsec:execution-related-work}
+\section{Related work}\label{sec:execution-related-work}
 
 There exists no full formal description of the Scratch execution model.
-Instead, the execution model is defined informally, based on the implementation of the Scratch Virtual Machine.
-However, in a series of papers, the \emph{Chair of Software Engineering II} group has published some work investigating and describing the execution model of Scratch.
+Instead, the execution model is defined informally, based on the implementation of the Scratch virtual machine.
+In~\autocite{maloneyScratchProgrammingLanguage2010a}, the threading model is considered informally.
+The largest amount of work is published in a series of papers by the \emph{Chair of Software Engineering II} group.
 
 First, in~\autocite{stahlbauerTestingScratchPrograms2019}, the authors propose a formalization of three aspects: the user perspective, a syntactic model and a semantic model.
 They propose that the semantics of Scratch can be described using a memory model based on message passing.
 Then, in~\autocite{stahlbauerVerifiedScratchProgram2020} the authors develop LeILa, an intermediate language to which Scratch projects can be translated, with an intended use of performing analysis on Scratch projects.
 The authors also provide formalizations of LeILa, but use approximations in some areas.
 Also,~\autocite{gotzModelbasedTestingScratch2022} models the state-based behaviour of Scratch programs using a finite state machine.
-Finally, in~\autocite{deinerAutomatedTestGeneration2023} the authors delve deeper into the actual execution of the virtual machine, while also proposing some modifications for it, for example, to make execution deterministic.
+Finally, in~\autocite{deinerAutomatedTestGeneration2023} the authors delve deeper into the actual execution of the virtual machine, while also proposing some modifications to it, for example, to make execution deterministic.
+
+\section{The current execution model}\label{sec:the-current-execution-model}
 
 \subsection{Execution of a Scratch program}\label{subsec:execution-of-a-scratch-program}
 
@@ -109,10 +108,9 @@ When executing Scratch code, the virtual machine transforms the blocks into an a
 These are organized by target, and every script of every target results in a thread inside the virtual machine.
 These are green threads: implemented fully in the virtual machine.
 
-
 The virtual machine is thus responsible for scheduling these threads.
 A schematic overview of the interaction between the different parts is \cref{fig:blink-architecture}.
-It uses a partially cooperative threading model, which \citeauthor{maloneyScratchProgrammingLanguage2010a} call the ``Scratch threading model''~\autocite{maloneyScratchProgrammingLanguage2010a}.
+It uses an almost-cooperative threading model, which \citeauthor{maloneyScratchProgrammingLanguage2010a} call the ``Scratch threading model''~\autocite{maloneyScratchProgrammingLanguage2010a}.
 This means it is mostly non-preemptive: the virtual machine will not interrupt threads at arbitrary points in their execution.
 The threads must voluntarily yield control, or reach a limited set of points in their execution.
 The rational is given in~\autocite{maloneyScratchProgrammingLanguage2010a}: ``Scratch builds concurrency control into its threading model in a way that avoids most race conditions, so that users do not need to think about these issues.
@@ -129,8 +127,11 @@ At four well-defined points, a thread always yields, thus causing said thread sw
     \item The last block of a loop (thus \scratchinline{\blockinfloop{forever}{\blockspace[0.2]}}, \scratchinline{\blockrepeat{repeat \ovalnum{}}{\blockspace[0.2]}}, and \scratchinline{\blockrepeat{repeat until \boolempty[1em]{}}{\blockspace[0.2]}}).
         This means thread switching will occur after every loop iteration.
     \item A recursive procedure call is detected.
-        Scratch attempts to detect these (up to five levels of indirection) and will then yield the thread.
+        Scratch attempts to detect these (up to five levels of indirection) and will yield the thread on each call if it detects a recursive call.
 \end{enumerate}
+
+There is one exception: when using procedures ``without screen refresh'', Scratch will interrupt a thread that runs longer than \qty{500}{\milli\second}.
+This is called the ``wrap timer'', and has some curious edge cases\footnote{\url{https://github.com/scratchfoundation/scratch-vm/issues/2834}}.
 
 The threads are executed in a first-come, first-serve manner: there are no priorities nor changes in thread order.
 The first thread is executed until it yields or ends, then the next thread, and so on.
@@ -140,12 +141,12 @@ A thread can have one of three conceptual states: \emph{done}, \emph{running}, a
 \begin{figure}
     \centering
     \includestandalone{scratch-model}
-    \caption{Overview of the interplay between the threading model and the ``game loop''. Within one step (which is done 30 times per second), one or more ticks are executed. The arrow with \CircledText{2} illustrates this: after the first tick, another is started if less than \qty{75}{\percent} of the step time (the time one step has to complete, \qty{33}{\milli\second}) has been used and a redraw has not been requested. Within one tick, a turn is executed for each turn: a thread executes until it terminates or the thread yields.}
+    \caption{Overview of the interplay between the threading model and the ``game loop''. Within one step (which is done 30 times per second), one or more ticks are executed. The arrow with \CircledText{2} illustrates this: after the first tick, another is started if less than \qty{75}{\percent} of the step time (the time one step has to complete, \qty{33}{\milli\second}) has been used, and a redraw has not been requested, and Scratch is not in turbo mode. Within one tick, a turn is executed for each thread \CircledText{1}: a thread executes until it terminates or the thread yields.}
     \label{fig:scratch-model-explained}
 \end{figure}
 
-The virtual machine uses a \emph{fixed-time step with synchronization} main loop~\autocite{nystromGameProgrammingPatterns2014}, also called a \emph{synchronized coupled model}~\autocite{valenteRealTimeGame2005}.
 \marginnote{Scratch 3 should actually run at 60 FPS; however Scratch enables a compatability mode by default, resulting in the 30 FPS.}
+The virtual machine uses a \emph{fixed-time step with synchronization} main loop~\autocite{nystromGameProgrammingPatterns2014}, also called a \emph{synchronized coupled model}~\autocite{valenteRealTimeGame2005}.
 This means that the virtual machine runs in \term{steps}: internally, the \texttt{step} function is called every \qty{33}{\milli\second} (so 30 times a second, commonly known as 30 frames per second).
 
 In each step, the virtual machine will execute one or more ticks.
@@ -179,7 +180,7 @@ In the looped version, the sprite moves four times (albeit very fast), as there 
 
 \subsection{Implementation details}\label{subsec:implementation-details}
 
-How different parts of the virtual machine implement the execution model from the previous section (\cref{subsec:execution-of-a-scratch-program}), is shown in \cref{fig:blink-architecture}.
+How different parts of the virtual machine implement the execution model from \cref{subsec:execution-of-a-scratch-program} is shown in \cref{fig:blink-architecture}.
 When the user interface loads a project, it also starts the virtual machine.
 This means that the game loop is active (this is done in the class \texttt{Runtime}).
 
@@ -208,11 +209,11 @@ While there are three conceptual statuses, the implementation has five:
 \end{description}
 
 Each thread maintains a stack structure.
-The \texttt{Sequencer} will then look up the next block on said stack, and if there is one, it will call the \texttt{Executer} class.
+The \texttt{Sequencer} will then look up the next block on said stack, and if there is one, it will call the \texttt{Execute} class.
 That class will actually execute the block on the stack.
 For normal blocks (confusingly called ``stack blocks'', since they stack in a script), the current block is popped from the stack, the block is executed, and the next block is put on the stack.
 The stack is only useful when working with C-blocks or procedures.
-For example, C blocks will put the first block in their mouth on the stack to execute.
+For example, C blocks will push the first block in their slot on the stack.
 In the case of a loop, a counter is saved in the stack frame to determine how many times the loop should be run.
 The exact implementation of the stack is less relevant for this chapter, so it is left to the reader to browser the source code.
 
@@ -270,19 +271,19 @@ This section illustrates a few limitations of the current execution model, first
 \end{figure}
 
 As \citeauthor{maloneyScratchProgrammingLanguage2010a} already mentioned, the Scratch threading model does not solve all issues with concurrency.
-To illustrate this point, we will consider a variant on the \emph{Star} exercise from \cref{subsec:star-exercise} (in \cref{fig:star-exercise-model}).
+To illustrate this point, we will consider a variant on the \emph{Star} exercise from \cref{subsec:star-exercise}.
 In this exercise, the goal is to let a sprite move around on a path without falling into the water (read touching a blue colour.)
 \Cref{lst:star-model-implementation} shows an implementation for this exercise with an additional script that will stop execution if the sprite touches something blue.
 However, as can be seen in \cref{fig:star-exercise-model-before,fig:star-exercise-model-after}, where the canvas is shown before and after running the code, the second script that should have stopped execution did not work.
 
 The reason for this is the non-preemptive thread switching: the body of the loop is always executed atomically.
 At the start of the loop, the sprite does not touch the water.
-After execution of one interation, the sprite is back on the path and does not touch the water.
+After execution of one iteration, the sprite is back on the path and does not touch the water.
 Therefore, whenever the second script is executed, the sprite is not touching the water, which explains why the execution was not stopped.
 
-Consider the original \emph{Star} exercise from \cref{subsec:star-exercise}.
-The second script there does not stop the execution, but wants to pause the execution using a breakpoint from the debugger.
-In the current execution model, this implementation will not work.
+Consider the original code in the \emph{Star} exercise from \cref{subsec:star-exercise}.
+The second script there does not stop the execution, but uses Blink's pause block to halt the execution.
+Using the current execution model, the pause block will not function for the same reasons mentioned above.
 
 \subsection{Specifically for the debugger}\label{subsec:specifically-for-the-debugger}
 
@@ -297,7 +298,6 @@ This approach allows users to keep focus on relevant threads without distraction
 Users can thus focus on the script(s) they believe are involved in the failure while ignoring (correct) scripts running at the same time.
 
 This approach does come at a price: it changes the execution model of Scratch.
-This basically changes the threading model from a non-preemptive one to a preemptive one: threads can be interrupted at any moment.
 Changing the execution model is not trivial due to two main considerations:
 
 \begin{enumerate}
@@ -305,6 +305,9 @@ Changing the execution model is not trivial due to two main considerations:
         This can result in different behaviour, meaning the bugs for which the debugger is used are no longer present or new bugs, unique to the debugger, could be introduced.
     \item If the execution model is changed, we need to ensure that existing Scratch programs keep working and that we do not introduce concurrency problems, as the current execution model of Scratch was explicitly chosen to avoid those.
 \end{enumerate}
+
+We opt for the second option: modifying the Scratch execution model.
+In the next section, we discuss what we changed, after which we investigate if existing Scratch projects can continue to work.
 
 \section{New execution model}\label{sec:a-family-of-new-execution-models}
 

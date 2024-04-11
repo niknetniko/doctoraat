@@ -6,16 +6,16 @@
 
 \begin{tikzpicture}[x=0.75cm,y=0.75cm,every node/.style={font=\small}]
 
-  \draw[arrow, ultra thick] (6,0.1) -- (6,-23);
+  \draw[arrow, ultra thick] (6,0.1) -- (6,-21);
 
   % Draw horizontal lines
   \foreach \y [count=\yi] in {0} {
     \draw (6,-\y) -- (6.3,-\y);
   }
 
-  \node[hnode, minimum height=7.5\block, minimum width=5\block,label={[fieldset,above left=-0.53\block and 0.6\block]Step 1}] at (3, -3.75) {};
+  \node[hnode, minimum height=7\block, minimum width=5\block,label={[fieldset,above left=-0.53\block and 0.6\block]Step 1}] at (3, -3.5) {};
 
-  \node[hnode, minimum height=6.5\block, minimum width=4.5\block,label={[fieldset,above left=-0.5\block and 0.6\block]Tick 1}] at (3,-4) {
+  \node[hnode, minimum height=6\block, minimum width=4.5\block,label={[fieldset,above left=-0.5\block and 0.6\block]Tick 1}] at (3,-3.75) {
     \begin{scratch}[scale=0.5,baseline=8]
       \blockmove{move  \ovalnum{100} steps}
       \blockmove{turn \turnleft{} \ovalnum{90} degrees}
@@ -28,7 +28,7 @@
     \end{scratch}
   };
 
-  \draw [ugent-re] (0.25,-7.75) -- (5.625,-7.75) -- (5.875,-5.25) -- (6.6,-5.25);
+  \draw [ugent-re] (0.25,-7.25) -- (5.625,-7.25) -- (5.875,-4.75) -- (6.6,-4.75);
 
 \end{tikzpicture}
 
