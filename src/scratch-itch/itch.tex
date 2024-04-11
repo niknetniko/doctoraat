@@ -578,7 +578,7 @@ In full feedback mode, the output is a single JSON object that represents a nest
 
 \section{Evaluation of the Itch framework}\label{sec:itch-evaluation}
 
-In this section, we discuss Itch's use in educational practice, insights from creating test suites for Scratch exercises.
+In this section, we discuss Itch's use in educational practice, and discuss insights from creating test suites for Scratch exercises.
 
 \subsection{Capabilities of the testing framework}\label{subsec:capabilities-of-the-testing-framework}
 
@@ -589,7 +589,8 @@ The Scratch exercises were used in a special category for students aged 10 to 12
 These 13 exercises were used as a reference for the initial feature set and capabilities of Itch.
 For 12 of the 13 exercises, a test suite was created that tested the submissions sufficiently that it would have been usable in the programming contest.
 The remaining exercise was not testable due to its open-ended nature.
-The problem statement of the exercises boils down to ``draw a house'', which results in a vast variety of houses.
+The problem statement of that exercise boils down to ``draw a house'', which results in a vast variety of houses.
+Besides introducing some computer vision framework to detect houses, this is not easily testable.
 
 \subsection{Itch in educational practice}\label{subsec:itch-in-educational-practice}
 
@@ -608,14 +609,19 @@ Some of these exercises are different levels of a single exercise: conceptually,
 However, most of these levels are different exercises packaged as one.
 Therefore, for our purposes, we can consider them as separate exercises.
 
-In the period from March 3rd, 2023 until March 26th, 2024 (328 days), the Itch evaluated \num{28144} submissions.
+In the period from March 3rd, 2023 until March 26th, 2024 (328 days), Itch evaluated \num{28144} submissions.
 Of these submissions, \num{2713} (\qty{9.64}{\percent}) are evaluated as being correct, which means \qty{90.36}{\percent} of evaluated submissions are incorrect.
 This is in line with our expectations: we allow students to submit as much as they want (and even automatically submit every so often) until the submission is correct.
+This also allows for collecting information about the trajectory of students within a single exercise, but also provides more data for analysing the growth of students throughout a course.
+Porviding insights from this data to educators is one area of future work that is planned by CodeCosmos.
 
 The submissions were made by \num{6496} unique users, with an average of \num{4.33} submissions per user.
-The submissions have an average test count of \num{158}, while the average test count of the exercises \num{366} (with a minimum of \num{2} and a maximum of \num{1292}).
+The submissions have an average test count of \num{158}, (the exercises have a number of tests that range from a minimum of \num{2} and a maximum of \num{1292}).
 
-\subsection{How to evaluate Scratch exercises}\label{subsec:how-to-evaluate-scratch-exercises}
+Most of these exercises were conceived before introducing Itch, meaning Itch is capable of evaluating exercises as typically used by CodeCosmos.
+The biggest change we made to the exercises was splitting the levels of the exercises into different Scratch projects.
+
+\subsection{How to assess Scratch exercises}\label{subsec:how-to-evaluate-scratch-exercises}
 
 The creators of Scratch have a well-known vision on how they intend Scratch to be used.
 In particular, they do not support strict static tests on exercises.
@@ -624,40 +630,42 @@ For example, \citeauthor{resnickCodingCrossroads2020} express this as follows in
 \begin{quotation}
     Too often, researchers and educators are adopting automated assessment tools that evaluate student programming projects only by analyzing the code, without considering the project goals, content, design, interface, usability, or documentation.
     For example, many are using an online Scratch assessment tool that gives students a ``computational thinking score'' based on the assumption that code with more types of programming blocks is an indication of more advanced computational thinking.
-    This form of assessment doesn't take into consideration what the student's program is intended to do, how well it accomplishes the student’s goals, whether the code works as intended, whether people are able to interact with it, or how the student’s thinking develops over a series of projects.
-    We see greater potential in other research and evaluation approaches, such as those that document and analyze teachers’ facilitation practices and students’ learning trajectories over time.
+    This form of assessment doesn't take into consideration what the student's program is intended to do, how well it accomplishes the student's goals, whether the code works as intended, whether people are able to interact with it, or how the student's thinking develops over a series of projects.
 \end{quotation}
 
-In Itch, these kinds of automated assessment are made possible by the static tests in the before execution phase of the test suite.
+In Itch, this kind of automated assessment is made possible by the static tests in the before execution phase of the test suite.
 While we share the sentiment of \citeauthor{resnickCodingCrossroads2020}, our experience with Scratch exercises has shown that such tests are necessary and often useful.
 There are a few factors that contribute to this:
 
 \begin{itemize}
-    \item Exercises (especially in Scratch) that were not created with testability in mind are often hard, if not impossible, to properly test without resorting to static analysis of the code.
-    \item Scratch projects, especially complex ones, are technically challenging to test within an acceptable time frame (we cannot spend minutes evaluating a single submission), as feedback must be fast~\autocite{sarsaSpeedingAutomatedAssessment2022}.
+    \item Exercises (especially in Scratch) that were not created with testability in mind are hard to properly test without resorting to static analysis of the code.
+    \item Scratch projects, especially complex ones, are technically challenging to test within an acceptable time frame.
+        We cannot spend minutes evaluating a single submission, as feedback must be fast~\autocite{sarsaSpeedingAutomatedAssessment2022}.
     \item Educators want simple metrics to easily see if students have mastered some concept.
           For example, determining if a student has mastered the concepts of loops (or repetition in general) is challenging to do automatically.
-          With a sufficient number of students and time constraints, educators fall back on analyzing blocks as a proxy for mastery.
+          With a large number of students and time constraints, educators fall back on analyzing blocks as a proxy for mastery.
 \end{itemize}
 
-For these reasons, we do not recommend using Itch (or any automated assessment framework, not even TESTed \cref{part:tested}) to automatically grade submissions.
+Since static tests are used, we do not recommend using Itch to automatically grade submissions.
 As so eloquently stated by Edsger Dijkstra, ``Testing shows the presence, not the absence of bugs''.
 Applied to educational software testing frameworks, this means that educators should be aware that a submission being marked as correct by the testing framework says nothing about its actual correctness, nor how good it is.
 This does not mean that testing frameworks are useless: with a good test suite, an educator (and student) can be fairly certain that a submission is correct.
+This can guide the educator to spend more time on submissions where it is necessary.
 Similarly, a submission marked as wrong can also help pinpoint the problem to the student, without intervention from the educator.
 
 \subsection{Creating test suites for Scratch exercises}\label{subsec:creating-test-suites-for-scratch-exercises}
 
-In contrast to most testing frameworks, Itch does not use the programming language for the test suites as the programming language of a submission: test suites for Scratch exercises are written in JavaScript.
+Itch does not use the same programming language for the test suites as the programming language of a submission: test suites for Scratch exercises are written in JavaScript.
+\marginnote{Doing the same in Scratch would be much less ergonomic then doing it in JavaScript.}
 While this has advantages, as JavaScript is a general purpose programming language, while Scratch is much more limited, it also has disadvantages.
 
 It is not uncommon for educators that use or create Scratch exercises to have no formal computer science background, nor experience with programming besides Scratch~\autocite{kimEnhancingTeachersICT2012,oliveiraIntroductionComputationalThinking2019}.
 This is also the case at CodeCosmos, where teachers with an educational background design and create the exercises.
-For the existing exercises, the educators designed the exercise and implemented the Scratch parts, while other people, with more experience with JavaScript, implemented the test suites.
+For the existing exercises, the educators designed the exercise and implemented the Scratch parts, while others (like the author) with more experience with JavaScript, implemented the test suites.
 However, it is our experience that it is faster if the person designing the exercise has knowledge of the testing framework and implements the test suite themselves.
 In \cref{sec:poke:-a-testing-framework-written-in-scratch}, we explore an experiment showing what a testing framework for Scratch with test suites in Scratch looks like.
 
-\section{Poke: writing test suites in Scratch}\label{sec:poke:-a-testing-framework-written-in-scratch}
+\section{Writing test suites in Scratch}\label{sec:poke:-a-testing-framework-written-in-scratch}
 
 As mentioned in the previous subsection, creating test suites in JavaScript for Scratch exercises can be challenging for educators without computer science background or experience.
 To fill this gap, we have developed Poke: a prototype of a testing framework for Scratch implemented in Scratch itself.
@@ -685,30 +693,29 @@ Poke provides five categories of blocks: a hat block (\scratchinline{\blockpokeh
 
 \subsubsection{Feedback blocks}
 
-\begin{scratch}[scale=0.7]
+\begin{scratch}[scale=0.6]
     \blockpokegroup{\drawicon{\drawfeedback} test group \ovalnum{name}}{\blockspace[0.5]}
 \end{scratch}
 
 The structure of a test suite in Poke is identical to the structure in Itch (\cref{subsec:structure-of-a-test-suite2}): a test suite consists of groups, which can contain tests or other groups.
 The block for creating groups is a C block that takes the name of the group as an argument.
 The body of the block outputs its test results in the group.
-Differing from Itch, the only property of a group is its name: for example, a group in Poke cannot be linked to a sprite at the moment.
 
 \begin{wide}
     \begin{varwidth}{0.40\linewidth}
-        \begin{scratch}[scale=0.7]
+        \begin{scratch}[scale=0.6]
             \blockpoke{\drawicon{\drawfeedback} assert \boolpokeempty[3em] named \ovalnum{feedback}}
         \end{scratch}
     \end{varwidth}%
     \hspace{1em}%
     \begin{varwidth}{0.28\linewidth}
-        \begin{scratch}[scale=0.7]
+        \begin{scratch}[scale=0.6]
             \blockpoke{\drawicon{\drawfeedbackcorrect} correct: \ovalnum{feedback}}
         \end{scratch}
     \end{varwidth}%
     \hspace{1em}%
     \begin{varwidth}{0.25\linewidth}
-        \begin{scratch}[scale=0.7]
+        \begin{scratch}[scale=0.6]
             \blockpoke{\drawicon{\drawfeedbackwrong} wrong: \ovalnum{feedback}}
         \end{scratch}
     \end{varwidth}
@@ -719,7 +726,7 @@ It takes a boolean value and a name.
 The name is shown in the output, together with a status depending on the value of the boolean block.
 There are also the correct and wrong blocks, which act as a test that always passes or always fails respectively.
 
-\begin{scratch}[scale=0.7,else word={}]
+\begin{scratch}[scale=0.6,else word={}]
     \blockpokedgroup{\drawicon{\drawfeedback} wait until \boolpokeempty[3em] or \ovalnum{} seconds}{\blockspace[0.5]}{\blockspace[0.5]}
 \end{scratch}
 
@@ -731,45 +738,44 @@ The two slots can also contain other blocks.
 
 \subsubsection{User interaction blocks}
 
-% TODO: oval sprites...
 \begin{varwidth}{0.20\linewidth}
-    \begin{scratch}[scale=0.7]
+    \begin{scratch}[scale=0.6]
         \blockpoke{\drawicon{\drawinteract} click \greenflag}
     \end{scratch}
 \end{varwidth}%
 \hspace{1em}%
 \begin{varwidth}{0.28\linewidth}
-    \begin{scratch}[scale=0.7]
+    \begin{scratch}[scale=0.6]
         \blockpoke{\drawicon{\drawinteract} click \selectmenu{Sprite}}
     \end{scratch}
 \end{varwidth}%
 \hspace{1em}%
 \begin{varwidth}{0.3\linewidth}
-    \begin{scratch}[scale=0.7]
+    \begin{scratch}[scale=0.6]
         \blockpoke{\drawicon{\drawinteract} click \selectmenu{Sprite} and wait}
     \end{scratch}
 \end{varwidth}
 
 \begin{varwidth}{0.5\linewidth}
-    \begin{scratch}[scale=0.7]
+    \begin{scratch}[scale=0.6]
         \blockpoke{\drawicon{\drawinteract} press \selectmenu{space} key}
     \end{scratch}
 \end{varwidth}%
 \hspace{1em}%
 \begin{varwidth}{0.5\linewidth}
-    \begin{scratch}[scale=0.7]
+    \begin{scratch}[scale=0.6]
         \blockpoke{\drawicon{\drawinteract} press \selectmenu{space} key and wait}
     \end{scratch}
 \end{varwidth}%
 
 \begin{varwidth}{0.5\linewidth}
-    \begin{scratch}[scale=0.7]
+    \begin{scratch}[scale=0.6]
         \blockpoke{\drawicon{\drawinteract} move mouse to x: \ovalnum{} y: \ovalnum{}}
     \end{scratch}
 \end{varwidth}%
 \hspace{1em}%
 \begin{varwidth}{0.5\linewidth}
-    \begin{scratch}[scale=0.7]
+    \begin{scratch}[scale=0.6]
         \blockpoke{\drawicon{\drawinteract} answer \ovalnum{answer text}}
     \end{scratch}
 \end{varwidth}%
@@ -780,13 +786,17 @@ The block to click a sprite and block to press a key also have a synchronous var
 
 \subsubsection{Observation blocks}
 
-\begin{varwidth}{0.5\linewidth}
-    \setscratch{scale=0.7}\ovalpoke{\drawicon{\drawobserve} snapshot}
+\begin{varwidth}{0.2\linewidth}
+    \setscratch{scale=0.6}\ovalpoke{\drawicon{\drawobserve} snapshot}
 \end{varwidth}%
 \hspace{1em}%
 \begin{varwidth}{0.5\linewidth}
-    \setscratch{scale=0.7}\ovalpoke{\drawicon{\drawobserve} \selectmenu{property} of \selectmenu{Sprite} in \ovalnum{snapshot variable}}
+    \setscratch{scale=0.6}\ovalpoke{\drawicon{\drawobserve} \selectmenu{property} of \selectmenu{Sprite} in \ovalnum{snapshot}}
 \end{varwidth}%
+\hspace{1em}%
+\begin{varwidth}{0.3\linewidth}
+    \setscratch{scale=0.6}\ovalpoke{\drawicon{\drawobserve} \selectmenu{property} in \ovalnum{snapshot}}
+\end{varwidth}
 
 The observation blocks are very similar to sensing blocks from Scratch, as they allow the tests to save and query the environment.
 A special sensing block (which also acts as a variable) reflects the current state of the virtual machine.
@@ -796,32 +806,32 @@ Two more reporter blocks (one for sprite-specific properties and one for the sta
 \subsubsection{Executing blocks in another sprite}
 
 \begin{varwidth}{0.5\linewidth}
-    \begin{scratch}[scale=0.7]
+    \begin{scratch}[scale=0.6]
         \blockpokegroup{\drawicon{\drawsquarearrow} with \selectmenu{Sprite} do}{\blockspace[0.5]}{}
     \end{scratch}
 \end{varwidth}%
 \hspace{1em}%
 \begin{varwidth}{0.5\linewidth}
-    \begin{scratch}[scale=0.7]
+    \begin{scratch}[scale=0.6]
         \blockpoke{\drawicon{\drawsquarearrow} add sprites to \selectmenu{list} where \boolpokeempty[3em]}
     \end{scratch}
 \end{varwidth}%
 
 While the test blocks can be placed in any sprite, it is our experience that the most convenient place is a dedicated sprite with only test code.
-However, this introduces an additional complication: how can the test sprite execute blocks on other sprites?
+However, this introduces an additional complication: how can the test sprite execute blocks in other sprites?
 For example, the test sprite might want to move a certain sprite, which is not possible in vanilla Scratch.
 
 To this end, Poke provides a C block, whose contents will be executed in the selected sprite.
 Technically, this re-uses the broadcasting mechanism built into Scratch:
 
 \begin{enumerate}
-    \item Before executing a test, Poke will generate a unique broadcast for each C block.
+    \item Before executing a test, Poke will generate a unique broadcast for each of these C blocks.
     \item The contents of the C block are copied to the sprite that will execute them.
     \item These copied blocks are placed under a hat block that will trigger when the generated broadcast is sent.
     \item The original blocks are replaced with a send broadcast block.
 \end{enumerate}
 
-When the virtual machine executes this code, it will send the broadcast, after which it will trigger the blocks in the correct sprite.
+When the virtual machine executes this code, it will send the broadcast, which will trigger the blocks in the correct sprite.
 This happens behind the scenes: the copied blocks are not visible to the user, and special care has been taken to ensure that there are no performance issues.
 For example, the blocks are only copied once (or when they are changed).
 
@@ -853,7 +863,7 @@ While usable, it is not the most intuitive layout, especially considering the ta
 To verify that Poke is usable as a testing framework, we compared it to the set of Scratch problems from the Flemish Programming Contest (\cref{subsec:capabilities-of-the-testing-framework}) that were testable by Itch.
 
 Three of the exercises could not be tested with Poke, but this was expected.
-Poke does not support extensions at the moment, and these exercises used the pen extension.
+Poke does not support extensions at the moment, and these exercises use the pen extension.
 One of these three exercises would not be testable anyway for the same reason Itch could not test it: drawing a house is a very open-ended exercise.
 The other exercises could be tested with Poke.
 
