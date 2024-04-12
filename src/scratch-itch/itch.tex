@@ -60,7 +60,7 @@ Finally, Whisker~\autocite{stahlbauerTestingScratchPrograms2019} is a full autom
 While manually written test suites (also in JavaScript) are possible, Whisker focuses on automated testing~\autocite{deinerAutomatedTestGeneration2023}.
 For example, Whisker (and subsequent research), supports property-based testing, search-based testing~\autocite{deinerSearchBasedTestingScratch2020}, and model-based testing~\autocite{gotzModelbasedTestingScratch2022}.
 
-\section{Using the framework}\label{sec:itch-using-the-framework}
+\section{Introduction to Itch}\label{sec:introduction-to-itch}
 
 \begin{figure}
     \begin{wide}
@@ -396,8 +396,45 @@ To create a non-linear schedule (e.g.\ multiple actions are performed simultaneo
 First, the return value of one of the previous actions can be used multiple times to schedule new actions.
 All of these will be run in parallel.
 
-The other option is to use the method \mintinline{javascript}{forEach}: this is an implementation of the ``fold'' function on the events.
-By deciding what event is used as the accumulator, either a linear (by returning the new action) or non-linear schedule (by returning the existing action) can be created.
+\begin{figure}
+    \begin{subfigure}{0.49\linewidth}
+        \centering
+        \begin{minted}{javascript}
+            const s = e.scheduler.wait(500);
+
+            // Schedule actions L1-4
+            s.forEach([1, 2, 3, 4], (p) => {
+                return p.wait(500);
+            });
+
+            // Schedule actions N1-4
+            s.forEach([1, 2, 3, 4], (p) => {
+                p.wait(500);
+                return p;
+            });
+        \end{minted}
+    \end{subfigure}
+    \begin{subfigure}{0.49\linewidth}
+        \centering
+        \includestandalone{itch-scheduler}
+    \end{subfigure}
+    \caption{
+        The code for the scheduler (left) and the resulting schedule of actions (right).
+        The start of an action is shown with a circle.
+        After the start action S, the L and N actions are scheduled at the same time.
+        However, the L actions return the new action in the function, meaning L1-4 will run sequentially.
+        The code for the N actions returns the original action, meaning N1-4 will run in parallel.
+        Since both N1 and L1 are scheduled on the same action S, the actions L1 and N1-4 will all run in parallel.
+    }
+    \label{fig:itch-scheduler-schedule}
+\end{figure}
+
+Another option is to use the method \mintinline{javascript}{forEach}: this is an implementation of the ``fold'' function on the events.
+By deciding what action is used as the accumulator, either a linear (by returning the new action) or non-linear schedule (by returning the existing action) can be created.
+\Cref{fig:itch-scheduler-schedule} shows an example of this.
+By returning the new action, each action L1-4 will be performed after each other.
+By returning the original action, the N1-4 actions will all be scheduled at the same time.
+Since both L1 and N1 are scheduled on the same starting action S, they will also run in parallel.
 
 While most actions are equivalent to their counter-parts in Scratch (like clicking a sprite, pressing a key, etc.), the wait action has more features.
 In addition to waiting a set amount of time (like in the example), the wait action can also wait on the fulfillment of a certain condition.
@@ -633,8 +670,9 @@ For example, \citeauthor{resnickCodingCrossroads2020} express this as follows in
     This form of assessment doesn't take into consideration what the student's program is intended to do, how well it accomplishes the student's goals, whether the code works as intended, whether people are able to interact with it, or how the student's thinking develops over a series of projects.
 \end{quotation}
 
-In Itch, this kind of automated assessment is made possible by the static tests in the before execution phase of the test suite.
-While we share the sentiment of \citeauthor{resnickCodingCrossroads2020}, our experience with Scratch exercises has shown that such tests are necessary and often useful.
+Using the available linters or static analysis in Itch to detect code smells is beneficial for students~\autocite{hermansCodeSmellsHamper2016}.
+However, in Itch, static analysis can also be used for automatic assessment by writing the static tests in the before execution phase of the test suite.
+While we share the sentiment of \citeauthor{resnickCodingCrossroads2020}, our experience with Scratch exercises and our collaboration with CodeCosmos has shown that such tests are often used, despite their disadvantages.
 There are a few factors that contribute to this:
 
 \begin{itemize}
