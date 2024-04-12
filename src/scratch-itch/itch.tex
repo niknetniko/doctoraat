@@ -349,7 +349,7 @@ It can be useful to ensure that a script terminates (i.e.\ that there are no mor
 Additionally, an array of blocks or patterns can also be used in most places.
 This represents a choice: it will match any of the patterns in the array.
 
-For example, the pattern \mintinline{javascript}{repeat([15, 30], script(changeSizeBy(any()), never()))}, will match a \texttt{repeat} block that repeats 15 or 30 times, with a body with exactly one block, the \texttt{change size by} block, whose argument can be anything.
+For example, \mintinline{javascript}{repeat([15, 30], script(changeSizeBy(any()), never()))}, will match a \texttt{repeat} block that repeats 15 or 30 times, with a body with exactly one block, the \texttt{change size by} block, whose argument can be anything.
 
 Since scripts form a tree of blocks, there are also helpers to match and test against a script of blocks.
 This supports error messages for each block (meaning they each show up as a failed assertion in the output).
@@ -959,7 +959,6 @@ In addition, we envision that a different representation might be needed for edu
 
 \subsubsection{Organisational aspects of Poke}
 We have currently not considered any of the organisational aspects that arise when attempting to use a testing framework in an educational setting.
-
 The tests are currently included in the Scratch project itself.
 While useful if students want to create and use their own tests, it is less ideal for educator-provided test suites.
 For example, there is currently no way of preventing students from modifying the test code.
@@ -978,7 +977,5 @@ Itch provides various helper functions to make testing common scenarios easier.
 
 The combination of the three phases allows for a lot of flexibility in how an exercise can be tested: from fully static to completely dynamic.
 However, while technically possible, it remains a challenge to design Scratch exercises that are both easy to test dynamically and open-ended enough to go well with the game-like and tinkering nature of Scratch.
-
-Poke is a promising experiment for writing tests for Scratch with Scratch, but needs more work to be a viable alternative.
 
 \end{document}
