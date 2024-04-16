@@ -274,6 +274,8 @@ As \citeauthor{maloneyScratchProgrammingLanguage2010a} already mentioned, the Sc
 To illustrate this point, we will consider a variant on the \emph{Star} exercise from \cref{subsec:star-exercise}.
 In this exercise, the goal is to let a sprite move around on a path without falling into the water (read touching a blue colour.)
 \Cref{lst:star-model-implementation} shows an implementation for this exercise with an additional script that will stop execution if the sprite touches something blue.
+We asked a number of educators that had experience with Scratch to predict the behaviour of this implementation.
+All of them expected to execution to stop either when the sprite first touches the water or after the block when the sprite first touches the water.
 However, as can be seen in \cref{fig:star-exercise-model-before,fig:star-exercise-model-after}, where the canvas is shown before and after running the code, the second script that should have stopped execution did not work.
 
 The reason for this is the non-preemptive thread switching: the body of the loop is always executed atomically.
