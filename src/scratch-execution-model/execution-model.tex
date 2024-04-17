@@ -313,40 +313,89 @@ In the next section, we discuss what we changed, after which we investigate if e
 
 \section{New execution model}\label{sec:a-family-of-new-execution-models}
 
-TODO: nieuwe model uitleggen
+In line with how we want the stepping feature of the debugger to work, we have decided to change the execution model as follows: we modify a turn to execute exactly one block before yielding.
+Thus, in a single tick, the virtual machine will execute a single block in every thread.
 
-%When changing the execution model of Scratch, there is a multitude of parameters to change.
-%For our debugger, the most important change is that we execute a single block at a time.
-%A tick will thus execute a single block in each thread, before the thread yields.
-%Since this has an impact on the execution speed (as more time is spent idling in each step), we need to intervene and change the ticks.
-%There are multiple choices on how to do this, mainly variants of how many ticks are executed per step.
-%The proposed new execution model will combine two strategies.
-%In the normal mode, more ticks per step will be executed.
-%
-%\paragraph{More ticks per step}
-%For example, we could decide to always execute two ticks per step.
-%Since executing a single block per thread makes the execution time of a tick less variable, we could also execute as many ticks as possible in a step.
-%This number would need to be determined and will be somewhat arbitrary.
-%However, the existing limit of \qty{75}{\percent} is also somewhat arbitrary, so this need not be a problem.
-%
-%\paragraph{Run as fast as possible}
-%Another approach is to remove the fixed-time step from Scratch: executing ticks as fast as possible.
-%This can be achieved by running exactly one tick each step, and running the next step as soon as the previous one is ready.
-%A consequence of this last change is that a Scratch program will run as fast as possible on the given hardware.
-%Slower hardware and faster hardware will thus result in slower and faster executions respectively.
-%This also potentially means that there will be a lot of redraws, of which some are useless as there were no visual changes.
-%
-%The built-in turbo mode in the current execution model is a combination of both: while the \qty{75}{\percent} is still honoured (thus a new tick will not be started if more than \qty{75}{\percent} of the step time is used), requests for redraws are ignored.
-%Normally, a request for a redraw stops execution of new ticks, but in turbo mode, this is not the case.
+As there is often only one tick per step (due to many blocks requesting redraws), this means that only one block would be executed per step (thus one block for every thread per \qty{33}{\milli\second}).
+The consequence is that this makes execution much slower than in the original execution model.
+
+A possible solution is to modify the number of steps that are taken.
+For example, it might be better to run at twice or more times the number of steps per second.
+In turbo mode, this would mean the steps are done as fast as the hardware allows.
+While this does make everything go much faster, it does introduce a big difference in execution time between a performant machine and a slower machine.
+
+These changes to the execution model have as a benefit that the \emph{Star} exercise will work as intended (\cref{fig:scratch-two-execution}).
+Since the first thread will yield after the first block in the loop, the exercise will work as intended.
+It can also illustrate that this does introduce concurrency considerations that were not present in the original execution model.
+For example, if the conditional block in the second thread evaluates to true, the first thread will execute another block before execution is stopped by the block inside the conditional block from thread two.
+
+TODO: volledige stackframe?
+
+In the next sections, we analyze existing Scratch projects to determine which number of steps that most closely results in the same execution speed as the original execution model.
+We also take this opportunity to analyze the complexity and block use in Scratch projects, to evaluate whether the concurrency considerations would cause problems.
+
+\section{Analysis of Scratch projects}\label{sec:evaluation-of-scratch-projects}
+
+Before validating our changes to the execution model, we investigate and analyze a set of Scratch projects.
+The aim of this analysis is to determine what blocks are used in Scratch projects and how complex most projects are.
+
+\subsection{Existing analyses}\label{subsec:existing-analyses}
+
+\makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.}
+In~\autocite{aivaloglouHowKidsCode2016}, the authors analyzed \num{250000} Scratch projects that they scraped from the publicly Scratch site.
+They looked at the types of blocks used, the size of the projects, and the complexity.
+For the complexity, they utilize the cyclomatic complexity metric~\autocite{mccabeComplexityMeasure1976}.
+The considered decision points are the \texttt{if} and \texttt{if-else} blocks.
+
+They found that most Scratch projects are small: \qty{75}{\percent} have less than 5 sprites, 12 scripts, and 76 blocks.
+\qty{25}{\percent} has less than 12 blocks, although there are some huge projects with more than \num{20000} blocks.
+They also found that about \qty{78}{\percent} of projects have no decision points.
+
+In~\autocite{fronzaApproachEvaluateComplexity2020}, the authors investigate Scratch projects with different complexity metrics.
+The dataset is, however, much more limited: 80 projects were analyzed.
+\makenote*{The validity of the Halstead metrics is even more controversial~\autocite{hamerHalsteadSoftwareScience1982,shenSoftwareScienceRevisited1983,jonesDimensionalAnalysisHalstead2019}.}
+The authors also measure the cyclomatic complexity, in addition to some Halstead complexity measures~\autocite{halsteadElementsSoftwareScience1977}, and their own proposal for a ``when'' metric.
+They do use more decision points for the cyclomatic complexity (\texttt{if}, \texttt{if-else}, \texttt{repeat until}, \texttt{wait until}, \texttt{and}, \texttt{or}).
+The proposed ``when'' metric counts the number of ``when'' blocks (e.g.\ hat blocks with certain conditions).
+
+\subsection{New analysis}\label{subsec:new-analysis}
+
+In this section we describe our analysis, which is inspired by~\autocite{aivaloglouHowKidsCode2016}.
+To perform another analysis, we first scraped the X most recent public projects from the Scratch website.
+The oldest project was created on X.
+Y of the projects were empty and thus excluded from further analysis.
+
+We first look at the distribution of the used blocks (Figure X).
+Most projects only use stack blocks.
+The arguably ``most advanced'' blocks, for procedures, are only used in X of the projects.
+We see that these results are similar to those in X.
+X have less than x blocks, and we also find some large projects.
+
+For the complexity of the Scratch projects, we measured the following metrics:
+
+\begin{enumerate}
+    \item The cyclomatic complexity with decision points as used in~\autocite{aivaloglouHowKidsCode2016}.
+    \item The cyclomatic complexity with more decision points as used in~\autocite{fronzaApproachEvaluateComplexity2020}.
+    \item TODO: een nog betere complexiteitsmetriek?
+\end{enumerate}
+
+The results are shown in Y.
+These findings are again similar to those in~\autocite{aivaloglouHowKidsCode2016}.
+
+This analysis illustrates two points for evaluating the new execution model.
+Firstly, most Scratch projects are simple and short.
+This also means that the chance of running into concurrency problems (that are potentially introduced by the new execution model) is low.
+Longer and more complex projects, which might run into these, probably have a creator with sufficient programming knowledge to mitigate these issues (for example, by using a procedure).
+
+Secondly, this analysis illustrates that while most projects are small, there are also large projects.
+The new execution model should thus be evaluated on small and large projects, with a focus on small projects.
+
+In the next section, we will evaluate the new execution model against the existing model using the projects we scraped for the analysis.
 
 \section{Evaluation of the new execution model}\label{sec:evaluation-of-the-new-execution-model}
 
-\subsection{Evaluation of Scratch projects}\label{subsec:evaluation-of-scratch-projects}
-
-Write about hwo most Scratch projects are not complex and do not use advanced techniques.
 
 
-TODO
 
 \section{Applying the new evaluation model on the debugger}\label{sec:applying-the-new-evaluation-model-on-the-debugger}
 
