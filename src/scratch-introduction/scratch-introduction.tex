@@ -19,9 +19,9 @@ It is block-based, meaning code is represented by blocks with different shapes.
 \makenote*{The TIOBE index is not that useful: it is based on the number of reported results in search engines~\autocite{bunceTIOBENotTIOBE2008,sundarramPleaseStopCiting2022}. For example, it is known that the system is gamed.~\autocite{bunceTIOBEIndexBeing2009}.}
 Development on Scratch began in 2002, by the Lifelong Kindergarten research group at the MIT Media Lab.
 Scratch became publicly available in 2007, and has been developed by the Scratch Foundation since 2009.
-Its target audience is ages 8 to 16, although it is most commonly used for ages 10 to 14.
-
-It is a widely used programming language: the 2022 annual report of the Scratch Foundation~\autocite{scratchfoundationGrowingGlobalCreative2022} states that there are over 50 million users in the online Scratch community, with 120 new projects (the programs) being made.
+Its target audience is young learners, ages 8 to 16, although it is most commonly used for ages 10 to 14.
+It is a widely used programming language: the 2022 annual report of the Scratch Foundation~\autocite{scratchfoundationGrowingGlobalCreative2022} states that there are over 50 million users in the online Scratch community, with 120 million new projects created in 2022.
+The official statistics\footnote{\url{https://scratch.mit.edu/statistics/}} show that in March 2024, there were 1.2 million active monthly users, with about 3.5 million new projects.
 The TIOBE index for March 2024 ranks it as the ninth most used programming language~\autocite{tiobeTIOBEIndexMarch2024}.
 
 \begin{figure}
@@ -89,9 +89,9 @@ While the code is shared, the execution is not: each clone can execute code inde
 A clone is not visible in the sprite overview, only on the canvas.
 
 Variables are normally also limited to the sprite that defined them and are not visible to other sprites.
-There is an exception: the variables of the stage are visible to all sprites, and could thus be used for inter-sprite communications.
+There is an exception: the variables of the stage are visible to all sprites, and could thus be used for inter-sprite communication.
 
-\subsection{Inter-sprite communications}\label{subsec:intersprite-communications}
+\subsection{Inter-sprite communication}\label{subsec:intersprite-communications}
 
 \textcolor{screvent}{Broadcasts} are the intended way to let sprites communicate with each other.
 There are other ways, such as global variables or implicit communication (for example, blocks that trigger when a colour is touched).
@@ -103,7 +103,7 @@ It is a one-to-many broadcasting system~\autocite{maloneyScratchProgrammingLangu
 Scratch allows defining custom blocks, sometimes called procedures.
 This allows the user to define blocks that consist of other blocks, similar to procedures in other languages.
 Procedures in Scratch can have arguments, which are available as variables to the blocks of the procedure.
-There is no return value.
+Since the custom blocks are procedures and not functions, they do not have return values.
 
 \subsection{Parallelism and concurrency}\label{subsec:parallelism}
 
@@ -136,8 +136,8 @@ A few important components are:
         \includestandalone[width=\linewidth]{dependencies}
     \end{wide}
     \caption{
-        Overview of the depdencies between the Scratch repositories (using their repository name).
-        The repositories that are purely for the hostend instance, such as the website, account system, and forum are left out.
+        Overview of the dependencies between the Scratch repositories (using their repository name).
+        The repositories that are purely for the hosted instance, such as the website, account system, and forum are left out.
         An arrow indicates a depdency.
         For example, the \texttt{scratch-gui} package has five dependencies.
     }
