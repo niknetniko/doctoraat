@@ -56,7 +56,7 @@ It translates a very limited subset of Scratch programs to Python.
 \textsc{itch} uses the Scratch say and ask functionality to perform input/output-based testing on Scratch projects.
 Of course, being limited to input/output, only a subset of the functionality of Scratch can be used.
 
-Finally, Whisker~\autocite{stahlbauerTestingScratchPrograms2019} is a full automated testing framework for Scratch, and the only most similar to Itch.
+Finally, Whisker~\autocite{stahlbauerTestingScratchPrograms2019} is a full automated testing framework for Scratch, and the most similar to Itch.
 While manually written test suites (also in JavaScript) are possible, Whisker focuses on automated testing~\autocite{deinerAutomatedTestGeneration2023}.
 For example, Whisker (and subsequent research), supports property-based testing, search-based testing~\autocite{deinerSearchBasedTestingScratch2020}, and model-based testing~\autocite{gotzModelbasedTestingScratch2022}.
 
@@ -157,8 +157,7 @@ A test suite for Itch is split into three phases:
     \item The \term{after execution} phase, where tests are run on the log, which was collected during the previous phase.
 \end{enumerate}
 
-All phases are optional, but a test suite without any phases will not test anything.
-However, it is perfectly valid to not have a before execution, or only a before execution, depending on the types of tests that need to be run.
+All phases are optional: it is perfectly valid to not have a before execution, or only a before execution, depending on the types of tests that need to be run.
 They are implemented with ``magic'' functions: these have a fixed signature (name and arguments) and will be called in the relevant phases (\cref{lst:itch-test-suite-skeleton}).
 
 \begin{listing}
@@ -290,7 +289,7 @@ For the sprite \texttt{SpriteA}, students are allowed to change, add, or remove 
 Students are allowed to change blocks after these two predefined blocks.
 
 The second sprite, \texttt{SpriteB}, allows modifications to scripts starting with the same blocks, but it uses the full version of the config object.
-With the full version, it is also possible to also specify if additional scripts are allowed and limit the blocks they can use.
+With the full version, it is also possible to specify if additional scripts are allowed and limit the blocks they can use.
 In this example, only the \scratchinline{\blockinfloop{forever}{\blockspace[0.2]}} block can be used (so this is not a very useful test).
 Finally, additional scripts (thus new ones created by the students) are also allowed.
 These are free of restrictions: the check for allowed blocks does not apply.
@@ -613,9 +612,9 @@ The structure of the feedback is indicated by commands, with \texttt{start} comm
 
 In full feedback mode, the output is a single JSON object that represents a nested tree of the same feedback.
 
-\section{Evaluation of the Itch framework}\label{sec:itch-evaluation}
+\section{Itch in practice}\label{sec:itch-evaluation}
 
-In this section, we discuss Itch's use in educational practice, and discuss insights from creating test suites for Scratch exercises.
+In this section, we discuss the use of Itch in educational practice, and discuss insights from creating test suites for Scratch exercises.
 
 \subsection{Capabilities of the testing framework}\label{subsec:capabilities-of-the-testing-framework}
 
@@ -624,10 +623,26 @@ The Flemish Programming contest is split into different categories, depending on
 The Scratch exercises were used in a special category for students aged 10 to 12.
 
 These 13 exercises were used as a reference for the initial feature set and capabilities of Itch.
+The exercises can be classified into five groups, depending on their contents:
+
+\begin{description}
+    \item[Speaking] Sprites speak, think, or ask questions (5 exercises).
+    \item[Moving] Sprites move around (3 exercises).
+    \item[Costumes] Sprites change costumes, often to emulate animation (3 exercises).
+    \item[Games] Interactive games that require user input (1 exercise).
+    \item[Drawing] The \emph{Pen} extension is used to draw on the canvas (3 exercises).
+\end{description}
+
+Note that the exercises do not sum up to 13: two exercises are both in the moving and costumes category, since they do both.
+
 For 12 of the 13 exercises, a test suite was created that tested the submissions sufficiently that it would have been usable in the programming contest.
 The remaining exercise was not testable due to its open-ended nature.
-The problem statement of that exercise boils down to ``draw a house'', which results in a vast variety of houses.
+This exercises boils down to ``draw a house'', which results in a vast variety of houses.
 Besides introducing some computer vision framework to detect houses, this is not easily testable.
+
+These exercises were all tested with dynamic tests, meaning they test the behaviour of the submission.
+The exercises of CodeCosmos (which are discussed in \cref{subsec:itch-in-educational-practice}) are often longer interactive games.
+Due to their complex nature, static testing was sometimes needed (which is discussed in \cref{subsec:creating-test-suites-for-scratch-exercises}).
 
 \subsection{Itch in educational practice}\label{subsec:itch-in-educational-practice}
 
@@ -639,13 +654,9 @@ The first is as part of a ``teaching pack'', which is bought and used by schools
 These packs implement the ``attainment descriptors''\marginnote{Called \textenglish{eindtermen} in Dutch.}, which are documents that describe the learning objectives of the lessons and what skills students should possess after taking the courses.
 Here, the teaching pack provides a full learning path for the students, with suitable exercises at each stage of the process.
 The second way is as an extracurricular activity, where students either follow weekly lessons or join a ``coding camp'' for a few weeks in the summer.
-
 In both cases, many of the same exercises are used, but the context in which they are used differs.
-In total, there are 139 exercises with a test suite.
-Some of these exercises are different levels of a single exercise: conceptually, there are 58 different exercises.
-However, most of these levels are different exercises packaged as one.
-Therefore, for our purposes, we can consider them as separate exercises.
 
+In total, there are 139 exercises with a test suite.
 In the period from March 3rd, 2023 until March 26th, 2024 (328 days), Itch evaluated \num{28144} submissions.
 Of these submissions, \num{2713} (\qty{9.64}{\percent}) are evaluated as being correct, which means \qty{90.36}{\percent} of evaluated submissions are incorrect.
 This is in line with our expectations: we allow students to submit as much as they want (and even automatically submit every so often) until the submission is correct.
@@ -684,12 +695,14 @@ There are a few factors that contribute to this:
           With a large number of students and time constraints, educators fall back on analyzing blocks as a proxy for mastery.
 \end{itemize}
 
-Since static tests are used, we do not recommend using Itch to automatically grade submissions.
-As so eloquently stated by Edsger Dijkstra, ``Testing shows the presence, not the absence of bugs''.
-Applied to educational software testing frameworks, this means that educators should be aware that a submission being marked as correct by the testing framework says nothing about its actual correctness, nor how good it is.
-This does not mean that testing frameworks are useless: with a good test suite, an educator (and student) can be fairly certain that a submission is correct.
+This does not mean that static tests are of no use: with good and thoughtful tests, an educator (and student) can be fairly certain that a submission marked as correct is effectively correct.
 This can guide the educator to spend more time on submissions where it is necessary.
 Similarly, a submission marked as wrong can also help pinpoint the problem to the student, without intervention from the educator.
+
+However, as so eloquently stated by Edsger Dijkstra, ``Testing shows the presence, not the absence of bugs''.
+Students might have solved the exercise in creative or innovative ways, which static tests fail to detect.
+Similarly, they might have fooled the static tests into marking the submission as correct, even though it is not.
+Therefore, we do not recommend using static tests to automatically grade submissions, at least not without verifying the results.
 
 \subsection{Creating test suites for Scratch exercises}\label{subsec:creating-test-suites-for-scratch-exercises}
 
