@@ -995,13 +995,21 @@ If the test suite is included in that project, there is no way of updating the t
 Poke also has no support for automatically running tests.
 This would be required, for example, if the Scratch exercises are used as part of an online judge platform.
 
-\section{Conclusion and future work}\label{sec:conclusion-and-future-work}
+\section{Conclusions}\label{sec:conclusion-and-future-work}
 
 In this chapter, we have presented Itch (and Poke) as an educational testing framework for Scratch.
 With the three phases of the test suites, Itch is able to perform static testing, emulate user interaction, and perform post-mortem testing.
 Itch provides various helper functions to make testing common scenarios easier.
-
 The combination of the three phases allows for a lot of flexibility in how an exercise can be tested: from fully static to completely dynamic.
-However, while technically possible, it remains a challenge to design Scratch exercises that are both easy to test dynamically and open-ended enough to go well with the game-like and tinkering nature of Scratch.
+
+We also discuss our experiences using Itch in educational practice.
+While most exercises can be tested, it remains a challenge to design Scratch exercises that are both easy to test dynamically and open-ended enough to go well with the game-like and tinkering nature of Scratch.
+It is tempting to use static tests, as they are faster and easier to write.
+However, while there are good reasons for using static testing, we want to emphasize that dynamic, behavioural testing provides a better experience for students.
+
+Finally, writing test suites in JavaScript is a barrier for educators whose experience is limited to Scratch.
+We therefore explore a prototype of a testing framework that allows writing test suites in Scratch itself.
+While writing the tests is technically feasible, some challenges remain.
+The main one is the organisational aspects of managing these Scratch tests suites in an educational context.
 
 \end{document}
