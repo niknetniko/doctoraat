@@ -62,6 +62,30 @@ For example, Whisker (and subsequent research), supports property-based testing,
 
 \section{Introduction to Itch}\label{sec:introduction-to-itch}
 
+Itch is an educational testing framework for Scratch exercises.
+Educators can write test suites (in JavaScript) that evaluate a submission to determine if the submission correctly implements the requirements in the problem statement of the exercise.
+
+Broadly, Itch provides two approaches to testing, static and dynamic tests.
+For the static tests, the project is not run: only the blocks are considered.
+With static tests, the test suite can verify (discussed in \cref{subsec:before-execution}):
+
+\begin{itemize}[noitemsep]
+    \item If the students did not change some off-limit sprites.
+    \item The metadata of the sprites, which sprites exist, their position, their size, their costume, et cetera.
+    \item All kinds of checks on the blocks: only certain blocks were used, some blocks were not used, the blocks must match a particular pattern, the number of blocks, and so on.
+\end{itemize}
+
+However, the most flexible option is to use dynamic tests, which only look at behaviour, not at the implementation.
+Since these tests require the Scratch submissions to be run, Itch provides a scheduler that allows emulating user interaction (\cref{subsec:during-execution}) and other triggers.
+Itch can emulate pressing keys on the keyboard, moving the mouse, clicking the green flag, clicking on sprites, sending broadcasts, and setting variables.
+Additionally, Itch can wait some amount of time or for some requirement to be fulfilled (like a sprite moving to a certain position).
+
+During this execution, Itch will save snapshots containing the complete state of the virtual machine.
+After the execution has finished, these snapshots are available for inspection in the log.
+Since the complete state of the virtual machine is saved throughout the execution of the project, almost anything can be checked.
+For example, checking if a sprite moved in response to a key press, or if a sprite moved up and down and switched costumes throughout the execution.
+
+
 \begin{figure}
     \begin{wide}
         \includegraphics[width=\linewidth]{itch-grow-and-shrink-code}
@@ -73,11 +97,11 @@ For example, Whisker (and subsequent research), supports property-based testing,
     \label{fig:itch-grow-shrink-code}
 \end{figure}
 
-To illustrate Itch, we will use one exercise as a running example: the \emph{Grow and shrink} exercise (\cref{fig:itch-grow-shrink-code}).
+To illustrate Itch with a concrete example, we will use one exercise as a running example: the \emph{Grow and shrink} exercise (\cref{fig:itch-grow-shrink-code}).
 In this exercise, there are three sprites: each sprite must grow if the ``g'' key is pressed.
 Additionally, the sprites must shrink if the ``k'' key is pressed.
 To test this exercise, we design a test suite that will verify the behaviour of the sprites (\cref{lst:itch-grow-and-shrink}).
-It will:
+The dynamic tests will:
 
 \begin{enumerate}[noitemsep]
     \item Save the existing size of the sprites.
@@ -134,17 +158,6 @@ function duringExecution(e) {
     \caption{The complete test suite for the \emph{Grow and shrink} exercise in Itch.}
     \label{lst:itch-grow-and-shrink}
 \end{listing}
-
-Since this is a dynamic test suite (we do not look at the blocks), only one of the phases of the test suite is used (see \cref{sec:itch-test-suites}).
-As a result of running this test suite, feedback is generated.
-The structure of the test suite (\cref{subsec:structure-of-a-test-suite2}) is reflected in the output (\cref{sec:format-of-the-generated-feedback}).
-It also contains the groups and the tests.
-
-
-% TODO
-%\section{Design of the framework}\label{sec:itch-architecture}
-%
-%Itch inserts itself into the Scratch Virtu
 
 \section{Test suites}\label{sec:itch-test-suites}
 
