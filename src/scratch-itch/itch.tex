@@ -7,7 +7,7 @@
 
 \dictum[Larry Flon \\ \textit{On research in structured programming}]{There does not now, nor will there ever, exist a programming language in which it is the least bit hard to write bad programs.}
 
-Block-based languages like Scratch are popular tools for introducing computer science concepts to students~\autocite{bauLearnableProgrammingBlocks2017}.
+Block-based languages like Scratch are popular tools for introducing computer science concepts to young learners~\autocite{bauLearnableProgrammingBlocks2017}.
 The intuitive interface and focus on visuals make Scratch an engaging and accessible programming environment.
 Due to this visual nature, syntactical programming errors are eliminated and students can quickly create games, stories, or other projects.
 This approach gives students a lot of flexibility to express their creativity.
@@ -16,10 +16,10 @@ The process of teaching to code is often slowed down by the delay in providing f
 
 When done manually, assessment of submissions for Scratch exercises is time-consuming and impractical, especially in large classes, where educators often lack the time to give individual feedback to each student.
 That is why it is important to equip students with tools that can provide immediate feedback and thus enhance their independent learning skills.
-In this chapter, we introduce Itch, a testing framework for Scratch that can act as an automated assessment tool.
+In this chapter, we introduce Itch, a testing framework for Scratch that can act as an automated assessment tool~\autocite{douceAutomaticTestbasedAssessment2005}.
 
 Itch provides flexible testing capabilities: it supports both static and dynamic testing of Scratch projects.
-It provides tools to make common scenarios easy to test, allowing the educators to focus on testing the interesting parts of an exercise.
+It provides facilities to make common scenarios easy to test, allowing the educators to focus on testing the interesting parts of an exercise.
 
 We also reflect on Itch's use in an educational context and discuss what testing of Scratch exercises should look like.
 On the one hand, Scratch strives to allow maximal creative expression for students, while on the other hand, testable exercises need a well-defined goal and reasonable limits.
@@ -56,7 +56,7 @@ It translates a very limited subset of Scratch programs to Python.
 \textsc{itch} uses the Scratch say and ask functionality to perform input/output-based testing on Scratch projects.
 Of course, being limited to input/output, only a subset of the functionality of Scratch can be used.
 
-Finally, Whisker~\autocite{stahlbauerTestingScratchPrograms2019} is a full automated testing framework for Scratch, and the most similar to Itch.
+Finally, Whisker~\autocite{stahlbauerTestingScratchPrograms2019} is a fully automated testing framework for Scratch, and the most similar to Itch.
 While manually written test suites (also in JavaScript) are possible, Whisker focuses on automated testing~\autocite{deinerAutomatedTestGeneration2023}.
 For example, Whisker (and subsequent research), supports property-based testing, search-based testing~\autocite{deinerSearchBasedTestingScratch2020}, and model-based testing~\autocite{gotzModelbasedTestingScratch2022}.
 
@@ -64,6 +64,7 @@ For example, Whisker (and subsequent research), supports property-based testing,
 
 Itch is an educational testing framework for Scratch exercises.
 Educators can write test suites (in JavaScript) that evaluate a submission to determine if the submission correctly implements the requirements in the problem statement of the exercise.
+A submission is the code (in this case the Scratch project) that students submit as the answer to a programming exercise.
 
 Broadly, Itch provides two approaches to testing, static and dynamic tests.
 For the static tests, the project is not run: only the blocks are considered.
