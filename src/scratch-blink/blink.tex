@@ -29,7 +29,6 @@ Countries such as Estonia, France, Spain, Slovakia, and the United Kingdom are l
 With the increasing emphasis on computer science education, the need for effective tools to facilitate coding education has also grown.
 The Lifelong Kindergarten group at MIT has played a crucial role in this area by developing Scratch~\autocite{resnickScratchProgrammingAll2009}, a widely used programming language designed to teach programming to children aged 8 to 16 (see \cref{sec:scratch-environment}).
 Many computer science curricula have adopted Scratch to teach children the basics of computer science.
-%With more than 110 million users, Scratch is by far the most popular programming language for computer science education~\autocite{TIOBEIndexSeptember2023a}.
 
 As students navigate the programming landscape, they will inevitably encounter bugs that cause unexpected behavior during code execution~\autocite{zellerWhyProgramsFail2009a}, and Scratch is no exception.
 The difficulty in detecting the root cause of a failure is that when a bug is activated, the system will arrive in an erroneous state, but might still behave as expected.
@@ -37,7 +36,7 @@ It is only later when this erroneous state is propagated throughout the system t
 Starting from the failure and working backwards to find the bug can be a daunting task, especially in larger or more complex programs.
 
 In a classroom setting, the onus often falls on the teacher to guide students in identifying these bugs.
-However, the inherent flexibility of programming -- where different codes can produce the same result -- makes this a very labour-intensive task for teachers.
+However, the inherent flexibility of programming -- where different codes can produce the same result -- makes this a very labour-intensive task for teachers~\autocite{kimDebuggingBlockbasedProgramming2018}.
 A tool that makes it easier for students to identify errors is therefore essential, encouraging independent learning and reducing the teacher's workload.
 
 In response to this need, we present Blink, a debugger tailored for Scratch.
@@ -107,7 +106,7 @@ During the execution of the program, these are the next blocks that will be exec
 These blocks are also highlighted when replaying a recording of the program.
 
 \subsection{Back-in-time debugging}\label{subsec:back-in-time-debugging}
-Finally, Blink allows replaying the last execution (i.e.,\ the recording) of a Scratch program, inspired by back-in-time debuggers.
+Finally, Blink allows replaying the last execution (i.e.\ the recording) of a Scratch program, inspired by back-in-time debuggers.
 These debuggers allow the programmer to go back in the execution, often by recording program execution~\autocite{barrTardisAffordableTimetravel2014a,barrTimetravelDebuggingJavaScript2016a,czaplickiAsynchronousFunctionalReactive2013a,balzerEXDAMSExtendableDebugging1969,ungarDebuggingExperienceImmediacy1997,chenReversibleDebuggingUsing2001,crescenziReversibleExecutionVisualization2000}.
 When the debugger is active, a recording is automatically made, as can be seen on the slider below the canvas.
 Selecting a point on the slider or pressing the back button will pause execution, and the selected point in the recording will be restored.
@@ -130,7 +129,8 @@ The interaction between these two components is shown in \cref{fig:blink-archite
 The Blink debugger consists of three main components: instrumentation of the virtual machine for stepping, recording of the execution state, and the custom debug extension, which implements the breakpoints.
 
 \begin{figure}
-    \includestandalone{architecture}
+    \centering
+    \includestandalone[width=0.7\linewidth]{architecture}
     \caption{
         Diagram showing the internal interaction between the Scratch VM and Scratch GUI\@.
     }
@@ -187,26 +187,26 @@ The first project consists of guiding a sprite through a maze without going thro
 The second project is a typical logo exercise where a sprite needs to walk over a star figure without falling into the surrounding water.
 These projects are typical Scratch exercises where we believe the debugger can be helpful in finding bugs easier and faster.
 
-\subsection{Maze exercise}\label{subsec:maze-exercise}
+\subsection{\emph{Maze} exercise}\label{subsec:maze-exercise}
 
 \begin{figure}
     \begin{wide}
         \includegraphics[width=\linewidth]{maze}
     \end{wide}
-    \caption{
-        The Maze exercise.
+    \caption[The Maze exercise.]{
+        The \emph{Maze} exercise.
         The execution is paused before the failure occurs.
-        As indicated by the light grey colour, we are in the \texttt{step(2)} block.
-        The next block is the \texttt{move (STEP\_SIZE) steps} block, as indicated in dark grey.
+        As indicated by the light grey colour, we are in the \scratchinline{\blockmoreblocks{step \ovalnum{2}}} block.
+        The next block is the \scratchinline{\blockmove{move \ovalvariable{STEP SIZE} steps}} block, as indicated in dark grey.
         However, since the sprite Player is pointing upwards, it will go through the wall.
-        The bug is in the \texttt{step (1)} block indicated by the red arrow.
-        The solution is to replace this block by a \texttt{step (2)} block: in which case the Player would have moved one square more to the left, meaning the Player can go up without going through a wall.
-        Note that further changes are needed to reach the end of the maze.
+        The bug is in the \scratchinline{\blockmoreblocks{step \ovalnum{1}}} block indicated by the red arrow.
+        The solution is to replace this block by a \scratchinline{\blockmoreblocks{step \ovalnum{2}}} block: in which case the Player would have moved one square more to the left, meaning the Player can go up without going through a wall.
+        Note that further changes are needed to reach the exit of the maze.
     }
     \label{fig:maze}
 \end{figure}
 
-The Maze exercise\footnote{\url{https://scratch.ugent.be/blink/editor?project=/blink/maze.sb3}} involves a single sprite in the shape of a red triangle representing the player.
+The \emph{Maze} exercise\footnote{\url{https://scratch.ugent.be/blink/editor?project=/blink/maze.sb3}} involves a single sprite in the shape of a red triangle representing the player.
 The goal of the exercise is to write a program that navigates the player through the maze when the user presses the green flag.
 Correctly navigating consists of not letting the player navigate through the walls of the maze.
 In \cref{fig:maze} we show code, which seems to navigate the player through the maze correctly when executing the project.
@@ -215,27 +215,27 @@ By making use of the debugger, it becomes easy to navigate through the execution
 Additionally, due to back-in-time debugging, it is easy to trace back to precisely where the bug emerged in the code.
 With more traditional debuggers, which only provide step-wise execution, programmers frequently discover program errors too late, necessitating restarting the complete debugging session.
 
-\subsection{Star exercise}\label{subsec:star-exercise}
+\subsection{\emph{Star} exercise}\label{subsec:star-exercise}
 
 \begin{figure}
     \begin{wide}
         \includegraphics[width=\linewidth]{draw-star}
     \end{wide}
-    \caption{
-        The Star exercise.
+    \caption[The Star exercise.]{
+        The \emph{Star} exercise.
         This Scratch project has two scripts.
-        The second one (bottom) contains the bug: the \texttt{turn (14) degrees} block (indicated by the red arrow) should be a \texttt{turn (144) degrees} block.
+        The second one (bottom) contains the bug: the \scratchinline{\blockmove{turn \turnright{} \ovalnum{14} degrees}} block (indicated by the red arrow) should be a \scratchinline{\blockmove{turn \turnright{} \ovalnum{144} degrees}} block.
         The first script (top) helps in finding the bug: when the green flag is pressed, the code loops forever.
         Each iteration, the custom breakpoint is evaluated, and if the condition is true, execution is paused.
     }
     \label{fig:star-exercise}
 \end{figure}
 
-While the Maze exercise demonstrates the capabilities of Blink in regard to step-wise execution and back-in-time debugging, the Star exercise\footnote{\url{https://scratch.ugent.be/blink/editor?project=/blink/star.sb3}} demonstrates the helpfulness of our custom debugging blocks.
+While the \emph{Maze} exercise demonstrates the capabilities of Blink in regard to step-wise execution and back-in-time debugging, the \emph{Star} exercise\footnote{\url{https://scratch.ugent.be/blink/editor?project=/blink/star.sb3}} demonstrates the helpfulness of our custom debugging blocks.
 The aim of this exercise is to walk over a star-shaped figure surrounded by water.
 Any program that directs the player into the water is buggy.
 By making use of Blink's custom debugging blocks, it is quite easy to pause the execution of the program when the player touches something blue (\cref{fig:star-exercise}).
-As soon as the green flag is pressed, the code repeatedly checks whether the player is touching something blue.
+As soon as the green flag is clicked, the code repeatedly checks whether the player is touching something blue.
 If it does, program execution is paused by using the \scratchinline{\blockdebug{pause if \emptybooldebug}} block.
 
 \section{Impact}\label{sec:blink-impact}
