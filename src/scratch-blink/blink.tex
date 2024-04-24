@@ -33,6 +33,7 @@ Many computer science curricula have adopted Scratch to teach children the basic
 As students navigate the programming landscape, they will inevitably encounter bugs that cause unexpected behavior during code execution~\autocite{zellerWhyProgramsFail2009a}, and Scratch is no exception.
 The difficulty in detecting the root cause of a failure is that when a bug is activated, the system will arrive in an erroneous state, but might still behave as expected.
 It is only later when this erroneous state is propagated throughout the system that the system will reach a state that is observably wrong, leading to a failure~\autocite{ammannIntroductionSoftwareTesting2016}.
+Additionally, Scratch uses a ``failsoft'' mode: errors are often swallowed, and execution continues without notifying the user~\autocite{hromkovic2021problem}.
 Starting from the failure and working backwards to find the bug can be a daunting task, especially in larger or more complex programs.
 
 In a classroom setting, the onus often falls on the teacher to guide students in identifying these bugs.
