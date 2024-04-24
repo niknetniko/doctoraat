@@ -173,6 +173,11 @@
 % Figuren
 \input{tikz-preamble}
 \usepackage{scratch31}
+\usepackage{menukeys}
+% Use the styles I want
+\renewmenumacro{\keys}{shadowedroundedkeys}
+\changemenucolortheme{shadowedroundedkeys}{blacknwhite}
+
 
 \usepackage{xparse}
 \NewDocumentCommand\scratchinline{m}{%
