@@ -7,7 +7,7 @@
 
 \dictum[Larry Flon \\ \textit{On research in structured programming}]{There does not now, nor will there ever, exist a programming language in which it is the least bit hard to write bad programs.}
 
-Block-based languages like Scratch are popular tools for introducing computer science concepts to young learners~\autocite{bauLearnableProgrammingBlocks2017}.
+Block-based languages like Scratch are popular tools for introducing computer science concepts to young learners~\autocite{bauLearnableProgrammingBlocks2017,zhangSystematicReviewLearning2019}.
 The intuitive interface and focus on visuals make Scratch an engaging and accessible programming environment.
 Due to this visual nature, syntactical programming errors are eliminated and students can quickly create games, stories, or other projects.
 This approach gives students a lot of flexibility to express their creativity.
@@ -19,25 +19,20 @@ That is why it is important to equip students with tools that can provide immedi
 In this chapter, we introduce Itch, a testing framework for Scratch that can act as an automated assessment tool~\autocite{douceAutomaticTestbasedAssessment2005}.
 
 Itch provides flexible testing capabilities: it supports both static and dynamic testing of Scratch projects.
-It provides facilities to make common scenarios easy to test, allowing the educators to focus on testing the interesting parts of an exercise.
-
+It also provides facilities to make common scenarios easy to test, allowing the educators to focus on testing the interesting parts of an exercise.
 We also reflect on Itch's use in an educational context and discuss what testing of Scratch exercises should look like.
 On the one hand, Scratch strives to allow maximal creative expression for students, while on the other hand, testable exercises need a well-defined goal and reasonable limits.
 
 \section{Related work}\label{sec:related-work}
 
-There are few testing frameworks for Scratch.
-In this section, we look at the few existing ones, but also consider some other tools with similar aims.
-We begin with the linter-like tools that perform static analysis.
+In this section, we look at the few existing testing frameworks for Scratch.
+Since they are few and far between, we also consider other tools with similar aims: helping students with Scratch.
+We begin by looking at the linter-like tools that perform static analysis.
 
-The first one is Hairball~\autocite{boeHairballLintinspiredStatic2013}.
+One of the first ones is Hairball~\autocite{boeHairballLintinspiredStatic2013}.
 Hairball analyses the blocks of a provided Scratch project, with multiple rules and analyzers available.
-Dr. Scratch~\autocite{moreno-leonDrScratchWeb2015} allows analysing a Scratch project to provide various insights.
-For example, Dr. Scratch uses Hairball to assign a ``computational thinking score'' to the project, although the creators of Scratch are not a fan of this approach~\autocite{resnickCodingCrossroads2020}, see \cref{subsec:how-to-evaluate-scratch-submissions}.
-
-Scrape was a tool that visualized the use of blocks in a Scratch project.
-This is useful to determine which blocks are used, and which are not.
-This tool only works reliably with Scratch 1, but was used by the Scratch team to analyse uploaded Scratch projects~\autocite{brennanNewFrameworksStudying2012}.
+Dr.\ Scratch~\autocite{moreno-leonDrScratchWeb2015} allows analysing a Scratch project to provide various insights.
+For example, Dr.\ Scratch uses Hairball to assign a ``computational thinking score'' to the project, although the creators of Scratch are not a fan of this approach~\autocite{resnickCodingCrossroads2020}, see \cref{subsec:how-to-evaluate-scratch-submissions}.
 
 QualityHound~\autocite{techapalokulQualityHoundOnline2017} is a linter that detects code smells like ``duplicate code'' or ``broad variable scope''.
 In total, twelve code smells are detected.
@@ -99,15 +94,14 @@ For example, checking if a sprite moved in response to a key press, or if a spri
 \end{figure}
 
 To illustrate Itch with a concrete example, we will use one exercise as a running example: the \emph{Grow and shrink} exercise (\cref{fig:itch-grow-shrink-code}).
-In this exercise, there are three sprites: each sprite must grow if the \keys{g} key is pressed.
-Additionally, the sprites must shrink if the \keys{s} key is pressed.
+In this exercise, there are three sprites: each sprite must grow if the \keys{g} key is pressed and must shrink if the \keys{s} key is pressed.
 To test this exercise, we design a test suite that will verify the behaviour of the sprites (\cref{lst:grow-and-shrink-during}).
-The dynamic tests will:
+This test suite will:
 
 \begin{enumerate}[noitemsep]
     \item Save the existing size of the sprites.
     \item Press the key that we are testing.
-    \item Verify if the new size of the sprite is larger or smaller than the previously saved size.
+    \item Verify that the new size of the sprite is larger or smaller than the previously saved size.
     \item Save the new size as the existing size for the next test.
 \end{enumerate}
 
@@ -151,7 +145,6 @@ function duringExecution(e) {
   })
    .end();
 }
-
     \end{minted}
     \caption{The complete test suite for the \emph{Grow and shrink} exercise in Itch.}
     \label{lst:grow-and-shrink-during}
@@ -206,13 +199,13 @@ Static tests can be done completely in the before execution phase.
 Checking more high-level goals, such as ``Does the sprite move when clicked?'', are more challenging with static tests.
 At least, without severely limiting the accepted solutions.
 For example, there are multiple ways to implement a sprite that moves when clicked, and a good behavioural test needs to accept all implementations.
-For these kinds of behavioural tests, dynamic tests can be used.
-These require the project to be executed.
-The during and after execution phases are needed for dynamic tests.
+For these kinds of behavioural tests, dynamic tests can be used, which require the project to be executed.
+Dynamic tests often require both the during and the after execution phases.
 In the during execution phase, user interaction is simulated and the behaviour is captured.
 This captured behaviour can then be inspected in the after execution phase to see if the actual behaviour matches with the required behaviour.
-Testing can also be done during execution, for example after a user action has been performed.
-While this makes some test suites easier (like the one in \cref{lst:grow-and-shrink-during}), it does require more attention to the parallel nature of Scratch.
+
+Testing can also be done in the during execution phase, for example, after a user action has been performed.
+While this makes some test suites easier (like the one in \cref{lst:grow-and-shrink-during}), it does require attention to the parallel nature of Scratch.
 If multiple tests are run in parallel, the output can be garbled.
 
 \subsection{Structure of a test suite}\label{subsec:structure-of-a-test-suite2}
@@ -626,6 +619,23 @@ The during execution phase results in a schedule, which is then run.
 The virtual machine is started and runs the projects with the scheduled actions.
 Finally, the after execution phase is run, with the log from the previous phase.
 
+\subsection{Performance considerations}\label{subsec:performance-considerations}
+
+Reducing the time students spend waiting on feedback is essential for providing a good user experience with software testing, especially in educational software testing~\autocite{sarsaSpeedingAutomatedAssessment2022}.
+One difficulty in providing fast feedback on Scratch code is that blocks that wait are commonly used.
+However, these wait times pose a hard lower limit on the duration of the evaluation of a Scratch project.
+For example, if a project has a wait block for 2 seconds, the evaluation time of said project can never be less than 2 seconds (and will be higher in practice, since the whole evaluation process also adds overhead).
+Such wait blocks can quickly add up.
+
+As a solution for this problem, Itch provides test suites with the ability to set an ``acceleration factor'': this factor indicates the speedup for all time-based data, both in the project and in the test suite.
+For example, if the acceleration factor is 2, the wait time in wait blocks will be halved, as will wait times in the scheduler.
+The acceleration factor can, however, be flaky with high values: we do not recommend a factor higher than 5.
+If it is expected that, for example, wait blocks are used for synchronization of two sprites, the acceleration factor can cause issues, as it does not speed up general execution.
+
+Itch also provides the test suite with the possibility to enable Scratch's built-in turbo mode.
+In this mode, execution is done faster (how much depends on the project).
+Together with the acceleration factor, these techniques can significantly speed up the evaluation.
+
 \section{Format of the generated feedback}\label{sec:format-of-the-generated-feedback}
 
 The format of the generated feedback is in structure very similar to the structure of the tests in the test suite (\cref{subsec:structure-of-a-test-suite}).
@@ -710,7 +720,7 @@ The platform provides a variety of organizational tools, like classroom manageme
 Specially for Scratch, the platform has its own hosted instance of the Scratch environment (similar to the \textsc{mit}-hosted instance).
 This instance has been modified to integrate with Itch.
 
-In the platform, Itch is run server-side, by a dedicated service.
+In the platform, Itch is run server-side by a dedicated service.
 The choice for server-side testing versus client-side testing was mainly motivated by making sure that students could not cheat by modifying the test suites or the results.
 The platform will periodically (or when a button is pressed) send the current version of the submission to the server.
 The backend will then look up the test suite and starter project and send these to the Itch service.
@@ -739,16 +749,18 @@ The biggest change we made to the exercises was splitting the levels of the exer
 \subsection{How to assess Scratch submissions}\label{subsec:how-to-evaluate-scratch-submissions}
 
 The creators of Scratch have a well-known vision on how they intend Scratch to be used.
-In particular, they do not support strict static tests on exercises.
-For example, \citeauthor{resnickCodingCrossroads2020} express this as follows in~\citetitle{resnickCodingCrossroads2020}, an article celebrating 10 years of Scratch~\autocite{resnickCodingCrossroads2020}:
+Generally, the Scratch team prefers not to use assignment-based learning~\autocite{resnickCodingCrossroads2020}.
+As a specific example of this, they particularly do not support strict static tests on exercises.
+For example, they express this as follows in~\autocite{resnickCodingCrossroads2020}:
 
 \begin{quotation}
     Too often, researchers and educators are adopting automated assessment tools that evaluate student programming projects only by analyzing the code, without considering the project goals, content, design, interface, usability, or documentation.
+    \marginnote{They are probably talking about Dr.\ Scratch here.}
     For example, many are using an online Scratch assessment tool that gives students a ``computational thinking score'' based on the assumption that code with more types of programming blocks is an indication of more advanced computational thinking.
     This form of assessment doesn't take into consideration what the student's program is intended to do, how well it accomplishes the student's goals, whether the code works as intended, whether people are able to interact with it, or how the student's thinking develops over a series of projects.
 \end{quotation}
 
-Using the available linters or static analysis in Itch to detect code smells is beneficial for students~\autocite{hermansCodeSmellsHamper2016}.
+At the same time, using linters or other static analysis tools to detect code smells is beneficial for students~\autocite{hermansCodeSmellsHamper2016}.
 However, in Itch, static analysis can also be used for automatic assessment by writing the static tests in the before execution phase of the test suite.
 While we share the sentiment of \citeauthor{resnickCodingCrossroads2020}, our experience with Scratch exercises and our collaboration with CodeCosmos has shown that such tests are often used, despite their disadvantages.
 There are a few factors that contribute to this:
@@ -756,14 +768,14 @@ There are a few factors that contribute to this:
 \begin{itemize}
     \item Exercises (especially in Scratch) that were not created with testability in mind are hard to properly test without resorting to static analysis of the code.
     \item Scratch projects, especially complex ones, are technically challenging to test within an acceptable time frame.
-        We cannot spend minutes evaluating a single submission, as feedback must be fast~\autocite{sarsaSpeedingAutomatedAssessment2022}.
+        We cannot spend minutes evaluating a single submission, as feedback must be provided quickly to students~\autocite{sarsaSpeedingAutomatedAssessment2022}.
     \item Educators want simple metrics to easily see if students have mastered some concept.
           For example, determining if a student has mastered the concepts of loops (or repetition in general) is challenging to do automatically.
-          With a large number of students and time constraints, educators fall back on analyzing blocks as a proxy for mastery.
+          With a large number of students and time constraints, educators fall back on analyzing blocks as a proxy for mastery~\autocite{combefisAutomatedCodeAssessment2022}.
 \end{itemize}
 
-This does not mean that static tests are of no use: with good and thoughtful tests, an educator (and student) can be fairly certain that a submission marked as correct is effectively correct.
-This can guide the educator to spend more time on submissions where it is necessary.
+This does not mean that static tests are of no use: with good and thoughtful static tests, an educator (and student) can be fairly certain that a submission marked as correct is effectively correct.
+This can guide the educator to spend more time on submissions where their attention is warranted.
 Similarly, a submission marked as wrong can also help pinpoint the problem to the student, without intervention from the educator.
 
 However, as so eloquently stated by Edsger Dijkstra, ``Testing shows the presence, not the absence of bugs''.
