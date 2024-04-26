@@ -7,20 +7,29 @@
 \dictum[J. Maloney, M. Resnick, et al. \\ \textit{The Scratch Programming Language and Environment}]{Concurrency is often considered an advanced programming technique. Yet our everyday world is highly concurrent, so Scratch users
 are not surprised that a sprite can do several things at once.}
 
-The current Scratch execution model makes some choices which make it difficult to implement certain features of debuggers.
-\marginnote{We encountered those difficulties in our work on Blink (\cref{ch:blink}).}
-The root cause is the almost-cooperative threading model implemented by the current execution model.
+Scratch, a popular visual block-based programming language designed for young learners, inherently supports parallel programming.
+Each Scratch program (called a project) consists of a number of sprites with individual code (\cref{ch:scratch-the-programming-environment}).
+Blocks attached together form scripts, and each sprite can have multiple scripts running concurrently as separate threads within the Scratch virtual machine.
 
-These prevent us from allowing the debugger to behave as we would want: either the debugger would be less usable, or it would deviate from how Scratch executes in normal mode.
-Both are not desirable.
-Since these issues are also present during normal execution of Scratch code, although in practice infrequently, we decided the execution model itself should be modified.
+The Scratch execution model combines a fixed-step time loop (30 frames per second) with an almost-cooperative threading model.
+This means that threads are seldom interrupted, mostly relying on explicit yielding to other threads.
+While this approach broadly minimizes race conditions, some concurrency issues persist~\autocite{maloneyScratchProgrammingLanguage2010a}.
+For instance, the order in which sprites respond to broadcasts can be unpredictable.
+Consequently, even without explicit concurrency controls, Scratch is a useful tool for teaching concurrency concepts~\autocite{fatourouTeachingConcurrentProgramming2018}.
 
-We begin this chapter with an in-depth exploration of how the current execution model of Scratch works and behaves.
-This is necessary for a good understanding of the next section, where we discuss what the issues with it are.
+However, the current execution model has some drawbacks.
+The cooperative nature of the threading model can lead to unexpected behaviour when working with multiple sprites.
+Additionally, the execution model complicates the use of debuggers within Scratch.
+A traditional step function (which steps one block at a time) exposes execution states that are normally hidden.
+Alternative step functions (for example, the one used by Blink, see \cref{subsec:stepwise-execution}) diverge from the normal execution and is thus undesirable.
 
-Next, we detail what a solution would look like and propose a family of modified execution models.
-We then evaluate these models with a set of metrics to illustrate how their modifications affect Scratch's behaviour in real-life projects.
-Finally, we apply one of these models to the debugger to illustrate that we can now use the debugger without the execution deviating from the normal mode.
+To address these issues, this chapter begins with an in-depth exploration of Scratch's current execution model.
+This analysis is essential for understanding the subsequent section, where we explore the model's shortcomings in more detail.
+We then propose some modifications to the execution model, which would solve the issues we have identified.
+These modifications are then evaluated to determine their impact on real-world Scratch projects.
+Finally, we illustrate that the changed execution model is suitable for use in a Scratch debugger.
+
+\section{Elements of a Scratch program}\label{sec:elements-of-a-scratch-program}
 
 \begin{listing}
     \centering
@@ -52,16 +61,11 @@ Finally, we apply one of these models to the debugger to illustrate that we can 
     \label{lst:scratch-two-programs}
 \end{listing}
 
-\section{Elements of a Scratch program}\label{sec:elements-of-a-scratch-program}
-
 A Scratch program consists of zero or more sprites and a stage (see also \cref{ch:scratch-the-programming-environment}).
-The stage is the background and is always present.
-The other visual entities are the sprites: these are drawn on the stage.
-Together, these are called targets.
-For the most part, the stage can be considered as another sprite, albeit with a special function.
+Together, the sprites and stages are called targets (since they are drawn on the screen).
 All sprites have their own local state: the variables and visual properties of the sprite (e.g.\ position, size, bounding box, colour, direction).
-Due to its special role, the stage misses some of these properties (e.g.\ it does not have a size, direction, or position).
-The variables of the stage are also global: all sprites can access and change this variable.
+Clones are also targets: they are drawn, but share their code with their original sprite (but they do have own some state, like the visual properties).
+In the virtual machine, there is no substantial difference between how targets (sprites, stage, clones) are handled, so we can just consider targets for the remainder of this chapter.
 
 Code-wise, the Scratch blocks are organized into categories (see \cref{subsec:using-the-environment-and-the-blocks}).
 However, in this case, it is useful to look at their technical type, which corresponds to their shape.
@@ -74,11 +78,13 @@ In total, there are seven types of blocks:
     \item Stack blocks \scratchinline{\blockmove{\hspace{1em}\dots\hspace*{0.5cm}}}, representing program statements.
         These are the most common blocks.
         They are called stack blocks since they are stacked on top of each other.
+        Stack blocks broadly fulfill the role of statements in Scratch.
     \item C blocks \scratchinline{\blockif{\hspace{1em}\dots\hspace*{1em}}{\blockspace[0.2]}}, which are named after their shape.
         They are used for most of the control flow blocks: loops and branches.
         The variant for the if/else block is sometimes named an E block, since it has two slots.
     \item Reporter blocks \setscratch{baseline=c,scale=0.5}\ovalmove{\hspace{1em}\dots\hspace*{1em}}, act as variables or values and can be slotted into other blocks.
         Operators that result in a value also have this shape.
+        The reporter blocks fulfill the role of expressions.
     \item Boolean blocks \setscratch{baseline=c,scale=0.5}\boolsensing{\hspace{1em}\dots\hspace*{1em}}, which are analogous to reporter blocks, but result in a boolean.
     \item Cap blocks \scratchinline{\blockstop{\hspace{1em}\dots\hspace*{1em}}}, which end a script: no blocks can be added afterwards.
         Note that the infinite loop block, for example, is both a C block and a cap block.
@@ -87,17 +93,25 @@ In total, there are seven types of blocks:
 
 \section{Related work}\label{sec:execution-related-work}
 
-There exists no full formal description of the Scratch execution model.
-Instead, the execution model is defined informally, based on the implementation of the Scratch virtual machine.
-In~\autocite{maloneyScratchProgrammingLanguage2010a}, the threading model is considered informally.
-The largest amount of work is published in a series of papers by the \emph{Chair of Software Engineering II} group.
+The Scratch execution model is defined by its implementation in the virtual machine.
+There exists, at least to the knowledge of the authors, no comprehensive formal description of the execution model.
+This does not mean there is no prior work.
+From the Scratch team, \textcite{maloneyScratchProgrammingLanguage2010a} provide a high-level description of the threading model.
 
-First, in~\autocite{stahlbauerTestingScratchPrograms2019}, the authors propose a formalization of three aspects: the user perspective, a syntactic model and a semantic model.
-They propose that the semantics of Scratch can be described using a memory model based on message passing.
-Then, in~\autocite{stahlbauerVerifiedScratchProgram2020} the authors develop LeILa, an intermediate language to which Scratch projects can be translated, with an intended use of performing analysis on Scratch projects.
+Another body of works that provide insights into the Scratch execution model are those from the \emph{Chair of Software Engineering II} group, led by Prof.\ Dr.\ Gordon Fraser.
+These publications all provide descriptions for parts of the execution model.
+
+First, \textcite{stahlbauerTestingScratchPrograms2019} propose a formalization of three aspects in Scratch: the user perspective, a syntactic model and a semantic model.
+They describe the semantics of Scratch with a memory model based on message passing.
+Next, \textcite{stahlbauerVerifiedScratchProgram2020} develop LeILa, an intermediate language to which Scratch projects can be translated, with an intended use of performing analysis on Scratch projects.
 The authors also provide formalizations of LeILa, but use approximations in some areas.
-Also,~\autocite{gotzModelbasedTestingScratch2022} models the state-based behaviour of Scratch programs using a finite state machine.
-Finally, in~\autocite{deinerAutomatedTestGeneration2023} the authors delve deeper into the actual execution of the virtual machine, while also proposing some modifications to it, for example, to make execution deterministic.
+Also, \textcite{gotzModelbasedTestingScratch2022} model the state-based behaviour of Scratch programs using a finite state machine.
+Finally, \textcite{deinerAutomatedTestGeneration2023} delve deeper into the actual execution of the virtual machine, while also proposing some modifications to it, for example, to make execution deterministic.
+
+Other block-based languages also have to deal with concurrency.
+For example, MakeCode also uses a non-preemptive threading model, inspired by the Scratch~\autocite{ballMicrosoftMakeCodeEmbedded2019a}.
+There has also been some work on concurrency and concurrency controls in other block-based languages~\autocite{chungConCodeItComparisonConcurrency2020}.
+However, since most of these languages do not use the Scratch virtual machine for execution, their applicability is limited.
 
 \section{The current execution model}\label{sec:the-current-execution-model}
 
