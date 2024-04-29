@@ -247,7 +247,7 @@ They also support a notion of visibility, with three modes:
 Groups and tests in the JavaScript test suites are inspired by the Jest\footnote{\url{https://jestjs.io/}} testing framework.
 The two relevant methods, \mintinline{javascript}{group} and \mintinline{javascript}{test} are available on the \mintinline{javascript}{Evaluation.group} property passed to the test suite.
 \Cref{lst:itch-test-suite-structure} shows an example of this, containing a single test.
-\marginnote{Backward compatibility is one of the downsides of using software in production.}
+\marginnote{Maintainging backward compatibility is one of the downsides of using software in production.}
 The double \mintinline{javascript}{group.group} is not a typo, but needed for backward compatibility with older test suites.
 The test, as written in the example, will always fail, since it expects the string \mintinline{javascript}{"some value"} to be equal to \mintinline{javascript}{"another value"}.
 The \mintinline{javascript}{expect}/\mintinline{javascript}{toBe} notation specifically will be familiar to Jest users.
