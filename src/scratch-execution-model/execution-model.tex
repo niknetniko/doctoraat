@@ -124,10 +124,10 @@ These are green threads: implemented fully in the virtual machine.
 
 The virtual machine is thus responsible for scheduling these threads.
 A schematic overview of the interaction between the different parts is \cref{fig:blink-architecture}.
-It uses an almost-cooperative threading model, which \citeauthor{maloneyScratchProgrammingLanguage2010a} call the ``Scratch threading model''~\autocite{maloneyScratchProgrammingLanguage2010a}.
+It uses an almost-cooperative threading model, which \textcite{maloneyScratchProgrammingLanguage2010a} call the ``Scratch threading model''.
 This means it is mostly non-preemptive: the virtual machine will not interrupt threads at arbitrary points in their execution.
 The threads must voluntarily yield control, or reach a limited set of points in their execution.
-The rational is given in~\autocite{maloneyScratchProgrammingLanguage2010a}: ``Scratch builds concurrency control into its threading model in a way that avoids most race conditions, so that users do not need to think about these issues.
+The rational is given in~\cite{maloneyScratchProgrammingLanguage2010a}: ``Scratch builds concurrency control into its threading model in a way that avoids most race conditions, so that users do not need to think about these issues.
 This is done by constraining where thread switches can occur.''.
 
 At four well-defined points, a thread always yields, thus causing said thread switching:
@@ -159,7 +159,7 @@ A thread can have one of three conceptual states: \emph{done}, \emph{running}, a
     \label{fig:scratch-model-explained}
 \end{figure}
 
-\marginnote{Scratch 3 should actually run at 60 FPS; however Scratch enables a compatability mode by default, resulting in the 30 FPS.}
+\marginnote{Scratch 3 should actually run at 60 FPS; however Scratch enables a compatability mode by default, resulting in 30 FPS.}
 The virtual machine uses a \emph{fixed-time step with synchronization} main loop~\autocite{nystromGameProgrammingPatterns2014}, also called a \emph{synchronized coupled model}~\autocite{valenteRealTimeGame2005}.
 This means that the virtual machine runs in \term{steps}: internally, the \texttt{step} function is called every \qty{33}{\milli\second} (so 30 times a second, commonly known as 30 frames per second).
 
@@ -169,7 +169,7 @@ After the tick, a redraw is performed if needed (in practice this is always done
 After the first tick is finished, the virtual machine decides whether to run another tick (\cref{fig:scratch-model-explained}).
 A new tick is started if less than \qty{75}{\percent} of the step time (the time one step has to complete, \qty{33}{\milli\second}) has been used and a redraw has not been requested.
 Note that once a tick has started, it is run completely and cannot be stopped.
-The arbitrary \qty{75}{\percent} is thus intended to prevent frame drops: steps that take longer than their allocated step time, meaning the next step is delayed.
+The arbitrary \qty{75}{\percent} is intended to prevent frame drops: steps that take longer than their allocated step time, meaning the next step is delayed.
 Also, in practice, many blocks request a redraw, so in many Scratch projects, a step only ever runs one tick.
 
 \begin{figure}
@@ -233,7 +233,7 @@ The exact implementation of the stack is less relevant for this chapter, so it i
 
 \section{Limitations of the execution model}\label{sec:limitations-of-the-execution-model-for-the-debugger}
 
-This section illustrates a few limitations of the current execution model, first in general and then specifically for the debugger.
+This section illustrates a few limitations of the current execution model, first in general and then specifically for a debugger.
 
 \subsection{In general}\label{subsec:in-general}
 
@@ -284,7 +284,7 @@ This section illustrates a few limitations of the current execution model, first
     \label{fig:star-exercise-model}
 \end{figure}
 
-As \citeauthor{maloneyScratchProgrammingLanguage2010a} already mentioned, the Scratch threading model does not solve all issues with concurrency.
+As \textcite{maloneyScratchProgrammingLanguage2010a} mentioned, the Scratch threading model does not solve all issues with concurrency.
 To illustrate this point, we will consider a variant on the \emph{Star} exercise from \cref{subsec:star-exercise}.
 In this exercise, the goal is to let a sprite move around on a path without falling into the water (read touching a blue colour.)
 \Cref{lst:star-model-implementation} shows an implementation for this exercise with an additional script that will stop execution if the sprite touches something blue.
@@ -301,20 +301,30 @@ Consider the original code in the \emph{Star} exercise from \cref{subsec:star-ex
 The second script there does not stop the execution, but uses Blink's pause block to halt the execution.
 Using the current execution model, the pause block will not function for the same reasons mentioned above.
 
-\subsection{Specifically for the debugger}\label{subsec:specifically-for-the-debugger}
+\subsection{Specifically for a debugger}\label{subsec:specifically-for-a-debugger}
 
-One of the most basic features of any debugger is the ability to step through the code: executing one statement and then pausing the execution to allow the user to inspect the program state.
-A debugger for Scratch also needs this functionality, and the debuggers that exist for Scratch all implement a stepping feature.
+A fundamental feature of any debugger is the ability to step through code: executing one statement and then pausing the execution to facilitate inspection of the program state.
+The functionality is also essential in debuggers for Scratch: all existing debuggers for Scratch implement it.
+In Scratch, executing a single statement translates to executing a single block.
+
+However, the traditional single-block stepping has some drawbacks in Scratch.
+A first drawback is that users have to click a lot, since the stepping functionality is global, not per thread.
+Secondly, and more importantly, the step functionality exposes details of the Scratch execution model to the users.
+For example, thread switching, which is normally implicit in Scratch's perceived parallel execution, becomes visible to the users during debugging.
+
+Additionally, debuggers must choose what to do with intermediate states that are typically hidden during normal execution.
+For instance, five consecutive blocks would result in one redraw in the normal execution.
+One choice is to not alter the redraw logic (thus only redrawing when the normal execution would redraw), but this results in steps having no visual impact, even if the block changes the visuals.
+The other choice is to redraw after every step.
+While the effect of every block (and step) is then visible, this exposes intermediary steps that would normally not be drawn.
+Some blocks (for example, checking if a sprite touches a colour) use the visual state, meaning these additional redraws can result in a different execution of the project.
 
 As described in \cref{sec:blink-software-architecture}, our debugger Blink takes a different approach to the stepping feature.
-While most debuggers only execute one statement in a step, we believe it is useful to maintain the observed parallelism of Scratch in the debugger.
-We thus aim to execute one step in every thread at the same time.
-More concretely, we execute one block in every thread.
+We believe it is useful to maintain the observed parallelism of Scratch in the debugger: we define a step in the debugger as executing one block in every thread.
 This approach allows users to keep focus on relevant threads without distractions from thread switches, which can be cumbersome in complex programs.
 Users can thus focus on the script(s) they believe are involved in the failure while ignoring (correct) scripts running at the same time.
 
-This approach does come at a price: it changes the execution model of Scratch.
-Changing the execution model is not trivial due to two main considerations:
+This approach does come at a price: it changes the Scratch execution model, which is not trivial due to two main considerations:
 
 \begin{enumerate}
     \item If the execution model is only changed when debugging, the debugger does not debug the same program as when running the program.
@@ -327,7 +337,7 @@ In the next section, we discuss what we changed, after which we investigate if e
 
 \section{New execution model}\label{sec:a-family-of-new-execution-models}
 
-In line with how we want the stepping feature of the debugger to work, we have decided to change the execution model as follows: we modify a turn to execute exactly one block before yielding.
+In line with how we want the stepping feature of the debugger to work, we have decided to change the Scratch execution model as follows: we modify a turn to execute exactly one block before yielding.
 Thus, in a single tick, the virtual machine will execute a single block in every thread.
 
 As there is often only one tick per step (due to many blocks requesting redraws), this means that only one block would be executed per step (thus one block for every thread per \qty{33}{\milli\second}).
@@ -345,18 +355,18 @@ For example, if the conditional block in the second thread evaluates to true, th
 
 TODO: volledige stackframe?
 
-In the next sections, we analyze existing Scratch projects to determine which number of steps that most closely results in the same execution speed as the original execution model.
-We also take this opportunity to analyze the complexity and block use in Scratch projects, to evaluate whether the concurrency considerations would cause problems.
+In the next sections, we analyse existing Scratch projects to determine which number of steps that most closely results in the same execution speed as the original execution model.
+We also take this opportunity to analyse the complexity and block use in Scratch projects, to evaluate whether the concurrency considerations would cause problems.
 
 \section{Analysis of Scratch projects}\label{sec:evaluation-of-scratch-projects}
 
-Before validating our changes to the execution model, we investigate and analyze a set of Scratch projects.
+Before validating our changes to the execution model, we investigate and analyse a set of Scratch projects.
 The aim of this analysis is to determine what blocks are used in Scratch projects and how complex most projects are.
 
 \subsection{Existing analyses}\label{subsec:existing-analyses}
 
 \makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.}
-In~\autocite{aivaloglouHowKidsCode2016}, the authors analyzed \num{250000} Scratch projects that they scraped from the publicly Scratch site.
+\Textcite{aivaloglouHowKidsCode2016} analysed \num{250000} Scratch projects that they scraped from the publicly Scratch site.
 They looked at the types of blocks used, the size of the projects, and the complexity.
 For the complexity, they utilize the cyclomatic complexity metric~\autocite{mccabeComplexityMeasure1976}.
 The considered decision points are the \texttt{if} and \texttt{if-else} blocks.
@@ -365,8 +375,8 @@ They found that most Scratch projects are small: \qty{75}{\percent} have less th
 \qty{25}{\percent} has less than 12 blocks, although there are some huge projects with more than \num{20000} blocks.
 They also found that about \qty{78}{\percent} of projects have no decision points.
 
-In~\autocite{fronzaApproachEvaluateComplexity2020}, the authors investigate Scratch projects with different complexity metrics.
-The dataset is, however, much more limited: 80 projects were analyzed.
+\Textcite{fronzaApproachEvaluateComplexity2020} investigate Scratch projects with different complexity metrics.
+The dataset is, however, much more limited: 80 projects were analysed.
 \makenote*{The validity of the Halstead metrics is even more controversial~\autocite{hamerHalsteadSoftwareScience1982,shenSoftwareScienceRevisited1983,jonesDimensionalAnalysisHalstead2019}.}
 The authors also measure the cyclomatic complexity, in addition to some Halstead complexity measures~\autocite{halsteadElementsSoftwareScience1977}, and their own proposal for a ``when'' metric.
 They do use more decision points for the cyclomatic complexity (\texttt{if}, \texttt{if-else}, \texttt{repeat until}, \texttt{wait until}, \texttt{and}, \texttt{or}).
@@ -374,7 +384,7 @@ The proposed ``when'' metric counts the number of ``when'' blocks (e.g.\ hat blo
 
 \subsection{New analysis}\label{subsec:new-analysis}
 
-In this section we describe our analysis, which is inspired by~\autocite{aivaloglouHowKidsCode2016}.
+In this section we describe our analysis.
 To perform another analysis, we first scraped the X most recent public projects from the Scratch website.
 The oldest project was created on X.
 Y of the projects were empty and thus excluded from further analysis.
@@ -385,16 +395,8 @@ The arguably ``most advanced'' blocks, for procedures, are only used in X of the
 We see that these results are similar to those in X.
 X have less than x blocks, and we also find some large projects.
 
-For the complexity of the Scratch projects, we measured the following metrics:
-
-\begin{enumerate}
-    \item The cyclomatic complexity with decision points as used in~\autocite{aivaloglouHowKidsCode2016}.
-    \item The cyclomatic complexity with more decision points as used in~\autocite{fronzaApproachEvaluateComplexity2020}.
-    \item TODO: een nog betere complexiteitsmetriek?
-\end{enumerate}
-
+For the complexity of the Scratch projects, we measured the cyclomatic complexity with decision points as used in~\cite{aivaloglouHowKidsCode2016}.
 The results are shown in Y.
-These findings are again similar to those in~\autocite{aivaloglouHowKidsCode2016}.
 
 This analysis illustrates two points for evaluating the new execution model.
 Firstly, most Scratch projects are simple and short.
@@ -408,15 +410,15 @@ In the next section, we will evaluate the new execution model against the existi
 
 \section{Evaluation of the new execution model}\label{sec:evaluation-of-the-new-execution-model}
 
-
+TODO: benchmark
 
 
 \section{Applying the new evaluation model on the debugger}\label{sec:applying-the-new-evaluation-model-on-the-debugger}
 
-TODO
+TODO: zeggen dat het werkt voor ons
 
 \section{Conclusion}\label{sec:conclusion}
 
-TODO
+TODO: iets concluderen
 
 \end{document}
