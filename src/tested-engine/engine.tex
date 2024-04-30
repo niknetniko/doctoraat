@@ -103,6 +103,10 @@ While this does make the test suites independent of any programming language, al
 Another disadvantage is the lack of granular testing: with these systems, tests are limited to the program as a whole.
 It is, for example, not possible to add distinct tests for different functions inside the same program without obligating students to artificially split the program.
 
+Wanting to support multiple programming languages is not new: \textcite{hextAutomaticGradingScheme1969} describe an early automated assessment system that supports multiple programming languages.
+While it supports more than just input/output testing, it does not support a single test suite: every programming languages requires its own test code (the system was limited to two tests).
+The reporting of the results was, however, unified across programming languages.
+
 \section{Programming-language-agnostic testing frameworks}\label{sec:tested1-programming-language-agnostic-test-frameworks}
 
 Intuitively, an ideal testing framework that supports multiple programming languages is a testing framework with the testing capabilities of unit testing and the programming language support of input/output testing.

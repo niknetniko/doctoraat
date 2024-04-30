@@ -1,0 +1,76 @@
+\documentclass[./main]{subfiles}
+
+\begin{document}
+
+\addchap{Introduction}\label{ch:introduction}
+
+Learning to program is hard, and students consequently regard programming courses as difficult~\autocite{robinsLearningTeachingProgramming2003,simoesNatureProgrammingExercises2020}.
+It is generally accepted that gaining a deep understanding of programming requires experience and feedback~\autocite{gomesEnvironmentImproveProgramming2007}.
+This feedback is what makes teaching programming difficult: it is a very time-consuming task to provide good feedback on code, especially if the number of students in a course is high~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
+
+For these reasons, the computer science education field has a long history of using automated assessment frameworks~\autocite{ala-mutkaSurveyAutomatedAssessment2005,douceAutomaticTestbasedAssessment2005,ihantolaReviewRecentSystems2010,paivaAutomatedAssessmentComputer2022,combefisAutomatedCodeAssessment2022,nayakAutomatedAssessmentTools2022,messerAutomatedGradingFeedback2024}.
+The most basic functionality of these frameworks is to act as an (educational) software testing framework.
+They determine if a particular submission is correct, based on a set of tests (the test suite) provided by the educators who created the programming exercise.
+There is also overlap with the automated assessment in programming contests, where the frameworks are often called judges.
+Since both automated assessment frameworks and judges do, in essence, the same thing, it is not surprising that they influence each other or that some frameworks are used in both contexts.
+
+As so many before us, our group also created an automated assessment platform for programming exercises, Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
+One innovation here is the separation between the platform (responsible for managing courses, students, and exercises) and the testing framework (determining if a submission is correct).
+This separation has allowed for easily supporting a multitude of programming languages.
+
+The act of creating testing frameworks for multiple programming languages has made clear that there are a lot of repetitions in this task.
+This in both the implementation of the testing frameworks, but also in the exercises.
+A lot of exercises we use are not programming-language-specific, yet the different testing frameworks meant that we required a new test suite for each programming we wish to support.
+Besides being a lot of manual work, this also has organisational downsides: the exercises have to be kept in sync, or they risk diverging.
+
+This led to the creating of TESTed (\cref{ch:tested1}), a programming-language-independent testing framework.
+Educators can create a programming exercise with a single test suite, which can then be solved in all programming languages supported by TESTed.
+Next, we looked at the ergonomics of creating a testing exercise (for TESTed).
+This resulted in the creation of a domain-specific language for authoring test suites (\cref{ch:tested-dsl}).
+During this work, we also gained the insight that a single testing framework also has benefits for exercises that are not programming language independent.
+
+Learning to program for young children is often done with specialised programming languages.
+The most-used language in this context is Scratch (\cref{ch:scratch-the-programming-environment}), a visual block-based programming language~\autocite{resnickScratchProgrammingAll2009}.
+Since Dodona is independent of the testing framework, we began by adding a testing framework for Scratch to Dodona.
+We create a new framework since there has been relatively little existing work in this area.
+
+However, Scratch is not only a programming language, but a complete programming environment.
+We realised that Scratch required accommodations that were too different from what Dodona can provide.
+To this end, we partnered with CodeCosmos, an educational publisher.
+They already have a platform for Scratch exercises.
+Our testing framework for Scratch, Itch (\cref{ch:itch}), has been integrated into CodeCosmos's platform.
+
+While the goal of software testing itself is to find errors in a submission, we believe the ultimate goal is to help students write more correct programs.
+So, the next step after a failed test is debugging the submission.
+This is a two-step process~\autocite{myersArtSoftwareTesting2012}.
+Step one is to determine the exact nature and location of the error.
+Step two is then fixing the error.
+It is well known that determining the cause of an observed failure is challenging~\autocite{ammannIntroductionSoftwareTesting2016}.
+The debugging process is difficult, especially for novice programmers~\autocite{mccauleyDebuggingReviewLiterature2008}.
+This has led to the creation of various tools to help with this, chief among them the debuggers~\autocite{rosenbergHowDebuggersWork1996}.
+Debuggers are also a less explored area of research in regard to Scratch.
+We thus created a debugger for Scratch, named Blink, presented in \cref{ch:blink}.
+
+Our work on Blink has revealed some noteworthy details of the Scratch execution model, which we believe to be suboptimal for a debugger.
+We therefore propose and investigate some changes to this model in \cref{ch:scratch-execution-model}.
+The aim is to verify if the proposed changes do not cause problems for existing Scratch projects, while still being an improvement for debuggers.
+
+% Conclusie??????????
+
+%The common thread of this thesis has been to fill gaps we perceived in the field of tools for programming education.
+%While there has been a considerable amount of research into testing frameworks for textual programming languages, we believe the multitude of frameworks (especially different frameworks for different languages) causes time-consuming and manual work.
+%This additional and manual work hinders the reusability of programming exercises across programming languages, or even in different platforms.
+%To this end, we introduced TESTed, TODO.
+%TESTed (and TESTed-DSL) is currently used in our courses.
+%We believe the current functionality of TESTed to be sufficient for a lot of exercise types.
+%However, there are areas of expansion.
+%One such area is static analysis.
+%Tested current runs a linter for each programming language, but more can be done.
+%There is a large body of existing work on static analysis, which can be applied to and integrated with TESTed.
+%
+%
+%We realised that a visual programming language like Scratch needs a specific approach, which is different enough from textual languages to warrant its own tools.
+%The research of testing frameworks and debugging tools for Scratch is much less developed.
+%We therefore introduce both a testing framework and a debugger for Scratch.
+
+\end{document}
