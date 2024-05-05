@@ -834,12 +834,12 @@ The first contribution may be of general interest to the broader software engine
 
 Our goal is to further develop TESTed as an educational software testing framework for authoring different types of programming exercises across programming languages.
 This chapter has focused mainly on dynamic testing, but TESTed also performs compilation and linting as generic types of static testing that are preconfigured in the language-specific modules.
-One area of future interest is the introduction of a language-agnostic API for static code analysis.
+One area of future interest is the introduction of a language-agnostic interface for static code analysis.
 
 We are currently investigating possible extensions to the abstract language of TESTed-DSL, such as operators for testing operator overloading, string conversion, comments, indexing sequences, indexing mappings, destructuring, object identity checking, and object equivalence checking.
 There is no need to conservatively restrict the abstract language to features supported by all or most programming languages, as TESTed automatically detects and reports features not supported by a specific programming language or not (yet) implemented by its language module.
 Support for additional test inputs (file descriptors, environment variables) and outputs (file descriptors, global scope) is in progress.
-We are also investigating native support for pretty printing of nested data structures to make it easier to detect differences between expected and actual return values, and data-driven tests (parameterized tests) to further improve the readability of test suites, support dynamic generation of test data and boost performance of running tests.
+We are also investigating native support for pretty printing of nested data structures to make it easier to detect differences between expected and actual return values, and data-driven tests (parameterised tests) to further improve the readability of test suites, support dynamic generation of test data and boost performance of running tests.
 Our future roadmap also includes internationalization of named submission interfaces, different ways to measure code coverage, and support for hidden units/test cases that are visible to teachers but remain invisible to students to avoid gaming -- also known as programming to the test~\autocite{pevelerComparingJailedSandboxes2019}.
 
 Further enhancements and improvements of TESTed will be driven by educational practice, with the creation of new programming exercises and the conversion of existing exercises to TESTed-DSL being a major driver.
