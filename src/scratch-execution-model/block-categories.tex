@@ -1,0 +1,163 @@
+%! Suppress = MultipleIncludes
+\documentclass[tikz,crop]{standalone}
+
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{pgfplots}
+\usepackage{siunitx}
+\usepackage{fontspec}
+\setmainfont{Source Serif 4}[
+    Renderer = OpenType,
+    SizeFeatures    = {%
+        {Size={-9},Font=* Caption},
+        {Size={9-13},Font=*},
+        {Size={14-24},Font=* Subhead},
+        {Size={24-},Font=* Display}
+    },
+    ItalicFeatures = {%
+    SizeFeatures    = {%
+            {Size={-9},Font=* Caption Italic},
+            {Size={9-13},Font=* Italic},
+            {Size={14-24},Font=* Subhead Italic},
+            {Size={24-},Font=* Display Italic}
+    },
+    },
+    BoldFeatures = {%
+    SizeFeatures    = {%
+            {Size={-9},Font=* Caption Semibold},
+            {Size={9-13},Font=* Semibold},
+            {Size={14-24},Font=* Subhead Semibold},
+            {Size={24-},Font=* Display Semibold}
+    },
+    },
+    BoldItalicFeatures = {%
+    SizeFeatures    = {%
+            {Size={-9},Font=* Caption Semibold Italic},
+            {Size={9-13},Font=* Semibold Italic},
+            {Size={14-24},Font=* Subhead Semibold Italic},
+            {Size={24-},Font=* Display Semibold Italic}
+    },
+    },
+    Numbers         = OldStyle,
+]
+%\usepackage{tikz-uml}
+
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{statistics}
+
+\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc,svg.path,fit}
+
+\definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
+\definecolor{ugent-we}{RGB}{45, 140, 168}       % no match
+\definecolor{ugent-ge}{RGB}{232, 94, 113}       % rose				/ bleekrood
+\definecolor{ugent-ea}{RGB}{111, 113, 185}      % distant blue		/ verblauw
+\definecolor{ugent-pp}{RGB}{251, 126, 58}       % deep orange		/ dieporanje
+\definecolor{ugent-ps}{RGB}{113, 168, 96}       % yellow green		/ geelgroen
+
+\tikzstyle{python}=[fill=ugent-ps!50!white]
+\tikzstyle{java}=[fill=ugent-we!50!white]
+\tikzstyle{haskell}=[fill=ugent-ea!50!white]
+\tikzstyle{js}=[fill=ugent-pp!50!white]
+\tikzstyle{c}=[fill=ugent-re!50!white]
+
+\newlength{\block}
+\setlength{\block}{0.75cm}
+
+\tikzstyle{a}=[anchor=north west]
+\tikzstyle{box}=[a,draw,rectangle]
+\tikzstyle{node}=[a,draw,minimum height=0.5cm,align=center,fill=white,text depth=.25ex]
+\tikzstyle{document}=[node,tape,tape bend top=none]
+\tikzstyle{cont}=[box,minimum height=1\block,minimum width=1\block]
+\tikzstyle{arrow}=[draw, -latex]
+\tikzstyle{inner}=[box,draw=gray]
+
+% Blue box style
+\tikzstyle{bluebox}=[draw=ugent-we,java]
+\tikzstyle{redbox}=[draw=ugent-re,c]
+\tikzstyle{greenbox}=[draw=ugent-ps,python]
+
+% Some things specific to TESTed imagery.
+\tikzstyle{tc}=[box,draw=ugent-ps]
+\tikzstyle{comp}=[box,draw=ugent-re,fill=ugent-re,fill opacity=0.05]
+\tikzstyle{exec}=[box,draw=ugent-we,fill=ugent-we,fill opacity=0.10]
+
+% Stuff from tested-engine/concept.tex
+\tikzstyle{process}=[node,rectangle]
+\tikzstyle{terminator}=[node,rectangle,rounded corners=0.5cm]
+\tikzstyle{io}=[node,trapezium,trapezium left angle=70,trapezium right angle=-70,minimum width=2.5cm,trapezium stretches=true]
+\tikzstyle{small}=[font=\footnotesize,color=darkgray]
+\tikzstyle{submission}=[document,align=right,minimum width=3cm,minimum height=1cm,text depth=0.5cm,inner sep=0.5mm,font=\scriptsize]
+
+% Stuff from chatper3/flow.tex
+\tikzstyle{height}=[minimum height=0.75\block]
+\tikzstyle{contt}=[cont,minimum height=0.75\block]
+\tikzstyle{compop}=[comp,text opacity=1]
+\tikzstyle{execop}=[exec,text opacity=1]
+
+\tikzstyle{hnode}=[draw,anchor=center,minimum height=\block,text depth=.25ex,align=center]
+\tikzstyle{executable}=[hnode,ultra thick,fill=gray!10]
+\tikzstyle{inner-exec}=[node,anchor=center,minimum width=3.25\block,densely dotted,font=\footnotesize,fill=none]
+\tikzstyle{stmt}=[node,anchor=center,fill=gray!30,minimum width=4.5\block,font=\footnotesize]
+\tikzstyle{fieldset}=[minimum height=\block,fill=white,text depth=.5ex,fill=white]
+\usepackage{../scratch31}
+\usepackage{xparse}
+\NewDocumentCommand\scratchinline{m}{%
+    \begin{scratch}[scale=0.4,baseline=c]%
+        #1
+    \end{scratch}%
+}
+%\input{../tikz-preamble}
+
+\begin{document}
+
+\begin{tikzpicture}
+    \begin{axis}[
+        ybar,
+        ymin=0,
+        x=1cm,
+        ylabel style={align=center},
+        ylabel={№ of projects},
+        symbolic x coords={Motion,Looks,Sound,Events,Control,Sensing,Operators,Data,Extensions},
+        nodes near coords={\pgfmathfloattofixed{\pgfplotspointmeta}\addfontfeature{Numbers={Lining}}\num[round-mode=places,round-precision=0,fixed-exponent=3,exponent-mode=fixed,drop-exponent=true]{\pgfmathresult}},
+%        nodes near coords align=horizontal,
+        xtick style={draw=none},
+%        xtick=data,
+        xtick distance=1,
+        xticklabel style={rotate=35, anchor=east},
+        ymajorgrids,
+        yminorgrids,
+        scaled y ticks=false,
+        yticklabel={\addfontfeature{Numbers={Lining}}\qty[round-mode=places, round-precision=0,fixed-exponent=3,exponent-mode=fixed,drop-exponent=true]{\tick}{\kilo{}}},
+        bar shift=0pt
+    ]
+        \addplot[style={fill=scrmove}] coordinates {
+            (Motion,133524)
+        };
+        \addplot[style={fill=scrlook}] coordinates {
+            (Looks,161049)
+        };
+        \addplot[style={fill=scrsound}] coordinates {
+            (Sound,93018)
+        };
+        \addplot[style={fill=screvent}] coordinates {
+            (Events,195173)
+        };
+        \addplot[style={fill=scrcontrol}] coordinates {
+            (Control,170980)
+        };
+        \addplot[style={fill=scrsensing}] coordinates {
+            (Sensing,83864)
+        };
+        \addplot[style={fill=scroperator}] coordinates {
+            (Operators,88720)
+        };
+        \addplot[style={fill=scrvariable}] coordinates {
+            (Data,68237)
+        };
+        \addplot[style={fill=scrpen}] coordinates {
+            (Extensions,23896)
+        };
+    \end{axis}
+\end{tikzpicture}
+
+\end{document}

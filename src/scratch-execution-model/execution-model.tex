@@ -358,17 +358,20 @@ TODO: volledige stackframe?
 In the next sections, we analyse existing Scratch projects to determine which number of steps that most closely results in the same execution speed as the original execution model.
 We also take this opportunity to analyse the complexity and block use in Scratch projects, to evaluate whether the concurrency considerations would cause problems.
 
-\section{Analysis of Scratch projects}\label{sec:evaluation-of-scratch-projects}
+\section{Exploration of Scratch projects}\label{sec:evaluation-of-scratch-projects}
 
-Before validating our changes to the execution model, we investigate and analyse a set of Scratch projects.
-The aim of this analysis is to determine what blocks are used in Scratch projects and how complex most projects are.
+As Scratch is used by many students, it is important that changes to the execution model do not adversely affect existing Scratch projects.
+However, this requires us knowing what Scratch projects look like.
+The aim of this analysis is to determine what blocks are used in Scratch projects, how big projects are, and what programming concepts are used.
+
+We begin by looking at existing work on analysing Scratch projects, followed by our own analysis.
 
 \subsection{Existing analyses}\label{subsec:existing-analyses}
 
 \makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.}
-\Textcite{aivaloglouHowKidsCode2016} analysed \num{250000} Scratch projects that they scraped from the publicly Scratch site.
+\Textcite{aivaloglouHowKidsCode2016} analysed \num{250000} Scratch 2.0 projects that they scraped from the public Scratch site.
 They looked at the types of blocks used, the size of the projects, and the complexity.
-For the complexity, they utilize the cyclomatic complexity metric~\autocite{mccabeComplexityMeasure1976}.
+For the complexity, they utilise the cyclomatic complexity metric~\autocite{mccabeComplexityMeasure1976}.
 The considered decision points are the \texttt{if} and \texttt{if-else} blocks.
 
 They found that most Scratch projects are small: \qty{75}{\percent} have less than 5 sprites, 12 scripts, and 76 blocks.
@@ -382,12 +385,67 @@ The authors also measure the cyclomatic complexity, in addition to some Halstead
 They do use more decision points for the cyclomatic complexity (\texttt{if}, \texttt{if-else}, \texttt{repeat until}, \texttt{wait until}, \texttt{and}, \texttt{or}).
 The proposed ``when'' metric counts the number of ``when'' blocks (e.g.\ hat blocks with certain conditions).
 
-\subsection{New analysis}\label{subsec:new-analysis}
+\subsection{A new dataset of Scratch projects}\label{subsec:a-new-dataset-of-scratch-projects}
 
-In this section we describe our analysis.
-To perform another analysis, we first scraped the X most recent public projects from the Scratch website.
-The oldest project was created on X.
-Y of the projects were empty and thus excluded from further analysis.
+Since the dataset for \textcite{aivaloglouHowKidsCode2016} consists of Scratch 2.0 projects and \textcite{fronzaApproachEvaluateComplexity2020} only analyse 80 projects, we found it necessary to collect a new dataset of Scratch projects.
+
+To create a new dataset, we used the Scratch API\footnote{\url{https://en.scratch-wiki.info/wiki/Scratch_API}} as follows.
+Creating a new project provided an identifier, which we used as a starting point.
+We then subtract one from the identifier, downloaded the project if possible, and continued.
+
+This resulted in \num{237926} projects.
+From those, \num{207} were corrupt or for an older version of Scratch.
+We also filtered out the following projects: \num{37936} (\qty{15.9}{\percent}) were empty and \num{4411} (\qty{1.9}{\percent}) had no executable code (e.g.\ only head blocks or scripts without head blocks).
+This results in a final dataset of \num{195372} Scratch projects we considered for further analysis.
+
+\subsection{Analysing Scratch 3.0 projects}\label{subsec:analysing-scratch-3.0-projects}
+
+Hairball~\autocite{boeHairballLintinspiredStatic2013} is commonly used to analyse Scratch projects (it is also used by the existing analyses), but does not support Scratch 3.0 projects.
+For this reason, we have implemented a very similar piece of software in JavaScript.\footnote{TODO: url to repo}
+It also supports plugins to support extensions for other analyses.
+Being written in JavaScript, it has the advantage that it can reuse parts of the Scratch virtual machine, like reading and parsing Scratch projects.
+
+\subsection{Use of blocks}\label{subsec:use-of-blocks}
+
+Here, we look at the use of blocks in Scratch projects.
+Wherever possible, we have used the same definitions and metrics as used by \textcite{aivaloglouHowKidsCode2016}, for ease of comparison.
+
+Scratch blocks can be categorised into seven types, based on their shape (\cref{sec:elements-of-a-scratch-program}).
+\Cref{fig:block-shapes} shows their usage, with a total of \num{47808628} blocks.
+
+\begin{figure}
+    \centering
+    \includestandalone{block-shapes}
+    \caption{
+        Number of blocks by shape in all projects.
+        The total number of blocks is \num{47808628}.
+        Note that the \textit{forever} block is counted twice (as a cap block and a C block), and procedure-defining blocks are counted as hat blocks.
+    }
+    \label{fig:block-shapes}
+\end{figure}
+
+Blocks can also be put into categories (\cref{subsec:using-the-environment-and-the-blocks}).
+The number of projects that use a block from a certain category are shown in \cref{fig:block-categories}.
+Note that these numbers do not fully compare with \textcite{aivaloglouHowKidsCode2016}: since then, some new Scratch extensions were added, and the pen-related blocks have moved to an extension.
+
+\begin{figure}
+    \centering
+    \includestandalone{block-categories}
+    \caption{
+        Number of projects that use blocks from a certain category.
+        Excluded are custom blocks, and all blocks for extensions are counted togheter.
+    }
+    \label{fig:block-categories}
+\end{figure}
+
+By looking at the blocks, we see the first indication that most projects are small: \qty{17.0}{\percent} of projects only use hat and stack blocks, and \qty{19.5}{\percent} of projects use no C blocks.
+
+We can also see that extensions are not used that much.
+Only \qty{12.2}{\percent} of projects use any extension.
+The Pen extension is the most popular one, appearing in \qty{6.9}{\percent} of projects.
+
+COMPLEXITEIT
+
 
 We first look at the distribution of the used blocks (Figure X).
 Most projects only use stack blocks.
