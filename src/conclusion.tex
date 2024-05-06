@@ -30,7 +30,40 @@ There are more opportunities still, including data-driven tests (parameterised t
 
 \section{For block-based programming languages}\label{sec:for-block-based-programming-languages}
 
-TODO
+Itch, our testing framework for Scratch, is able to perform static testing, emulate user interaction, and perform post-mortem testing.
+Itch provides various helper functions to make testing common scenarios easier.
+Tests can be fully static of fully dynamic, or any combination of both.
+
+While most exercises can be tested, it remains difficult to design Scratch exercises that are both easy to test dynamically and open-ended enough to go well with the game-like and tinkering nature of Scratch.
+It is tempting to use static tests, as they are faster and easier to write.
+However, static tests go against the spirit of Scratch and allow for less freedom for the students.
+
+Since writing test suites in JavaScript can be a challenge for educators who may only have experience with Scratch, we also built a prototype of a testing framework for Scratch in Scratch: Poke.
+While writing the tests is technically feasible, some challenges remain.
+The main one is the organisational aspects of managing these Scratch tests suites in an educational context.
+
+The main job of testing frameworks is to point out if a submission is correct or not.
+It, in itself, does not help pupils pinpoint the root cause of a failed test.
+For this purpose, we have also introduced Blink, a debugger for Scratch.
+Debugging is generally known to be a good tool for finding the error in a program, and this is no different in Scratch.
+We paid special attention when designing Blink to the user-friendliness, as the target demographic of Scratch is quite young.
+Initial feedback from using the debugger in a classroom setting has been positive.
+
+TOOD: dit stuk
+
+We end by exploring some proposed changes to the execution model of Scratch, as it makes some debugger-related functionality difficult.
+Additionally, while the current execution model has been chosen to minimise the occurrence of some concurrency-related issues, like race conditions, it does not prevent all issues.
+The threading model, in particular, causes some surprising behaviour.
+This is not ideal, since Scratch is intended to be very intuitive.
+
+Our proposed changes aim to fix these problems.
+However, Scratch is used a lot, meaning that any changes must not negatively impact existing projects.
+For this reason, we first explored how Scratch is used, and present the results, which align with earlier publications.
+The main conclusion is that most Scratch projects are small.
+
+We finally benchmarked the execution model on some projects to verify its impact on real-world Scratch projects.
+The impact is not nothing, but we believe it is not problematic.
+We therefore feel confident in using the changed execution model with the debugger.
 
 
 \end{document}
