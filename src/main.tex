@@ -28,6 +28,7 @@
 
 % Andere
 % \usepackage{showframe}
+%\usepackage{bookmark}
 \usepackage{xcolor}
 \usepackage{circledsteps}
 \usepackage{caption}
@@ -235,6 +236,22 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
     \end{addmargin*}
 }
 
+\DeclareTOCStyleEntry[%
+    level=\parttocdepth,
+    indent=0pt,
+    numwidth=0pt,
+    beforeskip=.25em,
+    entryformat=\nullfont,
+    entrynumberformat=\nullfont,
+    linefill=\relax,
+    pagenumberformat=\nullfont,
+]{part}{dummypart}
+\newcommand*{\dummypart}{%
+    \clearpage
+    \addxcontentsline{toc}{dummypart}{}%
+    \bookmarksetup{startatroot}
+}
+
 % Allow using TESTed as is, without small caps replacement.
 \newcommand{\tested}{TESTed}
 \newcommand{\dsl}{DSL}
@@ -278,8 +295,9 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \subfile{scratch-itch/itch.tex}
 \subfile{scratch-blink/blink.tex}
 \subfile{scratch-execution-model/execution-model.tex}
-\subfile{conclusion.tex}
 
+\dummypart
+\subfile{conclusion.tex}
 \printbibliography[heading=bibintoc]
 
 \end{document}
