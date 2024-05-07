@@ -4,66 +4,61 @@
 
 \chapter{Conclusions and opportunities}\label{ch:conclusions-and-opportunities}
 
-In this work, we introduce five educational tools for learning programming, two for textual and three for block-based programming languages.
-While using Dodona, we noticed some gaps in existing educational tools for programming education.
-We developed the presented tools as a response to this, attempting to fill the gap.
+In this work, we introduce five educational tools to facilitate programming education, two for textual and three for block-based programming languages.
+Our experience with Dodona revealed shortcomings in existing educational tools, prompting us to develop these new tools in an effort to bridge those gaps.
 
 %\marginnote{This chapter might include ``forward-looking'' statements.}
 
 \section{For textual programming languages}\label{sec:for-textual-programming-languages}
 
 For block-based languages, we first identify input/output testing and unit testing as two opposing strategies commonly used in educational software testing.
-We first investigated the impact of both approaches on programming language support of the frameworks.
-Then, we also looked at the effect of the strategies on the software testing itself, like the impact on the feedback or what can be tested.
+Our initial investigation focused on understanding how these approaches affect the supported programming languages within frameworks, and we later also considered the testing process itself (e.g.\ feedback mechanisms and testable elements).
 
-Our goal was to combine the best of both worlds.
-We formulated requirements for programming-language-agnostic testing frameworks that combine unit testing with support for multiple programming languages.
+The aim is to combine the best of both worlds.
+To this end, we formulate requirements for programming-language-agnostic testing frameworks that combine unit testing with support for multiple programming languages.
 We see three clear benefits for the adoption of such frameworks: \begin{enumerate*}[label=\emph{\roman*})] \item sharing the same declarative structure across programming languages, \item bridging the gap between input/output testing and unit testing, and \item allowing test code to be expressed in a language-agnostic way.\end{enumerate*}
 
-Our goal is to further develop TESTed as an educational software testing framework for authoring different types of programming exercises across programming languages.
-TESTed is currently focussed on dynamic testing.
-However, of future interest is the introduction of a language-agnostic way to perform static code analysis.
+TESTed, our programming-language-agnostic testing framework, satisfies these requirements, which we show by applying it in educational practice.
 
-We are also investigating extensions to TESTed-DSL, such as operators for testing operator overloading, string conversion, comments, indexing sequences, indexing mappings, destructuring, object identity checking, and object equivalence checking.
-Additionally, an interesting area for future research is native support for pretty printing of nested data structures to make it easier to detect differences between expected and actual return values.
+Our goal is to further develop TESTed for authoring different types of programming exercises across programming languages.
+TESTed is currently focussed on dynamic testing.
+A key area of future interest is the implementation of language-agnostic static code analysis capabilities.
+
+Furthermore, we are exploring potential extensions to TESTed-DSL\@.
+These include supporting operator overloading, string conversion, comments, indexing sequences, indexing mappings, destructuring, object identity checking, and object equivalence checking.
+Native support for pretty printing nested data structures would be another valuable addition, making it easier to detect differences between expected and actual return values.
 There are more opportunities still, including data-driven tests (parameterised tests), support dynamic generation of test data and boost the performance of running tests.
 
 \section{For block-based programming languages}\label{sec:for-block-based-programming-languages}
 
-Itch, our testing framework for Scratch, is able to perform static testing, emulate user interaction, and perform post-mortem testing.
-Itch provides various helper functions to make testing common scenarios easier.
-Tests can be fully static of fully dynamic, or any combination of both.
+Our testing framework, Itch, offers a versatile approach to testing, allowing static testing, emulating user interaction, and performing post-mortem testing.
+It includes helper functions to streamline testing common scenarios
+Tests can range from purely static to purely dynamic, or a hybrid of both.
 
-While most exercises can be tested, it remains difficult to design Scratch exercises that are both easy to test dynamically and open-ended enough to go well with the game-like and tinkering nature of Scratch.
-It is tempting to use static tests, as they are faster and easier to write.
-However, static tests go against the spirit of Scratch and allow for less freedom for the students.
+While most exercises can be tested, it remains difficult to design Scratch exercises that are both dynamically testable and sufficiently open-ended to align with the game-like and exploratory nature of Scratch.
+Static tests, though faster and sometimes easier to write, can potentially constrain creativity and go against the spirit of Scratch.
 
-Since writing test suites in JavaScript can be a challenge for educators who may only have experience with Scratch, we also built a prototype of a testing framework for Scratch in Scratch: Poke.
-While writing the tests is technically feasible, some challenges remain.
-The main one is the organisational aspects of managing these Scratch tests suites in an educational context.
+Recognising that educators that are primarily experienced in Scratch might find JavaScript test suites difficult to write, we prototyped a Scratch-based testing framework called Poke.
+It allows creating test suite with Scratch, using the blocks and environment Scratch users are familiar with.
+While writing the tests is technically feasible, some challenges remain, the main one being the organisational aspects of managing these Scratch tests suites.
 
-The main job of testing frameworks is to point out if a submission is correct or not.
-It, in itself, does not help pupils pinpoint the root cause of a failed test.
-For this purpose, we have also introduced Blink, a debugger for Scratch.
-Debugging is generally known to be a good tool for finding the error in a program, and this is no different in Scratch.
-We paid special attention when designing Blink to the user-friendliness, as the target demographic of Scratch is quite young.
+Testing frameworks primarily indicate whether a submission is correct or not, but do not directly assist students in finding the root cause of a failed test.
+To address this, we developed Blink, a debugger for Scratch.
+Debuggers are generally known to be good tools for finding errors in a program, and this is no different in Scratch.
+We prioritised the user-friendliness of Blink, given Scratch's younger target audience.
 Initial feedback from using the debugger in a classroom setting has been positive.
 
-TOOD: dit stuk
+We end the part by proposing and investigating changes to the execution model of Scratch, which currently hinders certain debugger-related functionality.
+Furthermore, while the current execution model has been chosen to minimise the occurrence of some concurrency-related issues, like race conditions, it does not prevent all issues.
+The threading model, in particular, causes some surprising behaviour, which is not ideal as Scratch is intended to be very intuitive.
 
-We end by exploring some proposed changes to the execution model of Scratch, as it makes some debugger-related functionality difficult.
-Additionally, while the current execution model has been chosen to minimise the occurrence of some concurrency-related issues, like race conditions, it does not prevent all issues.
-The threading model, in particular, causes some surprising behaviour.
-This is not ideal, since Scratch is intended to be very intuitive.
+The proposed changes seek to resolve these issues.
+However, the widespread use of Scratch demands that any changes must not adversely affect existing projects.
+For this reason, we explored how Scratch is used, the results of which corroborate previous findings: most Scratch projects are small.
 
-Our proposed changes aim to fix these problems.
-However, Scratch is used a lot, meaning that any changes must not negatively impact existing projects.
-For this reason, we first explored how Scratch is used, and present the results, which align with earlier publications.
-The main conclusion is that most Scratch projects are small.
-
-We finally benchmarked the execution model on some projects to verify its impact on real-world Scratch projects.
-The impact is not nothing, but we believe it is not problematic.
-We therefore feel confident in using the changed execution model with the debugger.
+Finally, we benchmarked the execution model on various representative projects to measure its real-world impact.
+While there is some impact, we deem it acceptable.
+This strengthens our confidence in integrating the modified execution model not only with the debugger, but in general use of Scratch.
 
 
 \end{document}
