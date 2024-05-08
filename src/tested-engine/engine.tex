@@ -1,4 +1,3 @@
-%! suppress = FileNotFound
 \documentclass[../main]{subfiles}
 
 \begin{document}
@@ -49,7 +48,7 @@ Software testing frameworks require an accompanying test suite for each individu
 However, they can provide much more specific feedback.
 A test suite typically contains a set of tests that verify if the submission satisfies the requirements in the task description of the exercise.
 This is similar to the practice of unit tests or integration tests in the software engineering field.
-Besides general testing frameworks, computer science education also uses judge systems~\autocite{paivaAutomatedAssessmentComputer2022,wasikSurveyOnlineJudge2018}: specialized learning environments that provide rich feedback.
+Besides general testing frameworks, computer science education also uses judge systems~\autocite{paivaAutomatedAssessmentComputer2022,wasikSurveyOnlineJudge2018}: specialised learning environments that provide rich feedback.
 Defining an adequate test suite for an exercise is part of the reason why creating programming exercises is so time-consuming~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
 
 An apparent solution to reduce the amount of time needed to create programming exercises is to create fewer exercises.
@@ -531,75 +530,6 @@ The advanced data types are also where the language-specific aspects can come in
 For example, in addition to the basic type \texttt{nothing}, we have both \texttt{undefined} and \texttt{null}.
 In most languages, there is no difference between those, but for example, in JavaScript there is.
 Having both available as an advanced type allows exercises to use either in JavaScript exercises, while still being language-agnostic.
-
-% TODO: move to appendix
-%An overview of the supported advanced types for each programming language is given in \cref{tab:tested-advanced-types}.
-%A plus sign (+) in a column indicates that the programming language has limited support for the data type.
-%This means that the programming language will fall back to the basic type (as discussed previously).
-%A dash means there is no support in the programming language: exercises using this data type will not be solvable in that programming language.
-
-%\begin{table}
-%    \caption{
-%        An overview of advanced types supported by TESTed.
-%        The first column contains all advanced types, and the second column contains their corresponding basic type.
-%        The other columns contain the mapping to the data types of the programming languages currently supported.
-%        Note that the table is split into two.
-%    }
-%    \begin{wide}
-%        \small\setlength{\tabcolsep}{0.5\tabcolsep}%
-%        \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
-%            \hline
-%            \tested{}         & Basic & Python         & JavaScript       & Java             & Kotlin   \\
-%            \hline
-%            int8              & integer & + & + & \texttt{byte} & \texttt{Byte} \\
-%            uint8             & integer & + & + & + & \texttt{UByte} \\
-%            int16             & integer & + & + & \texttt{short} & \texttt{Short} \\
-%            uint16 & integer & + & + & + & \texttt{UShort} \\
-%            int32 & integer & + & + & \texttt{int} & \texttt{Int} \\
-%            uint32 & integer & + & + & + & \texttt{UInt} \\
-%            int64 & integer & + & + & \texttt{long} & \texttt{Long} \\
-%            uint64 & integer  & + & + & + & \texttt{ULong} \\
-%            bigint & integer  & \texttt{int} & \texttt{BigInt} & \texttt{BigInteger}
-%            & \texttt{BigInteger} \\
-%            single\_precision & real & + & + & \texttt{float} & \texttt{Float} \\
-%            double\_precision & real & + & + & \texttt{double} & \texttt{Double} \\
-%            double\_extended & real & + & + & + & + \\
-%            fixed\_precision & rational & \texttt{Decimal} & - & \texttt{BigDecimal}
-%            & \texttt{BigDecimal} \\
-%            array & sequence & + & + & \texttt{array} & \texttt{Array} \\
-%            list & sequence & \texttt{List} & + & \texttt{List} & \texttt{List} \\
-%            tuple & sequence & \texttt{Tuple} & + & + & + \\
-%            char & text & + & + & \texttt{char} & \texttt{Char} \\
-%            undefined & nothing & + & \texttt{undefined} & + & + \\
-%            \hline
-%        \end{tabular}
-%        \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
-%            \hline
-%            \tested{}         & Haskell                   & C                        & Bash & C\# \\
-%            \hline
-%            int8              & \texttt{Data.Int.Int8}    & +                        & -    & \\
-%            uint8             & \texttt{Data.Word.Word8}  & +                        & -    & \\
-%            int16             & \texttt{Data.Int.Int16}   & \texttt{short}           & -    & \\
-%            uint16            & \texttt{Data.Word.Word16} & \texttt{unsigned\ short} & -    & \\
-%            int32             & \texttt{Data.Int.Int32}   & \texttt{int}             & -    & \\
-%            uint32            & \texttt{Data.Word.Word32} & \texttt{unsigned\ int}   & -    & \\
-%            int64             & \texttt{Data.Int.Int64}   & \texttt{long}            & -    & \\
-%            uint64            & \texttt{Data.Word.Word64} & \texttt{unsigned\ long}  & -    & \\
-%            bigint            & \texttt{Integer}          & -                        & -    & \\
-%            single\_precision & \texttt{Float}            & \texttt{float}           & -    & \\
-%            double\_precision & \texttt{Double}           & \texttt{double}          & -    & \\
-%            double\_extended  & -                         & \texttt{double\ double}  & -    & \\
-%            fixed\_precision  & -                         & -                        & -    & \\
-%            array             & -                         & -                        & -    & \\
-%            list              & \texttt{{[}{]}}           & -                        & -    & \\
-%            tuple             & \texttt{()}               & -                        & -    & \\
-%            char              & \texttt{Char}             & \texttt{char}            & +    & \\
-%            undefined         & +                         & +                        & -    & \\
-%            \hline
-%        \end{tabular}
-%    \end{wide}
-%    \label{tab:tested-advanced-types}
-%\end{table}
 
 \subsection{Statements and expressions}\label{subsec:tested1-statements-and-expressions}
 
@@ -1435,7 +1365,7 @@ Our idea then was that TESTed would convert the DSL into JSON as a preprocessing
 However, as detailed in \cref{ch:tested-dsl}, we later used the DSL directly, without conversion step.
 We also investigated the option to support multiple DSLs for different types of programming exercises, for example a DSL for stdin/stdout exercises and another DSL for test suites built around function calls.
 However, it became clear the supporting both scenarios in the same DSL was feasible and a better approach.
-Also of interest was supporting previous attempts at standardizing descriptions of programming exercises such as YAPExIL~\autocite{paivaAnotherProgrammingExercises2020} and \textsc{peml}~\autocite{cssplicepemlworkinggroupProgrammingExerciseMarkup2021}, and extending BabelO~\autocite{queirosBabeLOExtensibleConverter2013} with support for TESTed.
+Also of interest was supporting previous attempts at standardizing descriptions of programming exercises such as \textsc{yape}x\textsc{il}~\autocite{paivaAnotherProgrammingExercises2020} and \textsc{peml}~\autocite{cssplicepemlworkinggroupProgrammingExerciseMarkup2021}, and extending BabelO~\autocite{queirosBabeLOExtensibleConverter2013} with support for TESTed.
 
 Designing a programming exercise that can be solved in multiple programming languages not only requires a programming-language-agnostic testing framework, but also a task description that adapts itself to selected programming languages.
 Particular differences between languages that need to be taken into account in expressing task descriptions are naming conventions (e.g.\ camel case or snake case), names for data types (e.g.\ lists in Python or arrays in Java), representation of literals (e.g.\ single quotes or double quotes as string delimiters) and grammar for expressions and statements (e.g.\ in sample code snippets).

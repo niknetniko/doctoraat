@@ -537,10 +537,10 @@ The evaluation of a submission goes through the following process:
     \item The submission, the starter project, and the test suite are made available.
     \item Itch loads both projects, and runs the before execution phase.
         While the starter project is available in all phases, it is only intended to be used in the before execution phase.
-    \item If the before execution phase does not result in an error, Itch initialises the virtual machine, inserts hooks for the log, and loads the submission into the virtual machine.
+    \item If the before execution phase does not result in an error, Itch initializes the virtual machine, inserts hooks for the log, and loads the submission into the virtual machine.
     \item The during execution phase is run, and the scheduled actions are read from the test suite.
         The during execution phase is used to create a schedule of user actions using the scheduler.
-        It does not actually run the schedule itself.
+        It does not run the schedule itself.
     \item Itch starts the virtual machine and executes the scheduled actions.
           While executing, the logs are captured.
     \item If the execution does not result in an error, Itch shuts down the virtual machine, and runs the after execution phase.
@@ -607,14 +607,14 @@ Most of the options are self-explanatory, and the output format option is explai
     \label{fig:itch-sequence-diagram}
 \end{figure}
 
-When there is no existing browser instance  available, Itch provides a command line interface.
+When there is no existing browser instance available, Itch provides a command line interface.
 \marginnote{A headless browser is a full browser, but without user interface.}
 In this mode, Itch will run a headless browser, load the projects and test suites, run the judge, and finally collect the results from the browser.
 \Cref{fig:itch-sequence-diagram} shows the complete process.
 
 First, the runner package launches a Puppeteer instance.
 After it is read, the various dependencies are loaded into the Puppeteer instance (these are the Itch core package, the Scratch dependencies, the test suite, the submission, and the starter project).
-The runner package will then run a special script that will call Itch as it would be used as a library: the \mintinline{typescript}{run(config)} function is called.
+The runner package will then run a special script that calls Itch as it would be used as a library: the \mintinline{typescript}{run(config)} function is called.
 Then, the same process happens as when using Itch as a library.
 First, the projects (submission and starter) are parsed.
 The phases are then executed, with the before and during execution phase going first.
@@ -627,7 +627,7 @@ Finally, the after execution phase is run, with the log from the previous phase.
 Reducing the time students spend waiting on feedback is essential for providing a good user experience with software testing, especially in educational software testing~\autocite{sarsaSpeedingAutomatedAssessment2022}.
 One difficulty in providing fast feedback on Scratch code is that blocks that wait are commonly used.
 However, these wait times pose a hard lower limit on the duration of the evaluation of a Scratch project.
-For example, if a project has a wait block for 2 seconds, the evaluation time of said project can never be less than 2 seconds (and will be higher in practice, since the whole evaluation process also adds overhead).
+For example, if a project has a wait block for 2 seconds, the evaluation time of that project can never be less than 2 seconds (and will be higher in practice, since the whole evaluation process also adds overhead).
 Such wait blocks can quickly add up.
 
 As a solution for this problem, Itch provides test suites with the ability to set an ``acceleration factor'': this factor indicates the speedup for all time-based data, both in the project and in the test suite.
@@ -696,11 +696,11 @@ These 13 exercises were used as a reference for the initial feature set and capa
 The exercises can be classified into five groups, depending on their contents:
 
 \begin{description}
-    \item[Speaking] Sprites speak, think, or ask questions (5 exercises).
-    \item[Moving] Sprites move around (3 exercises).
-    \item[Costumes] Sprites change costumes, often to emulate animation (3 exercises).
-    \item[Games] Interactive games that require user input (1 exercise).
-    \item[Drawing] The \emph{Pen} extension is used to draw on the canvas (3 exercises).
+    \item[Speaking] Sprites speak, think, or ask questions (five exercises).
+    \item[Moving] Sprites move around (three exercises).
+    \item[Costumes] Sprites change costumes, often to emulate animation (three exercises).
+    \item[Games] Interactive games that require user input (one exercise).
+    \item[Drawing] The \emph{Pen} extension is used to draw on the canvas (three exercises).
 \end{description}
 
 Note that the exercises do not sum up to 13: two exercises are both in the moving and costumes category, since they do both.
@@ -720,10 +720,10 @@ At a later point in the development of Itch, it has been used in educational pra
 This was mainly done by our partner, CodeCosmos.
 CodeCosmos provides the platform in which Itch is integrated.
 The platform provides a variety of organizational tools, like classroom management.
-Specially for Scratch, the platform has its own hosted instance of the Scratch environment (similar to the \textsc{mit}-hosted instance).
+It has its own hosted instance of the Scratch environment (similar to the \textsc{mit}-hosted instance).
 This instance has been modified to integrate with Itch.
 
-In the platform, Itch is run server-side by a dedicated service.
+On the platform, Itch is run server-side by a dedicated service.
 The choice for server-side testing versus client-side testing was mainly motivated by making sure that students could not cheat by modifying the test suites or the results.
 The platform will periodically (or when a button is pressed) send the current version of the submission to the server.
 The backend will then look up the test suite and starter project and send these to the Itch service.
@@ -990,7 +990,7 @@ For example, the blocks are only copied once (or when they are changed).
         In each of these groups, the relevant key is pressed four times and each sprite is checked.
         In the ``grow'' group, everything is correct (indicated by the green checkmarks).
         As expected, the second group reports that some tests have failed (indicated by the yellow triangles).
-        Two of the subgroups are open: while the tests for \texttt{Nano} and \texttt{Pico} were correct, the one for \texttt{Giga} failed as expected (indicated by a red crosses).
+        Two of the subgroups are open: while the tests for \texttt{Nano} and \texttt{Pico} were correct, the one for \texttt{Giga} failed as expected (indicated by red crosses).
     }
     \label{fig:poke-feedback-result}
 \end{figure}
@@ -1006,7 +1006,7 @@ To verify that Poke is usable as a testing framework, we compared it to the set 
 Three of the exercises could not be tested with Poke, but this was expected.
 Poke does not support extensions at the moment, and these exercises use the pen extension.
 One of these three exercises would not be testable anyway, for the same reason Itch could not test it: drawing a house is a very open-ended exercise.
-The other exercises could be tested with Poke, if the pen extension were supported.
+The other exercises could be tested with Poke if the pen extension were supported.
 
 For comparison, \cref{lst:grow-and-shrink-during} contains the test suite for the \emph{Grow and shrink} exercise in Itch, while \cref{lst:poke-grow-and-shrink} contains the test suite used in Poke.
 
@@ -1063,7 +1063,7 @@ The manner in which feedback is shown to students must be improved.
 Currently, the feedback is very text-heavy and dry, which does not integrate well with the game-like nature of Scratch.
 In addition, we envision that a different representation might be needed for educators and for students.
 
-\subsubsection{Organisational aspects of Poke}
+\subsubsection{Organizational aspects of Poke}
 We have currently not considered any of the organisational aspects that arise when attempting to use a testing framework in an educational setting.
 The tests are currently included in the Scratch project itself.
 While useful if students want to create and use their own tests, it is less ideal for educator-provided test suites.
@@ -1085,7 +1085,7 @@ The combination of the three phases allows for a lot of flexibility in how an ex
 We also discussed our experiences using Itch in educational practice.
 While most exercises can be tested, it remains a challenge to design Scratch exercises that are both easy to test dynamically and open-ended enough to go well with the game-like and tinkering nature of Scratch.
 It is tempting to use static tests, as they are faster and easier to write.
-However, while there are good reasons for using static testing, we want to emphasise that dynamic, behavioural testing provides a better experience for students.
+However, while there are good reasons for using static testing, we want to emphasize that dynamic, behavioural testing provides a better experience for students.
 
 Finally, writing test suites in JavaScript is a barrier for educators whose experience is limited to Scratch.
 We therefore explored a prototype of a testing framework that allows writing test suites in Scratch itself.

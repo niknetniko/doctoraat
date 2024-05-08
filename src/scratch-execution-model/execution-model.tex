@@ -9,7 +9,7 @@
 
 Scratch, a popular visual block-based programming language designed for young learners, inherently supports parallel programming.
 Each Scratch program (called a project) consists of a number of sprites with individual code (\cref{ch:scratch-the-programming-environment}).
-Blocks attached together form scripts, and each sprite can have multiple scripts running concurrently as separate threads within the Scratch virtual machine.
+Blocks that are attached together form scripts, and each sprite can have multiple scripts running concurrently as separate threads within the Scratch virtual machine.
 
 The Scratch execution model combines a fixed-step time loop (30 frames per second) with an almost-cooperative threading model.
 This means that threads are seldom interrupted, mostly relying on explicit yielding to other threads.
@@ -371,7 +371,7 @@ We begin by looking at existing work on analysing Scratch projects, followed by 
 \makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.}
 \Textcite{aivaloglouHowKidsCode2016} analysed \num{250000} Scratch 2.0 projects that they scraped from the public Scratch site.
 They looked at the types of blocks used, the size of the projects, and the complexity.
-For the complexity, they utilise the cyclomatic complexity metric~\autocite{mccabeComplexityMeasure1976}.
+For the complexity, they utilize the cyclomatic complexity metric~\autocite{mccabeComplexityMeasure1976}.
 The considered decision points are the \texttt{if} and \texttt{if-else} blocks.
 
 They found that most Scratch projects are small: \qty{75}{\percent} have less than 5 sprites, 12 scripts, and 76 blocks.
@@ -409,10 +409,10 @@ Wherever possible, we have used the same definitions and metrics as used by \tex
 
 \subsection{Use of blocks}\label{subsec:use-of-blocks}
 
-Scratch blocks can be categorised into seven types, based on their shape (\cref{sec:elements-of-a-scratch-program}).
+Scratch blocks can be categorized into seven types, based on their shape (\cref{sec:elements-of-a-scratch-program}).
 \Cref{fig:block-shapes} shows their usage.
 Blocks can also be put into categories (\cref{subsec:using-the-environment-and-the-blocks}).
-The number of projects that use a block from a certain category are shown in \cref{fig:block-categories}.
+The number of projects that use a block from a certain category is shown in \cref{fig:block-categories}.
 Note that these numbers do not fully compare with \textcite{aivaloglouHowKidsCode2016}: since then, some new Scratch extensions were added, and the pen-related blocks have moved to an extension.
 
 \begin{figure}
