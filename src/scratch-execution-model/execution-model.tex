@@ -57,14 +57,14 @@ Finally, we illustrate that the changed execution model is suitable for use in a
             }
         \end{scratch}
     \end{subfigure}
-    \caption{Two Scratch programs that seeminlgy produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the progam.}
+    \caption{Two Scratch programs that seemingly produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the progam.}
     \label{lst:scratch-two-programs}
 \end{listing}
 
 A Scratch program consists of zero or more sprites and a stage (see also \cref{ch:scratch-the-programming-environment}).
 Together, the sprites and stages are called targets (since they are drawn on the screen).
 All sprites have their own local state: the variables and visual properties of the sprite (e.g.\ position, size, bounding box, colour, direction).
-Clones are also targets: they are drawn, but share their code with their original sprite (but they do have own some state, like the visual properties).
+Clones are also targets: they are drawn, but share their code with their original sprite (but they do have some state, like the visual properties).
 In the virtual machine, there is no substantial difference between how targets (sprites, stage, clones) are handled, so we can just consider targets for the remainder of this chapter.
 
 Code-wise, the Scratch blocks are organized into categories (see \cref{subsec:using-the-environment-and-the-blocks}).
@@ -78,13 +78,13 @@ In total, there are seven types of blocks:
     \item Stack blocks \scratchinline{\blockmove{\hspace{1em}\dots\hspace*{0.5cm}}}, representing program statements.
         These are the most common blocks.
         They are called stack blocks since they are stacked on top of each other.
-        Stack blocks broadly fulfill the role of statements in Scratch.
+        Stack blocks broadly fulfil the role of statements in Scratch.
     \item C blocks \scratchinline{\blockif{\hspace{1em}\dots\hspace*{1em}}{\blockspace[0.2]}}, which are named after their shape.
         They are used for most of the control flow blocks: loops and branches.
         The variant for the if/else block is sometimes named an E block, since it has two slots.
     \item Reporter blocks \setscratch{baseline=c,scale=0.5}\ovalmove{\hspace{1em}\dots\hspace*{1em}}, act as variables or values and can be slotted into other blocks.
         Operators that result in a value also have this shape.
-        The reporter blocks fulfill the role of expressions.
+        The reporter blocks fulfil the role of expressions.
     \item Boolean blocks \setscratch{baseline=c,scale=0.5}\boolsensing{\hspace{1em}\dots\hspace*{1em}}, which are analogous to reporter blocks, but result in a boolean.
     \item Cap blocks \scratchinline{\blockstop{\hspace{1em}\dots\hspace*{1em}}}, which end a script: no blocks can be added afterwards.
         Note that the infinite loop block, for example, is both a C block and a cap block.
@@ -104,7 +104,7 @@ These publications all provide descriptions for parts of the execution model.
 First, \textcite{stahlbauerTestingScratchPrograms2019} propose a formalization of three aspects in Scratch: the user perspective, a syntactic model and a semantic model.
 They describe the semantics of Scratch with a memory model based on message passing.
 Next, \textcite{stahlbauerVerifiedScratchProgram2020} develop LeILa, an intermediate language to which Scratch projects can be translated, with an intended use of performing analysis on Scratch projects.
-The authors also provide formalizations of LeILa, but use approximations in some areas.
+The authors also provide a formalization of LeILa, but use approximations in some areas.
 Also, \textcite{gotzModelbasedTestingScratch2022} model the state-based behaviour of Scratch programs using a finite state machine.
 Finally, \textcite{deinerAutomatedTestGeneration2023} delve deeper into the actual execution of the virtual machine, while also proposing some modifications to it, for example, to make execution deterministic.
 
@@ -159,7 +159,7 @@ A thread can have one of three conceptual states: \emph{done}, \emph{running}, a
     \label{fig:scratch-model-explained}
 \end{figure}
 
-\marginnote{Scratch 3 should actually run at 60 FPS; however Scratch enables a compatability mode by default, resulting in 30 FPS.}
+\marginnote{Scratch 3 should actually run at 60 FPS; however Scratch enables a compatibility mode by default, resulting in 30 FPS.}
 The virtual machine uses a \emph{fixed-time step with synchronization} main loop~\autocite{nystromGameProgrammingPatterns2014}, also called a \emph{synchronized coupled model}~\autocite{valenteRealTimeGame2005}.
 This means that the virtual machine runs in \term{steps}: internally, the \texttt{step} function is called every \qty{33}{\milli\second} (so 30 times a second, commonly known as 30 frames per second).
 

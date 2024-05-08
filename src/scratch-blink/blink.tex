@@ -41,35 +41,10 @@ However, the inherent flexibility of programming -- where different codes can pr
 A tool that makes it easier for students to identify errors is therefore essential, encouraging independent learning and reducing the teacher's workload.
 
 In response to this need, we present Blink, a debugger tailored for Scratch.
-Blink provides features that allow precise tracking of the execution of a Scratch program, making it easier to identify the cause of unwanted behavior.
+Blink provides features that allow precise tracking of the execution of a Scratch program, making it easier to identify the cause of unwanted behaviour.
 By integrating these features into the Scratch programming language, the Blink debugger has the potential to help millions of children learn to code.
 
 \section{Software description}\label{sec:blink-software-description}
-
-%\subsection{Context}\label{subsec:blink-context}
-%The Blink debugger is built on top of the Scratch programming language.
-%Before diving into the details of Blink, we first provide a short overview of Scratch.
-%Scratch is a block-based programming language, meaning code is represented by blocks with different shapes.
-%Blocks can be dragged from the toolbox on the left side of the integrated development environment (IDE, \cref{fig:scratch}) to the workspace in the middle and can be stacked together to form scripts.
-%Each executable script has a hat block that defines when the script should start executing.
-%Scripts can be started as a result of a user action or when a certain criterium is met during the execution of a program, for example, when a clone is started or a message is broadcast.
-%Each script is connected to a sprite.
-%Sprites are objects that are drawn on the screen.
-%The bottom right corner of the IDE contains an editor for sprites and the background, which is a special sprite called Stage that is present in every Scratch project.
-%All scripts corresponding to the selected sprite are shown in the workspace (middle).
-%The canvas in the top right corner of the IDE shows the execution of the project.
-%
-%\begin{figure}
-%    \centering
-%    \begin{wide}
-%        \includegraphics[width=\linewidth]{scratch-normal-ide}
-%    \end{wide}
-%    \caption{The Scratch IDE running an example project.
-%    The toolbox with the available blocks is underlined in red, the workspace is underlined in green, the editors for the sprites and the stage are underlined in blue, and the canvas is underlined in yellow.}
-%    \label{fig:scratch}
-%\end{figure}
-
-%\subsection{Blink}\label{subsec:blink}
 
 The Blink debugger is built on top of the Scratch programming language (see \cref{sec:scratch-environment}).
 Blink adds extra functionality to the Scratch environment (\cref{fig:blink-ide}).
@@ -102,7 +77,7 @@ After each step, the execution will pause again.
 This way, the programmer can execute the program at their own pace, providing greater understanding of the impact of each block on the program state and making it easier to identify where errors may occur.
 To return to the normal execution of the program, the resume button can be used (the same button as the pause button: which changes shape based on the execution state).
 
-To be able to closely follow how a Scratch program is executed, Blink highlights blocks in the workspace with a dark gray hue.
+To be able to closely follow how a Scratch program is executed, Blink highlights blocks in the workspace with a dark grey hue.
 During the execution of the program, these are the next blocks that will be executed in each active script.
 These blocks are also highlighted when replaying a recording of the program.
 
@@ -115,10 +90,10 @@ This includes the entire visual state of all sprites and their clones.
 While back-in-time debugging is a quite complex debugger feature, our experimental study in \cref{subsec:blink-experimental-study} shows that providing a simple video-player-like interface is very intuitive for children.
 
 \subsection{Programmed breakpoints}\label{subsec:programmed-breakpoints}
-Blink adds custom blocks to Scratch to manually program breakpoints: \scratchinline{\blockdebug{pause}}, \scratchinline{\blockdebug{pause if \emptybooldebug}}, \scratchinline{\blockdebug{wait unitl \emptybooldebug{} and pause}}, and \setscratch{scale=0.5}\booldebug{debugger is enabled?}.
+Blink adds custom blocks to Scratch to manually program breakpoints: \scratchinline{\blockdebug{pause}}, \scratchinline{\blockdebug{pause if \emptybooldebug}}, \scratchinline{\blockdebug{wait until \emptybooldebug{} and pause}}, and \setscratch{scale=0.5}\booldebug{debugger is enabled?}.
 When in debug mode, the execution of the \scratchinline{\blockdebug{pause}} block suspends the Scratch program.
 In contrast, the \scratchinline{\blockdebug{pause if \emptybooldebug}} block represents a conditional breakpoint that only pauses the execution if its corresponding condition evaluates to true.
-The \scratchinline{\blockdebug{wait unitl \emptybooldebug{} and pause}} block waits until a condition holds and then suspends the execution.
+The \scratchinline{\blockdebug{wait until \emptybooldebug{} and pause}} block waits until a condition holds and then suspends the execution.
 Finally, the \setscratch{scale=0.5}\booldebug{debugger is enabled?} block is a boolean block that can be used to check whether the debugger is currently active or not.
 
 \section{Software architecture}\label{sec:blink-software-architecture}
@@ -243,7 +218,7 @@ If it does, program execution is paused by using the \scratchinline{\blockdebug{
 
 \subsection{Related work}\label{subsec:related-work}
 While most textual programming languages have debuggers, the emphasis in this chapter is on block-based languages.
-In this domain, the most noteable debuggers are the Microsoft MakeCode Arcade~\autocite{ballMicrosoftMakeCodeEmbedded2019a} debugger and the Blockly debugger~\autocite{savidisCompleteBlockLevelVisual2020a}.
+In this domain, the most notable debuggers are the Microsoft MakeCode Arcade~\autocite{ballMicrosoftMakeCodeEmbedded2019a} debugger and the Blockly debugger~\autocite{savidisCompleteBlockLevelVisual2020a}.
 Both of these debuggers offer basic debugging facilities, such as breakpoints, step functionality, and variable watches.
 Unfortunately, these debuggers are not applicable to the Scratch environment, because both MakeCode Arcade and Blockly assume a sequential execution model, while the Scratch programming language is inherently parallel.
 The Snap!\ block-based programming language~\autocite{garciaSnapBuildYour2012a} does support concurrency, but its debugger lacks back-in-time debugging functionality.
@@ -265,7 +240,7 @@ The test group consisted of 16 children aged 8 to 11, which is at the lower end 
 
 Our experiment started with a short introduction explaining the different features of Blink and how they can be used.
 Subsequently, we provided the children with two projects as discussed in \cref{sec:blink-illustrative-examples}.
-Both projects contained an error leading to unwanted behavior during the execution of the program.
+Both projects contained an error leading to unwanted behaviour during the execution of the program.
 During each exercise, we encouraged the children to make use of the features of the debugger to correct the implementation.
 
 Our study aimed to determine the ease of use and usefulness of Blink.
@@ -285,12 +260,7 @@ The results of this questionnaire are shown in \cref{fig:blink-results}.
 \end{figure}
 
 The findings indicate unanimous agreement among participants that revisiting previous states is a straightforward and advantageous approach for identifying errors in Scratch code.
-%However, there was a misconception that we saw coming back a number of times.
-%When rewatching the execution of a program, changing the code will not affect the saved snapshots, although some children thought this was the case.
-%To do this, the program must be executed again, such that the old snapshots are replaced by new ones.
-%Once we explained this to them, no further problems arose.
 The custom breakpoints were less intuitive for most children and received a lower score on ease of use.
-%This could clearly be seen when the children were testing the debugger on the provided exercises.
 While breakpoints were conceptually clear to most children, when they were asked to implement a custom breakpoint to pause the execution, many of them struggled.
 Finally, if we look at the score distributions for the debugger in general, we can see that they embody the combination of the distributions for the usage of the breakpoints and the ability to go back in time.
 

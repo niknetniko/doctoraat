@@ -6,7 +6,7 @@
 
 Learning to program is hard, and students consequently regard programming courses as difficult~\autocite{robinsLearningTeachingProgramming2003,simoesNatureProgrammingExercises2020}.
 It is generally accepted that gaining a deep understanding of programming requires experience and feedback~\autocite{gomesEnvironmentImproveProgramming2007}.
-This feedback is what makes teaching programming difficult: it is a very time-consuming task to provide good feedback on code, especially if the number of students in a course is high~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
+This feedback is what makes teaching programming difficult: it is a time-consuming task to provide good feedback on code, especially if the number of students in a course is high~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
 
 \section{Origins and use of automated assessment in computer science education}\label{sec:automated-assessment-in-computer-science-education}
 
@@ -15,7 +15,7 @@ A good overview on the history of computer science education is given in \textci
 Of particular interest to this thesis is the education of programming, which began appearing curricula in the early 1960s~\autocite{simonEmergenceComputingEducation2015}.
 This is a bit after when that computer science became recognized as its own scientific discipline in the 1950s and 1960s~\autocite{hopcroftComputerScienceEmergence1987,atchisonComputerScienceNew1971,gornComputerInformationSciences1963,knuthComputerScienceIts1974,denningScienceComputerScience2013}.
 
-From the very start of programming education, the need for automated assessment was noted.
+From the start of programming education, the need for automated assessment was noted.
 Generally considered to be the first publication on automated assessment, \textcite{hollingsworthAutomaticGradersProgramming1960} details their testing framework and remarks that they could not accommodate the number of students in their programming classes without their ``automatic grader''.
 Since then, there has been a long history of using automated assessment~\autocite{ala-mutkaSurveyAutomatedAssessment2005,douceAutomaticTestbasedAssessment2005,ihantolaReviewRecentSystems2010,paivaAutomatedAssessmentComputer2022,combefisAutomatedCodeAssessment2022,nayakAutomatedAssessmentTools2022,messerAutomatedGradingFeedback2024}.
 
@@ -26,8 +26,8 @@ Since both automated assessment frameworks and judges do, in essence, the same t
 
 \section{The Dodona platform}\label{sec:dodona}
 
-As in most programming courses, the ones taught by our departement also used automated assessment.
-\marginnote{As a student, I was one of the last years to uses SPOJ, altough that statement does make me feel old.}
+As in most programming courses, the ones taught by our department also used automated assessment.
+\marginnote{As a student, I was one of the last years to uses SPOJ, even if that statement does make me feel old.}
 This was done using the Sphere Online Judge (or SPOJ)~\autocite{kosowskiApplicationOnlineJudge2007}, which was relatively unique in the fact that it allowed teachers to create their own courses, exercises, and even testing frameworks.
 
 In 2016, the needs for these courses outgrew the Sphere Online Judge, which led to the creation of our own platform: Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
@@ -39,7 +39,7 @@ It has a strict separation between the platform (responsible for managing course
 This separation has allowed for easily supporting a multitude of programming languages.
 
 Within Dodona, the testing framework is called a judge (and evaluating a submission for correctness is called judging).
-At a very high level, an evaluation of a submission goes through the following process in Dodona: first, a Docker image containing the judge is started, the submission and other needed information (like the test suite) is provided to the Docker image via standard input, and Dodona expects the feedback for the students to appear on standard output.
+At a high level, an evaluation of a submission goes through the following process in Dodona: first, a Docker image containing the judge is started, the submission and other needed information (like the test suite) is provided to the Docker image via standard input, and Dodona expects the feedback for the students to appear on standard output.
 
 While the earlier Dodona judges were for Python and JavaScript, its interface for judge proved to be generic enough that it can support a multitude of scenarios.
 For example, there are currently judges for C, Haskell, Java, Prolog, R, Scheme, Bash, C\#, JavaScript, and Python (and also TESTed of course).
@@ -66,7 +66,7 @@ Educators can create a programming exercise with a single test suite, which can 
 
 The research on TESTed began in 2019 with a master's thesis~\autocite{strijbolTESTedOneJudge2020}.
 As with every new research, we began by experimenting with various techniques.
-For example, very early versions of TESTed used Jupyter Kernels\footnote{\url{https://docs.jupyter.org/en/latest/projects/kernels.html}} as a mechanism to provide support for multiple programming languages.
+For example, early versions of TESTed used Jupyter Kernels\footnote{\url{https://docs.jupyter.org/en/latest/projects/kernels.html}} as a mechanism to provide support for multiple programming languages.
 However, due to speed concerns, this was quickly dropped in favour of executing custom code.
 
 \Cref{ch:tested1} explains TESTed in more detail.
@@ -93,7 +93,7 @@ Since Dodona is independent of the testing framework, we began by adding a testi
 We created a new framework since there has been relatively little existing work in this area.
 
 However, Scratch is not only a programming language, but a complete programming environment.
-We realised that Scratch required accommodations that were too different from what Dodona can provide.
+We realized that Scratch required accommodations that were too different from what Dodona can provide.
 Additionally, while our group had experience with programming exercises for text-based languages, we had much less experience with Scratch in an educational context.
 
 To address these issues, we sought a partner in the industry: CodeCosmos, an educational publisher.
@@ -106,7 +106,7 @@ The result of this was Poke, a prototype of a testing framework for Scratch with
 
 \subsection{Debugging Scratch code}\label{subsec:debugging-scratch-code}
 
-While the goal of software testing itself is to find errors in a submission, we believe the ultimate goal is to help students write more correct programs.
+While the goal of software testing itself is to find errors in a submission, we believe the ultimate goal is to help students write correct programs.
 So, the next step after a failed test is debugging the submission.
 This is a two-step process~\autocite{myersArtSoftwareTesting2012}.
 Step one is to determine the exact nature and location of the error.
