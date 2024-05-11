@@ -13,7 +13,7 @@ Blocks that are attached together form scripts, and each sprite can have multipl
 
 The Scratch execution model combines a fixed-step time loop (30 frames per second) with an almost-cooperative threading model.
 This means that threads are seldom interrupted, mostly relying on explicit yielding to other threads.
-While this approach broadly minimizes race conditions, some concurrency issues persist~\autocite{maloneyScratchProgrammingLanguage2010a}.
+While this approach broadly minimizes race conditions, some concurrency issues persist~\autocite{maloneyScratchProgrammingLanguage2010}.
 For instance, the order in which sprites respond to broadcasts can be unpredictable.
 Consequently, even without explicit concurrency controls, Scratch is a useful tool for teaching concurrency concepts~\autocite{fatourouTeachingConcurrentProgramming2018}.
 
@@ -96,7 +96,7 @@ In total, there are seven types of blocks:
 The Scratch execution model is defined by its implementation in the virtual machine.
 There exists, at least to the knowledge of the authors, no comprehensive formal description of the execution model.
 This does not mean there is no prior work.
-From the Scratch team, \textcite{maloneyScratchProgrammingLanguage2010a} provide a high-level description of the threading model.
+From the Scratch team, \textcite{maloneyScratchProgrammingLanguage2010} provide a high-level description of the threading model.
 
 Another body of works that provide insights into the Scratch execution model are those from the \emph{Chair of Software Engineering II} group, led by Prof.\ Dr.\ Gordon Fraser.
 These publications all provide descriptions for parts of the execution model.
@@ -109,7 +109,7 @@ Also, \textcite{gotzModelbasedTestingScratch2022} model the state-based behaviou
 Finally, \textcite{deinerAutomatedTestGeneration2023} delve deeper into the actual execution of the virtual machine, while also proposing some modifications to it, for example, to make execution deterministic.
 
 Other block-based languages also have to deal with concurrency.
-For example, MakeCode also uses a non-preemptive threading model, inspired by the Scratch~\autocite{ballMicrosoftMakeCodeEmbedded2019a}.
+For example, MakeCode also uses a non-preemptive threading model, inspired by the Scratch~\autocite{ballMicrosoftMakeCodeEmbedded2019}.
 There has also been some work on concurrency and concurrency controls in other block-based languages~\autocite{chungConCodeItComparisonConcurrency2020}.
 However, since most of these languages do not use the Scratch virtual machine for execution, their applicability is limited.
 
@@ -124,10 +124,10 @@ These are green threads: implemented fully in the virtual machine.
 
 The virtual machine is thus responsible for scheduling these threads.
 A schematic overview of the interaction between the different parts is \cref{fig:blink-architecture}.
-It uses an almost-cooperative threading model, which \textcite{maloneyScratchProgrammingLanguage2010a} call the ``Scratch threading model''.
+It uses an almost-cooperative threading model, which \textcite{maloneyScratchProgrammingLanguage2010} call the ``Scratch threading model''.
 This means it is mostly non-preemptive: the virtual machine will not interrupt threads at arbitrary points in their execution.
 The threads must voluntarily yield control, or reach a limited set of points in their execution.
-The rational is given in~\cite{maloneyScratchProgrammingLanguage2010a}: ``Scratch builds concurrency control into its threading model in a way that avoids most race conditions, so that users do not need to think about these issues.
+The rational is given in~\cite{maloneyScratchProgrammingLanguage2010}: ``Scratch builds concurrency control into its threading model in a way that avoids most race conditions, so that users do not need to think about these issues.
 This is done by constraining where thread switches can occur.''.
 
 At four well-defined points, a thread always yields, thus causing said thread switching:
@@ -284,7 +284,7 @@ This section illustrates a few limitations of the current execution model, first
     \label{fig:star-exercise-model}
 \end{figure}
 
-As \textcite{maloneyScratchProgrammingLanguage2010a} mentioned, the Scratch threading model does not solve all issues with concurrency.
+As \textcite{maloneyScratchProgrammingLanguage2010} mentioned, the Scratch threading model does not solve all issues with concurrency.
 To illustrate this point, we will consider a variant on the \emph{Star} exercise from \cref{subsec:star-exercise}.
 In this exercise, the goal is to let a sprite move around on a path without falling into the water (read touching a blue colour.)
 \Cref{lst:star-model-implementation} shows an implementation for this exercise with an additional script that will stop execution if the sprite touches something blue.

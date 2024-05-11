@@ -151,11 +151,57 @@
     style=authoryear-comp,
     maxbibnames=20,
     maxcitenames=2,
-    sortcites=true
+    sortcites=true,
+    giveninits=true,
+    uniquename=init
 ]{biblatex}
+% TODO: why is babelo without authors?
 \addbibresource{main.bib}
 % Smaller font for bibliography
 \renewcommand*{\bibfont}{\normalfont\small}
+\AtEveryBibitem{\clearfield{day}}
+
+% From version 3.20, which we do not have yet (thanks texlive)
+\DeclareSortingTemplate{dnt}{
+    \sort{
+        \field{presort}
+    }
+    \sort[final]{
+        \field{sortkey}
+    }
+    \sort{
+        \field{sortyear}
+        \field{year}
+        \literal{9999}
+    }
+    \sort{
+        \field{month}
+    }
+    \sort{
+        \field{day}
+    }
+    \sort{
+        \field{hour}
+    }
+    \sort{
+        \field{minute}
+    }
+    \sort{
+        \field{second}
+    }
+    \sort{
+        \field{sortname}
+        \field{author}
+        \field{editor}
+        \field{translator}
+        \field{sorttitle}
+        \field{title}
+    }
+    \sort{
+        \field{sorttitle}
+        \field{title}
+    }
+}
 
 \usepackage{microtype}
 
@@ -279,6 +325,24 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \subfile{summary-en}
 
 \tableofcontents
+
+\addchap{List of publications}
+
+A comprehensive list of published work for which I am an author:
+
+%! suppress = NonBreakingSpace
+\begin{refcontext}[sorting=dnt]
+    %! suppress = NonMatchingIf
+    \renewcommand*{\mkbibcompletename}[1]{\ifitemannotation{me}{\textbf{#1}}{#1}}
+    \nocite{strijbolBlinkEducationalSoftware2023,strijbolBlinkEducationalSoftware2024,strijbolTESTedDSLDomainspecificLanguage2024,strijbolTESTedEducationalTesting2023,vanpetegemDodonaLearnCode2023,vanpetegemPassFailPrediction2023,maertensDiscoveringExploringCases2024,maertensDolosLanguageagnosticPlagiarism2022}
+    \renewcommand*{\bibfont}{\normalfont\normalsize}
+    \setlength{\bibitemsep}{\itemsep}
+    % This is very ugly and will probably break.
+    % https://tex.stackexchange.com/questions/360781/change-giveninits-option-within-document-biblatex
+    \togglefalse{abx@bool@giveninits}
+    \DeclareNameAlias{author}{given-family}
+    \printbibliography[keyword={mine},heading=none]
+\end{refcontext}
 
 \mainmatter
 

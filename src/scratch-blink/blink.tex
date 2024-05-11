@@ -22,15 +22,15 @@ Feedback from these young users indicates that Blink helps them pinpoint program
 \section{Motivation and significance}\label{sec:blink-motivation}
 
 As society becomes increasingly digital, the demand for computer science education is also growing.
-Current projections suggest that up to \qty{90}{\percent} of the workforce will need some level of digital skills to fulfil their professional responsibilities~\autocite{bejakovicImportanceDigitalLiteracy2020a}.
-A notable trend in European computer science education is the increasing integration of coding in the curriculum of both primary and secondary schools~\autocite{balanskatComputingOurFuture2015a}.
+Current projections suggest that up to \qty{90}{\percent} of the workforce will need some level of digital skills to fulfil their professional responsibilities~\autocite{bejakovicImportanceDigitalLiteracy2020}.
+A notable trend in European computer science education is the increasing integration of coding in the curriculum of both primary and secondary schools~\autocite{balanskatComputingOurFuture2015}.
 Countries such as Estonia, France, Spain, Slovakia, and the United Kingdom are leading the way in this integration.
 
 With the increasing emphasis on computer science education, the need for effective tools to facilitate coding education has also grown.
 The Lifelong Kindergarten group at MIT has played a crucial role in this area by developing Scratch~\autocite{resnickScratchProgrammingAll2009}, a widely used programming language designed to teach programming to children aged 8 to 16 (see \cref{sec:scratch-environment}).
 Many computer science curricula have adopted Scratch to teach children the basics of computer science, as it is a useful tool for teaching computational thinking concepts~\autocite{zhangSystematicReviewLearning2019}.
 
-As students navigate the programming landscape, they will inevitably encounter bugs that cause unexpected behaviour during code execution~\autocite{zellerWhyProgramsFail2009a}, and Scratch is no exception.
+As students navigate the programming landscape, they will inevitably encounter bugs that cause unexpected behaviour during code execution~\autocite{zellerWhyProgramsFail2009}, and Scratch is no exception.
 The difficulty in detecting the root cause of a failure is that when a bug is activated, the system will arrive in an erroneous state, but might still behave as expected.
 It is only later when this erroneous state is propagated throughout the system that the system will reach a state that is observably wrong, leading to a failure~\autocite{ammannIntroductionSoftwareTesting2016}.
 Additionally, Scratch uses a ``failsoft'' mode: errors are often swallowed, and execution continues without notifying the user~\autocite{hromkovic2021problem}.
@@ -83,7 +83,7 @@ These blocks are also highlighted when replaying a recording of the program.
 
 \subsection{Back-in-time debugging}\label{subsec:back-in-time-debugging}
 Finally, Blink allows replaying the last execution (i.e.\ the recording) of a Scratch program, inspired by back-in-time debuggers.
-These debuggers allow the programmer to go back in the execution, often by recording program execution~\autocite{barrTardisAffordableTimetravel2014a,barrTimetravelDebuggingJavaScript2016a,czaplickiAsynchronousFunctionalReactive2013a,balzerEXDAMSExtendableDebugging1969,ungarDebuggingExperienceImmediacy1997,chenReversibleDebuggingUsing2001,crescenziReversibleExecutionVisualization2000}.
+These debuggers allow the programmer to go back in the execution, often by recording program execution~\autocite{barrTardisAffordableTimetravel2014,barrTimetravelDebuggingJavaScript2016,czaplickiAsynchronousFunctionalReactive2013,balzerEXDAMSExtendableDebugging1969,ungarDebuggingExperienceImmediacy1997,chenReversibleDebuggingUsing2001,crescenziReversibleExecutionVisualization2000}.
 When the debugger is active, a recording is automatically made, as can be seen on the slider below the canvas.
 Selecting a point on the slider or pressing the back button will pause execution, and the selected point in the recording will be restored.
 This includes the entire visual state of all sprites and their clones.
@@ -218,11 +218,11 @@ If it does, program execution is paused by using the \scratchinline{\blockdebug{
 
 \subsection{Related work}\label{subsec:related-work}
 While most textual programming languages have debuggers, the emphasis in this chapter is on block-based languages.
-In this domain, the most notable debuggers are the Microsoft MakeCode Arcade~\autocite{ballMicrosoftMakeCodeEmbedded2019a} debugger and the Blockly debugger~\autocite{savidisCompleteBlockLevelVisual2020a}.
+In this domain, the most notable debuggers are the Microsoft MakeCode Arcade~\autocite{ballMicrosoftMakeCodeEmbedded2019} debugger and the Blockly debugger~\autocite{savidisCompleteBlockLevelVisual2020}.
 Both of these debuggers offer basic debugging facilities, such as breakpoints, step functionality, and variable watches.
 Unfortunately, these debuggers are not applicable to the Scratch environment, because both MakeCode Arcade and Blockly assume a sequential execution model, while the Scratch programming language is inherently parallel.
-The Snap!\ block-based programming language~\autocite{garciaSnapBuildYour2012a} does support concurrency, but its debugger lacks back-in-time debugging functionality.
-Next to block-based programming languages, we have taken inspiration from back-in-time debuggers~\autocite{barrTardisAffordableTimetravel2014a,barrTimetravelDebuggingJavaScript2016a}.
+The Snap!\ block-based programming language~\autocite{garciaSnapBuildYour2012} does support concurrency, but its debugger lacks back-in-time debugging functionality.
+Next to block-based programming languages, we have taken inspiration from back-in-time debuggers~\autocite{barrTardisAffordableTimetravel2014,barrTimetravelDebuggingJavaScript2016}.
 
 For Scratch, we are aware of three existing debuggers.
 The first provides pause/resume/step functionality and breakpoints~\autocite{wangDevelopingResourcesDebugging2021}.
@@ -235,7 +235,7 @@ The need for tools to help find bugs in Scratch projects is also illustrated by 
 These include multiple linter-style tools like Hairball~\autocite{boeHairballLintinspiredStatic2013}, Dr.\ Scratch~\autocite{moreno-leonDrScratchWeb2015}, QualityHound~\autocite{techapalokulQualityHoundOnline2017} and LitterBox~\autocite{fraserLitterBoxLinterScratch2021}, or test frameworks such as Whisker~\autocite{stahlbauerTestingScratchPrograms2019} and \textsc{itch}~\autocite{johnsonITCHIndividualTesting2016}.
 
 \subsection{Experimental study}\label{subsec:blink-experimental-study}
-To validate the usefulness of the debugger in helping children understand their code better, we conducted a quasi-experimental study~\autocite{shadishExperimentalQuasiexperimentalDesigns2002a}.
+To validate the usefulness of the debugger in helping children understand their code better, we conducted a quasi-experimental study~\autocite{shadishExperimentalQuasiexperimentalDesigns2002}.
 The test group consisted of 16 children aged 8 to 11, which is at the lower end of Scratch's target audience.
 
 Our experiment started with a short introduction explaining the different features of Blink and how they can be used.

@@ -67,7 +67,7 @@ Note that the stage cannot be removed.
 
 \subsection{Data types}\label{subsec:scratch-data-types}
 
-Scratch has support for three basic data types: strings, booleans, and numbers~\autocite{maloneyScratchProgrammingLanguage2010a}.
+Scratch has support for three basic data types: strings, booleans, and numbers~\autocite{maloneyScratchProgrammingLanguage2010}.
 A different block shape is used for booleans (a mix between rectangle and diamond) and strings/numbers (round oval).
 Variables and reporter blocks (which are special blocks that result in some value) can only be inserted boolean slots if the shapes match.
 The string/number slots are less strict: if necessary, Scratch will coerce the data into the right type.
@@ -78,10 +78,10 @@ Lists can only contain strings or numbers; booleans are cast to strings.
 
 \subsection{Sprites, the object model}\label{subsec:sprites-the-object-model}
 
-Sprites are the Scratch equivalent to objects~\autocite{maloneyScratchProgrammingLanguage2010a}.
+Sprites are the Scratch equivalent to objects~\autocite{maloneyScratchProgrammingLanguage2010}.
 As all scripts belong to a particular sprite, almost all blocks only work for the current sprite.
 Apparently, an earlier version of Scratch had cross-sprite commands, but users found it confusing.
-Since Scratch lacks classes and inheritance, \citeauthor{maloneyScratchProgrammingLanguage2010a} call it an ``object-based language''.
+Since Scratch lacks classes and inheritance, \citeauthor{maloneyScratchProgrammingLanguage2010} call it an ``object-based language''.
 
 The strict separation of code between sprites means there is a lot of work needed to make a set of sprites behave the same way.
 For example, a firework might need hundreds of sprites to represent the particles.
@@ -98,7 +98,7 @@ There is an exception: the variables of the stage are visible to all sprites, an
 \textcolor{screvent}{Broadcasts} are the intended way to let sprites communicate with each other.
 There are other ways, such as variables (since variables in the stage are global).
 However, broadcasts remain the intended way to do inter-sprite communication.
-It is a one-to-many broadcasting system~\autocite{maloneyScratchProgrammingLanguage2010a}: a broadcast (an arbitrary string) is sent globally, and might trigger multiple scripts (even in different sprites).
+It is a one-to-many broadcasting system~\autocite{maloneyScratchProgrammingLanguage2010}: a broadcast (an arbitrary string) is sent globally, and might trigger multiple scripts (even in different sprites).
 
 \subsection{Defining custom blocks with procedures}\label{subsec:defining-custom-blocks-with-procedures}
 
