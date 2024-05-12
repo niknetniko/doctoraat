@@ -27,7 +27,7 @@
 \usepackage{standalone}
 
 % Andere
-% \usepackage{showframe}
+%\usepackage{showframe}
 %\usepackage{bookmark}
 \usepackage{xcolor}
 \usepackage{circledsteps}
@@ -357,7 +357,7 @@ A comprehensive list of published work for which I am an author:
 \subfile{tested-dsl/dsl.tex}
 
 \part{Scratch}\label{part:scratch}
-\subfile{itch-glue.tex}
+%\subfile{itch-glue.tex}
 \subfile{scratch-introduction/scratch-introduction.tex}
 \subfile{scratch-itch/itch.tex}
 \subfile{scratch-blink/blink.tex}
@@ -365,6 +365,13 @@ A comprehensive list of published work for which I am an author:
 
 \dummypart
 \subfile{conclusion.tex}
+
+% Allow a wide bibliography
+\clearpage
+\storeareas\StandardArea
+\addtolength{\marginparwidth}{-1.5cm}
+\KOMAoptions{mpinclude=false}
+\recalctypearea
 \printbibliography[heading=bibintoc]
 
 \end{document}

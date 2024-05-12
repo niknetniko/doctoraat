@@ -164,13 +164,13 @@ The programming exercise (including a problem statement and test suite), togethe
 
 The root motivation for every part of this dissertation is the observation that there exists a gap in existing educational tools, often with Dodona as a starting point.
 We then set out to propose tools that fill this gap.
-More concretely, we can define four research questions, which this dissertation addresses:
+More concretely, we can define four main research questions, which this dissertation addresses:
 
 \begin{description}
     \item[RQ1] Can we design an educational software testing framework that supports automated assessment across programming languages based on a single test suite?
     \item[RQ2] What is the most ergonomic way to author programming exercises with support for automated assessment across programming languages?
     \item[RQ3] Can we design an educational software testing framework for the block-based programming language Scratch?
-    \item[RQ4] Can we design a (educational) debugger for the block-based programming language Scratch?
+    \item[RQ4] Can we design an (educational) debugger for the block-based programming language Scratch?
 \end{description}
 
 While we did not intend to split the textual and block-based tools initially, it quickly became clear that the needs for both, in addition to the existing research, were different enough to warrant a separate approach.
@@ -179,7 +179,11 @@ It discusses the first two research questions.
 The second part (\cref{ch:scratch-the-programming-environment,ch:itch,ch:blink,ch:scratch-execution-model}) is about Scratch-related tools (Itch, Poke, Blink, and the Scratch execution model).
 It discusses the last two research questions.
 
+Finally, \cref{ch:conclusions-and-opportunities} draws the general conclusions and discusses some future opportunities.
+Each chapter also contains a similar section where the details of that specific chapter are discussed.
+
 The remainder of this chapter gives a high-level overview of each part: the context, motivation, and where applicable, our previous publications.
+Similar to the conclusions, each chapter also has its own introduction, where the specifics for that chapter are introduced.
 
 \section{The first part: TESTed}\label{sec:intro-tested}
 
@@ -202,15 +206,9 @@ Specifically, we created TESTed, an educational software testing framework.
 One of its defining features is the ability to create programming-language-agnostic exercises.
 This means that the same exercise (with one test suite) can be solved in multiple programming languages, with support for automated assessment.
 
-TESTed is discussed in \cref{ch:tested1}, which is based on~\autocite{strijbolTESTedEducationalTesting2023}.
+TESTed is discussed in \cref{ch:tested1}, which is based on \textcite{strijbolTESTedEducationalTesting2023}.
 \marginnote{A doctoral dissertation has no page limit, after all.}
 Compared to the original publication, the chapter has been expanded with more information about the inner workings of TESTed, in addition to going more in-depth on technical aspects of the framework.
-
-%The research on TESTed began in 2019 with a master's thesis~\autocite{strijbolTESTedOneJudge2020}.
-%As with every new research, we began by experimenting with various techniques.
-%For example, early versions of TESTed used Jupyter Kernels\footnote{\url{https://docs.jupyter.org/en/latest/projects/kernels.html}} as a mechanism to provide support for multiple programming languages.
-%However, due to speed concerns, this was quickly dropped in favour of executing custom code.
-%
 
 \subsection{Ergonomic authoring of exercises}\label{subsec:ergonomic-testing}
 
@@ -220,16 +218,15 @@ This analysis aimed to ensure the exercises could be used in educational practic
 We want TESTed to be suitable for both educators in higher education and secondary education.
 Our ambition was to make TESTed the default option for creating programming exercises in Dodona.
 
-The result of this research is presented in the second publication~\autocite{strijbolTESTedDSLDomainspecificLanguage2024}, which is included almost verbatim as \cref{ch:tested-dsl}.
+The result of this research is presented in the second publication, \textcite{strijbolTESTedDSLDomainspecificLanguage2024}, which is included almost verbatim as \cref{ch:tested-dsl}.
 By looking at (educational) software testing more broadly, we find two missing parts of the process of creating programming exercises.
 The first missing, but important, part is an ergonomic and approachable way of creating test suites for exercises.
 Our solution is TESTed-DSL, a domain-specific language for authoring programming-language-agnostic exercises with support for automated assessment.
 The second missing part is support for language-agnostic task descriptions.
 We show that TESTed-DSL can also be used for task descriptions.
 
-We came to the conclusion that TESTed was not only useful for creating programming-language-independent exercises, as special care has been taken to design TESTed-DSL to be useful for a wide audience of educators, including higher and secondary education.
-We therefore recommend TESTed even for exercises that are not intended to be used in multiple programming languages.
-
+A new insight while working on TESTed-DSL was that TESTed is not only useful for creating programming-language-independent exercises, but also suitable for exercises that are not intended to be used in multiple programming languages.
+Therefore, we have taken special care to design TESTed-DSL to be useful for a wide audience of educators, including higher and secondary education.
 For this reason, we also invested in our documentation, which contains reference documentation and a set of tutorials for commonly used exercise types.
 
 \subsection{Organization of the first part}\label{subsec:organization-of-the-first-part}
@@ -259,42 +256,89 @@ Two sets of documentation are available, aimed at a different target audience:
 
 \section{The second part: Scratch}\label{sec:the-second-part:-scratch}
 
+For young children, learning to program for young children is often done with specialized programming languages.
+The most-used language in this context is Scratch, a visual, block-based programming language~\autocite{resnickScratchProgrammingAll2009}.
+
+Since Dodona is independent of any testing framework, we thus asked the third research question: ``Can we design an educational software testing framework for Scratch?''.
+Our intention was to add support for Scratch to Dodona.
+
 \subsection{Testing Scratch code}\label{subsec:testing-scrath-code}
 
-Learning to program for young children is often done with specialized programming languages.
-The most-used language in this context is Scratch (\cref{ch:scratch-the-programming-environment}), a visual block-based programming language~\autocite{resnickScratchProgrammingAll2009}.
-
-Since Dodona is independent of the testing framework, we began by adding a testing framework for Scratch to Dodona~\autocite{makItchEenEducatief2019}.
-We created a new framework since there has been relatively little existing work in this area.
-
+The first prototype of Itch, our testing framework for Scratch, did just that: it added support for evaluating Scratch submissions in Dodona.
 However, Scratch is not only a programming language, but a complete programming environment.
-We realized that Scratch required accommodations that were too different from what Dodona can provide.
+We realized that properly supporting Scratch required accommodations that were too different from what Dodona could (or would) provide.
 Additionally, while our group had experience with programming exercises for text-based languages, we had much less experience with Scratch in an educational context.
 
-To address these issues, we sought a partner in the industry: CodeCosmos, an educational publisher.
-While we create the testing framework, they integrate it into their platform and use it with students and pupils.
+To address these issues, we sought an industrial and commercial partner.
+We found this partner in CodeCosmos, the international brand of FTRPRF, which is an educational publisher that creates, among other things, teaching packs.
+Schools can use these to fulfil their obligations as part of the move to introduce more computational thinking in secondary education.
 
-The testing framework is described in \cref{ch:itch}.
-Working with our partner, it did become clear that the JavaScript test suites for Itch were a big hurdle for educators without a computer science background.
-As a lot of software testing frameworks are written in the same programming language as the code they test, we also investigated this possibility in Scratch~\autocite{voetenEenBlokgebaseerdTestframework2023}.
+The work was divided as follows: Ghent University was responsible for the technical aspects of the automated feedback for Scratch exercises, while CodeCosmos provided the lessons, the educational support, and last but not least, actual students to use the teaching packs.
+Readers interested in knowing more might like to read an article about this collaboration in \textit{Dare To Think}, Ghent University's online magazine\footnote{\url{https://www.durfdenken.be/en/research-and-society/coach-codi-boosting-tool-helps-children-become-independent-coders}}.
+
+The testing framework, the answer to the third research question, is described in \cref{ch:itch}.
+Itch allows both static and dynamic tests on Scratch exercises, which provides a lot of flexibility to educators.
+Especially the dynamic testing allows for exercises that allow (within limits) the exploratory nature of Scratch to remain.
+
+Itch test suites for Scratch exercises are written in JavaScript.
+While working with CodeCosmos on creating Scratch exercises, it became clear that the JavaScript test suites were a big hurdle for educators without a computer science background.
+As a lot of software testing frameworks are written in the same programming language as the code they test, we also investigated this possibility: ``Can we design an educational software testing framework for Scratch with test suites written in Scratch?''.
 The result of this was Poke, a prototype of a testing framework for Scratch with test suites written in Scratch (\cref{sec:poke:-a-testing-framework-written-in-scratch}).
+While possible, there are still open questions regarding the practical use of such a framework in an education setting.
 
 \subsection{Debugging Scratch code}\label{subsec:debugging-scratch-code}
 
-While the goal of software testing itself is to find errors in a submission, we believe the ultimate goal is to help students write correct programs.
-So, the next step after a failed test is debugging the submission.
-This is a two-step process~\autocite{myersArtSoftwareTesting2012}.
-Step one is to determine the exact nature and location of the error.
-Step two is then fixing the error.
+The goal of educational software testing and automated assessment is to provide students with feedback on their code.
+However, the feedback in itself is not enough: we want students to be able to use that feedback and be able to correct their code if something went wrong.
+The next step, after a failed test, is then to debug the submission, which is a two-step process~\autocite{myersArtSoftwareTesting2012}.
+Step one is determining the exact nature and location of the error, and step two is fixing said error.
+
 It is well known that determining the cause of an observed failure is challenging~\autocite{ammannIntroductionSoftwareTesting2016}.
 The debugging process is difficult, especially for novice programmers~\autocite{mccauleyDebuggingReviewLiterature2008}.
 This has led to the creation of various tools to help with this, chief among them the debuggers~\autocite{rosenbergHowDebuggersWork1996}.
 
-Since debuggers are also a less explored area of research in regard to Scratch, we started looking into creating a new debugger for Scratch~\autocite{deproftBlinkEenEducatieve2022,goethalsEenTimeTravelling2023}.
-Based on the work of these two master's theses, we created a debugger for Scratch, named Blink, presented in \cref{ch:blink}.
+This is also the case with text-based languages.
+For example, \cref{fig:curling-feedback-table} shows a ``Debug'' button in the feedback table of Dodona.
+However, for Scratch, this area is much less developed.
+The fourth research question thus became: ``Can we design a debugger for Scratch?''.
 
-Our work on Blink has revealed some noteworthy details of the Scratch execution model, which we believe to be suboptimal for a debugger.
-We therefore propose and investigate some changes to this model in \cref{ch:scratch-execution-model}.
-The aim is to verify if the proposed changes do not cause problems for existing Scratch projects, while still being an improvement for debuggers.
+\Cref{ch:blink} discusses our answer to this question, in the form of Blink, our time-travelling debugger for Scratch.
+A time-travelling debugger allows the programmer to go back in the execution, often by recording program execution~\autocite{barrTardisAffordableTimetravel2014,barrTimetravelDebuggingJavaScript2016,czaplickiAsynchronousFunctionalReactive2013,balzerEXDAMSExtendableDebugging1969,ungarDebuggingExperienceImmediacy1997,chenReversibleDebuggingUsing2001,crescenziReversibleExecutionVisualization2000}.
+
+This chapter is an almost verbatim copy of a publication: \textcite{strijbolBlinkEducationalSoftware2024}.
+We took special care to make the debugger intuitive for the young target audience of Scratch.
+Initial experiments in the classroom show that children do in fact find the debugger intuitive and useful, particularly stepping through the code and the time travel feature.
+
+\subsection{The Scratch execution model}\label{subsec:the-scratch-execution-model}
+
+While working on the debugger, we also began looking more deeply into the Scratch execution model.
+The Scratch execution model combines a fixed-step time loop (30 frames per second) with an almost-cooperative threading model.
+This means that threads are seldom interrupted, mostly relying on explicit yielding to other threads.
+
+This threading model was chosen because it minimizes the occurrence of race conditions, although concurrency-related issues still occur~\autocite{maloneyScratchProgrammingLanguage2010}.
+The cooperative nature of the threading model also has drawbacks: it can lead to unexpected behaviour when working with multiple sprites.
+
+Additionally, the execution model also limits how a debugger can work, without resorting to deviating from the execution model as used during normal execution.
+
+We therefore propose and investigate some changes to the Scratch execution model in \cref{ch:scratch-execution-model}.
+The chapter begins with a detailed look at how the current execution model behaves, followed by our proposed changes.
+Since Scratch is so widely used, our changes should not negatively impact existing Scratch programs.
+We therefore analyse what a typical Scratch project looks like.
+Finally, we benchmark our changes against some representative projects and report on the results.
+We conclude that our proposed changes do not cause problems for existing Scratch projects, while still being an improvement for debuggers.
+
+\subsection{Organization of the second part}\label{subsec:organization-of-the-second-part}
+
+The second part starts with a short chapter that introduces Scratch, the programming language and environment: \cref{ch:scratch-the-programming-environment}.
+Next, \cref{ch:itch} discusses Itch, our Scratch testing framework.
+The next chapter, \cref{ch:blink} discusses Blink, our debugger for Scratch.
+Finally, \cref{ch:scratch-execution-model} discusses the Scratch execution model, our proposed changes to it, an analysis of Scratch projects, and an evaluation of our proposed changes.
+
+Work on these various tools for Scratch often began as a master thesis~\autocite{makItchEenEducatief2019,voetenEenBlokgebaseerdTestframework2023,goethalsEenTimeTravelling2023,deproftBlinkEenEducatieve2022}.
+
+\subsection{Repositories and user documentation}\label{subsec:repositories-and-code-scratch}
+
+The source code for Blink\footnote{\url{https://github.com/scratch-ed/blink}} is available under the same licence as Scratch, the \textsc{bsd} 3-Clause ``New'' or ``Revised'' Licence.
+We also host an online instance of the debugger\footnote{\url{https://scratch.ugent.be/blink/}}.
 
 \end{document}

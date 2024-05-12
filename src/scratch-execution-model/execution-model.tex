@@ -13,7 +13,7 @@ Blocks that are attached together form scripts, and each sprite can have multipl
 
 The Scratch execution model combines a fixed-step time loop (30 frames per second) with an almost-cooperative threading model.
 This means that threads are seldom interrupted, mostly relying on explicit yielding to other threads.
-While this approach broadly minimizes race conditions, some concurrency issues persist~\autocite{maloneyScratchProgrammingLanguage2010}.
+While this approach minimizes the occurrence of race conditions, some concurrency issues persist~\autocite{maloneyScratchProgrammingLanguage2010}.
 For instance, the order in which sprites respond to broadcasts can be unpredictable.
 Consequently, even without explicit concurrency controls, Scratch is a useful tool for teaching concurrency concepts~\autocite{fatourouTeachingConcurrentProgramming2018}.
 
