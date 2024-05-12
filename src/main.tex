@@ -268,6 +268,9 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
     s = string.gsub(s, "%f[%w_]TIOBE%f[^%w_]", "\\textsc{tiobe}")
     s = string.gsub(s, "%f[%w_]SPOJ%f[^%w_]", "\\textsc{spoj}")
     s = string.gsub(s, "%f[%w_]SQL%f[^%w_]", "\\textsc{sql}")
+    s = string.gsub(s, "%f[%w_]ACM-ICPC%f[^%w_]", "\\textsc{acm-icpc}")
+    s = string.gsub(s, "%f[%w_]ACM%f[^%w_]", "\\textsc{acm}")
+    s = string.gsub(s, "%f[%w_]ICPC%f[^%w_]", "\\textsc{icpc}")
     return s
   end
 \end{luacode}
@@ -346,10 +349,10 @@ A comprehensive list of published work for which I am an author:
 
 \mainmatter
 
-\subfile{introduction.tex}
+\subfile{introduction/introduction.tex}
 
 \part{\tested{}}\label{part:tested}
-\subfile{tested-glue.tex}
+%\subfile{tested-glue.tex}
 \subfile{tested-engine/engine.tex}
 \subfile{tested-dsl/dsl.tex}
 
