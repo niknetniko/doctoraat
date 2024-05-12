@@ -4,7 +4,9 @@
 
 \chapter{Conclusions and opportunities}\label{ch:conclusions-and-opportunities}
 
-As an answer to the four research questions mentioned in at the start (\cref{sec:a-note-on-the-structure-of-this-thesis}), we introduced five educational tools to facilitate programming education: two for textual programming languages and three for block-based programming languages.
+As an answer to the four research questions mentioned at the start, \cref{sec:a-note-on-the-structure-of-this-thesis},
+we introduced five educational tools to facilitate programming education:
+two for textual programming languages and three for block-based programming languages.
 
 \section{For textual programming languages}\label{sec:for-textual-programming-languages}
 
@@ -26,7 +28,7 @@ Finally, we evaluated TESTed in educational practice to verify that it supports 
 
 We see opportunities for more work on TESTed in the future.
 Our goal is to further develop TESTed for authoring different types of programming exercises across programming languages.
-TESTed is currently focussed mainly on dynamic testing.
+TESTed is currently focused mainly on dynamic testing.
 A key area of future interest is the implementation of language-agnostic static code analysis capabilities.
 
 \begin{description}
@@ -34,7 +36,7 @@ A key area of future interest is the implementation of language-agnostic static 
 \end{description}
 
 We concluded that a domain-specific language, designed specifically for this purpose, is the best approach.
-We then introduced our implementation: TESTed-DSL.
+We then introduced our implementation: TESTed-DSL\@.
 
 We again first looked at input/output testing and unit testing as the two opposing strategies.
 However, this time, we focused more on the impact of these strategies on the testing process itself.
@@ -62,9 +64,9 @@ However, we also reported that while most exercises can be tested, it remained d
 Static tests, though faster and sometimes easier to write, can potentially constrain creativity and go against the spirit of Scratch.
 
 We also found that educators that are primarily experienced in Scratch might find JavaScript test suites difficult to write.
-For this reason, prototyped a Scratch-based testing framework called Poke.
+For this reason, we created and reported on a prototype of a Scratch-based testing framework called Poke.
 It allows creating test suites with Scratch, using the blocks and environment Scratch users are familiar with.
-While writing the tests is technically feasible, some challenges remain, the main one being the organisational aspects of managing these Scratch tests suites.
+While writing the tests is technically feasible, some challenges remain, the main one being the organizational aspects of managing these Scratch tests suites.
 
 \begin{description}
     \item[RQ4] Can we design an (educational) debugger for the block-based programming language Scratch?
@@ -87,7 +89,7 @@ The current execution model makes this difficult.
 
 We first explained in detail how the current execution model behaves.
 The current execution model has been chosen to minimize the occurrence of some concurrency-related issues, like race conditions, but does not prevent all issues.
-The threading model, in particular, causes some surprising behaviour, which is not ideal as Scratch is intended to be very intuitive.
+The threading model, in particular, causes some surprising behaviour, which is not ideal as Scratch is intended to be intuitive.
 
 Next, we proposed changes to the execution model of Scratch that seek to resolve these issues.
 However, the widespread use of Scratch demands that any changes must not adversely affect existing projects.
