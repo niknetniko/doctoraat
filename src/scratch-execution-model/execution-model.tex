@@ -353,7 +353,7 @@ Since the first thread will yield after the first block in the loop, the exercis
 It can also illustrate that this does introduce concurrency considerations that were not present in the original execution model.
 For example, if the conditional block in the second thread evaluates to true, the first thread will execute another block before execution is stopped by the block inside the conditional block from thread two.
 
-TODO: volledige stackframe?
+%TODO: volledige stackframe?
 
 In the next sections, we analyse existing Scratch projects to determine which number of steps that most closely results in the same execution speed as the original execution model.
 We also take this opportunity to analyse the complexity and block use in Scratch projects, to evaluate whether the concurrency considerations would cause problems.
@@ -401,7 +401,8 @@ This results in a final dataset of \num{195372} Scratch projects we considered f
 \subsection{Analysing Scratch 3.0 projects}\label{subsec:analysing-scratch-3.0-projects}
 
 Hairball~\autocite{boeHairballLintinspiredStatic2013} is commonly used to analyse Scratch projects (it is also used by the existing analyses), but does not support Scratch 3.0 projects.
-For this reason, we have implemented a very similar piece of software in JavaScript.\footnote{TODO: url to repo}
+% \footnote{TODO: url to repo}
+For this reason, we have implemented a very similar piece of software in JavaScript.
 It also supports plugins to support extensions for other analyses.
 Being written in JavaScript, it has the advantage that it can reuse parts of the Scratch virtual machine, like reading and parsing Scratch projects.
 
@@ -541,9 +542,9 @@ Less than half of projects use conditional statements, and less than half use us
 About a third (\qty{34.56}{\percent}) of projects use variables, and only \qty{9.38}{\percent} uses lists.
 This means that large numbers of projects are simple (and this is what we would expect, given that previous metrics on project size).
 
-\section{Evaluation of the new execution model}\label{sec:evaluation-of-the-new-execution-model}
-
-TODO: benchmark
+%\section{Evaluation of the new execution model}\label{sec:evaluation-of-the-new-execution-model}
+%
+%TODO: benchmark
 
 \section{Impact for debuggers and conclusion}\label{sec:conclusion}
 

@@ -22,8 +22,8 @@ We focus next on the technical aspects of TESTed, beginning with its architectur
 Next, we consider the three parts of evaluating a submission:
 the test suite, the evaluation process itself, and the generated feedback.
 
-For the test suites, we discuss their structure, and look at how TESTed handles datatypes (across different programming languages), statements, and expressions.
 \marginnote{In the mean time, TESTed has gained support for a user-friendlier format for test suites called TESTed-DSL (\cref{sec:tested-dsl}). It is the recommended way of creating test suites.}
+For the test suites, we discuss their structure, and look at how TESTed handles datatypes (across different programming languages), statements, and expressions.
 Next, the evaluation process is discussed in detail.
 This is the process through which TESTed executes the test suite and determines the feedback that will be given on the submission.
 We also briefly look at the integration with Dodona.
@@ -708,7 +708,7 @@ Besides executing the tests from the test suite, the generated code also contain
 Some examples of this ceremonial code are:
 
 \begin{itemize}
-    \item As a compilation unit can contain multiple execution units, we generate a wrapper that executes the correct execution unit based on some parameter (e.g.\ \mintinline{console}{./testcode "unit1"}).
+    \item As a compilation unit can contain multiple execution units, we generate a wrapper that executes the correct execution unit based on some parameter (e.g.\ \texttt{./testcode "unit1"}).
     \item The generated code includes serialization capabilities (\cref{subsec:data-serialization}), to convert captured values into the internal data format used by TESTed.
     \item The tests are wrapped in code that captures side effects and values, such as exceptions, return values, etc.
 \end{itemize}
@@ -1288,7 +1288,7 @@ When generating the code for an execution unit, a few things must be taken into 
 \section{Evaluation of the TESTed framework}\label{sec:tested1-evaluating-tested}
 
 To validate whether TESTed meets the requirements put forward in \cref{sec:tested1-programming-language-agnostic-test-frameworks}, we report on its use in educational practice.
-We conducted three quasi-experiments where we asked students to solve a set of programming exercises and automatically reviewed their submissions with TESTed in Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
+We conducted three quasi-experiments where we asked students to solve a set of programming exercises and automatically reviewed their submissions with TESTed in Dodona.
 Each experiment specifically focuses on a particular aspect of TESTed we want to evaluate.
 
 \subsection{Programming language independence}\label{subsec:programming-language-independence}
@@ -1304,7 +1304,7 @@ We also added support for new programming languages to TESTed while students wer
 TESTed automatically evaluated submissions in different programming languages for all three exercises immediately upon submission.
 Afterwards we manually verified that valid feedback was provided for all supported languages.
 
-In total, 38 users (including several of the authors~\autocite{strijbolTESTedEducationalTesting2023}) submitted 468 solutions for the three exercises.
+In total, 38 users (including several of the authors of \textcite{strijbolTESTedEducationalTesting2023}) submitted 468 solutions for the three exercises.
 Upon evaluation by TESTed based on the test suites for the exercises, 158 submissions passed all test cases and 310 submissions did not compile or failed at least one test case.
 44 (28\%) of the correct submissions were implemented in Python, 28 (17\%) in Haskell, 27 (17\%) in JavaScript, 22 (14\%) in C, 19 (12\%) in Java and 17 (11\%) in Kotlin.
 As expected, TESTed indicated that it could not evaluate submissions in C for one of the three exercises.
@@ -1327,44 +1327,45 @@ Another example is JavaScript, where TESTed supports both synchronous and asynch
 
 The main goal of the second experiment was to identify any overhead that could possibly be imposed on exercise designers while producing test suites for TESTed, compared to designing test suites for a specific programming language.
 A secondary goal was to identify possible limitations on the kind of exercises that TESTed could evaluate automatically or any shortcomings in the feedback it provides.
-For these purposes we designed test suites for all programming challenges of the 2020 edition of the Advent of Code\footnote{\url{https://adventofcode.com/}} (AoC), an annual programming contest run by Eric Wastl from December 1 to December 25.
+For these purposes we designed test suites for all programming challenges of the 2020 edition of the Advent of Code\footnote{\url{https://adventofcode.com/}}, an annual programming contest run by Eric Wastl from December 1 to December 25.
 
-The AoC platform does not directly review source code that solves the programming challenges, but provides users with a single input data set and accepts a single textual result (usually a number or a short text) that is compared against the expected result by exact string matching.
-We have designed more elaborate test suites for all AoC challenges that allow for more fine-grained testing of implemented solutions as is common practice in software engineering and in educational practice.
+The Advent of Code platform does not directly review source code that solves the programming challenges, but provides users with a single input data set and accepts a single textual result (usually a number or a short text) that is compared against the expected result by exact string matching.
+We have designed more elaborate test suites for all Advent of Code challenges that allow for more fine-grained testing of implemented solutions as is common practice in software engineering and in educational practice.
 Following a divide and conquer strategy, most challenges were broken down into multiple functions or methods that compute intermediate results that can be tested explicitly.
 Each function and method was tested separately using multiple input data sets (50 test cases by default) that were either provided as arguments when calling the functions/methods or as a text file containing bulk data.
 The strong typing features of TESTed were fully exploited in passing arguments (including file locations) and specifying expected return values.
-As a result, users got richer and more granular feedback from TESTed compared to the binary feedback (correct/wrong) from the AoC platform, as test suites were also checking intermediate computations in addition to final results, and were testing on multiple input data sets with varying sizes and covering different corner cases.
+As a result, users got richer and more granular feedback from TESTed compared to the binary feedback (correct/wrong) from the Advent of Code platform, as test suites were also checking intermediate computations in addition to final results, and were testing on multiple input data sets with varying sizes and covering different corner cases.
 
-In total, \num{325} users (including several of the authors~\autocite{strijbolTESTedEducationalTesting2023}) submitted \num{5465} solutions for the \num{50} challenges in the 2020 edition of the AoC. Upon automatic review by TESTed, \num{1844} submissions passed all test cases and \num{3621} submissions did not compile or failed at least one test case.
+In total, \num{325} users (including several of the authors of \textcite{strijbolTESTedEducationalTesting2023}) submitted \num{5465} solutions for the \num{50} challenges in the 2020 edition of the Advent of Code.
+Upon automatic review by TESTed, \num{1844} submissions passed all test cases and \num{3621} submissions did not compile or failed at least one test case.
 \num{1507} (81\%) of the correct submissions were implemented in Python, \num{141} (\qty{8}{\percent}) in Java, \num{78} (\qty{4}{\percent}) in JavaScript, \num{57} (\qty{3}{\percent}) in C, \num{41} (\qty{2}{\percent}) in Haskell, and \num{20} (\qty{1}{\percent}) in Kotlin.
-Compared to the previous experiment, submissions for the AoC challenges are much more skewed towards Python.
-Most users participating in this experiment were students that were driven by solving the AoC challenges on a daily basis using the programming language they were most familiar with or they wanted to practice more.
+Compared to the previous experiment, submissions for the Advent of Code challenges are much more skewed towards Python.
+Most users participating in this experiment were students that were driven by solving the Advent of Code challenges on a daily basis using the programming language they were most familiar with or they wanted to practice more.
 Solving the challenges using multiple languages, as we did for the first experiment, was not explicitly promoted in this case.
 
 In light of the goals put forward for this experiment, we again evaluated the experiment as successful.
-On a daily basis from December 1 to December 25, we could publish the two AoC challenges on our learning platform with support for automatic review by TESTed within two hours after they had been published on the AoC platform.
-This required a single test suite designer to implement a solution for an AoC challenge, design an interface (functions or methods) for solving the challenge, generate 50 test cases that call each function/method with a diverse set of arguments (using the implemented solution to compute the expected return value).
+On a daily basis from December 1 to December 25, we could publish the two Advent of Code challenges on our learning platform with support for automatic review by TESTed within two hours after they had been published on the Advent of Code platform.
+This required a single test suite designer to implement a solution for an Advent of Code challenge, design an interface (functions or methods) for solving the challenge, generate 50 test cases that call each function/method with a diverse set of arguments (using the implemented solution to compute the expected return value).
 In addition, the same test suite designer also translated the description of the challenge in Dutch because our learning platform supports programming challenges both in Dutch and English.
-Meanwhile, some of the other authors~\autocite{strijbolTESTedEducationalTesting2023} were validating the test suite design and the feedback provided by TESTed using their own implementations of the AoC challenge in a variation of programming languages.
+Meanwhile, some of the other authors~\autocite{strijbolTESTedEducationalTesting2023} were validating the test suite design and the feedback provided by TESTed using their own implementations of the Advent of Code challenge in a variation of programming languages.
 
 We found that generating generic test suites for TESTed was not more time-consuming than generating test suites for the testing framework of a specific programming language.
-We have been able to design test suites for all AoC challenges without discovering any limitations or needs to find workarounds.
-All test suites rely only on the built-in checks of TESTed, so for the AoC challenges we never had to rely on the programmed checks or language-specific checks.
+We have been able to design test suites for all Advent of Code challenges without discovering any limitations or needs to find workarounds.
+All test suites rely only on the built-in checks of TESTed, so for the Advent of Code challenges we never had to rely on the programmed checks or language-specific checks.
 The latter underscores that more advanced or language-specific techniques for automatic evaluations are indeed only needed in specific cases.
 
 We could no longer verify the feedback generated by TESTed for all submitted solutions, but we did not encounter any invalid feedback when inspecting a sample of the submissions while running the challenges.
-Users could contact the authors~\autocite{strijbolTESTedEducationalTesting2023} through the Q\&A module of Dodona and we explicitly asked them to report any bugs or shortcomings observed while submitting their solutions and receiving feedback, but all responses ($n=30$ during AoC 2020) were questions about how to solve some of the AoC challenges or about suggestions on how to improve (the performance) of submitted solutions.
+Users could contact the authors~\autocite{strijbolTESTedEducationalTesting2023} through the Q\&A module of Dodona and we explicitly asked them to report any bugs or shortcomings observed while submitting their solutions and receiving feedback, but all responses ($n=30$ during the 2020 edition) were questions about how to solve some of the Advent of Code challenges or about suggestions on how to improve (the performance) of submitted solutions.
 No responses hinted at improvements we could make on TESTed.
 
 This experiment also revealed a first area for future work.
 We wanted to explore how the process of designing programming exercises with automated feedback provided by TESTed can be made more ergonomic.
 While test suites expressed in JSON can be easily computer generated, their format is less suitable for reading and writing by humans.
-At the time of writing the paper of this chapter, we were already looking into designing a domain specific language (DSL) to describe test suites for programming exercises.
-Our idea then was that TESTed would convert the DSL into JSON as a preprocessing step, while keeping JSON as the base format for computer generated test suites.
-However, as detailed in \cref{ch:tested-dsl}, we later used the DSL directly, without conversion step.
-We also investigated the option to support multiple domain-specific languages for different types of programming exercises, for example a DSL for stdin/stdout exercises and another DSL for test suites built around function calls.
-However, it became clear the supporting both scenarios in the same DSL was feasible and a better approach.
+At the time of writing the publication of this chapter, we were already looking into designing a domain-specific language to describe test suites for programming exercises.
+Our idea then was that TESTed would convert the domain-specific language into JSON as a preprocessing step, while keeping JSON as the base format for computer generated test suites.
+However, as detailed in \cref{ch:tested-dsl}, we later used the domain-specific language directly, without conversion step.
+We also investigated the option to support multiple domain-specific languages for different types of programming exercises, for example a DSL for stdin/stdout exercises and another domain-specific language for test suites built around function calls.
+However, it became clear the supporting both scenarios in the same domain-specific language was feasible and a better approach.
 Also of interest was supporting previous attempts at standardizing descriptions of programming exercises such as \textsc{yape}x\textsc{il}~\autocite{paivaAnotherProgrammingExercises2020} and \textsc{peml}~\autocite{cssplicepemlworkinggroupProgrammingExerciseMarkup2021}, and extending BabelO~\autocite{queirosBabeLOExtensibleConverter2013} with support for TESTed.
 
 Designing a programming exercise that can be solved in multiple programming languages not only requires a programming-language-agnostic testing framework, but also a task description that adapts itself to selected programming languages.

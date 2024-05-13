@@ -6,14 +6,14 @@
 
 Learning to program is hard, and students consequently regard programming courses as difficult~\autocite{robinsLearningTeachingProgramming2003,simoesNatureProgrammingExercises2020}.
 It is generally accepted that gaining a deep understanding of programming requires experience and feedback~\autocite{gomesEnvironmentImproveProgramming2007}.
-This feedback is what makes teaching programming difficult: it is a time-consuming task to provide good and timely feedback on code, especially if the number of students in a course is high~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
+This feedback is what makes teaching programming difficult: it is a time-consuming task to provide qualitative and timely feedback on submissions, especially if the number of students in a course is high~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
 
 \section{Origins and use of automated assessment in computer science education}\label{sec:automated-assessment-in-computer-science-education}
 
-Education of concepts that we would now consider computer science goes back as early as the 1940s.
-A good overview on the history of computer science education is given in \textcite{tedreChangingAimsComputing2018}, to which we point the reader for a complete overview.
+Education of concepts that we would now consider part of the computer science discipline goes back as early as the 1940s.
 Of particular interest to this dissertation is the education of programming, which began appearing curricula during the early 1960s~\autocite{simonEmergenceComputingEducation2015}.
-This is a bit after computer science became recognized as its own scientific discipline in the 1950s and 1960s~\autocite{hopcroftComputerScienceEmergence1987,atchisonComputerScienceNew1971,gornComputerInformationSciences1963,knuthComputerScienceIts1974,denningScienceComputerScience2013}.
+This is shortly after computer science became recognized as its own scientific discipline in the 1950s and 1960s~\autocite{hopcroftComputerScienceEmergence1987,atchisonComputerScienceNew1971,gornComputerInformationSciences1963,knuthComputerScienceIts1974,denningScienceComputerScience2013}.
+A good overview on the history of computer science education is given in \textcite{tedreChangingAimsComputing2018}, to which we point the reader for a complete overview.
 
 From the start of programming education, the need for automated assessment was noted.
 Generally considered to be the first publication on automated assessment, \textcite{hollingsworthAutomaticGradersProgramming1960} details their testing framework and remarks that they could not accommodate the number of students in their programming classes without their ``automatic grader''.
@@ -52,10 +52,10 @@ Instead, the goal is to provide formative feedback (or a grade) to the students~
 
 As mentioned in the previous section, providing good and timely feedback to students in programming courses almost necessitates a form of automation.
 This is no different in our department.
-This was initially done (since 2011) using the Sphere Online Judge (SPOJ; \cite{kosowskiApplicationOnlineJudge2008}), which was relatively unique in the fact that it allowed teachers to create their own courses, exercises, and even testing frameworks.
+This was initially done (since 2011) using the Sphere Online Judge (SPOJ; \cite{kosowskiApplicationOnlineJudge2008}), which was relatively unique in that it allowed teachers to create their own courses, exercises, and even testing frameworks.
 However, the platform targets the organization of programming contests and lacks support for features we wanted to introduce in our programming classes.
 
-\marginnote{As a student, I was one of the last years to uses SPOJ, even if that statement does make me feel old.}
+\marginnote{As a student, I was part of one of the last graduation years to use SPOJ (that statement does make me feel old).}
 In 2016, the needs for these classes outgrew the Sphere Online Judge, which led to the creation of our own platform: Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
 Dodona is now used by most higher education institutions in Flanders and by many schools providing secondary education.
 As of May 2024, Dodona has more than \num{69200} registered users and has evaluated almost 18 million submissions.
@@ -63,10 +63,10 @@ As of May 2024, Dodona has more than \num{69200} registered users and has evalua
 Dodona has been developed with support for multiple programming languages from the start.
 It has a strict separation between the platform (responsible for managing courses, students, and exercises) and the testing framework (determining if submissions are correct).
 This separation has allowed for easily supporting a multitude of programming languages.
-Within Dodona, the testing framework is called a judge (and evaluating a submission for correctness is called judging), as it was done in the Sphere Online Judge.
+Within Dodona, a testing framework is called a judge (and evaluating a submission for correctness is called judging), as it was done in the Sphere Online Judge.
 
 While the earliest Dodona judges targeted Python and JavaScript submissions, its interface for judges proved to be generic enough that it can support a multitude of scenarios.
-For example, there are currently judges for C, Haskell, Java, Prolog, R, Scheme, Bash, C\#, JavaScript, and Python (and also TESTed of course).
+For example, there are currently judges for C, Haskell, Java, Prolog, R, Scheme, Bash, C\#, JavaScript, and Python.
 There are also a few less straightforward judges, such as HTML, SQL, Markdown, and Turtle.
 
 \subsection{Architecture}\label{subsec:architecture}
@@ -198,10 +198,9 @@ Similar to the conclusions, each chapter also has its own introduction, where th
 
 \section{Textual programming languages}\label{sec:intro-tested}
 
-The first research question was inspired by the observation that using exercises and judges in Dodona required some manual work each time.
-
+The first research question was inspired by the observation that using exercises and judges in Dodona required some manual work.
 A lot of programming exercises on Dodona are usable in multiple programming languages.
-However, to use an exercise in another programming language, first a hard copy of the exercise had to be made.
+However, to use an exercise in another programming language, first a copy of the exercise had to be made.
 Then the test suite had to be converted manually to the test suite format used by the judge for that particular language.
 The other parts of the exercise (the configuration and problem statement) also needed to be converted manually.
 Additionally, since the exercises are copied, the exercises have to be kept in sync manually, or they risk diverging.
@@ -307,7 +306,7 @@ Step one is determining the exact nature and location of the error, and step two
 
 It is well known that determining the cause of an observed failure is challenging~\autocite{ammannIntroductionSoftwareTesting2016}.
 The debugging process is difficult, especially for novice programmers~\autocite{mccauleyDebuggingReviewLiterature2008}.
-This has led to the creation of various tools to help with this, chief among them the debuggers~\autocite{rosenbergHowDebuggersWork1996}.
+This has led to the creation of various tools to help with this, chief among them debuggers~\autocite{rosenbergHowDebuggersWork1996}.
 
 This is also the case with text-based languages.
 For example, \cref{fig:curling-feedback-table} shows a ``Debug'' button in the feedback table of Dodona.

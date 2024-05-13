@@ -8,15 +8,17 @@ As an answer to the four research questions mentioned at the start, \cref{sec:a-
 we introduced five educational tools to facilitate programming education:
 two for textual programming languages and three for block-based programming languages.
 
-\section{For textual programming languages}\label{sec:for-textual-programming-languages}
+\section{Textual programming languages}\label{sec:for-textual-programming-languages}
+
+Our contributions make it possible to ergonomically create a single programming exercise, with one test suite and one task description, and use this exercise in multiple programming languages.
+To make this possible, we created TESTed and TESTed-DSL, which we discuss below.
 
 \begin{description}
     \item[RQ1] Can we design an educational software testing framework that supports automated assessment across programming languages based on a single test suite?
 \end{description}
 
-We can, as we demonstrate by presenting our implementation of such a testing framework: TESTed.
-
-To elaborate, we first identified input/output testing and unit testing as two opposing strategies commonly used in educational software testing.
+We can, as we demonstrate by presenting our implementation of such a testing framework: \textbf{TESTed}.
+First, we identified input/output testing and unit testing as two opposing strategies commonly used in educational software testing.
 Our initial investigation focused on understanding how these approaches affect the supported programming languages within the testing frameworks.
 Often, testing frameworks that fall under input/output testing support multiple programming languages, but the quality of the feedback suffers.
 On the other hand, frameworks using unit testing have much more fine-grained feedback, but only support a single programming language.
@@ -50,7 +52,11 @@ These include supporting operator overloading, string conversion, comments, inde
 Native support for pretty printing nested data structures would be another valuable addition, making it easier to detect differences between expected and actual return values.
 There are more opportunities still, including data-driven tests (parameterized tests), support dynamic generation of test data and boost the performance of running tests.
 
-\section{For block-based programming languages}\label{sec:for-block-based-programming-languages}
+\section{Block-based programming languages}\label{sec:for-block-based-programming-languages}
+
+For block-based languages, our contributions make it possible to automatically assess Scratch exercises, providing students with qualitative and timely formative feedback.
+For this purpose, we created Itch, an educational testing framework for Scratch.
+Based on the feedback students receive from Itch, they can then use Blink, the debugger we created, to find the root cause of their issue to solve it.
 
 \begin{description}
     \item[RQ3] Can we design an educational software testing framework for the block-based programming language Scratch?
@@ -95,7 +101,7 @@ Next, we proposed changes to the execution model of Scratch that seek to resolve
 However, the widespread use of Scratch demands that any changes must not adversely affect existing projects.
 For this reason, we explored how Scratch is used, the results of which corroborate previous findings: most Scratch projects are small.
 
-Finally, we benchmarked the execution model on various representative projects to measure its real-world impact.
+To conclude, we benchmarked the execution model on various representative projects to measure its real-world impact.
 While there is some impact, we deem it acceptable.
 This strengthens our confidence in integrating the modified execution model not only with the debugger, but in general use of Scratch.
 
