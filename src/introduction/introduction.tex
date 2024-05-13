@@ -167,8 +167,9 @@ The programming exercise (including a problem statement and test suite), togethe
 
 \section{Structure of this dissertation}\label{sec:a-note-on-the-structure-of-this-thesis}
 
-The root motivation for every part of this dissertation is the observation that there exists a gap in existing educational tools, often with Dodona as a starting point.
-This led to the following four main research questions, which this dissertation addresses:
+The main problem this dissertation addresses is the observation that there are shortcomings in existing educational tools for programming education.
+Most of these shortcomings were first observed when using Dodona.
+They can be split into four main research questions, which this dissertation addresses:
 
 \begin{description}
     \item[RQ1] Can we design an educational software testing framework that supports automated assessment across programming languages based on a single test suite?
@@ -177,11 +178,17 @@ This led to the following four main research questions, which this dissertation 
     \item[RQ4] Can we design an (educational) debugger for the block-based programming language Scratch?
 \end{description}
 
-While we did not intend to split the textual and block-based tools initially, it quickly became clear that the needs for both were different enough to warrant a separate approach.
-This is reflected in this dissertation: the first part (\cref{ch:tested1,ch:tested-dsl}) is about textual programming languages, TESTed and TESTed-DSL\@.
-It discusses the first two research questions.
-The second part (\cref{ch:scratch-the-programming-environment,ch:itch,ch:blink,ch:scratch-execution-model}) is about Scratch-related tools (Itch, Poke, Blink, and the Scratch execution model).
-It discusses the last two research questions.
+The first two questions concern themselves with textual programming languages, while the last two questions are in the context of Scratch, a visual block-based language.
+The reason for this split is that it became clear that the needs for textual and visual programming languages are different enough to warrant a separate approach.
+
+This split is reflected in the structure of this dissertation as well.
+\Cref{part:tested} is about textual programming languages and consists of two chapters (\cref{ch:tested1,ch:tested-dsl}), which answer the first and second research questions respectively.
+\Cref{sec:intro-tested} gives an introduction to this first part.
+
+\Cref{part:scratch} is about the block-based programming language Scratch.
+The smaller \cref{ch:scratch-the-programming-environment} gives a short introduction on Scratch.
+\Cref{ch:itch} addresses research question three, while \cref{ch:blink,ch:scratch-execution-model} address the fourth research question.
+\Cref{sec:the-second-part:-scratch} gives an introduction to this second part.
 
 Finally, \cref{ch:conclusions-and-opportunities} summarizes the answers to the research questions and highlights some future opportunities.
 Each chapter also contains its own conclusion where the details for that specific chapter are discussed.
@@ -189,9 +196,9 @@ Each chapter also contains its own conclusion where the details for that specifi
 The remainder of this chapter gives a high-level overview of each part: the context, motivation, and where applicable, our previous publications.
 Similar to the conclusions, each chapter also has its own introduction, where the specifics for that chapter are introduced.
 
-\section{The first part: TESTed}\label{sec:intro-tested}
+\section{Textual programming languages}\label{sec:intro-tested}
 
-The reason for asking the first research question was inspired by an observation that some duplicate work happened when working with Dodona, both for programming exercises and for judges.
+The first research question was inspired by the observation that using exercises and judges in Dodona required some manual work each time.
 
 A lot of programming exercises on Dodona are usable in multiple programming languages.
 However, to use an exercise in another programming language, first a hard copy of the exercise had to be made.
@@ -206,8 +213,8 @@ Supporting a new feature also requires doing it for every judge, which often doe
 \subsection{Programming-language-agnostic exercises}\label{subsec:programming-language-agnostic-testing}
 
 The answer to the first research question is yes.
-Specifically, we created TESTed, an educational software testing framework.
-One of its defining features is the ability to create programming-language-agnostic exercises.
+Specifically, the answer is TESTed, an educational software testing framework we created.
+Its defining feature is the ability to create programming-language-agnostic exercises.
 This means that the same exercise (with one test suite) can be solved in multiple programming languages, with support for automated assessment.
 
 TESTed is discussed in \cref{ch:tested1}, which is based on \textcite{strijbolTESTedEducationalTesting2023}.
@@ -224,7 +231,7 @@ Our ambition was to make TESTed the default option for creating programming exer
 
 The result of this research is presented in the second publication, \textcite{strijbolTESTedDSLDomainspecificLanguage2024}, which is included almost verbatim as \cref{ch:tested-dsl}.
 By looking at (educational) software testing more broadly, we find two missing parts of the process of creating programming exercises.
-The first missing, but important, part is an ergonomic and approachable way of creating test suites for exercises.
+The first missing and most important part is an ergonomic and approachable way of creating test suites for exercises.
 Our solution is TESTed-DSL, a domain-specific language for authoring programming-language-agnostic exercises with support for automated assessment.
 The second missing part is support for language-agnostic task descriptions.
 We show that TESTed-DSL can also be used for task descriptions.
@@ -235,14 +242,15 @@ For this reason, we also invested in our documentation, which contains reference
 
 \subsection{Organization of the first part}\label{subsec:organization-of-the-first-part}
 
-One consequence of basing the two chapters on publications is that there is some overlap: for example, the introductions in both chapters broadly cover the same topic.
-However, the focus of both is different enough that we feel there is no problem: they are not verbatim copies.
+\Cref{ch:tested1} discusses TESTed and \cref{ch:tested-dsl} discusses TESTed-DSL, both based on previous publications.
+One consequence of this approach is that there is some overlap: for example, the introductions in both chapters broadly cover the same topic.
+However, the focus of both is different enough that we feel there is no problem including both.
 Another example of a consequence is the terminology used for the levels in the test suites (\cref{subsec:structure-of-a-test-suite,subsec:dsl-test-suite-structure}), which differs.
-The first chapter uses the terminology as used by Dodona, while the second chapter changes the terminology in the DSL to align more closely with the terminology used in the literature.
+The first chapter uses the terminology as used by Dodona, while the second chapter changes the terminology in the domain-specific language to align more closely with the terminology used in the literature.
 This illustrates the progressive insight that comes when working on a tool, and the interplay between the design stages and its application in practice.
 
 Research on TESTed was started in 2019 as a master's thesis~\autocite{strijbolTESTedOneJudge2020}.
-Similarly, TESTed-DSL also finds its origins in a master's thesis~\autocite{selsTESTedProgrammeertaalonafhankelijkTesten2021}.
+TESTed-DSL also finds its origins in a master's thesis~\autocite{selsTESTedProgrammeertaalonafhankelijkTesten2021}.
 
 \subsection{Repositories and user documentation}\label{subsec:repositories-and-code}
 
@@ -258,10 +266,10 @@ Two sets of documentation are available, aimed at a different target audience:
     For example, this includes the documentation on how to extend TESTed to add support for additional programming languages.
 \end{itemize}
 
-\section{The second part: Scratch}\label{sec:the-second-part:-scratch}
+\section{Block-based programming languages}\label{sec:the-second-part:-scratch}
 
-For young children, learning to program for young children is often done with specialized programming languages.
-The most-used language in this context is Scratch, a visual, block-based programming language~\autocite{resnickScratchProgrammingAll2009}.
+For young children, learning to program is often done with specialized programming languages.
+The most-used language in this context is Scratch, a visual block-based programming language~\autocite{resnickScratchProgrammingAll2009}.
 
 Since Dodona is independent of any testing framework, we thus asked the third research question: ``Can we design an educational software testing framework for Scratch?''.
 Our intention was to add support for Scratch to Dodona.
@@ -280,15 +288,15 @@ Schools can use these to fulfil their obligations as part of the move to introdu
 The work was divided as follows: Ghent University was responsible for the technical aspects of the automated feedback for Scratch exercises, while CodeCosmos provided the lessons, the educational support, and last but not least, actual students to use the teaching packs.
 Readers interested in knowing more might like to read an article about this collaboration in \textit{Dare To Think}, Ghent University's online magazine\footnote{\url{https://www.durfdenken.be/en/research-and-society/coach-codi-boosting-tool-helps-children-become-independent-coders}}.
 
-The testing framework, the answer to the third research question, is described in \cref{ch:itch}.
+The testing framework Itch, the answer to the third research question, is described in \cref{ch:itch}.
 Itch allows both static and dynamic tests on Scratch exercises, which provides a lot of flexibility to educators.
 Especially the dynamic testing allows for exercises that allow (within limits) the exploratory nature of Scratch to remain.
 
 Itch test suites for Scratch exercises are written in JavaScript.
 While working with CodeCosmos on creating Scratch exercises, it became clear that the JavaScript test suites were a big hurdle for educators without a computer science background.
-As a lot of software testing frameworks are written in the same programming language as the code they test, we also investigated this possibility: ``Can we design an educational software testing framework for Scratch with test suites written in Scratch?''.
-The result of this was Poke, a prototype of a testing framework for Scratch with test suites written in Scratch (\cref{sec:poke:-a-testing-framework-written-in-scratch}).
-While possible, there are still open questions regarding the practical use of such a framework in an education setting.
+As a lot of software testing frameworks are written in the same programming language as the code they test, we also explored this approach.
+The result of this is Poke, a prototype of a testing framework for Scratch with test suites written in Scratch, discussed in \cref{sec:poke:-a-testing-framework-written-in-scratch}.
+While technically feasible, there are still open questions regarding the practical use of this approach in an education setting.
 
 \subsection{Debugging Scratch code}\label{subsec:debugging-scratch-code}
 
