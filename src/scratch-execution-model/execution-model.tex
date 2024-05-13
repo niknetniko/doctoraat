@@ -353,8 +353,6 @@ Since the first thread will yield after the first block in the loop, the exercis
 It can also illustrate that this does introduce concurrency considerations that were not present in the original execution model.
 For example, if the conditional block in the second thread evaluates to true, the first thread will execute another block before execution is stopped by the block inside the conditional block from thread two.
 
-%TODO: volledige stackframe?
-
 In the next sections, we analyse existing Scratch projects to determine which number of steps that most closely results in the same execution speed as the original execution model.
 We also take this opportunity to analyse the complexity and block use in Scratch projects, to evaluate whether the concurrency considerations would cause problems.
 

@@ -4,9 +4,10 @@
 
 \chapter{Conclusions and opportunities}\label{ch:conclusions-and-opportunities}
 
-As an answer to the four research questions mentioned in \cref{sec:a-note-on-the-structure-of-this-thesis},
+As an answer to the five research questions mentioned in \cref{sec:a-note-on-the-structure-of-this-thesis},
 we introduced five educational tools to facilitate programming education:
 two for textual programming languages and three for block-based programming languages.
+We also propose changes to the Scratch execution model.
 
 \section{Textual programming languages}\label{sec:for-textual-programming-languages}
 
@@ -88,12 +89,20 @@ We prioritized the user-friendliness of Blink, given Scratch's younger target au
 Due to the concurrent nature of Scratch, we had to hide a lot of the complexities of concurrent debugging for the user.
 Initial feedback from using Blink in a classroom setting has been positive: pupils find the debugger intuitive and useful, especially the time-travelling capability.
 
+In the future, we envision integrating Itch with Blink.
+In an ideal scenario, a failed test from Itch would allow students to directly open a debugging session when the test failed.
+Using the time-travelling features of Blink, students can then go back in time until they find the issue.
+
+\begin{description}
+    \item[RQ5] What common execution model for running and debugging Scratch code best optimizes both scenarios?
+\end{description}
+
 One of the ways we sought to make the debugger more intuitive was to use a non-traditional stepping functionality.
 In most debuggers, a step will advance the code one step in a single thread.
 However, in Scratch, we wanted the step to advance one step in all threads simultaneously.
 The current execution model makes this difficult.
 
-We first explained in detail how the current execution model behaves.
+To answer this research question, we first explained in detail how the current execution model behaves.
 The current execution model has been chosen to minimize the occurrence of some concurrency-related issues, like race conditions, but does not prevent all issues.
 The threading model, in particular, causes some surprising behaviour, which is not ideal as Scratch is intended to be intuitive.
 
@@ -104,9 +113,5 @@ For this reason, we explored how Scratch is used, the results of which corrobora
 To conclude, we benchmarked the execution model on various representative projects to measure its real-world impact.
 While there is some impact, we deem it acceptable.
 This strengthens our confidence in integrating the modified execution model not only with the debugger, but in general use of Scratch.
-
-In the future, we envision integrating Itch with Blink.
-In an ideal scenario, a failed test from Itch would allow students to directly open a debugging session when the test failed.
-Using the time-travelling features of Blink, students can then go back in time until they find the issue.
 
 \end{document}

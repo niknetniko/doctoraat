@@ -171,16 +171,17 @@ The programming exercise (including a problem statement and test suite), togethe
 
 The main problem this dissertation addresses is the observation that there are shortcomings in existing educational tools for programming education.
 Most of these shortcomings were first observed when using Dodona.
-They can be split into four main research questions:
+They can be split into five main research questions:
 
 \begin{description}
     \item[RQ1] Can we design an educational software testing framework that supports automated assessment across programming languages based on a single test suite?
     \item[RQ2] What is the most ergonomic way to author programming exercises with support for automated assessment across programming languages?
     \item[RQ3] Can we design an educational software testing framework for the block-based programming language Scratch?
     \item[RQ4] Can we design an (educational) debugger for the block-based programming language Scratch?
+    \item[RQ5] What common execution model for running and debugging Scratch code best optimizes both scenarios?
 \end{description}
 
-The first two questions concern themselves with textual programming languages, while the last two questions are in the context of Scratch, a visual block-based language.
+The first two questions concern themselves with textual programming languages, while the last three questions are in the context of Scratch, a visual block-based language.
 The reason for this split is that it became clear that the needs for textual and block-based programming languages are different enough to warrant a separate approach.
 
 This split is reflected in the structure of this dissertation as well.
@@ -188,8 +189,9 @@ This split is reflected in the structure of this dissertation as well.
 \Cref{sec:intro-tested} gives an introduction to this first part.
 
 \Cref{part:scratch} is about the block-based programming language Scratch.
-The smaller \cref{ch:scratch-the-programming-environment} gives a short introduction on Scratch.
-\Cref{ch:itch} addresses research question three, while \cref{ch:blink,ch:scratch-execution-model} address the fourth research question.
+The smaller \cref{ch:scratch-the-programming-environment} gives a short introduction to Scratch.
+\Cref{ch:itch} addresses research question three, while \cref{ch:blink} address the fourth research question.
+\Cref{ch:scratch-execution-model} then answers the fifth research question.
 \Cref{sec:the-second-part:-scratch} gives an introduction to this second part.
 
 Finally, \cref{ch:conclusions-and-opportunities} summarizes the answers to the research questions and highlights some future opportunities.
@@ -333,7 +335,8 @@ The cooperative nature of the threading model also has drawbacks: it can lead to
 
 Additionally, the execution model also limits how a debugger can work, without resorting to deviating from the execution model as used during normal execution.
 
-We therefore propose and investigate some changes to the Scratch execution model in \cref{ch:scratch-execution-model}.
+We thus asked ourselves, ``What execution model for running and debugging Scratch code best optimizes both?''.
+We investigate and answer this question in \cref{ch:scratch-execution-model}.
 The chapter begins with a detailed look at how the current execution model behaves, followed by our proposed changes.
 Since Scratch is so widely used, our changes should not negatively impact existing Scratch programs.
 We therefore analyse what a typical Scratch project looks like.
