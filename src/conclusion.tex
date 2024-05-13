@@ -4,7 +4,7 @@
 
 \chapter{Conclusions and opportunities}\label{ch:conclusions-and-opportunities}
 
-As an answer to the four research questions mentioned at the start, \cref{sec:a-note-on-the-structure-of-this-thesis},
+As an answer to the four research questions mentioned in \cref{sec:a-note-on-the-structure-of-this-thesis},
 we introduced five educational tools to facilitate programming education:
 two for textual programming languages and three for block-based programming languages.
 
@@ -38,7 +38,7 @@ A key area of future interest is the implementation of language-agnostic static 
 \end{description}
 
 We concluded that a domain-specific language, designed specifically for this purpose, is the best approach.
-We then introduced our implementation: TESTed-DSL\@.
+We then introduced our implementation: \textbf{TESTed-DSL}\@.
 
 We again first looked at input/output testing and unit testing as the two opposing strategies.
 However, this time, we focused more on the impact of these strategies on the testing process itself.
@@ -50,27 +50,27 @@ Looking at programming-language-agnostic testing frameworks more broadly, we rep
 We also see potential for additions to TESTed-DSL in the future.
 These include supporting operator overloading, string conversion, comments, indexing sequences, indexing mappings, destructuring, object identity checking, and object equivalence checking.
 Native support for pretty printing nested data structures would be another valuable addition, making it easier to detect differences between expected and actual return values.
-There are more opportunities still, including data-driven tests (parameterized tests), support dynamic generation of test data and boost the performance of running tests.
+There are more opportunities still, including data-driven tests (parameterized tests), supporting dynamic generation of test data and boosting the performance of running tests.
 
 \section{Block-based programming languages}\label{sec:for-block-based-programming-languages}
 
-For block-based languages, our contributions make it possible to automatically assess Scratch exercises, providing students with qualitative and timely formative feedback.
+For Scratch, our contributions make it possible to automatically assess Scratch exercises, providing students with qualitative and timely formative feedback.
 For this purpose, we created Itch, an educational testing framework for Scratch.
-Based on the feedback students receive from Itch, they can then use Blink, the debugger we created, to find the root cause of their issue to solve it.
+Based on the feedback students receive from Itch, they can then use Blink, the debugger we created, to find the root cause of their issues.
 
 \begin{description}
     \item[RQ3] Can we design an educational software testing framework for the block-based programming language Scratch?
 \end{description}
 
-Yes, as shown by our implementation of such a framework: Itch.
+Yes, as shown by our implementation of such a framework: \textbf{Itch}.
 We showed that it offers a versatile approach to testing, allowing static testing, emulating user interaction, and performing post-mortem testing.
 Tests can range from purely static to purely dynamic, or a hybrid of both.
 
-However, we also reported that while most exercises can be tested, it remained difficult to design Scratch exercises that are both dynamically testable and sufficiently open-ended to align with the game-like and exploratory nature of Scratch.
+However, we also reported that while most exercises can be tested, it remains difficult to design Scratch exercises that are both dynamically testable and sufficiently open-ended to align with the game-like and exploratory nature of Scratch.
 Static tests, though faster and sometimes easier to write, can potentially constrain creativity and go against the spirit of Scratch.
 
 We also found that educators that are primarily experienced in Scratch might find JavaScript test suites difficult to write.
-For this reason, we created and reported on a prototype of a Scratch-based testing framework called Poke.
+For this reason, we created and reported on a prototype of a Scratch-based testing framework called \textbf{Poke}.
 It allows creating test suites with Scratch, using the blocks and environment Scratch users are familiar with.
 While writing the tests is technically feasible, some challenges remain, the main one being the organizational aspects of managing these Scratch tests suites.
 
@@ -78,7 +78,7 @@ While writing the tests is technically feasible, some challenges remain, the mai
     \item[RQ4] Can we design an (educational) debugger for the block-based programming language Scratch?
 \end{description}
 
-Yes: Blink is our time-travelling debugger for Scratch.
+Yes: \textbf{Blink} is our time-travelling debugger for Scratch.
 Working with Itch in an educational setting made clear that testing frameworks primarily indicate whether a submission is correct or not, but do not directly assist students in finding the root cause of a failed test.
 
 To address this, we developed Blink, a debugger for Scratch.
@@ -104,5 +104,9 @@ For this reason, we explored how Scratch is used, the results of which corrobora
 To conclude, we benchmarked the execution model on various representative projects to measure its real-world impact.
 While there is some impact, we deem it acceptable.
 This strengthens our confidence in integrating the modified execution model not only with the debugger, but in general use of Scratch.
+
+In the future, we envision integrating Itch with Blink.
+In an ideal scenario, a failed test from Itch would allow students to directly open a debugging session when the test failed.
+Using the time-travelling features of Blink, students can then go back in time until they find the issue.
 
 \end{document}
