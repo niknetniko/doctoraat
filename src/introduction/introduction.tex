@@ -97,25 +97,30 @@ Using worker servers also allows for easy scaling if the number of submissions i
 
 \subsection{Features for educators}\label{subsec:features-for-educators}
 
-Dodona offers a host of features for educators.
-For example, it supports a sophisticated course and user management system.
-Educators can create dedicated courses on Dodona to reflect courses in real life.
-Students can then subscribe to their relevant courses.
+Besides automated assessment, Dodona provides a host of features to support educators when organizing programming courses.
+
+First, Dodona supports a sophisticated course and user management system.
+Educators can request that their account be upgraded to a teacher account, which grants access to additional capabilities, like creating and managing courses, but also access to the sample solution for exercises.
+Courses on Dodona are created to reflect courses in real life, and are linked to an academic year.
+Students can then subscribe to their relevant courses (or educators can add students themselves).
 A course consists of a number of series, which in turn contain some exercises, which allows for creating learning paths in the course.
 
-Dodona provides detailed statistics and data visualizations of the progress students make in a course and for each series.
-Every series can also have a separate deadline, which allows for spreading the workload throughout a semester.
+Within a course, Dodona provides detailed statistics and data visualizations of the progress students make in a course and for each series.
+Dodona has a large amount of data about students, which has also allowed for interesting research, for example \textcite{vanpetegemPassFailPrediction2023}, where we attempt to predict if students are at risk of failing the course.
 
-There is a dedicated mode for ``evaluations'' of students, which is a streamlined way to add manual feedback to submissions.
-This makes assessment easier.
-For example, we use this mode to organize exams.
+Besides the automated feedback, Dodona allows students to ask questions on their submissions (if enabled by the educator for a specific course).
+This allows the teaching staff to answer these questions directly in Dodona, with all the relevant context (the submission itself and the feedback the students got).
+At the same time, the submission history of the students is also available.
+
+The same mechanism is also available in the ``evaluation'' mode of Dodona, which is designed to facilitate grading of submissions.
+In this mode, the questions are reversed: educators can add annotations to submissions (we are researching if predicting these annotations is possible in \textcite{vanpetegemMiningPatternsSyntax2024}).
+Assigning a grade to a submission using a rubric is also possible.
+We use this mode ourselves to organize exams as follows.
 A hidden series (which is invisible to students) is shared at the start of an exam.
-This series contains the exercises that students need to solve in the exam.
+This series contains the exercises that students need to solve.
 After the deadline, Dodona can automatically select the latest submission before the deadline for each student.
-
-Then, educators can anonymously provide feedback and grades (with an educator-provided rubric) on these submissions.
-During the evaluation, the feedback of the automated assessment is also available to aid the educators.
-After all submissions have been processed, educators can release the feedback to the students, who can then view the feedback and grade they received.
+We then provide feedback and grades on these submissions.
+After we have processed all submissions, we release the feedback to the students, who can then view the feedback and grade they received.
 
 \subsection{The feedback table}\label{subsec:the-feedback-table}
 
@@ -163,8 +168,7 @@ The programming exercise (including a problem statement and test suite), togethe
 \section{Structure of this dissertation}\label{sec:a-note-on-the-structure-of-this-thesis}
 
 The root motivation for every part of this dissertation is the observation that there exists a gap in existing educational tools, often with Dodona as a starting point.
-We then set out to propose tools that fill this gap.
-More concretely, we can define four main research questions, which this dissertation addresses:
+This led to the following four main research questions, which this dissertation addresses:
 
 \begin{description}
     \item[RQ1] Can we design an educational software testing framework that supports automated assessment across programming languages based on a single test suite?
@@ -173,14 +177,14 @@ More concretely, we can define four main research questions, which this disserta
     \item[RQ4] Can we design an (educational) debugger for the block-based programming language Scratch?
 \end{description}
 
-While we did not intend to split the textual and block-based tools initially, it quickly became clear that the needs for both, in addition to the existing research, were different enough to warrant a separate approach.
+While we did not intend to split the textual and block-based tools initially, it quickly became clear that the needs for both were different enough to warrant a separate approach.
 This is reflected in this dissertation: the first part (\cref{ch:tested1,ch:tested-dsl}) is about textual programming languages, TESTed and TESTed-DSL\@.
 It discusses the first two research questions.
 The second part (\cref{ch:scratch-the-programming-environment,ch:itch,ch:blink,ch:scratch-execution-model}) is about Scratch-related tools (Itch, Poke, Blink, and the Scratch execution model).
 It discusses the last two research questions.
 
-Finally, \cref{ch:conclusions-and-opportunities} draws the general conclusions and discusses some future opportunities.
-Each chapter also contains a similar section where the details of that specific chapter are discussed.
+Finally, \cref{ch:conclusions-and-opportunities} summarizes the answers to the research questions and highlights some future opportunities.
+Each chapter also contains its own conclusion where the details for that specific chapter are discussed.
 
 The remainder of this chapter gives a high-level overview of each part: the context, motivation, and where applicable, our previous publications.
 Similar to the conclusions, each chapter also has its own introduction, where the specifics for that chapter are introduced.
