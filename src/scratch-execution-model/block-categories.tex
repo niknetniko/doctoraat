@@ -118,8 +118,22 @@
         ylabel style={align=center},
         ylabel={№ of projects},
         symbolic x coords={Motion,Looks,Sound,Events,Control,Sensing,Operators,Data,Extensions},
-        nodes near coords={\pgfmathfloattofixed{\pgfplotspointmeta}\addfontfeature{Numbers={Lining}}\num[round-mode=places,round-precision=0,fixed-exponent=3,exponent-mode=fixed,drop-exponent=true]{\pgfmathresult}},
-%        nodes near coords align=horizontal,
+        nodes near coords={
+            \pgfmathfloattoint{\pgfplotspointmeta}%
+            \edef\val{\pgfmathresult}%
+            \pgfkeys{/pgf/fpu}%
+            \pgfmathsetmacro\blpercent{(\val / 195372)*100}%
+            \pgfkeys{/pgf/fpu=false}%
+            \pgfmathfloattofixed{\blpercent}%
+            \edef\finalpercentage{\pgfmathresult}%
+            \addfontfeature{Numbers={Lining}}%
+            \shortstack{
+                \qty[round-mode=places,round-precision=0,fixed-exponent=3,exponent-mode=fixed,drop-exponent=true]{\val}{\kilo{}}\\
+                {\scriptsize\qty[round-mode=places,round-precision=1,fixed-exponent=0,exponent-mode=fixed,drop-exponent=true]{\finalpercentage}{\percent}}
+            }
+        },
+        enlarge y limits={value=0.15,upper},
+        every node near coord/.append style={align=center},
         xtick style={draw=none},
 %        xtick=data,
         xtick distance=1,

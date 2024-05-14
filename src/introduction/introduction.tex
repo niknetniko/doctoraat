@@ -5,13 +5,13 @@
 \chapter{Introduction}\label{ch:introduction}
 
 Learning to program is hard, and students consequently regard programming courses as difficult~\autocite{robinsLearningTeachingProgramming2003,simoesNatureProgrammingExercises2020}.
-It is generally accepted that gaining a deep understanding of programming requires experience and feedback~\autocite{gomesEnvironmentImproveProgramming2007}.
+It is generally accepted that gaining a deep understanding of programming requires experience and feedback~\autocite{gomesEnvironmentImproveProgramming2007,hattiePowerFeedback2007}.
 This feedback is what makes teaching programming difficult: it is a time-consuming task to provide qualitative and timely feedback on submissions, especially if the number of students in a course is high~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
 
 \section{Origins and use of automated assessment in computer science education}\label{sec:automated-assessment-in-computer-science-education}
 
 Education of concepts that we would now consider part of the computer science discipline goes back as early as the 1940s.
-Of particular interest to this dissertation is the education of programming, which began appearing curricula during the early 1960s~\autocite{simonEmergenceComputingEducation2015}.
+Of particular interest to this dissertation is the education of programming, which began appearing in curricula during the early 1960s~\autocite{simonEmergenceComputingEducation2015}.
 This is shortly after computer science became recognized as its own scientific discipline in the 1950s and 1960s~\autocite{hopcroftComputerScienceEmergence1987,atchisonComputerScienceNew1971,gornComputerInformationSciences1963,knuthComputerScienceIts1974,denningScienceComputerScience2013}.
 A good overview on the history of computer science education is given in \textcite{tedreChangingAimsComputing2018}, to which we point the reader for a complete overview.
 
@@ -36,7 +36,7 @@ The goal is to provide students with formative feedback.
 Even more, correctness as the only feedback might not help students in the learning process~\autocite{haoUnderstandingEffectiveDesign2021}.
 In a programming contest, the result of an evaluation is often limited to a binary correctness decision: the submission is accepted or rejected.
 A second difference is the focus on performance: in an educational setting the focus is generally on the performance of generating the feedback, while in a competition the focus lies on the performance of the submission.
-For example, in some programming contests, a correct submission is expected, but the competition lies in having the fastest submission.
+For example, in some programming contests, a correct submission is expected, but the competition is having the fastest submission.
 
 Another area of interest is the practice of software testing in the software engineering field.
 As with educational software testing, the essential purpose of software testing is correctness~\autocite{panSoftwareTesting1999}.
@@ -63,8 +63,8 @@ As of May 2024, Dodona has more than \num{69200} registered users and has evalua
 The need for supporting multiple programming languages has also been noted from almost the start of using automated assessment for programming exercises~\autocite{hextAutomaticGradingScheme1969}.
 Dodona has thus been developed with support for multiple programming languages from the start.
 It has a strict separation between the platform (responsible for managing courses, students, and exercises) and the testing framework (determining if submissions are correct).
-This separation has allowed for easily supporting a multitude of programming languages.
-Within Dodona, a testing framework is called a judge (and evaluating a submission for correctness is called judging), as it was done in the Sphere Online Judge.
+This separation has made supporting a multitude of programming languages relatively easy.
+Within Dodona, a testing framework is called a judge (and evaluating a submission for correctness is called judging), as it is called in the Sphere Online Judge.
 
 While the earliest Dodona judges targeted Python and JavaScript submissions, its interface for judges proved to be generic enough that it now supports a multitude of scenarios.
 For example, there are currently judges for C, Haskell, Java, Prolog, R, Scheme, Bash, C\#, JavaScript, and Python.
@@ -72,7 +72,7 @@ There are also a few less straightforward judges, for HTML, SQL, Markdown, and T
 
 \subsection{Architecture}\label{subsec:architecture}
 
-The separation between the platform itself and the judge is also reflected in the architecture of Dodona.
+The separation between the Dodona platform and its judges is also reflected in its architecture.
 The platform itself is a fairly standard web application written in Ruby on Rails.
 The web application follows the recommendations by Ruby on Rails: it uses a model-view-controller architecture.
 Most pages, especially simpler ones, use server-side rendering.
@@ -103,7 +103,7 @@ Besides automated assessment, Dodona provides a host of features to support educ
 First, Dodona supports a sophisticated course and user management system.
 Educators can request that their account be upgraded to a teacher account, which grants access to additional capabilities, like creating and managing courses, but also access to the sample solution for exercises.
 Courses on Dodona are created to reflect courses in real life, and are linked to an academic year.
-Students can then subscribe to their relevant courses (or they can be added by educators).
+Students can then subscribe to their relevant courses.
 A course consists of a number of series, which in turn contain some exercises, allowing for the creation of learning paths in the course.
 
 Within a course, Dodona provides detailed statistics and data visualizations of the progress students make in a course and for each series.
@@ -121,7 +121,7 @@ We use this mode ourselves to organize exams as follows.
 A hidden series (which is invisible to students) is shared at the start of an exam.
 This series contains the exercises that students need to solve.
 After the deadline, Dodona can automatically select the latest submission before the deadline for each student.
-We then provide feedback and grades on these submissions.
+We then manually provide feedback and grades on these submissions.
 After we have processed all submissions, we release the feedback to the students, who can then view the feedback and grade they received.
 
 \subsection{The feedback table}\label{subsec:the-feedback-table}
@@ -133,15 +133,15 @@ After we have processed all submissions, we release the feedback to the students
     \caption{
         An example of the feedback table for an incorrect Python submission for the exercise \textit{Curling} on Dodona.
         The feedback is split into three tabs (the fourth tab, ``Code'', contains the submission itself).
-        As can be seen below the tabs, only 32 of the 64 test cases are correct.
-        The figure shows the first two test cases, the first of which is incorrect: the function should have returned a tuple, but returned a list instead.
+        As can be seen below the "Score" tab, only 32 of the 64 test cases are correct.
+        The figure shows the first two test cases from the ``Score'' tab, the first of which is incorrect: the function should have returned a \texttt{tuple}, but returned a \texttt{list} instead.
         Besides showing the difference between the expected and actual value, Dodona also allows showing more information.
         In this case, a visual rendering of the curling position is given to aid students in debugging their code.
     }
     \label{fig:curling-feedback-table}
 \end{figure}
 
-One of the most important elements for both students and educators is the feedback table (\cref{fig:curling-feedback-table}).
+One of the most important actionable components for both students and educators is the feedback table (\cref{fig:curling-feedback-table}).
 This feedback table is flexible enough to accommodate a wide variety of feedback.
 In the example, three types of feedback are illustrated: the difference between the expected and generated return value, a custom message, and an image.
 
@@ -154,7 +154,7 @@ Dodona currently supports two types of ``learning activities'': programming exer
 A reading activity requires no submission, but students can mark them as read to confirm they did the reading.
 Programming exercises allow students to submit code and receive feedback on their submissions.
 However, the bar for what constitutes code can be low.
-For example, Dodona has a Markdown judge, which generates a rendered (HTML) version of the Markdown code submitted by students, without actually evaluating anything more than the validity of the Markdown.
+For example, Dodona has a Markdown judge, which generates a rendered (HTML) version of the Markdown code submitted by students, without automatically evaluating anything more than the validity of the Markdown.
 Dodona can thus be used to collect plain text submissions from students.
 
 Exercises in Dodona are managed in Git repositories.
@@ -181,7 +181,7 @@ They can be split into five main research questions:
     \item[RQ5] What common execution model for running and debugging Scratch code best optimizes both scenarios?
 \end{description}
 
-The first two questions concern themselves with textual programming languages, while the last three questions are in the context of Scratch, a visual block-based language.
+The first two questions relate to textual programming languages, while the last three questions are in the context of Scratch, a visual block-based language.
 The reason for this split is that it became clear that the needs for textual and block-based programming languages are different enough to warrant a separate approach.
 
 This split is reflected in the structure of this dissertation as well.
@@ -202,7 +202,7 @@ Similar to the conclusions, each chapter also has its own introduction, where th
 
 \section{Textual programming languages}\label{sec:intro-tested}
 
-The first research question was inspired by the observation that using exercises and judges in Dodona required some manual work.
+The first research question \requ{1} was inspired by the observation that using exercises and judges in Dodona required some manual work.
 A lot of programming exercises on Dodona are usable in multiple programming languages, at least their concept.
 Actually using an exercise in another programming language, first requires a copy of the exercise to be made.
 Then the existing test suite must be converted manually to the test suite format used by the judge for that particular programming language.
@@ -215,7 +215,7 @@ Supporting a new feature also requires doing it for every judge, which often doe
 
 \subsection{Programming-language-agnostic exercises}\label{subsec:programming-language-agnostic-testing}
 
-The answer to the first research question is TESTed, an educational software testing framework we created.
+The answer to the first research question \requ{1} is TESTed, an educational software testing framework we created.
 Its defining feature is the ability to create programming-language-agnostic exercises.
 This means that the same exercise (with one test suite) can be solved in multiple programming languages, with support for automated assessment.
 
@@ -225,21 +225,21 @@ Compared to the original publication, the chapter has been expanded with more in
 
 \subsection{Ergonomic authoring of exercises}\label{subsec:ergonomic-testing}
 
-With a working prototype at hand, the second research question came rather naturally.
+With a working prototype at hand, the second research question \requ{2} came rather naturally.
 We took a step back to look at what is required to go from a prototype to a viable option for creating programming exercises.
 This analysis aimed to ensure the exercises could be used in educational practice, including high-stakes tests such as exams.
 We want TESTed to be suitable for both educators in higher education and secondary education.
 Our ambition was to make TESTed the default option for creating programming exercises in Dodona.
 
 The result of this research is presented in a second publication: \textcite{strijbolTESTedDSLDomainspecificLanguage2024}.
-It is included as \cref{ch:tested-dsl}.
+It is included almost verbatim as \cref{ch:tested-dsl}.
 By looking at (educational) software testing more broadly, we find two missing parts of the process of creating programming exercises.
 The first missing and most important part is an ergonomic and approachable way of creating test suites for exercises.
 Our solution is TESTed-DSL, a domain-specific language for authoring programming-language-agnostic exercises with support for automated assessment.
 The second missing part is support for language-agnostic task descriptions.
 We show that TESTed-DSL can also be used for task descriptions.
 
-A new insight while working on TESTed-DSL was that TESTed is not only useful for creating programming-language-independent exercises, but also suitable for exercises that are not intended to be used in multiple programming languages.
+A new insight while working on TESTed-DSL was that TESTed is not only useful for creating programming-language-independent exercises, but is also suitable for exercises that are not intended to be used in multiple programming languages.
 Therefore, we have taken special care to design TESTed-DSL to be useful for a wide audience of educators, including higher and secondary education.
 For this reason, we also invested in our documentation, which contains reference documentation and a set of tutorials for commonly used exercise types.
 
@@ -274,13 +274,13 @@ Two sets of documentation are available, aimed at a different target audience:
 For young children, learning to program is often done with specialized programming languages.
 The most-used language in this context is Scratch, a visual block-based programming language~\autocite{resnickScratchProgrammingAll2009}.
 
-Since Dodona is independent of any testing framework, we thus asked the third research question: ``Can we design an educational software testing framework for Scratch?''.
+Since Dodona is independent of any testing framework, we thus asked the third research question \requ{3}: ``Can we design an educational software testing framework for Scratch?''.
 Our intention was to add support for Scratch to Dodona.
 
 \subsection{Testing Scratch code}\label{subsec:testing-scrath-code}
 
 The first prototype of Itch, our testing framework for Scratch, did just that: it added support for evaluating Scratch submissions in Dodona.
-However, Scratch is not only a programming language, but a complete programming environment.
+However, Scratch is not only a programming language, but a complete programming environment~\autocite{maloneyScratchProgrammingLanguage2010}.
 We realized that properly supporting Scratch required accommodations that were too different from what Dodona could (or would) provide.
 Additionally, while our group had experience with programming exercises for text-based languages, we had much less experience with Scratch in an educational context.
 
@@ -293,7 +293,7 @@ Readers interested in knowing more might like to read an article about this coll
 
 The testing framework Itch, the answer to the third research question, is described in \cref{ch:itch}.
 Itch allows both static and dynamic tests on Scratch exercises, which provides a lot of flexibility to educators.
-Especially the dynamic testing allows for exercises that allow (within limits) the exploratory nature of Scratch to remain.
+Dynamic testing, in particular, allows for exercises that allow (within limits) the exploratory nature of Scratch to remain.
 
 Itch test suites for Scratch exercises are written in JavaScript.
 While working with CodeCosmos on creating Scratch exercises, it became clear that the JavaScript test suites were a big hurdle for educators without a computer science background.
@@ -305,7 +305,7 @@ While technically feasible, there are still open questions regarding the practic
 
 The goal of educational software testing and automated assessment is to provide students with feedback on their code.
 However, the feedback in itself is not enough: we want students to be able to use that feedback and be able to correct their code if something went wrong.
-The next step, after a failed test, is then to debug the submission, which is a two-step process~\autocite{myersArtSoftwareTesting2012}.
+The next step, after a failed test, is to debug the submission, which is a two-step process~\autocite{myersArtSoftwareTesting2012}.
 Step one is determining the exact nature and location of the error, and step two is fixing said error.
 
 It is well known that determining the cause of an observed failure is challenging~\autocite{ammannIntroductionSoftwareTesting2016}.
@@ -315,7 +315,7 @@ This has led to the creation of various tools to help with this, chief among the
 This is also the case with text-based languages.
 For example, this is why \cref{fig:curling-feedback-table} shows a ``Debug'' button in the feedback table of Dodona.
 However, for Scratch, this area is much less developed.
-The fourth research question thus became: ``Can we design a debugger for Scratch?''.
+The fourth research question \requ{4} thus became: ``Can we design a debugger for Scratch?''.
 
 \Cref{ch:blink} discusses our answer to this question, in the form of Blink, our time-travelling debugger for Scratch.
 A time-travelling debugger allows the programmer to go back in the execution, often by recording program execution~\autocite{barrTardisAffordableTimetravel2014,barrTimetravelDebuggingJavaScript2016,czaplickiAsynchronousFunctionalReactive2013,balzerEXDAMSExtendableDebugging1969,ungarDebuggingExperienceImmediacy1997,chenReversibleDebuggingUsing2001,crescenziReversibleExecutionVisualization2000}.
@@ -335,7 +335,7 @@ The cooperative nature of the threading model also has drawbacks: it can lead to
 
 Additionally, the execution model also limits how a debugger can work, without resorting to deviating from the execution model as used during normal execution.
 
-We thus asked ourselves, ``What execution model for running and debugging Scratch code best optimizes both?''.
+We thus asked ourselves, ``What execution model for running and debugging Scratch code best optimizes both?'' \requ{5}.
 We investigate and answer this question in \cref{ch:scratch-execution-model}.
 The chapter begins with a detailed look at how the current execution model behaves, followed by our proposed changes.
 Since Scratch is so widely used, our changes should not negatively impact existing Scratch programs.
@@ -346,13 +346,15 @@ We conclude that our proposed changes do not cause problems for existing Scratch
 \subsection{Organization of the second part}\label{subsec:organization-of-the-second-part}
 
 The second part starts with a short chapter that introduces Scratch, the programming language and environment: \cref{ch:scratch-the-programming-environment}.
-Next, \cref{ch:itch} discusses Itch, our Scratch testing framework.
+Next, \cref{ch:itch} discusses Itch and Poke, our Scratch testing frameworks.
 \Cref{ch:blink} then discusses Blink, our debugger for Scratch.
 Finally, \cref{ch:scratch-execution-model} discusses the Scratch execution model, our proposed changes to it, an analysis of Scratch projects, and an evaluation of our proposed changes.
 
 Work on these various tools for Scratch often began as a master thesis~\autocite{makItchEenEducatief2019,voetenEenBlokgebaseerdTestframework2023,goethalsEenTimeTravelling2023,deproftBlinkEenEducatieve2022}.
 
 \subsection{Repositories}\label{subsec:repositories-and-code-scratch}
+
+The source code of Itch is not publicly available at this time due to the agreement with our partner CodeCosmos.
 
 The source code for Blink\footnote{\url{https://github.com/scratch-ed/blink}} is available under the same licence as Scratch, the \textsc{bsd} 3-Clause ``New'' or ``Revised'' Licence.
 We also host an online instance of the debugger\footnote{\url{https://scratch.ugent.be/blink/}}.

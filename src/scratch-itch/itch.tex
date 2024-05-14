@@ -33,6 +33,7 @@ One of the first ones is Hairball~\autocite{boeHairballLintinspiredStatic2013}.
 Hairball analyses the blocks of a provided Scratch project, with multiple rules and analysers available.
 Dr.\ Scratch~\autocite{moreno-leonDrScratchWeb2015} allows analysing a Scratch project to provide various insights.
 For example, Dr.\ Scratch uses Hairball to assign a ``computational thinking score'' to the project, although the creators of Scratch are not a fan of this approach~\autocite{resnickCodingCrossroads2020}, see \cref{subsec:how-to-evaluate-scratch-submissions}.
+A similar tool is Ninja Code Village~\autocite{otaNinjaCodeVillage2016}.
 
 QualityHound~\autocite{techapalokulQualityHoundOnline2017} is a linter that detects code smells like ``duplicate code'' or ``broad variable scope''.
 In total, twelve code smells are detected.
@@ -57,6 +58,15 @@ For example, Whisker (and subsequent research), supports property-based testing,
 
 Finally, Scratch Testing Block~\autocite{nurueTestingExtensionScratch2024} is a prototype for a Scratch extension that provides an ``assert'' block.
 It is in aim similar to Poke (\cref{sec:poke:-a-testing-framework-written-in-scratch}): providing testing facilities inside Scratch itself.
+
+Besides Scratch, there are other block-based languages, for some of which testing frameworks also exist.
+Block-based languages, like MakeCode~\autocite{ballMicrosoftMakeCodeEmbedded2019}, that compile to another programming language (like Python or JavaScript) are less relevant here, as the testing frameworks often use the compiled version.
+
+Snap\textit{!} is another block-based language~\autocite{monigSnapBuildYour2024}, created in 2011 by a former member of the Scratch team.
+It has many features that are considered too advanced for Scratch, like higher order functions, prototype-based programming, nested sprites, and metaprogramming capabilities.
+SnapCheck is one testing framework for Snap\textit{!}, inspired by Whisker~\autocite{wangSnapCheckAutomatedTesting2021}.
+Another example is CodeMaster~\autocite{wangenheimCodeMasterAutomaticAssessment2018}, which also supports AppInventor (a way to create mobile apps using a block-based language).
+However, the actual testing is more similar to Dr.\ Scratch: it assigns scores based on a static analysis of the used blocks.
 
 \section{Introduction to Itch}\label{sec:introduction-to-itch}
 

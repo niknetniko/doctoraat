@@ -62,10 +62,11 @@ Finally, we illustrate that the changed execution model is suitable for use in a
 \end{listing}
 
 A Scratch program consists of zero or more sprites and a stage (see also \cref{ch:scratch-the-programming-environment}).
-Together, the sprites and stages are called targets (since they are drawn on the screen).
-All sprites have their own local state: the variables and visual properties of the sprite (e.g.\ position, size, bounding box, colour, direction).
-Clones are also targets: they are drawn, but share their code with their original sprite (but they do have some state, like the visual properties).
-In the virtual machine, there is no substantial difference between how targets (sprites, stage, clones) are handled, so we can just consider targets for the remainder of this chapter.
+For every sprite at least one target is created (a target is what is drawn on the screen), while the stage has exactly one target.
+All targets have their own local state: the variables and visual properties (e.g.\ position, size, bounding box, colour, direction).
+Clones create more targets of the same sprite.
+While clones have their own separate state, all targets based on the same sprite share the same code.
+In the virtual machine, there is no substantial difference between how targets from different origins (sprites, stage, clones) are handled, so we can just consider targets for the remainder of this chapter.
 
 Code-wise, the Scratch blocks are organized into categories (see \cref{subsec:using-the-environment-and-the-blocks}).
 However, in this case, it is useful to look at their technical type, which corresponds to their shape.
@@ -109,9 +110,9 @@ Also, \textcite{gotzModelbasedTestingScratch2022} model the state-based behaviou
 Finally, \textcite{deinerAutomatedTestGeneration2023} delve deeper into the actual execution of the virtual machine, while also proposing some modifications to it, for example, to make execution deterministic.
 
 Other block-based languages also have to deal with concurrency.
-For example, MakeCode also uses a non-preemptive threading model, inspired by the Scratch~\autocite{ballMicrosoftMakeCodeEmbedded2019}.
+For example, MakeCode also uses a non-preemptive threading model, inspired by Scratch~\autocite{ballMicrosoftMakeCodeEmbedded2019}.
 There has also been some work on concurrency and concurrency controls in other block-based languages~\autocite{chungConCodeItComparisonConcurrency2020}.
-However, since most of these languages do not use the Scratch virtual machine for execution, their applicability is limited.
+However, since most of these languages do not use the Scratch virtual machine for execution, their relevancy for this chapter is limited.
 
 \section{The current execution model}\label{sec:the-current-execution-model}
 
@@ -119,11 +120,11 @@ However, since most of these languages do not use the Scratch virtual machine fo
 
 \marginnote{Arguably, it is more of a concrete syntax tree, as e.g. the position of blocks is also saved. However, in Scratch's case, the differences are minimal, so we call it an abstract syntax tree, as Scratch themselves do.}
 When executing Scratch code, the virtual machine transforms the blocks into an abstract syntax tree.
-These are organized by target, and every script of every target results in a thread inside the virtual machine.
+These are organized by target, and every execution of a script results in a distinct thread inside the virtual machine.
 These are green threads: implemented fully in the virtual machine.
 
 The virtual machine is thus responsible for scheduling these threads.
-A schematic overview of the interaction between the different parts is \cref{fig:blink-architecture}.
+\Cref{fig:blink-architecture} gives a schematic overview of the interaction between the different parts.
 It uses an almost-cooperative threading model, which \textcite{maloneyScratchProgrammingLanguage2010} call the ``Scratch threading model''.
 This means it is mostly non-preemptive: the virtual machine will not interrupt threads at arbitrary points in their execution.
 The threads must voluntarily yield control, or reach a limited set of points in their execution.
@@ -235,7 +236,7 @@ The exact implementation of the stack is less relevant for this chapter, so it i
 
 This section illustrates a few limitations of the current execution model, first in general and then specifically for a debugger.
 
-\subsection{In general}\label{subsec:in-general}
+\subsection{During general execution}\label{subsec:in-general}
 
 \begin{listing}
     \centering
@@ -286,11 +287,11 @@ This section illustrates a few limitations of the current execution model, first
 
 As \textcite{maloneyScratchProgrammingLanguage2010} mentioned, the Scratch threading model does not solve all issues with concurrency.
 To illustrate this point, we will consider a variant on the \emph{Star} exercise from \cref{subsec:star-exercise}.
-In this exercise, the goal is to let a sprite move around on a path without falling into the water (read touching a blue colour.)
+In this exercise, the goal is to let a sprite move around on a path without falling into the water (read: touching a blue colour).
 \Cref{lst:star-model-implementation} shows an implementation for this exercise with an additional script that will stop execution if the sprite touches something blue.
 We asked a number of educators that had experience with Scratch to predict the behaviour of this implementation.
-All of them expected to execution to stop either when the sprite first touches the water or after the block when the sprite first touches the water.
-However, as can be seen in \cref{fig:star-exercise-model-before,fig:star-exercise-model-after}, where the canvas is shown before and after running the code, the second script that should have stopped execution did not work.
+All of them expected the execution to stop either when the sprite first touches the water or after executing the block when the sprite first touches the water.
+However, as can be seen in \cref{fig:star-exercise-model}, where the canvas is shown before and after running the code, the second script that should have stopped execution did not work.
 
 The reason for this is the non-preemptive thread switching: the body of the loop is always executed atomically.
 At the start of the loop, the sprite does not touch the water.
@@ -314,7 +315,7 @@ For example, thread switching, which is normally implicit in Scratch's perceived
 
 Additionally, debuggers must choose what to do with intermediate states that are typically hidden during normal execution.
 For instance, five consecutive blocks would result in one redraw in the normal execution.
-One choice is to not alter the redraw logic (thus only redrawing when the normal execution would redraw), but this results in steps having no visual impact, even if the block changes the visuals.
+One choice is to not alter the redraw logic (thus only redrawing when the normal execution would redraw), but this results in steps having no visual impact, even if the block logically should change the visuals.
 The other choice is to redraw after every step.
 While the effect of every block (and step) is then visible, this exposes intermediary steps that would normally not be drawn.
 Some blocks (for example, checking if a sprite touches a colour) use the visual state, meaning these additional redraws can result in a different execution of the project.
@@ -327,15 +328,15 @@ Users can thus focus on the script(s) they believe are involved in the failure w
 This approach does come at a price: it changes the Scratch execution model, which is not trivial due to two main considerations:
 
 \begin{enumerate}
-    \item If the execution model is only changed when debugging, the debugger does not debug the same program as when running the program.
-        This can result in different behaviour, meaning the bugs for which the debugger is used are no longer present or new bugs, unique to the debugger, could be introduced.
+    \item If the execution model is only changed when debugging, the debugger does not debug the same program execution as when running the program.
+        This can result in different behaviour, meaning the bugs for which the debugger is used need no longer be present or new bugs, unique to the debugger, could be introduced.
     \item If the execution model is changed, we need to ensure that existing Scratch programs keep working and that we do not introduce concurrency problems, as the current execution model of Scratch was explicitly chosen to avoid those.
 \end{enumerate}
 
 We opt for the second option: modifying the Scratch execution model.
-In the next section, we discuss what we changed, after which we investigate if existing Scratch projects can continue to work.
+In the next section, we discuss what we changed, after which we investigate the impact on performance and behaviour of existing Scratch projects.
 
-\section{New execution model}\label{sec:a-family-of-new-execution-models}
+\section{Towards a new execution model}\label{sec:a-family-of-new-execution-models}
 
 In line with how we want the stepping feature of the debugger to work, we have decided to change the Scratch execution model as follows: we modify a turn to execute exactly one block before yielding.
 Thus, in a single tick, the virtual machine will execute a single block in every thread.
@@ -343,22 +344,21 @@ Thus, in a single tick, the virtual machine will execute a single block in every
 As there is often only one tick per step (due to many blocks requesting redraws), this means that only one block would be executed per step (thus one block for every thread per \qty{33}{\milli\second}).
 The consequence is that this makes execution much slower than in the original execution model.
 
-A possible solution is to modify the number of steps that are taken.
+A possible remedy is to modify the number of steps that are taken.
 For example, it might be better to run at twice or more times the number of steps per second.
 In turbo mode, this would mean the steps are done as fast as the hardware allows.
 While this does make everything go much faster, it does introduce a big difference in execution time between a performant machine and a slower machine.
 
-These changes to the execution model have as a benefit that the \emph{Star} exercise will work as intended (\cref{fig:scratch-two-execution}).
-Since the first thread will yield after the first block in the loop, the exercise will work as intended.
+These changes to the execution model have as a benefit that the \emph{Star} solution (\cref{lst:star-model-implementation}) will behave as expected, since the first thread will yield after the first block in the loop.
 It can also illustrate that this does introduce concurrency considerations that were not present in the original execution model.
 For example, if the conditional block in the second thread evaluates to true, the first thread will execute another block before execution is stopped by the block inside the conditional block from thread two.
 
-In the next sections, we analyse existing Scratch projects to determine which number of steps that most closely results in the same execution speed as the original execution model.
+In the next section, we analyse existing Scratch projects to determine which frame rate for the new execution model most closely results in the same execution speed as the original execution model (which runs at 30 frames per second).
 We also take this opportunity to analyse the complexity and block use in Scratch projects, to evaluate whether the concurrency considerations would cause problems.
 
 \section{Exploration of Scratch projects}\label{sec:evaluation-of-scratch-projects}
 
-As Scratch is used by many students, it is important that changes to the execution model do not adversely affect existing Scratch projects.
+As Scratch is used by many people, it is important that changes to the execution model do not adversely affect existing Scratch projects.
 However, this requires us knowing what Scratch projects look like.
 The aim of this analysis is to determine what blocks are used in Scratch projects, how big projects are, and what programming concepts are used.
 
@@ -366,10 +366,9 @@ We begin by looking at existing work on analysing Scratch projects, followed by 
 
 \subsection{Existing analyses}\label{subsec:existing-analyses}
 
-% TODO: move down
-\makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.}
-\Textcite{aivaloglouHowKidsCode2016} analysed \num{250000} Scratch 2.0 projects that they scraped from the public Scratch site.
+\Textcite{aivaloglouHowKidsCode2016} analysed \num{250000} Scratch 2.0 projects they scraped from the public Scratch site.
 They looked at the types of blocks used, the size of the projects, and the complexity.
+\makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.\vspace{0.5cm}}
 For the complexity, they utilize the cyclomatic complexity metric~\autocite{mccabeComplexityMeasure1976}.
 The considered decision points are the \texttt{if} and \texttt{if-else} blocks.
 
@@ -379,27 +378,28 @@ They also found that about \qty{78}{\percent} of projects have no decision point
 
 \Textcite{fronzaApproachEvaluateComplexity2020} investigate Scratch projects with different complexity metrics.
 The dataset is, however, much more limited: 80 projects were analysed.
-\makenote*{The validity of the Halstead metrics is even more controversial~\autocite{hamerHalsteadSoftwareScience1982,shenSoftwareScienceRevisited1983,jonesDimensionalAnalysisHalstead2019}.}
+\makenote*{The usefulness of the Halstead metrics is even more controversial~\autocite{hamerHalsteadSoftwareScience1982,shenSoftwareScienceRevisited1983,jonesDimensionalAnalysisHalstead2019}.}
 The authors also measure the cyclomatic complexity, in addition to some Halstead complexity measures~\autocite{halsteadElementsSoftwareScience1977}, and their own proposal for a ``when'' metric.
 They do use more decision points for the cyclomatic complexity (\texttt{if}, \texttt{if-else}, \texttt{repeat until}, \texttt{wait until}, \texttt{and}, \texttt{or}).
 The proposed ``when'' metric counts the number of ``when'' blocks (e.g.\ hat blocks with certain conditions).
 
-\subsection{A new dataset of Scratch projects}\label{subsec:a-new-dataset-of-scratch-projects}
+\subsection{A new dataset of Scratch 3.0 projects}\label{subsec:a-new-dataset-of-scratch-projects}
 
 Since the dataset for \textcite{aivaloglouHowKidsCode2016} consists of Scratch 2.0 projects and \textcite{fronzaApproachEvaluateComplexity2020} only analyse 80 projects, we found it necessary to collect a new dataset of Scratch projects.
 
 To create a new dataset, we used the Scratch API\footnote{\url{https://en.scratch-wiki.info/wiki/Scratch_API}} as follows.
-Creating a new project provided an identifier, which we used as a starting point.
+Creating a new project provides an identifier ({\addfontfeature{Numbers={Lining,Proportional}}996725073}), which we used as a starting point.
 We then subtract one from the identifier, downloaded the project if possible, and continued.
+The oldest project in the dataset is from April 5th, with identifier {\addfontfeature{Numbers={Lining,Proportional}}995595608}.
 
-This resulted in \num{237926} projects.
+This resulted in \num{237926} downloaded public projects (of the total \num{1129465} that were made between our newest and oldest projects).
 From those, \num{207} were corrupt or for an older version of Scratch.
 We also filtered out the following projects: \num{37936} (\qty{15.9}{\percent}) were empty and \num{4411} (\qty{1.9}{\percent}) had no executable code (e.g.\ only head blocks or scripts without head blocks).
 This results in a final dataset of \num{195372} Scratch projects we considered for further analysis.
 
 \subsection{Analysing Scratch 3.0 projects}\label{subsec:analysing-scratch-3.0-projects}
 
-Hairball~\autocite{boeHairballLintinspiredStatic2013} is commonly used to analyse Scratch projects (it is also used by the existing analyses), but does not support Scratch 3.0 projects.
+Hairball~\autocite{boeHairballLintinspiredStatic2013} is commonly used to analyse Scratch projects (it is also used by the existing analyses), but does not support Scratch 3.0.
 % \footnote{TODO: url to repo}
 For this reason, we have implemented a very similar piece of software in JavaScript.
 It also supports plugins to support extensions for other analyses.
@@ -431,7 +431,8 @@ Note that these numbers do not fully compare with \textcite{aivaloglouHowKidsCod
     \includestandalone{block-categories}
     \caption{
         Number of projects that use blocks from a certain category.
-        Excluded are custom blocks, and all blocks for extensions are counted together.
+        Custom blocks are excluded, and all blocks for extensions are counted together.
+        Bar colours correspond to the block categories colours in the traditional Scratch 3.0 colour scheme.
     }
     \label{fig:block-categories}
 \end{figure}
@@ -440,7 +441,7 @@ By looking at the blocks, we see the first indication that most projects are sma
 
 We can also see that extensions are not used that much.
 Only \qty{12.2}{\percent} of projects use any extension.
-The Pen extension is the most popular one, appearing in \qty{6.9}{\percent} of projects.
+The Pen extension is the most popular one, appearing in \qty{6.9}{\percent} of the projects.
 
 \subsection{Size and complexity}\label{subsec:size-and-complexity}
 
@@ -478,23 +479,24 @@ When considering the size of a program, a frequently used metric is lines of cod
 However, there is no universal agreed upon manner in which to count lines of code~\autocite{nguyenSLOCCountingStandard2007}.
 Two variants are frequently used: physical lines of code (the number of lines in the source files) and logical lines of code (an approximation of the number of statements or expressions).
 While normally counting the physical lines of code is easy and counting logical lines requires some consideration, the reverse is true in Scratch.
-For counting logical lines of code, we can simply count all blocks.
+To count logical lines of code, we can simply count all blocks.
 For physical lines of code, we chose to count the number of ``main'' blocks in a script.
 This means we do not count blocks used as arguments, e.g.\ the condition of a loop block is not counted.
 
-When counting the number of scripts per project, we excluded scripts that consist only of one or more hat blocks, as these do nothing.
+When counting the number of scripts per project, we excluded scripts that consist only of a hat block, as these do nothing.
 We similarly excluded sprites without code from the count of sprites per project.
+These can have a role in some cases, but are not useful in the statistics.
 
 From these data, we can conclude that \qty{75}{\percent} of projects have less than 5 sprites, 11 scripts, and 80 blocks.
 \Textcite{aivaloglouHowKidsCode2016} found that this was 5 sprites, 12 scripts, and 76 blocks, which are highly similar findings.
-We can conclude that most Scratch projects are small.
+We can conclude that most Scratch projects are still small in Scratch 3.0.
 
 \begin{figure}
     \begin{wide}
         \includestandalone[width=\linewidth]{cyclomatic-complexity}
     \end{wide}
     \caption{
-        The distribution of the scripts based on their cyclomatic complexity.
+        Distribution of scripts based on their cyclomatic complexity.
         Scripts with complexities higher than 10 have been bundled into the last bucket.
     }
     \label{fig:scratch-cc}
@@ -511,13 +513,14 @@ In summary, most projects are small (\qty{75}{\percent} has less than 5 sprites,
 
 \subsection{Programming concepts}\label{subsec:programming-concepts}
 
+% TODO: compare with felien
 \begin{table}
     \centering
     \caption{Prevalence of programming concepts in Scratch projects.}
     \label{tab:scratch-programming-concepts}
     \begin{tabular}{|l|S[table-format=6.0]|S|}
         \hline
-        {Concept} & {№ of projects} & {№ of scripts (\%)} \\
+        {Concept} & {№ of projects} & {\% of projects} \\
         \hline
         User input blocks & 90703 & 46.43 \\
         Random & 67403 & 34.50 \\

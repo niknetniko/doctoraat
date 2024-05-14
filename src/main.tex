@@ -246,38 +246,56 @@ Prof.\ Dr.\ Christophe Scholliers\\
 Prof.\ Dr.\ Ir.\ Bart Mesuere
 }
 
+% Allow small caps from upper case letters
+\DeclareRobustCommand\csc{\addfontfeature{Letters=UppercaseSmallCaps}}
+\DeclareTextFontCommand{\textcsc}{\csc}
+
 % Automagically convert 'Tested' to smallcaps.
 \begin{luacode}
+  to_replace = {
+    {"TESTed", "\\textsc{test}ed"},
+    "JSON",
+    "YAML",
+    "DSL",
+    "API",
+    "SVG",
+    "NDJSON",
+    "MIT",
+    "GIL",
+    "ABC",
+    "ASCII",
+    "IDE",
+    "GUI",
+    "FPS",
+    "HTML",
+    "CSS",
+    "FTRPRF",
+    "TIOBE",
+    "SPOJ",
+    "ACM-ICPC",
+    "SQL",
+    "ACM",
+    "ICPC"
+  }
   function capstosc(s)
-    s = string.gsub(s, "%f[%w_]TESTed%f[^%w_]", "\\textsc{test}ed")
-    s = string.gsub(s, "%f[%w_]JSON%f[^%w_]", "\\textsc{json}")
-    s = string.gsub(s, "%f[%w_]DSL%f[^%w_]", "\\textsc{dsl}")
-    s = string.gsub(s, "%f[%w_]YAML%f[^%w_]", "\\textsc{yaml}")
-    s = string.gsub(s, "%f[%w_]API%f[^%w_]", "\\textsc{api}")
-    s = string.gsub(s, "%f[%w_]SVG%f[^%w_]", "\\textsc{svg}")
-    s = string.gsub(s, "%f[%w_]NDJSON%f[^%w_]", "\\textsc{ndjson}")
-    s = string.gsub(s, "%f[%w_]MIT%f[^%w_]", "\\textsc{mit}")
-    s = string.gsub(s, "%f[%w_]GIL%f[^%w_]", "\\textsc{gil}")
-    s = string.gsub(s, "%f[%w_]ABC%f[^%w_]", "\\textsc{abc}")
-    s = string.gsub(s, "%f[%w_]ASCII%f[^%w_]", "\\textsc{ascii}")
-    s = string.gsub(s, "%f[%w_]IDE%f[^%w_]", "\\textsc{ide}")
-    s = string.gsub(s, "%f[%w_]GUI%f[^%w_]", "\\textsc{gui}")
-    s = string.gsub(s, "%f[%w_]FPS%f[^%w_]", "\\textsc{fps}")
-    s = string.gsub(s, "%f[%w_]HTML%f[^%w_]", "\\textsc{html}")
-    s = string.gsub(s, "%f[%w_]CSS%f[^%w_]", "\\textsc{css}")
-    s = string.gsub(s, "%f[%w_]FTRPRF%f[^%w_]", "\\textsc{ftrprf}")
-    s = string.gsub(s, "%f[%w_]TIOBE%f[^%w_]", "\\textsc{tiobe}")
-    s = string.gsub(s, "%f[%w_]SPOJ%f[^%w_]", "\\textsc{spoj}")
-    s = string.gsub(s, "%f[%w_]SQL%f[^%w_]", "\\textsc{sql}")
-    s = string.gsub(s, "%f[%w_]ACM-ICPC%f[^%w_]", "\\textsc{acm-icpc}")
-    s = string.gsub(s, "%f[%w_]ACM%f[^%w_]", "\\textsc{acm}")
-    s = string.gsub(s, "%f[%w_]ICPC%f[^%w_]", "\\textsc{icpc}")
+    for _, needle in ipairs(to_replace) do
+      if (type(needle) == "table") then
+        replacement = needle[2]
+        needle = needle[1]
+      else
+        replacement = "\\textsc{" .. string.lower(needle) .. "}"
+      end
+      pattern = "%f[%w_]" .. needle .. "%f[^%w_]"
+      s = string.gsub(s, pattern, replacement)
+    end
     return s
   end
 \end{luacode}
 \AtBeginDocument{%
 \directlua{luatexbase.add_to_callback ("process_input_buffer", capstosc, "capstosc" )}
 }
+
+\newcommand{\requ}[1]{\textcsc{(RQ#1)}}
 
 \newenvironment{wide}{%
     \begin{addmargin*}[0cm]{-\dimexpr\marginparwidth+\marginparsep\relax}%
