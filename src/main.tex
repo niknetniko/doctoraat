@@ -214,9 +214,7 @@
 % Voorblad
 \usepackage[type=report]{ugent2016-title}
 
-%\usepackage[nospace]{varioref}
-\usepackage[colorlinks,pdfusetitle]{hyperref}
-\usepackage[noabbrev]{cleveref}
+
 
 % Figuren
 \input{tikz-preamble}
@@ -225,14 +223,16 @@
 % Use the styles I want
 \renewmenumacro{\keys}{shadowedroundedkeys}
 \changemenucolortheme{shadowedroundedkeys}{blacknwhite}
-
-
 \usepackage{xparse}
 \NewDocumentCommand\scratchinline{m}{%
     \begin{scratch}[scale=0.4,baseline=c]%
         #1
     \end{scratch}%
 }
+
+%\usepackage[nospace]{varioref}
+\usepackage[colorlinks,pdfusetitle,allcolors=ugent-we-dark]{hyperref}
+\usepackage[noabbrev]{cleveref}
 
 \author{Niko Strijbol}
 \title{Educational software testing\\for textual and block-based programming languages}
