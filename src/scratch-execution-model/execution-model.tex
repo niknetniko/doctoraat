@@ -406,6 +406,8 @@ It also supports plugins to support extensions for other analyses.
 Being written in JavaScript, it has the advantage that it can reuse parts of the Scratch virtual machine, like reading and parsing Scratch projects.
 
 Wherever possible, we have used the same definitions and metrics as used by \textcite{aivaloglouHowKidsCode2016}, for ease of comparison.
+Whenever a direct comparison is possible and relevant, we have included their data in \textit{italics}.
+For example, \qty{75}{\percent} (\textit{\qty{60}{\percent}}) indicates our data shows \qty{75}{\percent}, while \citeauthor{aivaloglouHowKidsCode2016} found \qty{60}{\percent}.
 
 \subsection{Use of blocks}\label{subsec:use-of-blocks}
 
@@ -414,6 +416,9 @@ Scratch blocks can be categorized into seven types, based on their shape (\cref{
 Blocks can also be put into categories (\cref{subsec:using-the-environment-and-the-blocks}).
 The number of projects that use a block from a certain category is shown in \cref{fig:block-categories}.
 Note that these numbers do not fully compare with \textcite{aivaloglouHowKidsCode2016}: since then, some new Scratch extensions were added, and the pen-related blocks have moved to an extension.
+
+It is notable that extensions are not widely used: only \qty{12.2}{\percent} of projects use any extension.
+The Pen extension is the most popular one, appearing in \qty{6.9}{\percent} of the projects.
 
 \begin{figure}
     \centering
@@ -437,12 +442,6 @@ Note that these numbers do not fully compare with \textcite{aivaloglouHowKidsCod
     \label{fig:block-categories}
 \end{figure}
 
-By looking at the blocks, we see the first indication that most projects are small: \qty{17.0}{\percent} of projects only use hat and stack blocks, and \qty{19.5}{\percent} of projects use no C blocks.
-
-We can also see that extensions are not used that much.
-Only \qty{12.2}{\percent} of projects use any extension.
-The Pen extension is the most popular one, appearing in \qty{6.9}{\percent} of the projects.
-
 \subsection{Size and complexity}\label{subsec:size-and-complexity}
 
 \begin{table}
@@ -450,26 +449,29 @@ The Pen extension is the most popular one, appearing in \qty{6.9}{\percent} of t
     \caption{
         Size and complexity statistics about the \num{195372} non-empty Scratch projects in our dataset.
         Unless otherwise noted, all numbers are shown per project and blocks are counted as logical lines of code.
-        The numbers shown in order are the mean and the five-number summary: the minimum, the first quartile, the second quartile (the median), the third quartile, and the maximum.
+        The first column of numbers reports the mean from \textcite{aivaloglouHowKidsCode2016} if avaible.
+        The subsequent numbers are, in order, the mean and the five-number summary: the minimum, the first quartile, the second quartile (the median), the third quartile, and the maximum.
     }
     \label{tab:loc-scratch}
-    \addfontfeatures{Numbers={Monospaced,Lining}}
-    \begin{tabular}{|l|S|S[table-format=2.0]|S[table-format=2.0]|S[table-format=2.0]|S[table-format=2.0]|S[table-format=5.0]|}
-        \hline
-        {} & {mean} & {min} & {Q1} & {Q2} & {Q3} & {max} \\
-        \hline
-        sprites (with code) & 4.98 & 1 & 1 & 2 & 5 & 1000 \\
-        scripts (with code) & 19.73 & 1 & 2 & 4 & 11 & 9134 \\
-        \hline
-        blocks (logical lines) & 203.14 & 2 & 9 & 22 & 75 & 24084 \\
-        blocks (physical lines) & 150.81 & 2 & 8 & 20 & 65 & 20249 \\
-        dead blocks & 42.25 & 0 & 0 & 0 & 3 & 14912 \\
-        \hline
-        blocks per script & 10.30 & 1 & 2 & 5 & 10 & 5497 \\
-        \hline
-        \shortstack[l]{cyclomatic complexity \\ per script} & 1.85 & 1 & 1 & 1 & 2 & 5497 \\
-        \hline
-    \end{tabular}
+    \begin{wide}
+        \addfontfeatures{Numbers={Monospaced,Lining}}
+        \begin{tabular}{|l|S S|S[table-format=2.0]|S[table-format=2.0]|S[table-format=2.0]|S[table-format=2.0]|S[table-format=5.0]|}
+            \hline
+            {} & {\AtNextCite{\defcounter{maxnames}{1}}\citeauthor{aivaloglouHowKidsCode2016}} & {mean} & {min} & {Q1} & {Q2} & {Q3} & {max} \\
+            \hline
+            sprites (with code) & 5.68 & 4.98 & 1 & 1 & 2 & 5 & 1000 \\
+            scripts (with code) & 17.35 & 19.73 & 1 & 2 & 4 & 11 & 9134 \\
+            \hline
+            blocks (logical lines) & 154.55 & 203.14 & 2 & 9 & 22 & 75 & 24084 \\
+            blocks (physical lines) & {\textsc{n/a}} & 150.81 & 2 & 8 & 20 & 65 & 20249 \\
+            dead blocks & {\textsc{n/a}} & 42.25 & 0 & 0 & 0 & 3 & 14912 \\
+            \hline
+            blocks per script & {\textsc{n/a}} & 10.30 & 1 & 2 & 5 & 10 & 5497 \\
+            \hline
+            \shortstack[l]{cyclomatic complexity \\ per script} & 1.58 & 1.85 & 1 & 1 & 1 & 2 & 5497 \\
+            \hline
+        \end{tabular}
+    \end{wide}
 \end{table}
 
 \Cref{tab:loc-scratch} shows a summary of the project size for our dataset.
@@ -487,8 +489,7 @@ When counting the number of scripts per project, we excluded scripts that consis
 We similarly excluded sprites without code from the count of sprites per project.
 These can have a role in some cases, but are not useful in the statistics.
 
-From these data, we can conclude that \qty{75}{\percent} of projects have less than 5 sprites, 11 scripts, and 80 blocks.
-\Textcite{aivaloglouHowKidsCode2016} found that this was 5 sprites, 12 scripts, and 76 blocks, which are highly similar findings.
+From these data, we can conclude that \qty{75}{\percent} of projects have less than 5 sprites, 11 scripts, and 80 blocks (\textit{\qty{75}{\percent} of projects have less than 5 sprites, 12 scripts, and 76 blocks}).
 We can conclude that most Scratch projects are still small in Scratch 3.0.
 
 \begin{figure}
@@ -503,46 +504,58 @@ We can conclude that most Scratch projects are still small in Scratch 3.0.
 \end{figure}
 
 
-For the cyclomatic complexity, we used the same decision points as \textcite{aivaloglouHowKidsCode2016}.
+For the cyclomatic complexity, we used the same decision points as \citeauthor{aivaloglouHowKidsCode2016}.
 \Cref{fig:scratch-cc} shows the distribution of the cyclomatic complexity in the Scratch projects.
-Our findings are again similar to what \textcite{aivaloglouHowKidsCode2016} found: most scripts (\qty{72.6}{\percent}) do not contain any decision points.
-Additionally, another \qty{15.3}{\percent} has just one decision point.
-On the other end of the spectrum, \qty{1.6}{\percent} has a complexity larger than 10, and 667 scripts (\qty{0.00017}{\percent}) have a complexity larger than 100.
+Most scripts (\qty{72.6}{\percent}, \textit{\qty{78}{\percent}}) do not contain any decision points.
+Additionally, another \qty{15.3}{\percent} (\textit{\qty{13.8}{\percent}}) has just one decision point.
+On the other end of the spectrum, \qty{1.6}{\percent} has a complexity larger than 10, and 667 scripts (\qty{0.00017}{\percent}, \textit{\qty{0.000052}{\percent}}) have a complexity larger than 100.
 
-In summary, most projects are small (\qty{75}{\percent} has less than 5 sprites, 11 scripts, and 80 blocks), and most scripts (\qty{72.6}{\percent}) have no decision points.
+We can conclude that most projects are small, since \qty{75}{\percent} has less than 5 sprites, 11 scripts, and 80 blocks.
+Most scripts (\qty{72.6}{\percent}) have no decision points.
 
 \subsection{Programming concepts}\label{subsec:programming-concepts}
 
 % TODO: compare with felien
 \begin{table}
     \centering
-    \caption{Prevalence of programming concepts in Scratch projects.}
+    \caption{
+        Prevalence of programming concepts in Scratch projects.
+        The third column shows the results found by \textcite{aivaloglouHowKidsCode2016} in percentage if avaible.
+    }
     \label{tab:scratch-programming-concepts}
-    \begin{tabular}{|l|S[table-format=6.0]|S|}
+    \begin{tabular}{|l|S[table-format=6.0] S|S|}
         \hline
-        {Concept} & {№ of projects} & {\% of projects} \\
+        {Concept} & {№ of projects} & \% & {\AtNextCite{\defcounter{maxnames}{1}}\citeauthor{aivaloglouHowKidsCode2016} (\%)} \\
         \hline
-        User input blocks & 90703 & 46.43 \\
-        Random & 67403 & 34.50 \\
+        User input blocks & 90703 & 46.43 & 56.24  \\
+        Random & 67403 & 34.50 & {\textsc{n/a}} \\
         \hline
-        Conditional statements & 80664 & 41.29 \\
-        Loop statements & 151050 & 77.31 \\
-        Repeat with condition & 28526 & 14.60 \\
+        Conditional statements & 80664 & 41.29 & 39.81 \\
+        Loop statements & 151050 & 77.31 & 77.18 \\
+        Repeat with condition & 28526 & 14.60 & 13.59 \\
         \hline
-        Variables & 67526 & 34.56 \\
-        Lists & 18331 & 9.38 \\
+        Variables & 67526 & 34.56 & 31.51 \\
+        Lists & 18331 & 9.38 & 4.01 \\
         \hline
-        Procedures & 33319 & 17.05 \\
+        Procedures & 33319 & 17.05 & 7.70 \\
         \hline
     \end{tabular}
 \end{table}
 
 \Cref{tab:scratch-programming-concepts} is an overview of the prevalence of some programming concepts in the analysed Scratch projects.
-While the number of projects that use procedures (\qty{17.1}{\percent}) is higher than what was found by \textcite{aivaloglouHowKidsCode2016}, it is still not used that much: a majority of projects do not use it.
-Most projects do use loop statements (\qty{77.3}{\percent}), the number of projects using a conditional loop is much smaller (\qty{14.6}{\percent}).
-Less than half of projects use conditional statements, and less than half use user input blocks.
-About a third (\qty{34.56}{\percent}) of projects use variables, and only \qty{9.38}{\percent} uses lists.
-This means that large numbers of projects are simple (and this is what we would expect, given that previous metrics on project size).
+While the number of projects that use procedures (\qty{17.1}{\percent}, \textit{\qty{7.70}{\percent}}) is higher, it is still not used that much: a majority of projects do not use it.
+Most projects do use loop statements (\qty{77.3}{\percent}, \textit{\qty{77.18}{\percent}}), the number of projects using a conditional loop is much smaller (\qty{14.6}{\percent}, \textit{\qty{13.59}{\percent}}).
+Less than half of projects use conditional statements (\qty{41.29}{\percent}, \textit{\qty{39.81}{\percent}}), and less than half (\qty{46.43}{\percent}, \textit{\qty{56.24}{\percent}}) use user input blocks.
+About a third (\qty{34.56}{\percent}, \textit{\qty{31.51}{\percent}}) of the projects use variables, and only \qty{9.38}{\percent} (\textit{\qty{4.01}{\percent}}) uses lists.
+This means that a large number of projects is simple (and this is what we would expect, given the previous metrics on project size and complexity).
+
+In summary, most Scratch projects are small and simple.
+However, big and complex ones do exist.
+Scratch projects have not changed significantly since the analysis by \textcite{aivaloglouHowKidsCode2016}, even if Scratch 3.0 was released in that period.
+However, this is not unexpected: Scratch 3.0 did not introduce major changes to the Scratch-the-programming-language.
+The main differences are as follows.
+The number of complex projects and of projects with procedures did increase slightly.
+User input blocks are used a bit less.
 
 \section{Evaluation of the new execution model}\label{sec:evaluation-of-the-new-execution-model}
 
@@ -555,24 +568,24 @@ Instead of stepping a single block at a time, we want to step a single block in 
 However, this introduces two downsides:
 \begin{enumerate*}[label=\emph{\roman*})]
     \item the step function exposes internal program state that is normally not visible to the users, and
-    \item the debugger uses a different execution model as regular execution, but a debugger should deviate from normal execution as little as possible
+    \item the debugger uses a different execution model compared to regular execution, whereas a debugger should deviate from normal execution as little as possible
 \end{enumerate*}.
 
 This chapter then asks if we can modify the execution model of Scratch in such a way that the step functionality of a debugger is possible and that the changed execution model is usable for normal execution.
-To this end, we first take a detailed look at the existing execution model, due to a lack of existing literature on the topic.
+To this end, we first took a detailed look at the existing execution model, due to a lack of existing literature on the topic.
 This model is the result of multiple years of work in the Scratch virtual machine and contains many nuances.
 The current execution model has been chosen to avoid race conditions, but does not avoid all concurrency-related issues: there are some surprising consequences of the threading model in particular.
 
 Any changes to the execution model must not have adverse consequences for existing Scratch projects.
 When then analyse how Scratch is used, by replicating select metrics of previous investigations into what Scratch projects look like.
 \Textcite{aivaloglouHowKidsCode2016} did a previous analysis for Scratch 2.0 projects.
-The results for Scratch 3.0 projects are broadly similar: most Scratch projects are small and simple, but there are a few big and complex ones.
+Our results for Scratch 3.0 projects are broadly similar: most Scratch projects are small and simple, but there are a few big and complex ones.
 
 Finally, we benchmark the changes to the execution model on a selection of projects, informed by our previous analysis.
 While there are differences in behaviour for Scratch projects, we believe these to be acceptable.
-The modified execution model is thus suitable for our stepping methode for debuggers and reducing concurrency-related surprising behaviour, while not adversely affecting existing projects.
+The modified execution model is thus suitable for our stepping method for debuggers and reduces concurrency-related surprising behaviour, while not adversely affecting existing projects.
 
-We also see more opportunities for working with the execution model of Scratch.
+We also see more opportunities for working with the existing and new execution model of Scratch.
 For starters, the current execution model is defined by its source code.
 Constructing a formal mode of the execution model would allow formal reasoning and analysis, which might reveal more opportunities for changes.
 Secondly, validating the concurrency-related effects of the changes to the execution model (with and without a debugger) with children is another area where more investigation is needed.
