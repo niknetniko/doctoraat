@@ -32,7 +32,7 @@ In essence, a testing framework used in educational practice and a competition m
 It is therefore not a surprise that judges are heavily used in educational contexts~\autocite{wasikSurveyOnlineJudge2018,zinovievaUseOnlineCoding2021,liuWhoJudgesJudge2023}.
 The differences are mostly found in the focus of the testing frameworks.
 In educational settings, evaluating the correctness of a submission itself is not the main goal.
-The goal is to provide students with formative feedback.
+The goal is to provide students with formative feedback~\autocite{caizaProgrammingAssignmentsAutomatic2013}.
 Even more, correctness as the only feedback might not help students in the learning process~\autocite{haoUnderstandingEffectiveDesign2021}.
 In a programming contest, the result of an evaluation is often limited to a binary correctness decision: the submission is accepted or rejected.
 A second difference is the focus on performance: in an educational setting, the focus is generally on the performance of generating the feedback, while in a competition the focus lies on the performance of the submission.
@@ -45,7 +45,7 @@ Other software quality factors (the non‐functional requirements) that may be t
 
 What makes educational software testing different is that each programming exercise has a fixed specification, against which multiple submissions must be evaluated~\autocite{wilcoxTestingStrategiesAutomated2016}.
 Submissions are usually small to moderate in size, with all source code contained in a single file.
-While educational software testing also evaluates submissions for correctness, correctness itself is not the main goal.
+While educational software testing also evaluates submissions for correctness, correctness itself is again not the main goal.
 Instead, the goal is to provide formative feedback (or a grade) to the students~\autocite{caizaProgrammingAssignmentsAutomatic2013}.
 
 \section{The Dodona platform}\label{sec:dodona}
@@ -61,7 +61,7 @@ Dodona is now used by most higher education institutions in Flanders and by many
 As of May 2024, Dodona has more than \num{69200} registered users and has evaluated almost 18 million submissions\footnote{\url{https://dodona.be/en/about/}}.
 
 The need for supporting multiple programming languages has also been noted from almost the start of using automated assessment for programming exercises~\autocite{hextAutomaticGradingScheme1969}.
-Dodona has thus been developed with support for multiple programming languages from the start.
+Dodona has been developed with support for multiple programming languages from the start.
 It has a strict separation between the platform (responsible for managing courses, students, and exercises) and the testing framework (determining if submissions are correct).
 This separation has made supporting a multitude of programming languages relatively easy.
 Within Dodona, a testing framework is called a judge (and evaluating a submission for correctness is called judging), as it is called in the Sphere Online Judge.
@@ -74,7 +74,7 @@ There are also a few less straightforward judges, for HTML, SQL, Markdown, and T
 
 The separation between the Dodona platform and its judges is also reflected in its architecture.
 The platform itself is a fairly standard web application written in Ruby on Rails.
-The web application follows the recommendations by Ruby on Rails: it uses a model-view-controller architecture.
+The web application follows the recommendations by Rails: it uses a model-view-controller architecture.
 Most pages, especially simpler ones, use server-side rendering.
 More recently, complex pages have been added that use web components.
 
@@ -100,7 +100,7 @@ Using worker servers also allows for easy scaling if the number of submissions i
 
 Besides automated assessment, Dodona provides a host of features to support educators when organizing programming courses.
 
-First, Dodona supports a sophisticated course and user management system.
+To start, Dodona supports a sophisticated course and user management system.
 Educators can request that their account be upgraded to a teacher account, which grants access to additional capabilities, like creating and managing courses, but also access to the sample solution for exercises.
 Courses on Dodona are created to reflect courses in real life, and are linked to an academic year.
 Students can then subscribe to their relevant courses.
@@ -185,13 +185,12 @@ The first two questions relate to textual programming languages, while the last 
 The reason for this split is that it became clear that the needs for textual and block-based programming languages are different enough to warrant a separate approach.
 
 This split is reflected in the structure of this dissertation as well.
-\Cref{part:tested} is about textual programming languages and consists of two chapters (\cref{ch:tested1,ch:tested-dsl}), which answer the first and second research questions respectively.
+\Cref{part:tested} is about textual programming languages and consists of two chapters (\cref{ch:tested1,ch:tested-dsl}), which answer the first and second questions respectively.
 \Cref{sec:intro-tested} gives an introduction to this first part.
-
 \Cref{part:scratch} is about the block-based programming language Scratch.
 The smaller \cref{ch:scratch-the-programming-environment} gives a short introduction to Scratch.
-\Cref{ch:itch} addresses research question three, while \cref{ch:blink} address the fourth research question.
-\Cref{ch:scratch-execution-model} then answers the fifth research question.
+\Cref{ch:itch} addresses question three, while \cref{ch:blink} address the fourth question.
+\Cref{ch:scratch-execution-model} then answers the fifth question.
 \Cref{sec:the-second-part:-scratch} gives an introduction to this second part.
 
 Finally, \cref{ch:conclusions-and-opportunities} summarizes the answers to the research questions and highlights some future opportunities.
@@ -203,10 +202,10 @@ Similar to the conclusions, each chapter also has its own introduction, where th
 \section{Textual programming languages}\label{sec:intro-tested}
 
 The first research question \requ{1} was inspired by the observation that using exercises and judges in Dodona required some manual work.
-A lot of programming exercises on Dodona are usable in multiple programming languages, at least their concept.
+A lot of programming exercises on Dodona seem usable in multiple programming languages, at least in concept.
 Actually using an exercise in another programming language first requires a copy of the exercise to be made.
 Then the existing test suite must be converted manually to the test suite format used by the judge for that particular programming language.
-The other parts of the exercise (the configuration and problem statement) also need to be converted manually.
+The other parts of the exercise (the configuration and task description) also need to be converted manually.
 Additionally, since the exercises are copied, the exercises have to be kept in sync manually, or they risk diverging.
 
 Implementing judges for different programming languages is also repetitive.
@@ -293,7 +292,7 @@ Readers interested in knowing more might like to read an article about this coll
 
 The testing framework Itch, the answer to the third research question, is described in \cref{ch:itch}.
 Itch allows both static and dynamic tests on Scratch exercises, which provides a lot of flexibility to educators.
-Dynamic testing, in particular, allows for exercises that allow (within limits) the exploratory nature of Scratch to remain.
+Dynamic testing, in particular, allows for exercises that support (within limits) the exploratory nature of Scratch.
 
 Itch test suites for Scratch exercises are written in JavaScript.
 While working with CodeCosmos on creating Scratch exercises, it became clear that the JavaScript test suites were a big hurdle for educators without a computer science background.
@@ -322,7 +321,7 @@ A time-travelling debugger allows the programmer to go back in the execution, of
 We took special care to make the debugger intuitive for the young target audience of Scratch.
 Initial experiments in the classroom show that children do in fact find the debugger intuitive and useful, particularly stepping through the code and the time travel feature.
 
-This chapter is based on a publication: \textcite{strijbolBlinkEducationalSoftware2024}.
+This chapter is a minimally modified copy of the publication \textcite{strijbolBlinkEducationalSoftware2024}.
 
 \subsection{The Scratch execution model}\label{subsec:the-scratch-execution-model}
 
@@ -341,11 +340,13 @@ The chapter begins with a detailed look at how the current execution model behav
 Since Scratch is so widely used, our changes should not negatively impact existing Scratch programs.
 We therefore analyse what a typical Scratch project looks like.
 Finally, we benchmark our changes against some representative projects and report on the results.
-We conclude that our proposed changes do not cause problems for existing Scratch projects, while still being an improvement for debuggers.
+
+We conclude that based on our preliminary exploration, our proposed changes do not cause problems for existing Scratch projects, while still being an improvement for debuggers.
+However, these changes must still be verified in educational practice and in a classroom setting, to ensure that the changes are intuitive and do not have adverse effects.
 
 \subsection{Organization of the second part}\label{subsec:organization-of-the-second-part}
 
-The second part starts with a short chapter that introduces Scratch, the programming language and environment: \cref{ch:scratch-the-programming-environment}.
+The second part starts with \cref{ch:scratch-the-programming-environment}, which introduces Scratch, the programming language and environment.
 Next, \cref{ch:itch} discusses Itch and Poke, our Scratch testing frameworks.
 \Cref{ch:blink} then discusses Blink, our debugger for Scratch.
 Finally, \cref{ch:scratch-execution-model} discusses the Scratch execution model, our proposed changes to it, an analysis of Scratch projects, and an evaluation of our proposed changes.
@@ -359,6 +360,6 @@ The source code of Itch is not publicly available at this time due to the agreem
 The source code for Blink\footnote{\url{https://github.com/scratch-ed/blink}} is available under the same licence as Scratch, the \textsc{bsd} 3-Clause ``New'' or ``Revised'' Licence.
 We also host an online instance of the debugger\footnote{\url{https://scratch.ugent.be/blink/}}.
 
-Our JavaScript implementation of an analysis tool for Scratch 3.0\footnote{\url{https://github.com/scratch-ed/scratch-analysis}} (similar to Hairball~\autocite{boeHairballLintinspiredStatic2013}) is available under the MIT Licence.
+Our JavaScript implementation of an analysis tool for Scratch 3.0\footnote{\url{https://github.com/scratch-ed/scratch-analysis}} (similar to Hairball; \cite{boeHairballLintinspiredStatic2013}) is available under the MIT Licence.
 
 \end{document}
