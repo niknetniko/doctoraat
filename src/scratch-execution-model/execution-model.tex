@@ -21,7 +21,7 @@ However, the current execution model has some drawbacks.
 The cooperative nature of the threading model can lead to unexpected behaviour when working with multiple sprites.
 Additionally, the execution model complicates the use of debuggers within Scratch.
 A traditional step function (which steps one block at a time) exposes execution states that are normally hidden.
-Alternative step functions (for example, the one used by Blink, see \cref{subsec:stepwise-execution}) diverge from the normal execution and is thus undesirable.
+Alternative step functions (see, for example, the one used by Blink in \cref{subsec:stepwise-execution}) diverge from the normal execution and are thus undesirable.
 
 To address these issues, this chapter begins with an in-depth exploration of Scratch's current execution model.
 This analysis is essential for understanding the subsequent section, where we explore the model's shortcomings in more detail.
@@ -57,7 +57,9 @@ Finally, we illustrate that the changed execution model is suitable for use in a
             }
         \end{scratch}
     \end{subfigure}
-    \caption{Two Scratch programs that seemingly produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the progam.}
+    \caption{
+        Two Scratch programs that seemingly produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the program.
+    }
     \label{lst:scratch-two-programs}
 \end{listing}
 
@@ -191,7 +193,7 @@ Since none of the blocks in the unrolled program yield the thread, the full prog
 In the other version, with a loop, the thread yields after each iteration of the loop, meaning the program needs four steps.
 This does result in an observable difference: in the unrolled program, the sprite does not move visually.
 As a redraw only happens between steps, the sprite is back at its original position.
-In the looped version, the sprite moves four times (albeit very fast), as there is a redraw between each step.
+In the looped version, the sprite moves four times (albeit rapidly), as there is a redraw between each step.
 
 \subsection{Implementation details}\label{subsec:implementation-details}
 
@@ -385,7 +387,7 @@ The proposed ``when'' metric counts the number of ``when'' blocks (e.g.\ hat blo
 
 \subsection{A new dataset of Scratch 3.0 projects}\label{subsec:a-new-dataset-of-scratch-projects}
 
-Since the dataset for \textcite{aivaloglouHowKidsCode2016} consists of Scratch 2.0 projects and \textcite{fronzaApproachEvaluateComplexity2020} only analyse 80 projects, we found it necessary to collect a new dataset of Scratch projects.
+Since the dataset used by \textcite{aivaloglouHowKidsCode2016} consists of Scratch 2.0 projects and \textcite{fronzaApproachEvaluateComplexity2020} only analyse 80 projects, we found it necessary to collect a new dataset of Scratch projects.
 
 To create a new dataset, we used the Scratch API\footnote{\url{https://en.scratch-wiki.info/wiki/Scratch_API}} as follows.
 Creating a new project provides an identifier ({\addfontfeature{Numbers={Lining,Proportional}}996725073}), which we used as a starting point.
@@ -400,8 +402,7 @@ This results in a final dataset of \num{195372} Scratch projects we considered f
 \subsection{Analysing Scratch 3.0 projects}\label{subsec:analysing-scratch-3.0-projects}
 
 Hairball~\autocite{boeHairballLintinspiredStatic2013} is commonly used to analyse Scratch projects (it is also used by the existing analyses), but does not support Scratch 3.0.
-% \footnote{TODO: url to repo}
-For this reason, we have implemented a very similar piece of software in JavaScript.
+For this reason, we have implemented a similar piece of software in JavaScript.
 It also supports plugins to support extensions for other analyses.
 Being written in JavaScript, it has the advantage that it can reuse parts of the Scratch virtual machine, like reading and parsing Scratch projects.
 
@@ -449,7 +450,7 @@ The Pen extension is the most popular one, appearing in \qty{6.9}{\percent} of t
     \caption{
         Size and complexity statistics about the \num{195372} non-empty Scratch projects in our dataset.
         Unless otherwise noted, all numbers are shown per project and blocks are counted as logical lines of code.
-        The first column of numbers reports the mean from \textcite{aivaloglouHowKidsCode2016} if avaible.
+        The first column of numbers reports the mean from \textcite{aivaloglouHowKidsCode2016} if available.
         The subsequent numbers are, in order, the mean and the five-number summary: the minimum, the first quartile, the second quartile (the median), the third quartile, and the maximum.
     }
     \label{tab:loc-scratch}
@@ -457,7 +458,7 @@ The Pen extension is the most popular one, appearing in \qty{6.9}{\percent} of t
         \addfontfeatures{Numbers={Monospaced,Lining}}
         \begin{tabular}{|l|S S|S[table-format=2.0]|S[table-format=2.0]|S[table-format=2.0]|S[table-format=2.0]|S[table-format=5.0]|}
             \hline
-            {} & {\AtNextCite{\defcounter{maxnames}{1}}\citeauthor{aivaloglouHowKidsCode2016}} & {mean} & {min} & {Q1} & {Q2} & {Q3} & {max} \\
+            {} & {\AtNextCite{\defcounter{maxnames}{1}}\citeauthor{aivaloglouHowKidsCode2016}} & {mean} & {min} & {Q\textsubscript{1}} & {Q\textsubscript{2}} & {Q\textsubscript{3}} & {max} \\
             \hline
             sprites (with code) & 5.68 & 4.98 & 1 & 1 & 2 & 5 & 1000 \\
             scripts (with code) & 17.35 & 19.73 & 1 & 2 & 4 & 11 & 9134 \\
@@ -515,12 +516,11 @@ Most scripts (\qty{72.6}{\percent}) have no decision points.
 
 \subsection{Programming concepts}\label{subsec:programming-concepts}
 
-% TODO: compare with felien
 \begin{table}
     \centering
     \caption{
         Prevalence of programming concepts in Scratch projects.
-        The third column shows the results found by \textcite{aivaloglouHowKidsCode2016} in percentage if avaible.
+        The third column shows the results found by \textcite{aivaloglouHowKidsCode2016} in percentage if available.
     }
     \label{tab:scratch-programming-concepts}
     \begin{tabular}{|l|S[table-format=6.0] S|S|}
@@ -581,13 +581,25 @@ When then analyse how Scratch is used, by replicating select metrics of previous
 \Textcite{aivaloglouHowKidsCode2016} did a previous analysis for Scratch 2.0 projects.
 Our results for Scratch 3.0 projects are broadly similar: most Scratch projects are small and simple, but there are a few big and complex ones.
 
+The changes to the execution model change the threading from cooperative to preemptive.
+This implies that race conditions that the original execution model sought to prevent are now possible.
+\Textcite{maloneyScratchProgrammingLanguage2010} use the classic example of reading the value of a variable, increasing this value, and finally updating the variable with the new value.
+When running the same code unchanged in the new execution model, race conditions are possible.
+However, we believe this is not a big problem, due to two reasons.
+First, the kind of code where these race conditions can occur is used infrequently in Scratch.
+
+Second, there is a workaround: the part of the code that must be protected against race conditions can be extracted into a procedure, using the option ``run without screen refresh''.
+This causes the code in the function to become atomic: it will be run without interruptions.
+Using this technique is our recommendation for implementing critical sections.
+Note that using these critical sections with blocks that require a redraw should be done thoughtfully, as the redraw will not occur (this behaves identically in the current execution model).
+
 Finally, we benchmark the changes to the execution model on a selection of projects, informed by our previous analysis.
 While there are differences in behaviour for Scratch projects, we believe these to be acceptable.
 The modified execution model is thus suitable for our stepping method for debuggers and reduces concurrency-related surprising behaviour, while not adversely affecting existing projects.
 
-We also see more opportunities for working with the existing and new execution model of Scratch.
+We also see more opportunities for research on the existing and new execution model of Scratch.
 For starters, the current execution model is defined by its source code.
 Constructing a formal mode of the execution model would allow formal reasoning and analysis, which might reveal more opportunities for changes.
-Secondly, validating the concurrency-related effects of the changes to the execution model (with and without a debugger) with children is another area where more investigation is needed.
+Validating the concurrency-related effects of the changes to the execution model (with and without a debugger) with children is another area where more investigation is needed.
 
 \end{document}
