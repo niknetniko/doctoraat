@@ -479,7 +479,7 @@ The third function call should throw an exception, but this does not happen.
 
 \subsubsection{Sum of three cubes exercise: input/output testing and custom oracles}\label{subsubsec:sum-of-three-cubes-exercise:-i/o-stream-testing-and-custom-oracles}
 
-Listing~\ref{lst:sum-example} shows a test suite for an input/output exercise that asks to read an integer \textit{k} from standard input and write a solution of the sum of three cubes problem ({\addfontfeature{Numbers=Lining}\textit{x}\textsuperscript{3}\,+\,\textit{y}\textsuperscript{3}\,+\,\textit{z}\textsuperscript{3}\,=\,\textit{k}}) to standard output as three lines containing non-zero integers \textit{x}, \textit{y} and \textit{z}~\autocite{bookerCrackingProblem332019}.
+\Cef{lst:sum-example} shows a test suite for an input/output exercise that asks to read an integer \textit{k} from standard input and write a solution of the sum of three cubes problem ({\addfontfeature{Numbers=Lining}\textit{x}\textsuperscript{3}\,+\,\textit{y}\textsuperscript{3}\,+\,\textit{z}\textsuperscript{3}\,=\,\textit{k}}) to standard output as three lines containing non-zero integers \textit{x}, \textit{y} and \textit{z}~\autocite{bookerCrackingProblem332019}.
 The test suite has one unit with three test cases whose script only specifies a single line of input streamed into standard input of the main call and three expected lines of output printed on standard output.
 So again the shorthand structure applies here for units and scripts.
 The first two test cases show different YAML alternatives for specifying multi-line strings (line 4 and lines 6--9) as the expected value streamed to standard output.
