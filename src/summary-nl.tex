@@ -2,11 +2,108 @@
 
 \begin{document}
 
+\selectlanguage{dutch}
+
 \chapter*{Samenvatting}\label{ch:samenvatting}
 
-\begin{dutch}
-    Hier komt een mooie samenvatting van de tekst.
-\end{dutch}
+Leren programmeren is uitdagend en aldus vinden veel students programmeervakken moeilijk.
+Zoals het gezegde luidt voor moeilijke dingen: oefening baart kunst.
+Dat is niet anders in het programmeeronderwijs: het is algemeen aanvaard dat programmeren en ervaring de beste manieren zijn om te leren programmeren.
+Om evenwel iets te leren van hun programmeerervaring, is het belangrijk dat studenten op tijd goede feedback krijgen.
+
+Jammer genoeg is net het geven van die feedback tijdrovend en arbeidsintensief, zeker voor veel oefeningen met grote aantallen studenten.
+\marginnote{Lang is relatief natuurlijk, maar wel gepast als blijkt dat leren programmeren zelf ook in de jaren 1960 opkwam.}
+Deswege is er een lange en rijke geschiedenis (sinds de jaren 1960) van het gebruik der automatisering om feedback te geven.
+Het proces van deze feedback te geven heet geautomatiseerde beoordeling (van het Engelse \textit{\textenglish{automated assessment}}).
+
+In de meeste gevallen houdt geautomatiseerde beoordeling voor programmeeronderwijs in dat men werkt met softwaretesten.
+De door de studenten geschreven code voor een bepaalde oefeningen (we heten dit een ingediende oplossing) wordt minstens getest op juistheid.
+Vaak is de feedback meer dan enkel een globale juist of fout.
+
+Zoals zovelen voor ons, heeft onze vakgroep ook een online platform gemaakt voor geautomatiseerde beoordelingen: Dodona.
+Een zijner sleutelfuncties is de scheiding tussen het platform zelf (verantwoordelijk voor gebruikersbeheer, vakkenbeheer, de gebruikersinterface, enz.) en de \textit{judge} (het testraamwerk verantwoordelijk voor het beoordelen van oplossingen).
+Zodoende kan Dodona bijna elke programmeertaal ondersteunen.
+Momenteel is er ondersteuning voor C, Haskell, Java, Kotlin, Prolog, R, Scheme, Bash, C\#, JavaScript, Python, HTML, SQL, Markdown, en Turtle.
+
+Tijdens het werken op en met Dodona stelden we enige tekortkomingen vast in bestaande hulpmiddelen voor programmeeronderwijs.
+\Cref{ch:introduction} geeft een gedetailleerd overzicht van de onderwijscontext en het platform Dodona.
+Samengevat behandelt dit proefschrift vijf van die waargenomen tekortkomingen.
+
+We zagen dat veel oefeningen in Dodona geschikt zijn om te gebruiken in meerdere programmeertalen, althans in theorie.
+Om ze daadwerkelijk te gebruiken in een andere programmeertaal, moet men eerst de oefeningen kopiëren, handmatig het testplan omzetten naar het formaat dat de judge voor die programmeertaal gebruikt, en ten slotte nog de configuratiebestanden en opgave aanpassen.
+Dit is veel handwerk.
+\Cref{ch:tested1} biedt een oplossing: \textbf{TESTed}, een educatief raamwerk voor softwaretesten.
+Kenmerkend is de mogelijkheid om programmeertaalonafhankelijke oefeningen te schrijven.
+Dit wil zeggen dat dezelfde oefeningen (met één testplan) opgelost kan worden in meerdere programmeertalen, met ondersteuning voor geautomatiseerde beoordeling.
+Een oefeningen is dus bruikbaar in meerdere programmeertalen zonder enige bijkomende inspanning.
+
+Met het prototype van TESTed in de hand namen we dan een stapje terug om naar het grote geheel te kijken: wat is er nodig om van een prototype naar een goede oplossing voor het maken van programmeeroefeningen te gaan?
+We willen TESTed de standaardoptie maken voor onderwijzers, in zowel hoger als secundair onderwijs.
+Hiervoor hebben we \textbf{TESTed-DSL} in het leven geroepen, dat we voorstellen in \cref{ch:tested-dsl}.
+Het is een domeinspecifieke taal om programmeeroefeningen met ondersteuning voor geautomatiseerde beoordeling in meerdere programmeertalen te schrijven.
+Een domeinspecifieke taal is een formaat of taal die specifiek ontworpen is voor een bepaald gebruik, hier het schrijven van programmeeroefeningen.
+Aandacht besteden aan de ergonomische kant van TESTed-DSL heeft ervoor gezorgd dat het ook nuttig is voor oefeningen wier doel niet gebruik in meerdere programmeertalen is.
+We raden nu aan alle onderwijzers aan om TESTed te gebruiken om oefeningen op te stellen, zelfs als ze bijvoorbeeld JavaScript-oefeningen willen maken.
+
+Programmeren onderwijzen aan jonge kinderen wordt vaak gedaan met visuele programmeertalen, anders dan bij oudere studenten.
+Een visuele programmeertaal laat gebruikers toe om programma's te maken door programma-elementen niet tekstueel maar grafisch te manipuleren.
+Scratch is binnen het onderwijs veruit de meestgebruikte visuele programmeertaal.
+Programmeren in Scratch bestaat er uit om blokken te slepen en in elkaar te klikken (een beetje zoals puzzelstukjes of legoblokjes).
+Omdat Scratch met blokken werkt, wordt het ook wel een blokgebaseerde programmeertaal genoemd.
+Een gedetailleerde inleiding over Scratch staat in \cref{ch:scratch-the-programming-environment}.
+
+Daar Dodona meerdere programmeertalen ondersteunt, wouden we eerst een judge (het testraamwerk) voor Scratch maken binnen Dodona.
+Scratch is echter niet alleen een programmeertaal, maar ook een programmeeromgeving.
+Het werd duidelijk dat de benodigdheden een platform voor Scratch anders waren dan wat we met Dodona konden doen.
+Daarom begonnen we een samenwerking met CodeCosmos, een commerciële partner.
+Aangezien ze een educatieve uitgeverij is, wier producten ook oefeningen voor Scratch bevatten, heeft ze al een platform voor Scratch.
+
+\Cref{ch:itch} stelt \textbf{Itch} voor, ons testraamwerk voor Scratch.
+Het ondersteunt zowel statische testen (wat betekent dat er enkel naar de blokken gekeken wordt, zonder uit te voeren) en dynamische testen (waar het programma uitgevoerd wordt met een bepaalde invoer en de resultaten bekeken worden).
+Deze combinatie betekent dat Itch een diverse reeks Scratch-programma's kan beoordelen.
+Scratch lijkt op een spelletje en steunt verkennen, met als gevolg dat kinderen veel experimenteren en hun fantasie gebruiken.
+Dit is een uitdaging bij het testen van Scratch-programma's.
+Als de opgave bijvoorbeeld is ``Teken een huis'', hoe kunnen we een oplossing hiervoor beoordelen?
+We moeten dus toch een aantal limieten op de soorten oefeningen die Itch kan beoordelen plaats.
+De overwegingen die bij deze beslissing komt kijken worden ook uitgelegd in het hoofdstuk.
+
+Als een testraamwerk zoals Itch feedback geeft aan studenten is alles soms juist, maar veel vaker zijn er testen die falen.
+Daarop begint het debugproces: de studenten moeten uitvogelen wat de oorzaak van de gefaalde test is.
+Dit is notoir moeilijk, want de locatie van de oorzaak in het programma is vaak niet voor de hand liggend.
+Er zijn gelukkig wel hulpmiddelen om hiermee te helpen, met als belangrijkste de debuggers.
+Voor tekstuele programmeertalen zijn er veel debuggers en is er ook veel onderzoek over debuggers.
+Dodona ondersteunt bijvoorbeeld ook een debugger voor Python.
+
+Voor Scratch, en blokgebaseerde programmeertalen in het algemeen, is dit evenwel niet het geval.
+Dientengevolge introduceren we in \cref{ch:blink} een nieuwe debugger voor Scratch: \textbf{Blink}.
+Blink ondersteunt stappen door de code (stapsgewijs de code uitvoeren), het uitvoeren pauzeren en verder laten lopen, breekpunten (speciale blokken die de uitvoering pauzeren bij hun eigen uitvoering), en tijdreizen.
+Een debugger met tijdreizen geeft de ontwikkelaar de mogelijkheid om terug te spoelen in de uitvoering van het programma, door die uitvoering op te nemen.
+Elke stap in de uitvoering wordt opgeslagen, dus we kunnen stap per stap teruggaan.
+Omdat Scratch voornamelijk gebruikt wordt door een jong publiek, hebben we veel aandacht besteed aan het intuïtief make van de debugger.
+De eerste testen in een klas tonen dat studenten de debugger inderdaad vinden dat de debugger makkelijk om mee te werken is, in het bijzonder het tijdreizen.
+
+In de vorige alinea hebben we gezegd dat de debugger het mogelijk maakt om stapsgewijs het programma uit te voeren.
+We hebben niet beschreven wat we bedoelen met een stap in de context van Scratch.
+In Scratch bestaat een project uit verschillende sprites (die getekend worden op het scherm).
+Elke sprite heeft zijn eigen code, een verzameling stapels (een stapel is een reeks aan elkaar vastgemaakte blokken).
+Elke stapel van elke sprite wordt gelijktijdig uitgevoerd in Scratch.
+Een traditionele definitie van een stap (één blok in één stapel per keer) vinden we daarom niet ideaal.
+In plaats daarvan willen we bij een stap in elke stapel één blok verder gaan.
+
+Dit is evenwel niet mogelijk door de manier waarop Scratch intern werkt (het uitvoeringsmodel).
+Scratch gebruikt een coöperatief systeem, wat betekent dat het meerdere blokken in dezelfde stapel uitvoert, dan overschakelt naar een andere stapel, enzovoort.
+\marginnote{
+    Snel wisselen om gelijktijdigheid na te boosten is niet uniek in Scratch: veel systemen werken zo.
+}
+Door snel tussen stapels te wisselen lijkt het alsof de stapels gelijktijdig uitgevoerd worden.
+Dit systeem is gekozen om een aantal synchronisatieproblemen bij gelijktijdige programma's te vermijden, maar veroorzaakt wel niet-intuïtief gedrag in bepaalde gevallen.
+
+In \cref{ch:scratch-execution-model} onderzoeken we of we het uitvoeringsmodel van Scratch zo kunnen wijzigen dat stappen door de code mogelijk wordt zoals hierboven beschreven, zonder negatieve effecten op de snelheid en het gedrag van de bestaande Scratch-projecten.
+Aangezien Scratch zo veel gebruikt wordt, kunnen we geen wijzigingen doorvoeren die ervoor zorgen dat de helft van de bestaande projecten stopt met werken of zich anders gaan gedragen.
+Om dit met kennis van zaken te kunnen onderzoeken hebben we eerst bekeken hoe een typisch Scratch-project in het wild er uit ziet.
+Het blijkt dat de meeste Scratch-projecten eenvoudig en klein zijn.
+
+Tot slot sluit \cref{ch:conclusions-and-opportunities} dit proefschrift af door het werk dat we in de verschillende hoofdstukken uit de doeken deden samen te vatten en te overpeinzen wat de toekomst kan brengen.
 
 \selectlanguage{english}
 \end{document}
