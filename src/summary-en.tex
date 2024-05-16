@@ -18,27 +18,27 @@ In most cases, automated assessment for programming education involves software 
 The code written by the students for a certain exercise (we call this a submission) is tested for at least correctness.
 Often, the feedback is more detailed than just a global correct or wrong.
 
-As many before us, our department also created an online platform for automated assessment: Dodona.
+As many have done before us, our department also created an online platform for automated assessment: Dodona.
 One of its key features is the separation between the platform itself (responsible for user management, course management, the user interface, etc.) and the judge (the framework responsible for evaluating submissions).
 Consequently, Dodona can support almost any programming language.
 It currently supports C, Haskell, Java, Kotlin, Prolog, R, Scheme, Bash, C\#, JavaScript, Python, HTML, SQL, Markdown, and Turtle.
 
 While working on and with Dodona, we observed some shortcomings in existing educational tools that help with programming education.
-A more detailed look at the context and Dodona is given in \cref{ch:introduction}.
+A more detailed look at the educational context and the Dodona platform is given in \cref{ch:introduction}.
 In summary, this dissertation attempts to overcome five of these observed shortcomings.
 
-We observed that a lot of exercises on Dodona are suitable for use in multiple programming languages, at least in concept.
-To actually use them, one must first copy the exercise, then manually convert the test suite to whatever format used by the judge in the target language, and finally change the configuration files and task descriptions.
+We observed that a lot of exercises in Dodona are suitable for use in multiple programming languages, at least in concept.
+To actually use them with another programming language, one must first copy the exercise, then manually convert the test suite to whatever format used by the judge in the target language, and finally change the configuration files and task descriptions.
 This is a lot of manual work.
-\Cref{ch:tested1} provides a solution for this: \textbf{TESTed}, an educational software testing framework.
+\Cref{ch:tested1} provides a solution: \textbf{TESTed}, an educational software testing framework.
 Its defining feature is the support for creating programming‐language‐agnostic exercises.
 This means that the same exercise (with one test suite) can be solved in multiple programming languages, with support for automated assessment.
 An exercise is thus usable in different programming languages without any additional work.
 
-With the TESTed prototype in hand, we then took a step back to look at what is required to go from a prototype to a viable option for creating programming exercises.
+With the TESTed prototype at hand, we then took a step back to look at what is required to go from a prototype to a viable option for creating programming exercises.
 We wanted TESTed to be the default option for creating programming exercises for Dodona.
 As such, it needs to be suitable for educators in both higher and secondary education.
-This resulted in the creation of \textbf{TESTed-DSL}, presented in \cref{ch:tested-dsl}: a domain-specific language for authoring exercises with support for automated assessment across programming languages.
+This resulted in the creation of \textbf{TESTed-DSL}, presented in \cref{ch:tested-dsl}: a domain-specific language for authoring programming exercises with support for automated assessment across programming languages.
 A domain-specific language is a format or language specifically designed for a specific use case, which is authoring programming exercises here.
 It turns out that by paying special attention to the ergonomics of TESTed-DSL, it is also suitable for exercises that are not intended to be used in multiple programming languages.
 For example, we now also recommend TESTed for educators looking to author programming exercises that target JavaScript.
@@ -46,7 +46,7 @@ For example, we now also recommend TESTed for educators looking to author progra
 Teaching programming to young children is often done differently than teaching older students, by using visual programming languages.
 A visual programming language lets users create programs by manipulating program elements graphically, rather than textually.
 The most popular educational one of these is Scratch.
-In Scratch, programming consists of dragging blocks around and clicking them together (not unlike puzzle pieces).
+In Scratch, programming consists of dragging blocks around and clicking them together (not unlike puzzle pieces or Lego bricks).
 Since Scratch works with blocks, it is also called a block-based language.
 A more detailed introduction to Scratch can be found in \cref{ch:scratch-the-programming-environment}.
 
@@ -67,7 +67,7 @@ The considerations that go into these decisions are also considered in the chapt
 
 When a testing framework like Itch gives feedback to students, either everything is correct, but more often than not, some test cases fail.
 At that point, the debugging process begins: the students have to figure out what the cause of the failed test is.
-This is notoriously difficult, since the location of the cause in the program is often not obvious.
+This is notoriously difficult since the location of the cause in the program is often not obvious.
 However, there are tools to help with this, the main tools being debuggers.
 For textual programming languages, there are a lot of debuggers and a lot of research into debuggers.
 As an example, Dodona supports a web-based debugger for Python.
@@ -75,10 +75,10 @@ As an example, Dodona supports a web-based debugger for Python.
 However, for Scratch and block-based languages in general, this is not the case.
 Therefore, we introduce a new debugger for Scratch in \cref{ch:blink}: \textbf{Blink}.
 Blink supports stepping through the code (i.e.\ going one step at a time when running the program), pausing and resuming the execution of a program, breakpoints (special blocks that automatically pause the execution when they are executed), and time travelling.
-A time-travelling debugger allows the programmer to go backwards in the execution, by recording program execution.
+A time-travelling debugger allows the programmer to go backwards in the execution by recording program execution.
 Every step of the program is saved, so we can go back step-by-step.
 Since Scratch is used mainly by a young audience, we took special care to make the debugger intuitive.
-Initial tests in the classroom show that students find the debugger intuitive, especially the time travelling.
+Initial tests in the classroom show that students find the debugger intuitive, especially its time-travelling feature.
 
 In the previous paragraph, we said the debugger allows going one step at a time in the program.
 However, we did not specify what a step means in the context of Scratch.
@@ -97,9 +97,9 @@ By quickly switching between scripts,
 it looks like scripts execute in parallel.
 While this system is designed to prevent some concurrency-related issues, it causes other issues resulting in some unintuitive behaviour.
 
-In \cref{ch:scratch-execution-model}, we investigate if we can modify the execution model in such a way that we can implement the stepping functionality as described above, without negatively affecting performance and behaviour in existing Scratch projects when executing normally.
-Since Scratch is so widely used, we cannot introduce changes that would cause half of existing projects to stop working.
-To properly evaluate this, we also look into what a typical Scratch project looks like.
+In \cref{ch:scratch-execution-model}, we investigate if we can modify the Scratch execution model in such a way that we can implement the stepping functionality as described above, without negatively affecting performance and behaviour in existing Scratch projects when executing normally.
+Since Scratch is so widely used, we cannot introduce changes that would cause half of the existing projects to stop working or behave differently.
+To properly evaluate this, we also look into what a typical Scratch project in the wild looks like.
 It turns out that most Scratch projects are simple and small.
 
 Finally, \cref{ch:conclusions-and-opportunities} concludes this dissertation by summarizing the work we presented in the various chapters and by reflecting on potential future endeavours.
