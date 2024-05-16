@@ -32,6 +32,13 @@
 \definecolor{srcpokeemptyd}{HTML}{605B59}
 \definecolor{srcpokeemptydd}{HTML}{605B59}
 
+\newcommand{\scaledflag}[1]{%
+    \begingroup
+    \tikzset{every picture/.style={scale=#1}}%
+    \greenflag%
+    \endgroup
+}
+
 
 % Define some icons
 \newcommand*\drawtesttube{%

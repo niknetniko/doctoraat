@@ -18,11 +18,11 @@ Visual programming languages let programmers construct programs by graphically m
 A subset of visual programming languages are block-based languages, in which programs consist of blocks that are clicked together, not unlike puzzle pieces~\autocite{weintropBlockNotBlock2015}.
 Scratch falls in the category: it consists of a set of blocks with different shapes and colours.
 Development on it began in 2002, by the Lifelong Kindergarten research group at the MIT Media Lab.
-Scratch became publicly available in 2007, and has been developed by the Scratch Foundation since 2009.
+Scratch became publicly available in 2007 and has been developed by the Scratch Foundation since 2009.
 Its target audience is young learners, ages 8 to 16, although it is most commonly used for ages 10 to 14.
 It is a widely used programming language: the 2022 annual report of the Scratch Foundation~\autocite{scratchfoundationGrowingGlobalCreative2022} states that there are over 50 million users in the online Scratch community, with 120 million new projects created in 2022.
-The official statistics\footnote{\url{https://scratch.mit.edu/statistics/}} show that in March 2024, there were 1.2 million active monthly users, with about 3.5 million new projects in the same month.
-In April 2024, the Scratch team announced\footnote{\url{https://twitter.com/scratch/status/1778814544682295394}} that a billion projects have been created.
+The official statistics\footnote{\url{https://scratch.mit.edu/statistics/}} show that in April 2024, there were 1.5 million active monthly users, with about 3.7 million new projects.
+The same month, the Scratch team announced\footnote{\url{https://twitter.com/scratch/status/1778814544682295394}} that a billion projects have been created.
 \makenote*{The TIOBE index is not that useful: it is based on the number of reported results in search engines~\autocite{bunceTIOBENotTIOBE2008,sundarramPleaseStopCiting2022}. For example, it is known that the system is gamed~\autocite{bunceTIOBEIndexBeing2009}.}
 The TIOBE index for March 2024 ranks it as the ninth most used programming language~\autocite{tiobeTIOBEIndexMarch2024}.
 
@@ -38,12 +38,12 @@ The TIOBE index for March 2024 ranks it as the ninth most used programming langu
 \subsection{Using the environment and the blocks}\label{subsec:using-the-environment-and-the-blocks}
 
 Blocks can be dragged from the toolbox on the left side of the integrated development environment (\cref{fig:scratch-environment}) to the workspace in the middle and can be stacked together to form scripts.
-Blocks are categorized by their subject or goal: \textcolor{scrmove}{Motion}, \textcolor{scrlook}{Looks}, \textcolor{scrsound}{Sound}, \textcolor{screvent}{Events}, \textcolor{scrcontrol}{Control}, \textcolor{scrsensing}{Sensing}, \textcolor{scroperator}{Operators}, \textcolor{scrvariable}{Variables}, and \textcolor{scrmoreblocks}{My blocks} (not counting extensions).
-Each category has its own colour, except for the blocks that handle lists, as these appear in the \textcolor{scrvariable}{Variables} category, but have a different colour.
+Blocks are categorized by their subject or goal: \textcolor{scrmove}{Motion}, \textcolor{scrlook}{Looks}, \textcolor{scrsound}{Sound}, \textcolor{screvent}{Events}, \textcolor{scrcontrol}{Control}, \textcolor{scrsensing}{Sensing}, \textcolor{scroperator}{Operators}, \textcolor{scrvariable}{Variables}, and \textcolor{scrmoreblocks}{My Blocks} (not counting extensions).
+Each category has its own colour, except for the blocks that handle lists, as these appear in the \textcolor{scrvariable}{Variables} category but have a different colour.
 
 Each script starts with a hat block that defines when the script should execute.
 Scripts can be started as a result of a user action or when a certain criterion is met during the execution of a program, for example, when a clone is started or a message is broadcast.
-A common way to start scripts is to press the green flag (\greenflag), which has two functions: it will first stop all running threads before starting new threads for all relevant hat blocks.
+A common way to start scripts is to press the green flag (\scaledflag{0.8}), which has two functions: it will first stop all running threads before starting new threads for all relevant hat blocks.
 The red stop button next to the green flag also stops all currently running scripts.
 The green flag button has another functionality: when there are active scripts, the button gets a darker background colour, even if those scripts were not started by the green flag.
 
@@ -93,14 +93,14 @@ While the code is shared, the execution is not: each clone can execute code inde
 A clone is not visible in the sprite overview, only on the canvas.
 
 Variables are normally also limited to the sprite that defined them and are not visible to other sprites.
-There is an exception: the variables of the stage are visible to all sprites, and could thus be used for inter-sprite communication.
+There is an exception: the variables of the stage are visible to all sprites and could thus be used for inter-sprite communication.
 
 \subsection{Inter-sprite communication}\label{subsec:intersprite-communications}
 
 \textcolor{screvent}{Broadcasts} are the intended way to let sprites communicate with each other.
 There are other ways, such as variables (since variables in the stage are global).
 However, broadcasts remain the intended way to do inter-sprite communication.
-It is a one-to-many broadcasting system~\autocite{maloneyScratchProgrammingLanguage2010}: a broadcast (an arbitrary string) is sent globally, and might trigger multiple scripts (even in different sprites).
+It is a one-to-many broadcasting system~\autocite{maloneyScratchProgrammingLanguage2010}: a broadcast (an arbitrary string) is sent globally and might trigger multiple scripts (even in different sprites).
 
 \subsection{Defining custom blocks with procedures}\label{subsec:defining-custom-blocks-with-procedures}
 
@@ -109,12 +109,12 @@ This allows the user to define blocks that consist of other blocks, similar to p
 Procedures in Scratch can have parameters that can take arguments, which are available as variables to the blocks of the procedure.
 Since the custom blocks are procedures and not functions, they do not have return values.
 
-\subsection{Parallelism and concurrency}\label{subsec:parallelism}
+\subsection{Concurrency and parallelism}\label{subsec:parallelism}
 
-Scratch is a highly parallel language: every script is akin to a thread and can run in parallel to other scripts, even within the same sprite.
+Scratch is a highly concurrent language: every script is akin to a thread and can run concurrently to other scripts, even within the same sprite.
 The chosen concurrency model of Scratch has a few advantages but also disadvantages, which we discuss in \cref{subsec:execution-of-a-scratch-program}.
 
-Due to JavaScript's single-threaded nature (the language in which Scratch is implemented), the actual execution of a Scratch program will not be concurrent.
+Due to JavaScript's single-threaded nature (the language in which Scratch is implemented), the actual execution of a Scratch program will not be in parallel.
 
 \section{Organization of the source code}\label{sec:scratch-internal}
 
@@ -133,25 +133,33 @@ Due to JavaScript's single-threaded nature (the language in which Scratch is imp
 The first public release of Scratch was in May 2007 as a desktop application (\cref{fig:scratch-1.0}), written in Squeak, a Smalltalk implementation.
 This version already supported sharing projects by uploading them to the Scratch website.
 Scratch 2.0, released in May 2013, was a rewrite providing the first ``online'' version of Scratch (running in the browser).
-It uses Adobe Flash for the online version and Adobe Air for the downloadable offline editor.
+It used Adobe Flash for the online version and Adobe Air for the downloadable offline editor.
 
 \marginnote{At the time, some users speculated that Scratch 3 was ``rushed'' since it was announced in 2017 that support for Flash would end in 2021. Work on Scratch 3, however, started in May 2016.}
 In January 2019, Scratch 3.0 was released.
 This version is a complete rewrite, using web technologies, such as JavaScript, HTML, and CSS\@.
-Scratch 3.0 is fully browser-based.
-It consists of a set of independent source code modules that work together to form the complete Scratch environment.
+Scratch 3.0 is fully browser-based but still supports an offline editor using Electron\footnote{\url{https://scratch.mit.edu/download}}.
+Scratch 3.0 consists of a set of independent source code modules that work together to form the complete Scratch environment.
 An overview of the relationships between the modules is shown in \cref{fig:scratch-dependencies}.
-The most important modules are:
+Each module is developed independently in a separate repository on GitHub.
 
-\begin{description}
-    \item[Scratch Blocks] A fork of Google's Blockly~\autocite{pasternakTipsCreatingBlock2017}, a library for building block-based computing interfaces.\footnote{\url{https://github.com/scratchfoundation/scratch-blocks}}
-    \item[Scratch Virtual Machine] The runtime engine behind Scratch and responsible for running the projects created by the blocks.\footnote{\url{https://github.com/scratchfoundation/scratch-vm}}
-    \item[Scratch User Interface] A React-based web application that consists of the Scratch programming environment.
+% Ugly but what can you do
+{
+    %! suppress = Makeatletter
+    \makeatletter
+    \@beginparpenalty=10000
+    %! suppress = Makeatletter
+    \makeatother
+    The most important and relevant modules for this dissertation are:
+
+    \begin{description}
+        \item[Scratch Blocks] A fork of Google's Blockly~\autocite{pasternakTipsCreatingBlock2017}, a library for building block-based computing interfaces.\footnote{\url{https://github.com/scratchfoundation/scratch-blocks}}
+        \item[Scratch Virtual Machine] The runtime engine behind Scratch and responsible for running the projects created by the blocks.\footnote{\url{https://github.com/scratchfoundation/scratch-vm}}
+        \item[Scratch User Interface] A React-based web application that consists of the Scratch programming environment.
         It uses and builds on the other components.\footnote{\url{https://github.com/scratchfoundation/scratch-gui}}
-    \item[Scratch Renderer] A WebGL-based renderer, responsible for rendering the canvas.\footnote{\url{https://github.com/scratchfoundation/scratch-render}}
-\end{description}
-
-\footnotetext{}
+        \item[Scratch Renderer] A WebGL-based renderer, responsible for rendering the canvas.\footnote{\url{https://github.com/scratchfoundation/scratch-render}}
+    \end{description}
+}
 
 \begin{figure}
     \begin{wide}
