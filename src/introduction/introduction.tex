@@ -114,11 +114,11 @@ Besides the automated feedback, Dodona allows students to ask questions on their
 This allows the teaching staff to answer these questions directly in Dodona, with all the relevant context (the submission itself and the feedback the students got).
 At the same time, the submission history of the students is also available.
 
-The same mechanism is also available in the ``evaluation'' mode of Dodona, which is designed to facilitate grading of submissions.
-In this mode, the questions are reversed: educators can add annotations to submissions (we are researching if predicting these annotations is possible in \textcite{vanpetegemMiningPatternsSyntax2024}).
-Assigning a grade to a submission using a rubric is also possible.
+The same underlying mechanism used for the questions can also be used by educators to add annotations to submissions.
+This is especially useful in Dodona's ``evaluation mode'', which is designed to facilitate grading of submissions.
+Besides adding annotations to submissions (we are researching if predicting these annotations is possible; \cite{vanpetegemMiningPatternsSyntax2024}), assigning a grade to a submission using a rubric is also possible.
 We use this mode ourselves to organize exams as follows.
-A hidden series (which is invisible to students) is shared at the start of an exam.
+A special series is shared with students at the start of an exam.
 This series contains the exercises that students need to solve.
 After the deadline, Dodona can automatically select the latest submission before the deadline for each student.
 We then manually provide feedback and grades on these submissions.
@@ -156,6 +156,7 @@ Programming exercises allow students to submit code and receive feedback on thei
 However, the bar for what constitutes code can be low.
 For example, Dodona has a Markdown judge, which generates a rendered (HTML) version of the Markdown code submitted by students, without automatically evaluating anything more than the validity of the Markdown.
 Dodona can thus be used to collect plain text submissions from students.
+Learning activities fully support internalization: Dodona currently supports Dutch and English.
 
 Exercises in Dodona are managed in Git repositories.
 A repository with a well-defined structure\footnote{\url{https://docs.dodona.be/en/references/repository-directory-structure/}} is usable as the source for exercises in Dodona.
@@ -201,7 +202,7 @@ Similar to the conclusions, each chapter also has its own introduction, where th
 
 \section{Textual programming languages}\label{sec:intro-tested}
 
-The first research question \requ{1} was inspired by the observation that using exercises and judges in Dodona required some manual work.
+The first research question \requ{1} was inspired by the observation that using exercises and judges in Dodona required some manual work: ``Can we design a testing framework that supports automated assessment across programming languages with a single test suite?''.
 A lot of programming exercises on Dodona seem usable in multiple programming languages, at least in concept.
 Actually using an exercise in another programming language first requires a copy of the exercise to be made.
 Then the existing test suite must be converted manually to the test suite format used by the judge for that particular programming language.
@@ -224,7 +225,7 @@ Compared to the original publication, the chapter has been expanded with more in
 
 \subsection{Ergonomic authoring of exercises}\label{subsec:ergonomic-testing}
 
-With a working prototype at hand, the second research question \requ{2} came rather naturally.
+With a working prototype at hand, the second research question \requ{2} came rather naturally: ``What is the most ergonomic way to author exercises with support for automated assessment across programming languages?''.
 We took a step back to look at what is required to go from a prototype to a viable option for creating programming exercises.
 This analysis aimed to ensure the exercises could be used in educational practice, including high-stakes tests such as exams.
 We want TESTed to be suitable for both educators in higher education and secondary education.
