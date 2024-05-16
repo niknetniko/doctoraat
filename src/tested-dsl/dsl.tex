@@ -1,3 +1,4 @@
+%! suppress = PrimitiveEquation
 \documentclass[../main]{subfiles}
 
 \begin{document}
@@ -47,8 +48,8 @@ Assessments can also happen after a submission deadline has passed, and provide 
 \subsection{Programming exercises}\label{subsec:dsl-programming-exercises}
 
 Efforts to standardize the representation of programming exercises have been numerous, encompassing various strategies, such as combining the metadata, assets and task description into one formally structured document~\autocite{mishraProgrammingExerciseMarkup2023,paivaAnotherProgrammingExercises2020,queirosPexilProgrammingExercises2011,swachaSIPEDomainspecificLanguage2018}, a predefined directory structure~\autocite{verhoeffProgrammingTaskPackages2008}, or a combination thereof~\autocite{edwardsDevelopingCommonFormat2008a,strickrothProFormAXMLbasedExchange2015}.
-The objective of these initiatives is laudable: increasing the \textsc{fair}ness of programming exercises as digital educational resources that are findable, accessible, interoperable and reusable~\autocite{wilkinsonFAIRGuidingPrinciples2016}.
-Without exception, all of them support (automated) assessment as a feature, showing its importance for programming exercises.
+The objective of these initiatives is laudable: increasing the \textsc{fair}ness of programming exercises as digital educational resources that are Findable, Accessible, Interoperable and Reusable~\autocite{wilkinsonFAIRGuidingPrinciples2016}.
+Without exception, all of them support (automated) assessment, showing its importance for programming exercises.
 However, due to their generic nature, these exercise standards only provide support for assessment metadata and assets, and leave the actual representation of test suites, software testing frameworks, and dependencies on runtime environments open for implementation.
 But to make programming exercises truly interoperable, test suites and testing frameworks are no implementation detail.
 As a result, any promise of plug-and-play programming exercises that can be freely exchanged between learning platforms has not yet been resolved~\autocite{ala-mutkaSurveyAutomatedAssessment2005,ihantolaReviewRecentSystems2010,messerAutomatedGradingFeedback2024,paivaAutomatedAssessmentComputer2022}.
@@ -125,7 +126,7 @@ This not only duplicates work, but unit testing frameworks for different languag
 
 \subsection{\tested{} 1.0}\label{subsec:tested-1.0}
 
-We introduced TESTed~\autocite{strijbolTESTedEducationalTesting2023} (\cref{ch:tested1}) as an open-source educational software testing framework that accepts submissions in multiple programming languages and performs both input/output testing and unit testing, based on a single language-agnostic test suite.
+We introduced TESTed~(\cite{strijbolTESTedEducationalTesting2023}; \cref{ch:tested1}) as an open-source educational software testing framework that accepts submissions in multiple programming languages and performs both input/output testing and unit testing, based on a single language-agnostic test suite.
 Currently, TESTed supports evaluating submissions in Bash, C, C\#, Haskell, Java, JavaScript, Kotlin, and Python.
 Its abstract programming language engine transforms between language-agnostic and language-specific representations of strongly typed values, expressions, and statements.
 This allows TESTed to generate language-specific test harnesses by converting language-agnostic test scripts on the fly into the programming language of a submission (\cref{fig:tested-testing}).
@@ -138,7 +139,7 @@ The language-specific test harness then converts these objects back into abstrac
     \end{wide}
     \caption{
         Architecture of the test execution engine of TESTed.
-        Since TESTed supports both input/output testing and unit testing, its architecture is a combination of Figures~\ref{fig:io-testing}~and~\ref{fig:unit-testing}.
+        Since TESTed supports both input/output testing and unit testing, its architecture is a combination of \cref{fig:io-testing,fig:unit-testing}.
         TESTed achieves this by running a language-specific harness (white box) within the language-agnostic test harness (grey box).
         Assessing a submission for a single test case again comes down to compiling the submission along with test code into an executable test harness.
         The \textcolor{ugent-ps}{input data} are passed to the executable, and the test script consists of a set of statements and expressions.
@@ -157,26 +158,26 @@ The language-specific test harness then converts these objects back into abstrac
 \subsection{Organization of this chapter}\label{subsec:dsl-organization}
 
 This chapter introduces TESTed-DSL as a domain-specific language (DSL) to simplify authoring test suites for language-agnostic programming exercises with support for automated assessment (\cref{sec:tested-dsl}).
-We investigate its versatility, expressiveness, and general features by extending TESTed with support for the DSL\@.
-This yields an open-source implementation of the DSL itself.
+We investigate its versatility, expressiveness, and general features by extending TESTed with support for TESTed-DSL\@.
+This yields an open-source implementation of the domain-specific language itself.
 It also replaces the verbose and ad-hoc JSON specification of test suites from TESTed version 1.0, which closely followed the internal representation of test suites.
-Statements and expressions of the abstract programming language, for example, were expressed in JSON as hierarchical structures that resemble abstract syntax trees (AST).
+Statements and expressions of the abstract programming language, for example, were expressed in JSON as hierarchical structures that resemble abstract syntax trees.
 
-We then apply TESTed-DSL to task descriptions (\cref{subsec:dsl-language-agnostic-task-descriptions}), which allows authors of programming exercises to create task descriptions with language-specific programming interfaces (data types, literal values, identifiers, and code fragments) expressed in a language-agnostic way.
+We then apply TESTed-DSL to task descriptions (\cref{subsec:dsl-language-agnostic-task-descriptions}), which allows creating task descriptions with language-specific programming interfaces (data types, literal values, identifiers, and code fragments) expressed in a language-agnostic way.
 A template engine then transforms the language-agnostic interface bindings into specific representations for any target programming language supported by TESTed, while preserving other formatting of task descriptions.
 
 This is followed by a set of examples illustrating the use of TESTed-DSL (\cref{sec:dsl-illustrative-examples}).
-We then elaborate on a case study of using TESTed-DSL in educational practice (\cref{subsec:dsl-expressiveness-and-ergonomics}) and analyse the performance of running the testing framework from the DSL (\cref{subsec:dsl-performance}).
+We then elaborate on a case study of using TESTed-DSL in educational practice (\cref{subsec:dsl-expressiveness-and-ergonomics}) and analyse the performance of using the domain-specific language (\cref{subsec:dsl-performance}).
 The results and impact of our contributions are discussed at length (\cref{sec:dsl-results-and-contributions}).
-We conclude that extending TESTed with a DSL for specifying test suites and task descriptions provides an expressive and ergonomic solution.
+We conclude that extending TESTed with a domain-specific language for specifying test suites and task descriptions provides an expressive and ergonomic solution.
 It allows for authoring a diverse set of language-agnostic programming exercises that support automated assessment in educational practice.
 We close by drawing the roadmap for some ongoing and future work (\cref{sec:dsl-conclusion-and-future-work}).
 
 \section{\tested{}-\dsl{}}\label{sec:tested-dsl}
 
-TESTed-DSL was conceived as a domain-specific language (DSL) for language-agnostic test suites of programming exercises that support automated assessment.
+TESTed-DSL was conceived as a domain-specific language for language-agnostic test suites of programming exercises that support automated assessment.
 Such a test suite generally consists of two parts: individual tests (including test data) and a structured grouping of tests into units.
-In this section, we first introduce the structure of the DSL, followed by the abstract programming language that is used to represent test data, expressions, and statements.
+In this section, we first introduce the structure of the domain-specific language, followed by the abstract programming language that is used to represent test data, expressions, and statements.
 
 \subsection{Test suite structure}\label{subsec:dsl-test-suite-structure}
 
@@ -188,7 +189,7 @@ In this section, we first introduce the structure of the DSL, followed by the ab
       return: "Hello, World!"
     \end{minted}
     \caption[]{
-        ``Hello, World!'' example of the specification of a test suite in TESTed-DSL.
+        \textit{Hello, World!} example of a test suite in TESTed-DSL\@.
         The test suite has a single test case that calls the function \texttt{greet} with string argument \texttt{"World"}.
         The function is expected to return the string \texttt{"Hello, World!"}.
     }
@@ -197,16 +198,17 @@ In this section, we first introduce the structure of the DSL, followed by the ab
 
 TESTed-DSL uses YAML~\autocite{ben-kikiYAMLAinMarkup2021} as a markup language for describing test suites that are preferably specified in a language-agnostic way.
 The structure of test suites is formally specified in a JSON Schema\footnote{\url{https://github.com/dodona-edu/universal-judge/blob/master/tested/dsl/schema.json}}.
-Note that this schema can be plugged into text editors or integrated development environments (IDE) for syntax highlighting, autocompletion, and validation.
+Note that this schema can be plugged into text editors or integrated development environments for syntax highlighting, autocompletion, and validation.
 \Cref{lst:yaml-basic-example} shows a minimal example of a test suite.
 More elaborate examples are discussed in \cref{sec:dsl-illustrative-examples}.
+
 The test suites have a hierarchical structure: a test suite may have multiple \term{units}.
 Each unit is tested by multiple \term{test cases}.
 A test case consists of \term{setup} code, an optional \term{main call}, a \term{script}, and \term{teardown} code.
 The minimal example has a single unit with a single test case, and no setup, main call, nor teardown.
-The main call and the script together comprise the \term{tests} for the test case (Figure~\ref{fig:tested-testing}).
-The structure of the DSL test suites is identical to JSON test suites (\cref{subsec:structure-of-a-test-suite}), but the terminology used by the DSL aligns more with the literature.
-The Dodona terminology is also supported by the DSL (thus using tab, context, test case, and test respectively).
+The main call and the script together comprise the \term{tests} for the test case (\cref{fig:tested-testing}).
+\marginnote{The Dodona terminology is also supported (using tab, context, test case, and test respectively).}
+The structure of test suites using the domain-specific language is identical to JSON test suites (\cref{subsec:structure-of-a-test-suite}), but the terminology used by the domain-specific language aligns more with the literature.
 
 The input data for the main call is made available as \term{files}, passed as \term{arguments}, streamed through standard input (\term{stdin}), or any combination thereof.
 The input data for the script are the \term{statements} and \term{expressions} it consists of.
@@ -224,7 +226,7 @@ Return values, on the other hand, are strongly typed.
 
 The validation of the actual values against the expected values happens with oracles.
 By default, the built-in oracles of TESTed are used with default expected values.
-For example, an exit code must be 0, and there must not be any output on stderr.
+For example, an exit code must be 0, and there must not be any output on standard error.
 To avoid unnecessary feedback, correct tests against a default value are not reported.
 For example, if the exit code of the submission is not zero, this will be reported as a failure.
 However, it is distracting to show a successful zero exit code for all test cases (e.g.\ even those that test function calls).
@@ -289,7 +291,7 @@ The same rationale for having a single, language-agnostic test suite also applie
 A similar approach to avoid the need to author language-specific task descriptions for each target programming language of an exercise can be followed.
 There are some differences though.
 First of all, language-specific interface references and interactions in task descriptions are usually embedded in natural language content formatted with some plaintext markup language (e.g.\ Markdown, HTML or reStructuredText).
-We therefore extended TESTed with an engine that supports authoring task descriptions as Jinja2 templates\autocite{ronacherJinja} with language-agnostic interface bindings embedded as \mintinline{jinja}{{{binding}}} placeholders in plain-text documents.
+We therefore extended TESTed with an engine that supports authoring task descriptions as Jinja2 templates~\autocite{ronacherJinja22022} with language-agnostic interface bindings embedded as \mintinline{jinja}{{{binding}}} placeholders in plain-text documents.
 The engine then automatically transforms each placeholder into a specific representation for any target programming language supported by TESTed, while preserving surrounding formatting of task descriptions.
 
 For each type of interface with language-specific bindings, the engine provides a corresponding Python variable or function that identifies the interface.
@@ -298,7 +300,6 @@ Interface functions take a language-agnostic representation (a string) of the in
 Interface interactions in task description templates are natural counterparts of their representations in TESTed-DSL test suites: \term{statements}, \term{expressions}, and \term{literal values}.
 However, in task description templates, the engine makes no difference between statements, expressions, and literal values.
 All are represented as a statement.
-For example, an expected return value of a function or method call is a statement.
 To reference a named function, the snake case version of its identifier is passed to the function identifying the interface in TESTed-DSL's abstract programming language: variables (\texttt{variable}), functions (\texttt{function}), classes (\texttt{class}), methods (\texttt{method}), properties (\texttt{property}) and parameters (\texttt{parameter}).
 The engine formats these according to the naming conventions for the target programming language.
 For example, \mintinline{python}{function('the_function')} will result in the string \texttt{TheFunction} in C\#.
@@ -335,7 +336,7 @@ The unit has multiple test cases, but only a single test case (lines 4--28) is s
 The first test case does not provide inputs that require scheduling a main call, as it only expects submissions to implement a class definition.
 The first statement of its script calls the constructor of the class with two string arguments, instantiating an object that is assigned to the variable \texttt{cipher01} (line 5).
 The next two expressions access the properties \texttt{grid} (line 6) and \texttt{map} (line 12) of the object to validate they are properly initialized by the constructor.
-The expected value of the \texttt{grid} property is specified as a nested sequence of strings that represents a $ 4 \times 4 $ grid of characters (lines 7--11).
+The expected value of the \texttt{grid} property is specified as a nested sequence of strings that represents a 4\,×\,4 grid of characters (lines 7--11).
 Note that we have used YAML block style notation (using dashes) for the outer sequence and YAML flow style notation (elements enclosed in square brackets and separated by commas) for the inner sequences of the expected value.
 The expected value of the \texttt{map} property is specified using the YAML block style notation of a mapping from strings onto strings (lines 13--20).
 
@@ -382,7 +383,7 @@ units:
     \label{lst:cipher-example}
 \end{listing}
 
-TESTed-DSL makes an important distinction between expressions (\texttt{expression}) and statements (\texttt{statement}).
+TESTed-DSL makes an important distinction between expressions and statements (\texttt{expression} and \texttt{statement}).
 The evaluation of expressions returns a strongly typed value that is captured by the language-specific test harness.
 The default expected value is any object having data type \texttt{nothing} (such as \texttt{null} or \texttt{None}).
 However, the \texttt{return} attribute can be used to specify the expected value in the test suite.
@@ -394,9 +395,9 @@ This behaviour cannot be altered: TESTed-DSL does not allow specifying an expect
 TESTed is designed in part to run as a standalone command line tool to generate structured feedback on standard output.
 It is also well-equipped for seamless integration with online learning platforms that display task description of programming exercises, accept student submissions, run TESTed in their backend and render the resulting feedback.
 \textsc{tap}~\autocite{schlueterTAP14TestAnything2022} (Test Anything Protocol) is the \textit{de facto} standard used by unit testing frameworks for reporting test results.
-For educational purposes, however, TESTed streams richer and more structured feedback to standard output, in a format formally specified in a JSON schema\footnote{\url{ https://github.com/dodona-edu/dodona/blob/main/public/schemas/partial_output.json
+For educational purposes, however, TESTed streams richer and more structured feedback to standard output, in a format formally specified in a JSON Schema\footnote{\url{ https://github.com/dodona-edu/dodona/blob/main/public/schemas/partial_output.json
 }}.
-The online learning environment Dodona~\autocite{vanpetegemDodonaLearnCode2023}, for example, renders each unit of test cases (from \cref{lst:cipher-example}) in a separate tab and visually groups all tests from the same test case inside a card (\cref{fig:dodona-render-cipher}).
+Dodona~\autocite{vanpetegemDodonaLearnCode2023}, for example, renders each unit of test cases (from \cref{lst:cipher-example}) in a separate tab and visually groups all tests from the same test case inside a card (\cref{fig:dodona-render-cipher}).
 Because JavaScript code was submitted in this case, TESTed adopted the syntax and conventions configured in its JavaScript module to format all statements, expressions, and return values in the feedback.
 The JavaScript-specific syntax highlighting is done by Dodona as part of the process of rendering the feedback.
 
@@ -478,14 +479,14 @@ The third function call should throw an exception, but this does not happen.
 
 \subsubsection{Sum of three cubes exercise: input/output testing and custom oracles}\label{subsubsec:sum-of-three-cubes-exercise:-i/o-stream-testing-and-custom-oracles}
 
-Listing~\ref{lst:sum-example} shows a test suite for an input/output exercise that asks to read an integer $k$ from standard input and write a solution of the sum of three cubes problem ($x^3 + y^3 + z^3 = k$) to standard output as three lines containing non-zero integers $x$, $y$ and $z$~\autocite{bookerCrackingProblem332019}.
+Listing~\ref{lst:sum-example} shows a test suite for an input/output exercise that asks to read an integer \textit{k} from standard input and write a solution of the sum of three cubes problem ({\addfontfeature{Numbers=Lining}\textit{x}\textsuperscript{3}\,+\,\textit{y}\textsuperscript{3}\,+\,\textit{z}\textsuperscript{3}\,=\,\textit{k}}) to standard output as three lines containing non-zero integers \textit{x}, \textit{y} and \textit{z}~\autocite{bookerCrackingProblem332019}.
 The test suite has one unit with three test cases whose script only specifies a single line of input streamed into standard input of the main call and three expected lines of output printed on standard output.
 So again the shorthand structure applies here for units and scripts.
 The first two test cases show different YAML alternatives for specifying multi-line strings (line 4 and lines 6--9) as the expected value streamed to standard output.
 However, specifying a fixed expected output is problematic for this exercise.
 The task description does not imply any order in which the three integers must be listed, so any permutation of the three integers given by the expected solution for the second test case should also be validated as a correct solution.
-Moreover, some values of $k$ have alternative solutions, irrespective of permutations.
-For example, another way to solve the first test case is given by $(-5)^3 + 4^3 + 4^3 = 3$~\autocite{sutherlandSumsThreeCubes2019}.
+Moreover, some values of \textit{k} have alternative solutions, irrespective of permutations.
+For example, another way to solve the first test case is given by {\addfontfeature{Numbers=Lining}(−5)\textsuperscript{3}\,+\,4\textsuperscript{3}\,+\,4\textsuperscript{3}\,=\,3}~\autocite{sutherlandSumsThreeCubes2019}.
 As enumerating all possible solutions (and their permutations) is infeasible, the specification of the third test case provides a better approach.
 TESTed uses the function \texttt{sum\_of\_three\_cubes} from the Python module \texttt{oracle.py} as a custom oracle to validate the correctness of the output generated on stdout.
 TESTed always passes the actual output and some metadata, such as the programming language, and the expected output as the first argument to the oracle.
@@ -514,7 +515,7 @@ Additionally, extra arguments taken from the test suite can be passed (in this c
          arguments: [42]
     \end{minted}
     \caption[]{
-        Language-agnostic test suite to validate correct behaviour of submissions for an input/output exercise that asks to read an integer \(k\) from standard input and write a solution of the sum of three cubes problem \((x^3 + y^3 + z^3 = k)\) to standard output as three lines containing non-zero integers \(x\), \(y\) and \(z\).
+        Language-agnostic test suite to validate correct behaviour of submissions for an input/output exercise that asks to read an integer \textit{k} from standard input and write a solution of the sum of three cubes problem {\addfontfeature{Numbers=Lining}\textit{x}\textsuperscript{3}\,+\,\textit{y}\textsuperscript{3}\,+\,\textit{z}\textsuperscript{3}\,=\,\textit{k}} to standard output as three lines containing non-zero integers \textit{x}, \textit{y} and \textit{z}.
     }
     \label{lst:sum-example}
 \end{listing}
@@ -522,16 +523,16 @@ Additionally, extra arguments taken from the test suite can be passed (in this c
 The custom oracle needs to
 \begin{enumerate*}[label=\emph{\roman*})]
     \item check the output string has the correct format (three lines containing one integer each),
-    \item parse the three integers $x$, $y$ and $z$ from the output (converting their string representation into integers) and
-    \item check the integer expression $x^3 + y^3 + z^3$ yields the value of the second argument (\texttt{42}).
+    \item parse the three integers \textit{x}, \textit{y} and \textit{z} from the output (converting their string representation into integers) and
+    \item check the integer expression {\addfontfeature{Numbers=Lining}\textit{x}\textsuperscript{3}\,+\,\textit{y}\textsuperscript{3}\,+\,\textit{z}\textsuperscript{3}} yields the value of the second argument (\texttt{42}).
 \end{enumerate*}
 Passing an extra argument is not strictly needed here as the custom oracle could also derive the data from the expected value, using the same procedure as used to derive the data from the actual value.
 
 \subsection{Language-agnostic task descriptions}\label{subsec:example-language-agnostic-task-descriptions}
 
-\Cref{lst:task-description-markdown} shows a language-agnostic task description for the ``Recoupling'' exercise that was introduced in \cref{subsubsec:recoupling-exercise:-multiple-functions-and-advanced-data-types}.
+\Cref{lst:task-description-markdown} shows a language-agnostic task description for the \textit{Recoupling} exercise that was introduced in \cref{subsubsec:recoupling-exercise:-multiple-functions-and-advanced-data-types}.
 The task description is specified using Kramdown-flavored Markdown.
-It contains Jinja2 placeholders (\mintinline{jinja}{{{code}}}) for function names and formal/informal names of data types, along with MathJax placeholders (\mintinline{jinja}{$$...$$}) for \LaTeX{} formulas.
+It contains Jinja2 placeholders (\mintinline{jinja}{{{code}}}) for function names and formal/informal names of data types, along with MathJax placeholders (\mintinline{jinja}{$$...$$}) for \LaTeX{} formulae.
 The task description ends with some examples of the expected behaviour when calling the two functions \texttt{divide} and \texttt{recouple} that must be implemented for this programming exercise.
 The language-agnostic specification of the sample code is denoted using the same specification of the test suite for the programming exercise in TESTed-DSL format or a reduced version thereof (see \cref{lst:recouple-example}).
 
@@ -548,7 +549,7 @@ Write another function `{{function('recouple')}}` that takes two arguments: _i_)
 ```
     \end{minted}
     \caption[]{
-        Language-agnostic task description for the ``Recoupling'' exercise.
+        Language-agnostic task description for the \textit{Recoupling} exercise.
         The Kramdown-flavored Markdown contains Jinja2 placeholders for function names and both formal and informal names of data types.
         The task description ends with some examples that illustrate how the two functions should be used.
         The sample code is denoted using the same specification of the test suite for the programming exercise in TESTed-DSL format (\cref{lst:recouple-example}).
@@ -576,7 +577,7 @@ This dual use between test suites and task description keeps the language-specif
 
 \section{Evaluation}\label{sec:dsl-evaluation}
 
-During the academic year 2023--2024 we started promoting TESTed with its DSL as the primary way to author new (language-agnostic) programming exercises on Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
+During the academic year 2023--2024 we started promoting TESTed with TESTed-DSL as the primary way to author new (language-agnostic) programming exercises on Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
 We clearly documented the process, including guides and reference documentation.\footnote{\url{https://docs.dodona.be/nl/guides/exercises/} (some documentation is currently only available in Dutch).}
 At the time of writing, \num{1124} programming exercises on Dodona support automated assessment through TESTed, with \num{333195} assessed student submissions (\cref{tab:exercises-on-dodona}).
 
@@ -603,12 +604,12 @@ At the time of writing, \num{1124} programming exercises on Dodona support autom
     \end{tabular}
 \end{table}
 
-In the next sections, we look into a case study where we converted all JavaScript exercises of a course to use TESTed and its DSL\@.
+In the next sections, we look into a case study where we converted all JavaScript exercises of a course to use TESTed-DSL\@.
 This resulted in \num{72} programming exercises and \num{22018} student submissions (these are part of the total numbers shown in \cref{tab:exercises-on-dodona}).
 
 \subsection{Expressiveness and ergonomics}\label{subsec:dsl-expressiveness-and-ergonomics}
 
-To evaluate the expressiveness of TESTed-DSL and its applicability in educational practice, we authored test suites for a collection of \num{72} programming exercises that were used during the 2023 spring semester in a CS1 course at Ghent University, Belgium taken by \num{114} students.\footnote{\url{https://dodona.be/en/courses/2263/}}
+To evaluate the expressiveness of TESTed-DSL and its applicability in educational practice, we authored test suites for a collection of \num{72} programming exercises that were used during the 2023 spring semester in an introductory course at Ghent University taken by \num{114} students.\footnote{\url{https://dodona.be/en/courses/2263/}}
 None of these exercises is based on input/output, \num{22} ask to implement one or more functions and \num{50} ask to implement one or more classes.
 
 The largest part of the collection consists of all the \num{66} JavaScript exercises we designed for this course over the years.
@@ -628,10 +629,10 @@ We also added 6 new programming exercises with language-agnostic TESTed-DSL test
 Our experience in doing so is that direct authoring of TESTed-DSL test suites is ergonomic, either when done by hand or using a generator script based on a correct solution.
 Human error is reduced by using the formal specification for automatic verification that TESTed-DSL test suites are well-formed and valid.
 TESTed performs such verification while parsing test suites, but this can also be done interactively while authoring the test suites in an \textsc{ide}.
-For example, we provide a VS Code Plugin\footnote{\url{https://marketplace.visualstudio.com/items?itemName=dodona.dodona-exercise-plugin}} that automatically applies the JSON Schema of the DSL to catch errors and to provide autocompletion.
-The improved readability of TESTed-DSL test suites further increases productivity and enhances comfort while authoring programming exercises, especially with \textsc{IDE}-support for syntax highlighting and autocompletion.
+For example, we provide a VS Code Plugin\footnote{\url{https://marketplace.visualstudio.com/items?itemName=dodona.dodona-exercise-plugin}} that automatically applies the JSON Schema to the YAML files to catch errors and to provide autocompletion.
+The improved readability of TESTed-DSL test suites further increases productivity and enhances comfort while authoring programming exercises, especially with editor support for syntax highlighting and autocompletion.
 
-Of these exercises, \num{19} were used as mandatory assignments during the 2023 spring semester of the CS1 course and \num{6} for midterm tests and exams.
+Of these exercises, \num{19} were used as mandatory assignments during the 2023 spring semester of the introductory course and \num{6} for midterm tests and exams.
 Students could use the remaining exercises from the collection for additional practice in preparation for tests and exams.
 Students were not restricted in the number of submissions for each exercise.
 They received immediate feedback from automated assessment upon each submission, also after the submission deadline and also during midterm tests and exams.
@@ -642,7 +643,7 @@ This way, students who had to retake the course had no reference for comparison 
 For that reason, we decided not to inform students about us switching the JavaScript testing framework that for them runs as a hidden component in the backend of Dodona.
 
 In total, TESTed automatically assessed \num{22018} JavaScript submissions during the 2023 spring semester of the course.
-None of the questions we received from students during the hands-on sessions for the course or via Dodona's Q\&A module hinted at any issues with automated assessment or the feedback it generated other than content-related issues.
+None of the questions we received from students during the hands-on sessions for the course or via Dodona's \textcsc{Q\&A} module hinted at any issues with automated assessment or the feedback it generated other than content-related issues.
 We also found no indications of problems in the course evaluation that students complete some weeks after the end-of-semester exams.
 
 \subsection{Performance}\label{subsec:dsl-performance}
@@ -651,7 +652,7 @@ As is the case for software testing in general, the user experience of education
 We therefore ran a benchmark using all 72 JavaScript exercises mentioned previously to validate the performance of TESTed.
 These exercises have 95 test cases on average, with a minimum of 2 and a maximum of 518.
 Previously, we showed that the extra flexibility provided by language-agnostic testing comes with an acceptable overhead when dynamically generating test code for language-specific test harnesses (\cref{subsec:tested-in-educational-practice}).
-Here, we specifically investigated if using a DSL for specifying test suites incurs additional overhead compared to using the JSON-formatted test suite specifications introduced in version 1.0 of TESTed.
+Here, we specifically investigated if using a domain-specific language for specifying test suites incurs additional overhead compared to using the JSON-formatted test suite specifications introduced in version 1.0 of TESTed.
 The latter specifications closely reflect the internal structure and functionality of the testing framework, whereas TESTed-DSL was designed to make test suite authoring as ergonomic as possible.
 
 The benchmark was run on a laptop running Linux (NixOS version 24.05) with \qty{32}{\gibi\byte} \textsc{ram}, an Intel i7-11850H processor, and a \qty{1}{\tebi\byte} \textsc{ssd}.
@@ -659,7 +660,7 @@ No power-saving features were active during the benchmark.
 It turns out that parsing and processing of TESTed-DSL test suites takes \qty{20}{\percent} less time on average compared to the original \textsc{json}-formatted test suites.
 We believe this is mainly due to using a more performant YAML parsing library compared to the Python built-in JSON parsing library.
 However, this illustrates TESTed-DSL does not incur any additional overhead compared to the original JSON format.
-Because the DSL still supports all features of TESTed, we decided to deprecate support for JSON-formatted test suites in favour of TESTed-DSL\@.
+Because the domain-specific language still supports all features of TESTed, we decided to deprecate support for JSON-formatted test suites in favour of TESTed-DSL\@.
 
 Equally important is the total runtime for assessing the submissions for a programming exercise.
 This is the time students must wait before feedback is available.
@@ -693,7 +694,7 @@ The first contribution might be of general interest to the broader software engi
 In the following subsections, we discuss the impact of each contribution.
 
 For task descriptions, many of the same benefits apply as for test suites.
-Specifically, the application of the DSL to task descriptions allows for programming language agnostic representations of code references: names of constructs (functions, classes, properties, etc.) and data types (e.g.\ lists, sets).
+Specifically, the application of the domain-specific language to task descriptions allows for programming language agnostic representations of code references: names of constructs (functions, classes, properties, etc.) and data types (e.g.\ lists, sets).
 Additionally, code fragments written in the abstract language can be automatically converted to code fragments of the target programming language.
 
 \subsection{Declarative structure}\label{subsec:dsl-declarative-structure}
@@ -702,12 +703,13 @@ Most programming languages have one or more unit testing frameworks, whose struc
 Collectively the latter are known as xUnit~\autocite{meszarosXUnitTestPatterns2007}.
 xUnit frameworks are code-driven as their test suites express both the structure and the behaviour of tests in the same programming language as the software under test.
 Strong coupling to the language of the software under test is natural as behavioural tests must access its public interfaces.
+
 In contrast, TESTed-DSL separates these two concerns by expressing the structure of test suites in a declarative way (in YAML).
 TESTed implements the functionality for processing this structural part of test suites in its core module, so only a single highly-optimized implementation is needed for this shared functionality of unit testing across programming languages.
 Functionality that remains language-dependent is the generation of test harnesses.
 But TESTed splits that across its core module generating language-agnostic harnesses and language-specific modules generating language-specific harnesses, to keep the language-specific modules as lightweight as possible and to share common functionality.
 
-TESTed allows to specify language-specific test suites expressed in TESTed-DSL that share the same structure across programming languages.
+TESTed allows specifying language-specific test suites using TESTed-DSL that share the same structure across programming languages.
 TESTed simply has to copy the language-specific attributes when generating language-specific test harnesses.
 As an example, \cref{lst:javascript-test-suite} shows a JavaScript-specific version of the test suite from \cref{lst:cipher-example}.
 Test suites guiding automated assessment for the same exercise in other programming languages supported by TESTed, only differ in their representation for statements of the test scripts (\texttt{expression}, \texttt{statement}), expected values for strongly typed outputs (\texttt{return}, \texttt{exception}) and strongly typed arguments passed to custom oracles (\texttt{arguments}).
@@ -759,7 +761,6 @@ This gives access to language-specific features that are not (yet) supported in 
 Here, the former is the case for passing anonymous functions as arguments to functions and converting strings to uppercase.
 This example also shows that TESTed-DSL test suites can mix language-specific (lines 2--4) and language-agnostic (line 5) sections.
 
-% TODO: text colours...
 \begin{listing}
     \begin{minted}[escapeinside=@@]{yaml}
 unit: 'Sort words'
@@ -778,31 +779,31 @@ return: ['bacon', 'eggs', 'SPAM'] # language-agnostic
 
 The examples in \cref{sec:dsl-illustrative-examples} already show the flexibility of TESTed-DSL to specify test suites for both input/output exercises (\cref{lst:sum-example}) and exercises with fixed internal interfaces (\cref{lst:cipher-example,lst:recouple-example}).
 However, individual tests can also combine any mix of weakly and strongly typed input and output channels.
-For example, an expression calling a function with arguments, which reads from stdin, accesses main call arguments and environment variables, writes to stdout and stderr and returns a value.
+For example, an expression calling a function with arguments, which reads from standard input, accesses main call arguments and environment variables, writes to standard output and error, and returns a value.
 In addition, test cases can combine black-box tests for the main call with a test script of white-box tests for statements and expressions that can access internal interfaces of the submission.
 This unification of test suites combining strongly/weakly typed and black-box/white-box approaches solves a long-standing problem in educational software testing.
 
-\Citeauthor{fonteFlexibleDynamicSystem2013} proposed Output Semantic-Similarity Language (\textsc{ossl}) ~\autocite{fonteFlexibleDynamicSystem2013} as a domain-specific language to serialize strongly typed data across weakly typed standard input and output.
-Although the formal specification of \textsc{ossl} resembles the TESTed basic types supported by TESTed-DSL, no OSSL-parser was ever published and it was only conceived for use in language-agnostic input/output testing.
+\Textcite{fonteFlexibleDynamicSystem2013} proposed Output Semantic-Similarity Language (OSSL) as a domain-specific language to serialize strongly typed data across weakly typed standard input and output.
+Although the formal specification of OSSL resembles the TESTed basic types supported by TESTed-DSL, no OSSL-parser was ever published and it was only conceived for use in language-agnostic input/output testing.
 For application in language-specific unit testing, TESTed added the extra layer of advanced types that are also supported by TESTed-DSL\@.
-\Citeauthor{enstromFiveYearsKattis2011} suggest splitting programming exercises with complex tasks over multiple exercises, each testing a separate subtasks via input/output testing~\autocite{enstromFiveYearsKattis2011}.
+\Textcite{enstromFiveYearsKattis2011} suggest splitting programming exercises with complex tasks over multiple exercises, each testing a separate subtasks via input/output testing.
 Compared to the approach taken by TESTed-DSL, this feels like a poor man's version of white-box testing.
 It forces students to reveal internal interfaces via standard input and output, and at the same time asks authors to design and maintain alternative instances of an exercise.
 An accumulation of extra work, where what we actually seek are ways to reduce the work of authoring and solving programming exercises~\autocite{douceAutomaticTestbasedAssessment2005}.
 
-\textsc{acm/icpc} programming contests and derivatives are another area where input/output exercises are regularly used.
+ACM-ICPC programming contests and derivatives are another area where input/output exercises are regularly used.
 These exercises often follow a specific style, with multiple test cases bundled in a single input stream.
 This style dates back from times where judges -- as automated software testing frameworks are commonly called in the context of programming contests -- were restricted to a single execution of the submission's main function.
 These platforms are heavily used in classrooms~\autocite{wasikSurveyOnlineJudge2018,zinovievaUseOnlineCoding2021}.
 
-Although the \textsc{acm/icpc} style of testing can be expressed using TESTed-DSL test suites, it forces students to implement a main function that loops over test cases and bundles their output in a single output stream.
+Although the ACM-ICPC style of testing can be expressed using TESTed-DSL test suites, it forces students to implement a main function that loops over test cases and bundles their output in a single output stream.
 This approach of packing multiple test cases into a single test case further increases the black-box nature of testing.
 Additionally, it may propagate faults in the implementation of submissions as a failure for one test case to failures for successive test cases, making it harder to report feedback that easily discerns which individual test cases pass or fail.
 In programming contests, limiting feedback to reporting whether all test cases passed is not a concern.
 
 However, in an educational context, we do strive for rich and fine-grained feedback, meaning an automated testing framework designed for contests is less than ideal.
 In TESTed-DSL, we essentially move the responsibility for processing multiple test cases from the student to the testing framework.
-This is useful for all students, but especially benefits those students with limited programming experience.
+This is useful for all students, but especially benefits those with limited programming experience.
 
 \subsection{Language-agnostic testing}\label{subsec:language-agnostic-testing}
 
@@ -818,8 +819,10 @@ Examples include CodeWars\footnote{\url{https://www.codewars.com/}}, Edabit\foot
 As far as we know, TESTed is the only existing framework that bridges unit testing with language-agnostic testing.
 Most other frameworks are either restricted to input/output testing or rely on general-purpose unit testing frameworks.
 The input/output-based approach forces students to implement an input/output model in the main function and test oracles to process weakly typed data, and can only evaluate the behaviour of submissions as a whole.
+
 Because general-purpose unit testing frameworks work with language-specific test suites, the alternative approach duplicates efforts in specifying the expected behaviour for a programming exercise to each target programming language of its submissions.
 This can be seen in how separate test suites are written for each target language in most programming platforms.
+
 Only Exercism has a mechanism\footnote{\url{https://github.com/exercism/problem-specifications}} by which some exercises have a single specification in a generic track that is used to automatically derive language-specific instances.
 This system shares its goals with TESTed-DSL\@.
 However, it is far less flexible and ergonomic for authoring programming exercises, as the generation step is needed each time.

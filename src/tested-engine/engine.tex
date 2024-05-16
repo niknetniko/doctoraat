@@ -22,7 +22,7 @@ We focus next on the technical aspects of TESTed, beginning with its architectur
 Next, we consider the three parts of evaluating a submission:
 the test suite, the evaluation process itself, and the generated feedback.
 
-\marginnote{In the mean time, TESTed has gained support for a user-friendlier format for test suites called TESTed-DSL (\cref{sec:tested-dsl}). It is the recommended way of creating test suites.}
+\marginnote{Note that TESTed now supports a user-friendlier test suite format: TESTed-DSL (\cref{ch:tested-dsl}).}
 For the test suites, we discuss their structure, and look at how TESTed handles datatypes (across different programming languages), statements, and expressions.
 Next, the evaluation process is discussed in detail.
 This is the process through which TESTed executes the test suite and determines the feedback that will be given on the submission.
@@ -97,7 +97,7 @@ As a result, the test suite is tightly coupled to a specific programming languag
 Evaluating a submission for the same exercise in another programming language would require a new test suite, often also involving another testing framework.
 
 With input/output testing, the judge system imposes stringent restrictions on the programming exercise: only standard input, standard output, standard error, and files can be used for input and output.
-Prominent examples are the testing frameworks used in \textsc{icpc}-style (\emph{International Collegiate Programming Contest}, sometimes still referred to as \textsc{acm/icpc})~\autocite{ICPCFactSheet2023} programming contests.
+Prominent examples are the testing frameworks used in \textsc{icpc}-style (\emph{International Collegiate Programming Contest}, sometimes still referred to as ACM-ICPC)~\autocite{ICPCFactSheet2023} programming contests.
 While this does make the test suites independent of any programming language, all aspects of the submission that the test suite needs to check must be converted to a textual representation.
 Another disadvantage is the lack of granular testing: with these systems, tests are limited to the program as a whole.
 It is, for example, not possible to add distinct tests for different functions inside the same program without obligating students to artificially split the program.
@@ -113,32 +113,32 @@ First, we define the two requirements a framework needs to satisfy to achieve th
 We also look at the consequences of those requirements on the framework.
 We call a testing framework that satisfies these requirements a \term{programming-language-agnostic testing framework}.
 
-The \emph{first requirement} is that test suites must be programming language agnostic.
+The \term{first requirement} is that test suites must be programming language agnostic.
 A test suite must be usable to evaluate submissions in every programming language supported by the framework, without making changes to the test suite or adding languages-specific tests to it.
 As a consequence of this requirement, adding support for new programming languages to the testing framework must not demand changes to existing test suites.
 All existing test suites must work with the new programming language without changes.
 
-The \emph{second requirement} is similar testing capabilities as unit testing.
+The \term{second requirement} is similar testing capabilities as unit testing.
 Some concrete examples of what should be possible are:
 
-\begin{itemize}[noitemsep]
-    \item Provide textual input to standard input and reading output from standard output.
-    \item Call functions implemented in submissions, and pass arguments to those functions.
-    \item Evaluate values returned from function calls (with data type support).
-    \item Create objects (constructors) and manipulate them (methods).
-    \item Capture and evaluate other side effects such as exceptions, exit codes or files (or other persistent storage such as databases).
-    \item Support exercises with deterministic and non-deterministic (for example, random) behaviour.
+\begin{itemize}
+    \item Using standard input, standard output, and standard error.
+    \item Calling functions implemented in submissions, and passing arguments to those functions.
+    \item Evaluating values returned from function calls (with data type support).
+    \item Creating objects (constructors) and manipulating them (methods).
+    \item Capturing and evaluating other side effects such as exceptions, exit codes or files (or other persistent storage such as databases).
+    \item Supporting exercises with deterministic and non-deterministic (e.g.\ random) behaviour.
 \end{itemize}
 
 Support for these two requirements should not have disproportionately large drawbacks.
 Therefore, we also consider the following soft requirements for a programming-language-agnostic testing framework:
 
 \begin{itemize}
-    \item Configuring or creating exercises using the framework should not be significantly more difficult than configuring exercises using a language-specific testing framework.
+    \item Authoring exercises using the framework should not be significantly more difficult than authoring exercises using a language-specific testing framework.
     \item Runtime and memory overhead should be minimal: the framework cannot be unacceptably slow or have a large memory footprint compared to a language-specific testing framework.
-    Providing feedback to students in a timely manner is important.
+        Providing feedback to students in a timely manner is important.
     \item Submissions should follow their language-specific conventions as closely as possible.
-    For example, we want to support asynchronous and synchronous functions in JavaScript, or top-level functions should be implemented as a static function in Java, but not in Python or Kotlin that have proper support for top-level functions.
+        For example, supporting asynchronous and synchronous functions in JavaScript, or top-level functions should be implemented as a static function in Java, but not in Python or Kotlin that have proper support for top-level functions.
     \item Adding support for new programming languages to the framework should ideally be faster than implementing language-specific testing frameworks for those languages, due to the ability to reuse shared parts of the implementation.
 \end{itemize}
 
@@ -152,11 +152,11 @@ We start with a high-level tour of TESTed, focusing on how the framework can be 
 To this end, we will use the following programming exercise as an example:
 
 \begin{quote}
-    Implement a function \texttt{remove\_all\_occurrences} that takes two arguments: a list $l$ of integers and an integer $v$.
-    The function must return a new list containing the same integers as list $l$, in the same order, but where all occurrences of integer $v$ are removed.
+    Implement a function \texttt{remove\_all\_occurrences} that takes two arguments: a list \textit{l} of integers and an integer \textit{v}.
+    The function must return a new list containing the same integers as list \textit{l}, in the same order, but where all occurrences of integer \textit{v} are removed.
 \end{quote}
 
-A correct Python implementation for this exercise could be:
+A correct Python implementation for this exercise is:
 
 \begin{minted}{python}
 def remove_all_occurrences(l, v):
@@ -250,7 +250,7 @@ The feedback starts with a description of what has been tested (a function call 
 With the actual return value, a decision is also given: in this case, the return value is correct.
 
 While the output for correct submissions is important, the output for wrong submissions is at least as important in the context of an educational testing framework.
-Assume a submission is wrong in that it only removes the first occurrence of the integer $v$ from the list $l$ (example in JavaScript):
+Assume a submission is wrong in that it only removes the first occurrence of the integer \textit{v} from the list \textit{l} (example in JavaScript):
 
 \begin{minted}{javascript}
 function removeAllOccurrences(l, v) {
@@ -314,9 +314,9 @@ This is discussed in \cref{subsec:checking-results}.
 
 All aspects that are specific to one programming language are bundled in one package.
 These language-specific modules take care of all language-specific tasks, such as compiling submissions, executing submissions, and handling language-specific data types, expressions, and statements.
-Since the language-specific code is limited to these modules, this offers benefits for adding support for new programming languages to TESTed, see \cref{sec:programming-language-support}.
+Since the language-specific code is limited to these modules, this offers benefits for adding support for new programming languages to TESTed, as discussed in \cref{sec:programming-language-support}.
 
-TESTed takes as input the test suite for a programming exercise and a possible solution that needs to be evaluated.
+TESTed takes as input the test suite for a programming exercise and a possible submission that needs to be evaluated.
 The format of the test suite is discussed in-depth in \cref{sec:test-suites}.
 As a result of its evaluation, TESTed outputs a feedback report (\cref{sec:tested-and-dodona})
 
@@ -324,7 +324,7 @@ As a result of its evaluation, TESTed outputs a feedback report (\cref{sec:teste
 
 Despite multiple proposals on generic formats for programming exercises~\autocite{edwardsDevelopingCommonFormat2008a,paivaAnotherProgrammingExercises2020,queirosPexilProgrammingExercises2011,verhoeffProgrammingTaskPackages2008} or exercise classifications~\autocite{leOperationalizingContinuumWelldefined2013,simoesNatureProgrammingExercises2020}, there seems to be no generally accepted standard for test suites of programming exercises.
 Additionally, none of the proposed formats meets the requirements that we identified for language-agnostic testing frameworks.
-Existing formats focus mostly on the task description, whereas we also focus on the specification of the test suite itself.
+Existing formats focus mostly on the task description, whereas we mainly focus on the specification of the test suite itself.
 
 We therefore feel it is appropriate to introduce a new format for test suites, specifically developed for TESTed.
 It is designed to be machine and human-readable and easy to generate.
@@ -335,11 +335,35 @@ Test suites for TESTed are written in JSON, which was chosen because there is br
 Additionally, it is human-editable and readable, especially compared to binary formats.
 There is also widespread editor support for JSON, and technologies such as JSON Schema allow for easy validation and even better editor support.
 
-Note that TESTed-DSL (\cref{ch:tested-dsl}) is the intended way for exercise authors to create exercises, especially if done manually.
+Note that TESTed-DSL (\cref{ch:tested-dsl}) is the intended way to author exercises, especially if done manually.
 The test suites discussed here are a direct JSON representation of the internal structure of test suites as used by TESTed.
 While JSON test suites have some advantages, such as being more flexible, they are also much more verbose and not guaranteed to stay stable in future version of TESTed.
 
 \subsection{Structure of a test suite}\label{subsec:structure-of-a-test-suite}
+
+Returning to the same programming exercise from before, we can expand the test suite of \cref{lst:simple-json-test-suite} for illustration purposes (resulting in \cref{lst:expanded-json-fragment}, rendered in \cref{fig:dodona}).
+Instead of directly calling the function \mintinline{python}{remove_all_occurrences} with two arguments, we first create a list and assign it to a variable in the first test case.
+In the second test case, we then call the function \mintinline{python}{remove_all_occurrences}, but use the variable name as the first argument.
+
+While omitted for brevity in the examples, a test suite can organize test cases in two levels: tabs and contexts.
+The full hierarchy of the test suite consists of four levels, from top to bottom:
+
+\begin{enumerate}[noitemsep]
+    \item \term{Tabs} are the top-level grouping mechanism.
+          It allows logically grouping contexts together.
+          While the name of this group suggests how to display these groups, it is but a suggestion.
+          The example only has one tab, but a test suite with test cases for multiple functions might, for example, have one tab per function.
+    \item \term{Contexts} are meant to group dependent test cases together.
+          In our example, declaring a variable and using that variable must be done within the same context.
+    \item \term{Test cases} are the basic building blocks of the test suite.
+          The ``input'' for a test case is what exactly is being checked.
+          In the example, the first test case of each context has an assignment, while the second has a function call.
+    \item \term{Tests} are used for each type of output.
+          TESTed currently supports return values, standard output, standard error, exceptions, generated files and exit codes.
+          In the example there is one test for the return value.
+          If a test is not defined (e.g.\ for standard error in the example), a sensible default is used.
+          For example, the default test for standard output and error checks that there is no output, causing the evaluation to fail if there is unexpected output.
+\end{enumerate}
 
 \begin{listing}
     \begin{minted}{json}
@@ -388,34 +412,7 @@ While JSON test suites have some advantages, such as being more flexible, they a
     \label{lst:expanded-json-fragment}
 \end{listing}
 
-Returning to the same programming exercise from before, we can expand the test suite of \cref{lst:simple-json-test-suite} for illustration purposes (resulting in \cref{lst:expanded-json-fragment}).
-Instead of directly calling the function \mintinline{python}{remove_all_occurrences} with two arguments, we first create a list and assign it to a variable in the first test case.
-In the second test case, we then call the function \mintinline{python}{remove_all_occurrences}, but use the variable name as the first argument.
-
-While omitted for brevity in the examples, a test suite can organize test cases in two levels: tabs and contexts.
-The full hierarchy of the test suite consists of four levels, from top to bottom:
-
-\begin{enumerate}[noitemsep]
-    \item \term{Tabs} are the top-level grouping mechanism.
-          It allows logically grouping contexts together.
-          While the name of this group suggests how to display these groups, it is but a suggestion.
-          The example only has one tab, but a test suite with test cases for multiple functions might, for example, have one tab per function.
-    \item \term{Contexts} are meant to group dependent test cases together.
-          In our example, declaring a variable and using that variable must be done within the same context.
-    \item \term{Test cases} are the basic building blocks of the test suite.
-          The ``input'' for a test case is what exactly is being checked.
-          In the example, the first test case of each context has an assignment, while the second has a function call.
-    \item \term{Tests} are used for each type of output.
-          TESTed currently supports return values, standard output, standard error, exceptions, generated files and exit codes.
-          In the example there is one test for the return value.
-          If a test is not defined (e.g.\ for standard error in the example), a sensible default is used.
-          For example, the default test for standard output and error checks that there is no output, causing the evaluation to fail if there is unexpected output.
-\end{enumerate}
-
-This structure mirrors the output generated by TESTed (\cref{sec:tested-and-dodona}).
-For example, the executed input for each test is also included in the output.
-A possible visualization of these levels is given in \cref{fig:dodona}, which shows the output rendered in Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
-
+% TODO: figure out if I can get this to go to the bottom of the page?
 \begin{figure}
     \centering
     \includegraphics[width=0.6\textwidth]{dodona-rendering}
@@ -424,6 +421,10 @@ A possible visualization of these levels is given in \cref{fig:dodona}, which sh
     Here, each context consists of two test cases, the first of which has no explicit tests, while the second has one explicit test (the expected return value).}
     \label{fig:dodona}
 \end{figure}
+
+This structure mirrors the output generated by TESTed (\cref{sec:tested-and-dodona}).
+For example, the executed input for each test is also included in the output.
+A possible visualization of these levels is given in \cref{fig:dodona}, which shows the output rendered in Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
 
 \subsection{Data serialization}\label{subsec:data-serialization}
 
@@ -486,7 +487,7 @@ Currently, the following basic types are supported:
 
 When a test suite contains a literal value of a basic type, it will be serialized as an object of an actual data type in the target programming language.
 An overview of all basic types and their implementation is given in \cref{tab:tested-basic-types}.
-For example, a literal value with data type \texttt{map} will become a \texttt{Map} in Java or a \texttt{dict} in Python.
+For example, a literal value with data type \texttt{map} will become a \texttt{Map} in Java and a \texttt{dict} in Python.
 
 The second category consists of \term{advanced types}, which are more detailed or programming language specific.
 Each advanced type is associated with a basic type, acting as a fallback.
@@ -494,7 +495,7 @@ For example, \texttt{int64} is an advanced type with the basic type \texttt{inte
 If a programming language does not support a particular advanced type, the corresponding basic type will be used.
 For example, consider tuples.
 Many programming languages do not have direct support for tuples, but exercises using tuples can still be solved by using the corresponding basic type (sequence).
-For a concrete example, an exercise using a \texttt{tuple} can be solved in Java by using a \texttt{List}.
+More concrete, an exercise using the advanced type \texttt{tuple} can be solved in Java by using a \texttt{List}.
 
 When adding a programming language, it is possible to disable this fallback for certain types.
 For example, JavaScript has no support for fixed precision numbers.
@@ -530,6 +531,7 @@ The advanced data types are also where the language-specific aspects can come in
 For example, in addition to the basic type \texttt{nothing}, we have both \texttt{undefined} and \texttt{null}.
 In most languages, there is no difference between those, but for example, in JavaScript there is.
 Having both available as an advanced type allows exercises to use either in JavaScript exercises, while still being language-agnostic.
+Additionally, supporting both types allows for the creating of language-specific exercises for JavaScript, where one of the types is required but not
 
 \subsection{Statements and expressions}\label{subsec:tested1-statements-and-expressions}
 
@@ -544,8 +546,9 @@ We intentionally limit expressions and statements to features needed by TESTed.
 Creating a universal programming language that can be converted to all other programming languages is out of scope.
 
 The use of assignments is illustrated by the expanded test suite in \cref{lst:expanded-json-fragment}.
-We create a list and assign it to a variable \texttt{a\_list}.
+We create a list and assign it to the variable \texttt{a\_list}.
 Note that there are no explicit tests in this first test case.
+The test case will still fail if something unexpected happens, e.g.\ if an exception is thrown or output is written to standard error.
 The second test case then calls the function but uses the variable we defined as the first argument.
 
 \section{Evaluating submissions}\label{sec:tested1-evaluating-submissions}
@@ -557,8 +560,7 @@ Subsequent subsections dive into more detail of individual parts of the process.
 \Cref{fig:flow} is a schematic overview of said evaluation process.
 Step zero in the evaluation process is checking if the exercise is solvable in the programming language of the submission (\cref{subsec:solvability-and-correctness-checks}).
 Next, the test suite is partitioned into compilation and execution units (\cref{subsec:execution-planning}).
-For each of these units, the relevant code is generated and the resulting test code is compiled (\cref{subsec:code-generation}).
-This code is generated in the programming language of the submission.
+For each of these units, the relevant test code is generated and compiled (\cref{subsec:code-generation}), in the programming language of the submission.
 This code generation is the bulk of language-specific code in TESTed, whose design and implementation are discussed in \cref{sec:programming-language-support}.
 
 After compilation, each resulting executable contains one or more execution units.
@@ -590,7 +592,7 @@ The first step in the evaluation process is checking if the test suite is usable
 This might not be the case for a number of reasons, the three main ones being:
 
 \begin{itemize}
-    \item The exercise designer has explicitly limited in which programming languages the exercise may be solved.
+    \item The exercise author has explicitly limited in which programming languages the exercise may be solved.
     \item The test suite uses constructs that are not supported by the programming language of the solution.
           For example, if the test suite uses object-oriented programming, the exercise will not be solvable in C or Haskell.
     \item The test suite contains programming-language-specific code but does not provide code for the programming language of the submission.
@@ -638,8 +640,8 @@ While different compilation units cannot be executed as one execution unit, it i
         \includestandalone{planning-3}
         \caption{
             Two possible partitionings for execution units (denoted by blue boxes), depending on the partitioning of the compilation units.
-            In the first partitioning, the single compilation unit is split into three execution units.
-            The second partitioning cannot use the same execution units, as an execution unit cannot comprise multiple compilation units.
+            In the first partitioning (top), the single compilation unit is split into three execution units.
+            The second partitioning (bottom) cannot use the same execution units, as an execution unit cannot comprise multiple compilation units.
             The compilation units are thus further divided into more execution units.
         }
         \label{fig:planning-execution}
@@ -720,7 +722,7 @@ This code generation is the main task of the programming-language-specific modul
 After the test code has been generated and compiled into executables, these executables are then executed.
 
 During this execution, special care is taken to ensure that the executions are independent of each other.
-All execution takes place in a special directory called the \emph{workdir} (from working directory), whose location is provided to TESTed via the config (\cref{sec:tested-and-dodona}).
+All execution takes place in a special directory called the \emph{workdir} (from working directory), whose location is provided to TESTed via the configuration (\cref{sec:tested-and-dodona}).
 For each execution unit, TESTed creates a new subdirectory and copies the relevant files into that subdirectory.
 The execution then happens in the subdirectory.
 
@@ -739,8 +741,8 @@ The astute reader might wonder how parallel execution is implemented, since TEST
 }
 This means that at any one time, only one thread can execute Python code.
 However, TESTed executes the test code in a separate process.
-This means the GIL does not apply: during execution of the test code, most of the time is spent waiting on results from the subprocess that is actually doing the execution.
-Waiting on input/output results is one area where the GIL is released, even in current Python versions.
+This means the global interpreter lock does not apply: during execution of the test code, most of the time is spent waiting on results from the subprocess that is actually doing the execution.
+Waiting on input/output results is one area where the global interpreter lock is released, even in current Python versions.
 
 \subsection{Checking test results}\label{subsec:checking-results}
 
@@ -759,11 +761,11 @@ Currently, the following oracles are included:
     The expected value can be provided either as a string, or as a file, in which case the contents of said file are used as the string.
     \item[File oracle] This allows comparison between two files, either comparing the whole file, or comparing the file line-by-line.
     When comparing line-by-line, the text oracle is used, so the same options can be provided.
-    \item[Return value oracle] This oracle compares two values (using the data serialization from \cref{subsec:data-serialization}).
+    \item[Return value oracle] This oracle compares two values (using the serialization from \cref{subsec:data-serialization}).
     The oracle uses the basic and advanced types of TESTed to compare the data types in addition to the values.
     \item[Exception oracle] This allows checking exceptions.
     By default, only the message of the exception is checked, as the type of an exception is programming language dependent.
-    However, the oracle does have an option to provide the expected type for the different programming languages, in which case those will be checked as well.
+    However, the oracle does have an option to provide the expected type for the different programming languages.
     Do note that checking the type happens with a string-based check, meaning that if a student implements a custom exception with the same name, it will pass the check.
 \end{description}
 
@@ -771,10 +773,10 @@ There are a number of scenarios where the built-in oracles are not enough to pro
 One such example is an exercise where dynamic data is used, for example a return value that depends on the current date.
 Another example is a random or otherwise non-deterministic return value, where the value must satisfy some conditions.
 Finally, sometimes the exercise is static, but it is better to provide some exercise-specific feedback.
-\marginnote{Earlier versions of TESTed allowed implementing programmed oracles in any of the supported programming languages. Because of serious performance penalties, this is no longer allowed.}
 For example, if the exercise is to generate an SVG, it would be better to include a rendered version of the SVG in the feedback.
 
 For these scenarios, a programmed oracle can be used.
+\marginnote{Earlier versions of TESTed allowed implementing programmed oracles in any of the supported programming languages. Because of serious performance penalties, this is no longer allowed.}
 Such an oracle is, in essence, an extension of the built-in oracles: instead of using a built-in oracle, TESTed will call the exercise-provided oracle.
 Exercise authors must provide the oracle in the form of a function (the check function) implemented in Python.
 This oracle is also language-agnostic: the same check function will be used for all programming languages.
@@ -792,7 +794,7 @@ We discourage their usage as much as possible.
 \subsection{Static analysis of the submission}\label{subsec:static-analysis-of-the-submission}
 
 TESTed also provides a way to perform exercise-independent static analysis on the submission as part of the evaluation process.
-The use of linters is widespread in the software engineering world and can also benefit students by pointing to common errors and familiarize students with the programming style of the programming language they are working in~\autocite{alomarUseStaticAnalysis2023}.
+The use of linters is widespread in the software engineering world and can also benefit students by pointing to common errors and familiarize students with the programming style of the language they are working in~\autocite{alomarUseStaticAnalysis2023}.
 Currently, all supported languages (except C\#, where the compiler acts a linter) in TESTed use an external linter to generate additional feedback (\cref{tab:linters}).
 
 \begin{table}[h]
@@ -821,10 +823,8 @@ Currently, all supported languages (except C\#, where the compiler acts a linter
 \section{Integration with and influences of Dodona}\label{sec:tested-and-dodona}
 
 Dodona~\autocite{vanpetegemDodonaLearnCode2023} is an online platform for solving and submitting programming exercises.
-It is developed by Team Dodona (which TESTed is also a part of) at Ghent University, originally for use in our own courses.
-However, the platform has enjoyed a wide adoption within Flanders, and is now used by over a thousand colleges, universities, and schools.
-The distinction between a judge platform and testing framework (\cref{sec:tested1-related-work}) is relevant here: Dodona is the judge platform in which different testing frameworks can be run.
-Within Dodona, the testing frameworks are called judges, but we will use the term testing framework for consistency.
+An introduction and overview of the platform is given in \cref{sec:dodona}.
+Relevant here is the distinction between a judge platform and testing framework (\cref{sec:tested1-related-work}): Dodona is the judge platform in which different testing frameworks (the judges in Dodona terminology) can be run.
 
 While TESTed is available as a standalone tool, it was primarily developed with Dodona in mind.
 Therefore, some design decisions made by the Dodona platform still apply to TESTed as well.
@@ -836,17 +836,15 @@ We also look at Dodona's feedback format, which is also used by TESTed.
 Dodona enforces a complete separation of the platform code and the testing framework.
 Communication between the platform and the testing frameworks is done via a well-defined interface, consisting of two parts: the input for testing frameworks and the feedback generated by testing frameworks.
 Both are discussed in the next two sections.
-As testing frameworks run student code, the platform must be particularly immune to bad code.
-For example, a submission with an infinite loop should not bring down the platform.
+Evaluating submissions is done using \software{Docker}, as testing frameworks run student code.
+They must be immune to bad code, e.g.\ a submission with an infinite loop should not bring down the platform.
 Neither should malevolent submissions: a fork bomb should similarly have no impact on the platform.
-To achieve this, the testing frameworks are executed in \software{Docker}.
-This ensures the testing frameworks are isolated from the platform and allows imposing resource limits on the execution of submissions (such as memory limits, time limits, disk speed limits, network access or not).
 
 When code is submitted, the platform will create a Docker container using the testing framework's associated Docker image.
 Then, relevant files for the exercise and the submission are mounted into the container's file system.
 Finally, the container is run, which will start the testing framework inside the container with relevant options (\cref{subsec:dodona-input}).
 Dodona then reads the feedback from the standard output of the container (\cref{subsec:dodona-output}).
-This feedback is then saved into Dodona's database and shown to the user who submitted the code.
+This feedback is then saved into the database and shown to the user who submitted the code.
 
 \subsection{Dodona-provided input for testing frameworks}\label{subsec:dodona-input}
 
@@ -875,7 +873,7 @@ An annotated example is provided in \cref{lst:dodona-input-object}.
   "time_limit": 60,
   // Name of the test suite.
   "suite": "suite.yaml",
-  // Tested: additional options...
+  // TESTed: additional options...
   "linter": true
 }
     \end{minted}
@@ -921,42 +919,45 @@ TESTed uses newline-delimited JSON\@.
 Two equivalent specifications exist for this format: NDJSON (Newline-Delimited JSON\footnote{\url{https://ndjson.org/}}) and JSON Lines\footnote{\url{https://jsonlines.org/}}.
 The format itself is simple: JSON objects are separated by a newline, and each line is a valid JSON object.
 
-The structure of the feedback is indicated by commands, with \texttt{start} commands to begin a new level in the hierarchy and \texttt{close} commands to finish a level.
-\Cref{lst:tested-output-example} contains the output from TESTed that resulted in the feedback as shown in \cref{fig:dodona}.
-
 \begin{listing}
-    \begin{minted}{json}
-        {"command": "start-judgement"}
-        {"command": "start-tab", "title": "Feedback"}
-        {"command": "start-context"}
-        {"command": "start-testcase", "description": "a_list = [1, 2, 3, 2]"}
-        {"command": "close-testcase"}
-        {"command": "start-testcase", "remove_all_occurrences(a_list, 2)"}
-        {"command": "start-test", "expected": "[1, 3]", "channel": "return"}
-        {"command": "close-test", "generated": "[1, 3]", "status": "correct"}
-        {"command": "close-testcase"}
-        {"command": "close-context"}
-        {"command": "start-context"}
-        {"command": "start-testcase", "description": "a_list = [0, 1, 1, 2]"}
-        {"command": "close-testcase"}
-        {"command": "start-testcase", "remove_all_occurrences(a_list, 1)"}
-        {"command": "start-test", "expected": "[0, 2]", "channel": "return"}
-        {"command": "close-test", "generated": "[0, 2]", "status": "correct"}
-        {"command": "close-testcase"}
-        {"command": "close-context"}
-        {"command": "close-tab"}
-        {"command": "close-judgement"}
-    \end{minted}
+    \begin{wide}
+        \begin{minted}{json}
+            {"command": "start-judgement"}
+            {"command": "start-tab", "title": "Feedback"}
+            {"command": "start-context"}
+            {"command": "start-testcase", "description": "a_list = [1, 2, 3, 2]"}
+            {"command": "close-testcase"}
+            {"command": "start-testcase", "remove_all_occurrences(a_list, 2)"}
+            {"command": "start-test", "expected": "[1, 3]", "channel": "return"}
+            {"command": "close-test", "generated": "[1, 3]", "status": "correct"}
+            {"command": "close-testcase"}
+            {"command": "close-context"}
+            {"command": "start-context"}
+            {"command": "start-testcase", "description": "a_list = [0, 1, 1, 2]"}
+            {"command": "close-testcase"}
+            {"command": "start-testcase", "remove_all_occurrences(a_list, 1)"}
+            {"command": "start-test", "expected": "[0, 2]", "channel": "return"}
+            {"command": "close-test", "generated": "[0, 2]", "status": "correct"}
+            {"command": "close-testcase"}
+            {"command": "close-context"}
+            {"command": "close-tab"}
+            {"command": "close-judgement"}
+        \end{minted}
+    \end{wide}
     \caption{
         Example of the output generated by TESTed, which is rendered in \cref{fig:dodona}.
-        As before, each context consists of two test cases, the first of which has no tests, while the second has one test (the expected return value).
+        As before, each context consists of two test cases, the first of which has no explicit tests, while the second has one test (the expected return value).
     }
     \label{lst:tested-output-example}
 \end{listing}
 
+\Cref{lst:tested-output-example} contains the output from TESTed that resulted in the feedback as shown in \cref{fig:dodona}.
+The structure of the feedback is indicated by commands, with \texttt{start} commands to begin a new level in the hierarchy and \texttt{close} commands to finish a level.
+
 The Dodona feedback format is a simple, yet flexible format.
-It has been used by a variety of testing frameworks for general purpose programming languages (like TESTed, but also dedicated frameworks for JavaScript, Bash, Python, C, C\#, Prolog, Haskell, R, and Scheme).
+It has been used by a variety of testing frameworks for general purpose programming languages (like TESTed, but also dedicated frameworks for JavaScript, Bash, Python, C, C\#, Prolog, Haskell, R, Scheme, and assembly).
 It has also been used successfully for more niche testing frameworks (such as \textsc{html}/\textsc{css}, \textsc{sql}, and Turtle).
+
 This illustrates that TESTed is neither limited by this choice of output format, nor would it be challenging to support this format in other platforms.
 
 \section{Programming language support}\label{sec:programming-language-support}
@@ -964,9 +965,9 @@ This illustrates that TESTed is neither limited by this choice of output format,
 The parts of the evaluation process that are programming-language-specific are implemented using a module system.
 To make adding new programming languages easy, TESTed enforces a strict separation of concerns with regard to language-specific tasks.
 All language-specific actions and tasks must go through a single well-defined interface.
-This interface is implemented using Python's object-oriented capabilities by defining an abstract base class (ABC) called \mintinline{python}{Language}.
+This interface is implemented using Python's object-oriented capabilities by defining an abstract base class called \mintinline{python}{Language}.
 
-This abstract \mintinline{python}{Language} class has a set of abstract methods, for which an implementation is necessary, and a set of optional methods, which may be overridden but are not required.
+This \mintinline{python}{Language} class has a set of abstract methods, for which an implementation is necessary, and a set of optional methods, which may be overridden but are not required.
 The \mintinline{python}{Language} class is the interface between the core modules of TESTed and the language-specific modules.
 No other modules have language-specific code.
 
@@ -975,7 +976,7 @@ Some other smaller tasks are registering the language in TESTed and adding suppo
 
 The remainder of this section describes the different methods that must or can be implemented.
 We always begin by providing the method signature, followed by a discussion of the method.
-Most of this information is also available in the class itself as documentation in the code.
+Most of this information is also available in the class itself as documentation in the code\footnote{\url{https://github.com/dodona-edu/universal-judge/blob/master/tested/languages/config.py}}, which is also the most up-to-date version.
 
 \subsection{Compilation}\label{subsec:impl-compilation}
 
@@ -1296,7 +1297,7 @@ Each experiment specifically focuses on a particular aspect of TESTed we want to
 The goal of a programming-language-agnostic testing framework is to allow unit testing with a programming-language-agnostic test suite.
 We therefore wanted to verify that this goal can be achieved with a testing framework that implements the formulated requirements.
 We asked higher education students to solve a set of three programming exercises in one or more programming languages supported by TESTed at that time (C, Haskell, Java, JavaScript, Kotlin, Python).
-One exercise required solutions to read data from standard output and generate results on standard output, i.e.\ the classic \textsc{acm/icpc} style programming challenges.
+One exercise required solutions to read data from standard output and generate results on standard output, i.e.\ the classic \textsc{acm-icpc} style programming challenges.
 The other exercises required implementing one or more functions that are called many times from the test suite with different arguments to cover different corner cases.
 
 We challenged students to solve the exercises in as many programming languages as they possibly could, in order to broadly cover all programming languages supported by TESTed.
@@ -1323,9 +1324,9 @@ Additionally, we received no complaints by students of programming style issues.
 For example, TESTed correctly converted between camel case and snake case.
 Another example is JavaScript, where TESTed supports both synchronous and asynchronous functions.
 
-\subsection{Overhead for exercise designers}\label{subsec:overhead-for-exercise-designers}
+\subsection{Overhead for exercise authors}\label{subsec:overhead-for-exercise-designers}
 
-The main goal of the second experiment was to identify any overhead that could possibly be imposed on exercise designers while producing test suites for TESTed, compared to designing test suites for a specific programming language.
+The main goal of the second experiment was to identify any overhead that could possibly be imposed on exercise authors while producing test suites for TESTed, compared to authoring test suites for a specific programming language.
 A secondary goal was to identify possible limitations on the kind of exercises that TESTed could evaluate automatically or any shortcomings in the feedback it provides.
 For these purposes we designed test suites for all programming challenges of the 2020 edition of the Advent of Code\footnote{\url{https://adventofcode.com/}}, an annual programming contest run by Eric Wastl from December 1 to December 25.
 
@@ -1351,7 +1352,7 @@ Meanwhile, some of the other authors~\autocite{strijbolTESTedEducationalTesting2
 
 We found that generating generic test suites for TESTed was not more time-consuming than generating test suites for the testing framework of a specific programming language.
 We have been able to design test suites for all Advent of Code challenges without discovering any limitations or needs to find workarounds.
-All test suites rely only on the built-in checks of TESTed, so for the Advent of Code challenges we never had to rely on the programmed checks or language-specific checks.
+All test suites rely only on the built-in oracles of TESTed, so for the Advent of Code challenges we never had to rely on the programmed or language-specific oracles.
 The latter underscores that more advanced or language-specific techniques for automatic evaluations are indeed only needed in specific cases.
 
 We could no longer verify the feedback generated by TESTed for all submitted solutions, but we did not encounter any invalid feedback when inspecting a sample of the submissions while running the challenges.
@@ -1366,7 +1367,7 @@ Our idea then was that TESTed would convert the domain-specific language into JS
 However, as detailed in \cref{ch:tested-dsl}, we later used the domain-specific language directly, without conversion step.
 We also investigated the option to support multiple domain-specific languages for different types of programming exercises, for example a DSL for stdin/stdout exercises and another domain-specific language for test suites built around function calls.
 However, it became clear the supporting both scenarios in the same domain-specific language was feasible and a better approach.
-Also of interest was supporting previous attempts at standardizing descriptions of programming exercises such as \textsc{yape}x\textsc{il}~\autocite{paivaAnotherProgrammingExercises2020} and \textsc{peml}~\autocite{cssplicepemlworkinggroupProgrammingExerciseMarkup2021}, and extending BabelO~\autocite{queirosBabeLOExtensibleConverter2013} with support for TESTed.
+Also of interest was supporting previous attempts at standardizing descriptions of programming exercises such as \textsc{yape}x\textsc{il}~\autocite{paivaAnotherProgrammingExercises2020} and \textsc{peml}~\autocite{mishraProgrammingExerciseMarkup2023}, and extending BabelO~\autocite{queirosBabeLOExtensibleConverter2013} with support for TESTed.
 
 Designing a programming exercise that can be solved in multiple programming languages not only requires a programming-language-agnostic testing framework, but also a task description that adapts itself to selected programming languages.
 Particular differences between languages that need to be taken into account in expressing task descriptions are naming conventions (e.g.\ camel case or snake case), names for data types (e.g.\ lists in Python or arrays in Java), representation of literals (e.g.\ single quotes or double quotes as string delimiters) and grammar for expressions and statements (e.g.\ in sample code snippets).
@@ -1388,7 +1389,7 @@ Note that Dodona~\autocite{vanpetegemDodonaLearnCode2023} does not impose any re
 
 The students did not spontaneously send any signals that they noticed differences between the feedback they received from the JavaScript framework or TESTed.
 After we informed the students about the change we made in the background of Dodona, they confirmed that the feedback provided by TESTed was on par with feedback they received before.
-Some students had noticed the introduction of linting messages to their submissions, which TESTed provides for all supported programming languages (using ESLint for JavaScript).
+Some students had noticed the introduction of linting messages to their submissions, which TESTed provides for all supported programming languages (using \software{ESLint} for JavaScript).
 However they believed this was an addition to the existing JavaScript framework and identified it as an improvement on the feedback they received.
 
 As an extension to the experiment, we prepared a JavaScript exercise that was automatically reviewed using both the JavaScript testing framework and TESTed.
