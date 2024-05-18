@@ -316,7 +316,7 @@ These are free of restrictions: the check for allowed blocks does not apply.
 
 \begin{listing}
     \begin{wide}
-        \begin{subfigure}{0.49\linewidth}
+        \begin{sublisting}{0.49\linewidth}
             \begin{scratch}[scale=0.8]
                 \blockinit{when I receive \selectmenu{Start}}
                 \blocklook{set \selectmenu{ghost} effect to \ovalnum{0}}
@@ -334,8 +334,8 @@ These are free of restrictions: the check for allowed blocks does not apply.
 
             \end{scratch}
             \caption{A script in Scratch.}
-        \end{subfigure}
-        \begin{subfigure}{0.5\linewidth}
+        \end{sublisting}
+        \begin{sublisting}{0.5\linewidth}
             \begin{minted}{javascript}
             script(
               whenIReceive('Start'),
@@ -352,7 +352,7 @@ These are free of restrictions: the check for allowed blocks does not apply.
             );
             \end{minted}
             \caption{The equivalent in JavaScript.}
-        \end{subfigure}
+        \end{sublisting}
     \end{wide}
     \caption{An example of how a Scratch program can be represented using the abstractions provided by Itch.}\label{lst:itch-block-abstraction}
 \end{listing}

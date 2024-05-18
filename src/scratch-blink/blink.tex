@@ -33,7 +33,7 @@ Many computer science curricula have adopted Scratch to teach students the basic
 As students navigate the programming landscape, they will inevitably encounter bugs that cause unexpected behaviour during code execution~\autocite{zellerWhyProgramsFail2009}, and Scratch is no exception.
 The difficulty in detecting the root cause of a failure is that when a bug is activated, the system will arrive in an erroneous state but might still behave as expected.
 It is only later when this erroneous state is propagated throughout the system that the system will reach a state that is observably wrong, leading to a failure~\autocite{ammannIntroductionSoftwareTesting2016}.
-Additionally, Scratch uses a ``failsoft'' mode: errors are often swallowed, and execution continues without notifying the user~\autocite{hromkovic2021problem}.
+Additionally, Scratch uses a ``failsoft'' mode: errors are often swallowed, and execution continues without notifying the user~\autocite{hromkovicProblemDebuggingCurrent2021}.
 Starting from the failure and working backwards to find the bug can be a daunting task, especially in larger or more complex programs.
 
 In a classroom setting, the onus often falls on the teacher to guide students in identifying these bugs.
@@ -246,7 +246,7 @@ Next to block-based programming languages, we have taken inspiration from back-i
 For Scratch, we are aware of three existing debuggers.
 The first provides pause/resume/step functionality and breakpoints~\autocite{wangDevelopingResourcesDebugging2021}.
 The second debugger is a browser extension that provides breakpoints and advanced logging~\autocite{ScratchAddons2023}.
-The last, and most recent, debugger is NuzzleBug~\autocite{deinerNuzzleBugDebuggingBlockbased2023}.
+The last, and most recent, debugger is NuzzleBug~\autocite{deinerNuzzleBugDebuggingBlockBased2024}.
 It provides similar functionality to Blink, but makes some different choices in its implementation and user interface.
 For example, the step functionality in NuzzleBug is a more traditional step, advancing one block at a time.
 

@@ -33,7 +33,7 @@ Finally, we illustrate that the changed execution model is suitable for use in a
 
 \begin{listing}
     \centering
-    \begin{subfigure}{0.45\textwidth}
+    \begin{sublisting}{0.45\textwidth}
         \centering
         \begin{scratch}[scale=0.7]
             \blockinit{when \greenflag{} clicked}
@@ -46,8 +46,8 @@ Finally, we illustrate that the changed execution model is suitable for use in a
             \blockmove{move  \ovalnum{100} steps}
             \blockmove{turn \turnleft{} \ovalnum{90} degrees}
         \end{scratch}
-    \end{subfigure}
-    \begin{subfigure}{0.45\textwidth}
+    \end{sublisting}
+    \begin{sublisting}{0.45\textwidth}
         \centering
         \begin{scratch}[scale=0.7]
             \blockinit{when \greenflag{} clicked}
@@ -56,7 +56,7 @@ Finally, we illustrate that the changed execution model is suitable for use in a
                 \blockmove{turn \turnleft{} \ovalnum{90} degrees}
             }
         \end{scratch}
-    \end{subfigure}
+    \end{sublisting}
     \caption{
         Two Scratch programs that seemingly produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the program.
     }
