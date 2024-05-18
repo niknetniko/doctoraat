@@ -1,0 +1,120 @@
+%! Author = niko
+%! Date = 17/05/2024
+
+% Preamble
+\documentclass[coverheight=240mm,coverwidth=170mm,spinewidth=15mm]{bookcover}
+
+% width = 170mm
+% margin = 10mm
+% spine = 20mm
+% total = 170*2+10+10+20 = 380
+%\usepackage[paperheight=260mm,paperwidth=380mm,margin=20mm]{geometry}
+
+\usepackage{luacode}
+\directlua{pdf.setminorversion(7)}
+
+\usepackage{xcolor}
+\definecolor{ugent-we-dark}{RGB}{31, 98, 118}
+\definecolor{cover-bg}{HTML}{EDE6D6}
+\definecolor{cover-text}{HTML}{72645E}
+\usepackage{pgfornament}
+
+\usepackage{fontspec}
+\setmainfont{Source Serif 4}[
+    Color = cover-text,
+    Renderer = OpenType,
+    SizeFeatures    = {%
+        {Size={-9},Font=* Caption},
+        {Size={9-13},Font=*},
+        {Size={14-},Font=* Subhead},
+%        {Size={24-},Font=* Display}
+    },
+    ItalicFeatures = {%
+    SizeFeatures    = {%
+            {Size={-9},Font=* Caption Italic},
+            {Size={9-13},Font=* Italic},
+            {Size={14-24},Font=* Subhead Italic},
+            {Size={24-},Font=* Display Italic}
+    },
+    },
+    BoldFeatures = {%
+    SizeFeatures    = {%
+            {Size={-9},Font=* Caption Semibold},
+            {Size={9-13},Font=* Semibold},
+            {Size={14-24},Font=* Subhead Semibold},
+            {Size={24-},Font=* Display Semibold}
+    },
+    },
+    BoldItalicFeatures = {%
+    SizeFeatures    = {%
+            {Size={-9},Font=* Caption Semibold Italic},
+            {Size={9-13},Font=* Semibold Italic},
+            {Size={14-24},Font=* Subhead Semibold Italic},
+            {Size={24-},Font=* Display Semibold Italic}
+    },
+    },
+    Numbers         = OldStyle,
+]
+
+\usepackage{polyglossia}
+\setdefaultlanguage[variant=british]{english}
+
+\usepackage{microtype}
+
+\usepackage{graphicx}
+%\usetikzlibrary{calc}
+%\newcommand{\pageframe}{%
+%    \begin{tikzpicture}[remember picture, overlay]
+%    % page frame
+%    \fill [cover-bg] ($(current page.north west)+(1cm,-1cm)$)
+%    rectangle ($(current page.south east)+(-1cm,1cm)$);
+%
+%    \draw ($(current page.north)+(-1cm,-1cm)$) -- ($(current page.north)+(-1cm,-0.25cm)$);
+%
+%    \end{tikzpicture}
+%}
+
+% Document
+\begin{document}
+\setbookcover{pagecolor=cover-bg}
+\begin{bookcover}
+    \begin{bookcoverelement}{normal}{front}[,5mm,,5mm]
+        \vspace*{0.5cm}%
+        \begin{center}
+            \fontsize{32pt}{40pt}\selectfont EDUCATIONAL SOFTWARE TESTING
+        \end{center}%
+        \begin{center}
+            \fontsize{18pt}{23pt}\selectfont\textit{for}
+        \end{center}%
+        \begin{center}
+            \fontsize{25pt}{30pt}\selectfont TEXTUAL \textit{\fontsize{20pt}{23pt}\selectfont and} BLOCK-BASED PROGRAMMING LANGUAGES
+        \end{center}%
+        \vspace*{0.5cm}%
+        \begin{center}
+            \fontsize{20pt}{23pt}\selectfont\textit{\fontsize{15pt}{23pt}\selectfont by} \textsc{niko strijbol}
+        \end{center}%
+        \vspace*{1cm}
+        \begin{center}
+            %Daria Gaenko
+            \includegraphics[width=0.55\partwidth]{iStock-886097516}%
+        \end{center}%
+        \vspace*{\fill}%
+        \begin{center}
+            \fontsize{15pt}{18pt}\selectfont%
+            \textsc{ghent university} \\
+            2024
+        \end{center}
+    \end{bookcoverelement}
+    \begin{bookcoverelement}{normal}{spine}[,5mm,,5mm]
+        \centering%
+        \rotatebox[origin=c]{-90}{\fontsize{15pt}{21pt}\selectfont EDUCATIONAL SOFTWARE TESTING \textit{for} TEXTUAL \textit{and} BLOCK-BASED PROGRAMMING LANGUAGES}
+    \end{bookcoverelement}
+%    \bookcovercomponent{ruler}{whole}{,,}
+    \begin{bookcoverelement}{normal}{back}[,5mm,,5mm]
+        \vspace*{\fill}
+        \begin{center}
+            \pgfornament[scale=0.5,color=cover-text]{84}
+        \end{center}
+    \end{bookcoverelement}
+\end{bookcover}
+\end{document}

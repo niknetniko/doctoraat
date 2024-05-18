@@ -28,7 +28,6 @@
 
 % Andere
 %\usepackage{showframe}
-%\usepackage{bookmark}
 \usepackage{xcolor}
 \usepackage{circledsteps}
 \usepackage{caption}
@@ -349,9 +348,10 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \subfile{colophon}
 
+%\subfile{preface}
+
 \tableofcontents
 
-%\subfile{preface}
 \subfile{summary-nl.nltex}
 \subfile{summary-en}
 
@@ -397,5 +397,10 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \KOMAoptions{mpinclude=false}
 \recalctypearea
 \printbibliography[heading=bibintoc]
+\StandardArea
+
+\appendix
+
+\subfile{appendix-vpw/vpw.tex}
 
 \end{document}
