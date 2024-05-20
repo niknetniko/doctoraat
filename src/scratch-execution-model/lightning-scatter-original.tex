@@ -37,7 +37,7 @@
         xmajorgrids,
         xmax=10500,
         xmin=-500,
-        mark size=1pt,
+%        mark size=1pt,
         scaled x ticks=false,
         clip=false,
         xticklabel pos=top,
@@ -63,21 +63,21 @@
             (7183.900000035763,em-120)
             (8215.800000011921,em-120)
         };
-        \draw[color=ugent-pp] (axis cs:9256,min) -- (axis cs:9256,max);
+        \draw[color=ugent-pp,line width=1pt] (axis cs:9256,min) -- (axis cs:9256,max);
         \addplot[em-30,only marks] coordinates {
             (0.0,em-30)
         };
-        \draw[densely dashed,color=ugent-re] (axis cs:976,min) -- (axis cs:976,max);
+        \draw[densely dashed,color=ugent-re,line width=1pt] (axis cs:976,min) -- (axis cs:976,max);
         \addplot[em-60,only marks] coordinates {
             (0.0,em-60)
             (1055.4000000357628,em-60)
         };
-        \draw[densely dashed,color=ugent-ge] (axis cs:1754,min) -- (axis cs:1754,max);
+        \draw[densely dashed,color=ugent-ge,line width=1pt] (axis cs:1754,min) -- (axis cs:1754,max);
         \addplot[em-90,only marks] coordinates {
             (0.0,em-90)
             (1046.699999988079,em-90)
         };
-        \draw[densely dashed,color=ugent-ea] (axis cs:1701,min) -- (axis cs:1701,max);
+        \draw[densely dashed,color=ugent-ea,line width=1pt] (axis cs:1701,min) -- (axis cs:1701,max);
         \addplot[scratch,only marks] coordinates {
             (0.0,scratch 3.0)
             (1055.2999999523163,scratch 3.0)
@@ -89,7 +89,7 @@
             (7391.299999952316,scratch 3.0)
             (8447.5,scratch 3.0)
         };
-        \draw[color=ugent-we] (axis cs:9510,min) -- (axis cs:9510,max);
+        \draw[color=ugent-we,line width=1pt] (axis cs:9510,min) -- (axis cs:9510,max);
         \addplot[em-asap,only marks] coordinates {
             (0.0,em-asap)
             (1018.3000000119209,em-asap)
@@ -101,7 +101,7 @@
             (7123.800000011921,em-asap)
             (8142.899999976158,em-asap)
         };
-    \draw[color=ugent-ps] (axis cs:9176,min) -- (axis cs:9176,max);
+    \draw[color=ugent-ps,line width=1pt] (axis cs:9176,min) -- (axis cs:9176,max);
     \end{axis}
 \end{tikzpicture}
 \end{document}

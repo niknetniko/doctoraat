@@ -498,7 +498,7 @@ We can conclude that most Scratch projects are still small in Scratch 3.0.
     \end{wide}
     \caption{
         Distribution of scripts based on their cyclomatic complexity.
-        Scripts with complexities higher than 10 have been bundled into the last bucket.
+        Scripts with a complexity higher than 10 have been bundled into the last bucket.
     }
     \label{fig:scratch-cc}
 \end{figure}
@@ -558,7 +558,7 @@ The main differences are as follows: the number of complex projects and of proje
 To ascertain the effect of the new execution model on existing Scratch projects, we perform and report on a preliminary benchmark.
 We measure the performance and behaviour of various projects using the existing Scratch 3.0 execution model and variations of the new execution model.
 
-We consider three variations of the new execution model, which differ in how fast they run: \textbf{\textsc{em-30}} runs at \qty{30}{\fps}, \textbf{\textsc{em-60}} at \qty{60}{\fps}, \textbf{\textsc{em-120}} at \qty{120}{\fps}, and \textbf{\textsc{em-asap}} runs as fast as possible, meaning a new frame is started as soon as the previous frame finishes.
+We consider five variations of the new execution model, which differ in how fast they run: \textbf{\textsc{em-30}} runs at \qty{30}{\fps}, \textbf{\textsc{em-60}} at \qty{60}{\fps}, \textbf{\textsc{em-90}} at \qty{90}{\fps}, \textbf{\textsc{em-120}} at \qty{120}{\fps}, and \textbf{\textsc{em-asap}} runs as fast as possible, meaning a new frame is started as soon as the previous frame finishes.
 
 \subsection{Selection of projects}\label{subsec:selection-of-projects}
 
@@ -590,24 +590,21 @@ We therefore only manually look at two such projects.
         \end{subfigure}
         \par\bigskip
         \begin{subfigure}{0.49\linewidth}
-            % TODO: include proper
-            \includestandalone[mode=buildnew]{block-violin-small}
-            \caption{Blocks of small projects}
+            \includestandalone{block-violin-small}
+            \caption{Small projects}
             \label{fig:blocks-non-interactive-violin-small}
         \end{subfigure}
         \begin{subfigure}{0.49\linewidth}
-            % TODO: include proper
-            \includestandalone[mode=buildnew]{block-violin-large}
-            \caption{Blocks of large projects}
+            \includestandalone{block-violin-large}
+            \caption{Large projects}
             \label{fig:blocks-non-interactive-violin-large}
         \end{subfigure}
     \end{wide}
     \caption{
         Variants of the new execution model compared against the original Scratch 3.0 execution model.
         The top figures show the number of projects that execute more, equal, or fewer blocks than the original execution model.
-        Here, projects are considered to have the same number of executed blocks when the new number is within \qty{2}{\percent} of the number when run with the original Scratch 3.0 execution model.
-        The bottom figures show the difference in the number of blocks compared to the original execution model.
-        A negative number of blocks means that the new execution model executed fewer blocks than the original.
+        The bottom figures show the difference in the number of block executions compared to the original execution model.
+        A negative number indicates that fewer blocks were executed than in the original execution model.
     }
     \label{fig:blocks-non-interactive}
 \end{figure}
@@ -618,8 +615,8 @@ Additionally, \cref{fig:blocks-non-interactive-violin-small,fig:blocks-non-inter
 The results show that most projects do not differ a lot, but there are a few outliers, particularly with the \textsc{em-asap} model, and with larger projects.
 In general, the \textsc{em-90} or \textsc{em-120} model seems to provide the most similar behaviour for most projects.
 
-However, the behaviour of the \textsc{em-asap} model warrants future investigation.
-Our initial investigation of those outlier projects did not reveal why the behaviour is so different.
+However, the behaviour of the \textsc{em-asap} model warrants future research.
+Our initial investigation of those outlier projects did not reveal an immediate cause why the behaviour is so different.
 One hypothesis is that this is due to how the models are implemented: there are some quirks with JavaScript's \texttt{setTimeout} function, which is what is used in the virtual machine.
 An alternative implementation of the \textsc{em-asap} model might be warranted.
 
@@ -637,7 +634,7 @@ An alternative implementation of the \textsc{em-asap} model might be warranted.
         }
         \label{fig:lightning-behaviour-original}
     \end{subfigure}
-
+    \par\medskip
     \begin{subfigure}{\linewidth}
         \centering
         \includestandalone{lightning-scatter-procedure}
@@ -651,7 +648,7 @@ An alternative implementation of the \textsc{em-asap} model might be warranted.
     \label{fig:lightning-behaviour}
 \end{figure}
 
-The first project we looked in detail at is the \textit{Lightning} project\footnote{\url{https://scratch.mit.edu/projects/1022959914/}, originally from \url{https://scratch.mit.edu/projects/995927372/}.}.
+The first project we looked in detail at is the \textit{Lightning} project\footnote{\url{https://scratch.mit.edu/projects/995927372/}}.
 The aim of this game is to dodge lightning bolts coming out of the sky.
 \Cref{fig:lightning-behaviour-original} gives an overview of the behaviour with the different execution models.
 The \textsc{em-30},\textsc{em-60}, and \textsc{em-90} model did not achieve 10 points: they were too slow and made the game unplayable.
@@ -672,10 +669,11 @@ This implementation is usable in with all execution models, except \textsc{em-30
     \label{fig:catch-apples-behaviour}
 \end{figure}
 
-The second project is the \textit{Catch the apples} project\footnote{\url{https://scratch.mit.edu/projects/1023625108/}, originally from \url{https://scratch.mit.edu/projects/995778768/}.}.
+The second project is the \textit{Catch the apples} project\footnote{\url{https://scratch.mit.edu/projects/995778768/}}.
 The aim here is to use the mouse to move a basket and catch as many falling apples as possible.
 \Cref{fig:catch-apples-behaviour} shows the behaviour with different execution models.
-In this exercise, all models are playable, but the more frames are executed, the faster the game plays.
+In this exercise, all models are playable.
+The optimal replacement would probably be between \textsc{em-30} and \textsc{em-60}, like \textsc{em-45}.
 
 \subsection{Discussion}\label{subsec:discussion}
 
