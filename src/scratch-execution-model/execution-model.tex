@@ -606,8 +606,8 @@ We therefore only manually look at two such projects.
         Variants of the new execution model compared against the original Scratch 3.0 execution model.
         The top figures show the number of projects that execute more, equal, or fewer blocks than the original execution model.
         Here, projects are considered to have the same number of executed blocks when the new number is within \qty{2}{\percent} of the number when run with the original Scratch 3.0 execution model.
-        The bottom figures show the difference in the amount of blocks compared to the original execution model.
-        A negative amount of blocks means that the new execution model executed fewer blocks than the original.
+        The bottom figures show the difference in the number of blocks compared to the original execution model.
+        A negative number of blocks means that the new execution model executed fewer blocks than the original.
     }
     \label{fig:blocks-non-interactive}
 \end{figure}
@@ -620,7 +620,7 @@ In general, the \textsc{em-90} or \textsc{em-120} model seems to provide the mos
 
 However, the behaviour of the \textsc{em-asap} model warrants future investigation.
 Our initial investigation of those outlier projects did not reveal why the behaviour is so different.
-One hypothesis is that this is due to how the models are implemented: there are some quirks with JavaScript's \texttt{setTimeout} function\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#reasons_for_delays_longer_than_specified}}, which is what is used in the virtual machine.
+One hypothesis is that this is due to how the models are implemented: there are some quirks with JavaScript's \texttt{setTimeout} function, which is what is used in the virtual machine.
 An alternative implementation of the \textsc{em-asap} model might be warranted.
 
 \subsection{Interactive projects}\label{subsec:interactive-projects}
