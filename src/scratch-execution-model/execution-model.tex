@@ -106,7 +106,7 @@ These publications all provide descriptions for parts of the execution model.
 First, \textcite{stahlbauerTestingScratchPrograms2019} propose a formalization of three aspects in Scratch: the user perspective, a syntactic model and a semantic model.
 They describe the semantics of Scratch with a memory model based on message passing.
 Next, \textcite{stahlbauerVerifiedScratchProgram2020} develop LeILa, an intermediate language to which Scratch projects can be translated, with the intended use of performing analysis on Scratch projects.
-The authors also provide a formalization of LeILa, using approximations of the behaviour of Scratch in some areas.
+The authors also provide a formalization of LeILa, using approximations for the behaviour of Scratch in some areas.
 Also, \textcite{gotzModelbasedTestingScratch2022} model the state-based behaviour of Scratch programs using a finite state machine.
 Finally, \textcite{deinerAutomatedTestGeneration2023} delve deeper into the actual execution of the virtual machine, while also proposing some modifications to it, for example, to make execution deterministic.
 
@@ -128,13 +128,13 @@ The virtual machine is thus responsible for scheduling these threads.
 \Cref{fig:blink-architecture} gives a schematic overview of the interaction between the different parts.
 It uses an almost-cooperative threading model, which \textcite{maloneyScratchProgrammingLanguage2010} call the ``Scratch threading model''.
 This means it is mostly non-preemptive: the virtual machine will not interrupt threads at arbitrary points in their execution.
-The threads must voluntarily yield control, or reach a limited set of points in their execution.
+The threads must voluntarily yield control or reach a limited set of points in their execution.
 The rational is given in~\cite{maloneyScratchProgrammingLanguage2010}: ``Scratch builds concurrency control into its threading model in a way that avoids most race conditions, so that users do not need to think about these issues.
 This is done by constraining where thread switches can occur.''.
 
 At four well-defined points, a thread always yields, thus causing said thread switching:
 \begin{enumerate}
-    \item When a block is executed that has a fixed duration.
+    \item When a block is with a fixed duration is executed.
         There are a number of blocks that fall under this category.
         \scratchinline{\blockcontrol{wait \ovalnum{}}} is an obvious inclusion, but this also applies to \scratchinline{\blockmove{glide \ovalnum{} secs to x: \ovalnum{} y: \ovalnum{}}}, for example.
         \scratchinline{\blocksound{play sound \ovalsound*{} until done}} also falls under this category, even if there is no explicit time.
