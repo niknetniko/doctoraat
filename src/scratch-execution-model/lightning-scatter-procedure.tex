@@ -1,0 +1,120 @@
+\documentclass[tikz]{standalone}
+
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{pgfplots}
+\usepackage{siunitx}
+\usepackage{fontspec}
+
+\pgfplotsset{compat=1.18}
+
+\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc,svg.path,fit}
+
+\definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
+\definecolor{ugent-we}{RGB}{45, 140, 168}       % no match
+\definecolor{ugent-we-dark}{RGB}{31, 98, 118}       % no match
+\definecolor{ugent-ge}{RGB}{232, 94, 113}       % rose				/ bleekrood
+\definecolor{ugent-ea}{RGB}{111, 113, 185}      % distant blue		/ verblauw
+\definecolor{ugent-pp}{RGB}{251, 126, 58}       % deep orange		/ dieporanje
+\definecolor{ugent-ps}{RGB}{113, 168, 96}       % yellow green		/ geelgroen
+
+\begin{document}
+\begin{tikzpicture}
+    \pgfplotsset{
+        scratch/.style={fill=ugent-we},
+        em-30/.style={fill=ugent-re},
+        em-60/.style={fill=ugent-ge},
+        em-90/.style={fill=ugent-ea},
+        em-120/.style={fill=ugent-pp},
+        em-asap/.style={fill=ugent-ps},
+    }
+    \begin{axis}[
+        height=3.5cm,
+        width=8cm,
+        symbolic y coords={min,scratch 3.0,em-asap,em-120,em-90,em-60,em-30,max},
+        xtick distance=1000,
+        ytick distance=1,
+        xmajorgrids,
+        xmax=10500,
+        xmin=-500,
+        mark size=1pt,
+        scaled x ticks=false,
+        clip=false,
+%        extra x ticks={0},
+%        xlabel={Execution time (s)},
+%        ytick pos=bottom,
+%        xtick style={draw=none},
+%        axis line style={draw=none},
+        yticklabel={\addfontfeature{Numbers={OldStyle,Proportional}}\textsc{\tick}},
+        xticklabel={\addfontfeature{Numbers={Lining}}\num[round-mode=places,round-precision=0,fixed-exponent=3,exponent-mode=fixed,drop-exponent=true]{\tick}},
+%        xticklabel={\addfontfeature{Numbers={OldStyle,Proportional}}\textsc{\tick}}
+    ]
+        % em-120
+        \addplot[em-120,only marks] coordinates {
+            (0.0,em-120)
+            (1028.5,em-120)
+            (2052.600000023842,em-120)
+            (3076.600000023842,em-120)
+            (4101.600000023842,em-120)
+            (5131.800000011921,em-120)
+            (6164.5,em-120)
+            (7187.800000011921,em-120)
+            (8211.800000011921,em-120)
+        };
+        \draw[color=ugent-pp] (axis cs:9246,min) -- (axis cs:9246,max);
+        \addplot[em-30,only marks] coordinates {
+            (0.0,em-30)
+            (1119.0,em-30)
+        };
+        \draw[densely dashed,color=ugent-re] (axis cs:1925,min) -- (axis cs:1925,max);
+        \addplot[em-60,only marks] coordinates {
+            (0.0,em-60)
+            (1052.7000000476837,em-60)
+            (2108.2000000476837,em-60)
+            (3164.5,em-60)
+            (4220.0,em-60)
+            (5276.5,em-60)
+            (6332.400000035763,em-60)
+            (7387.800000011921,em-60)
+            (8444.400000035763,em-60)
+        };
+        \draw[color=ugent-ge] (axis cs:9508,min) -- (axis cs:9508,max);
+        \addplot[em-90,only marks] coordinates {
+            (0.0,em-90)
+            (1042.0999999642372,em-90)
+            (2075.800000011921,em-90)
+            (3111.0,em-90)
+            (4143.199999988079,em-90)
+            (5189.0,em-90)
+            (6222.5,em-90)
+            (7268.599999964237,em-90)
+            (8300.899999976158,em-90)
+        };
+        \draw[color=ugent-ea] (axis cs:9356,min) -- (axis cs:9356,max);
+        \addplot[scratch,only marks] coordinates {
+            (0.0,scratch 3.0)
+            (1052.7999999523163,scratch 3.0)
+            (2108.099999964237,scratch 3.0)
+            (3164.599999964237,scratch 3.0)
+            (4219.699999988079,scratch 3.0)
+            (5275.699999988079,scratch 3.0)
+            (6331.5,scratch 3.0)
+            (7388.199999988079,scratch 3.0)
+            (8443.199999988079,scratch 3.0)
+        };
+        \draw[color=ugent-we] (axis cs:9508,min) -- (axis cs:9508,max);
+        \addplot[em-asap,only marks] coordinates {
+            (0.0,em-asap)
+            (1027.5,em-asap)
+            (2045.800000011921,em-asap)
+            (3064.2000000476837,em-asap)
+            (4084.600000023842,em-asap)
+            (5105.0,em-asap)
+            (6123.900000035763,em-asap)
+            (7143.600000023842,em-asap)
+            (8161.800000011921,em-asap)
+        };
+    \draw[color=ugent-ps] (axis cs:9165,min) -- (axis cs:9165,max);
+    \end{axis}
+\end{tikzpicture}
+\end{document}

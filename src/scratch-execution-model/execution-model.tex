@@ -625,19 +625,57 @@ An alternative implementation of the \textsc{em-asap} model might be warranted.
 
 \subsection{Interactive projects}\label{subsec:interactive-projects}
 
-\subsubsection{\textit{Lightning} project}
+\minisec{\textit{Lightning} project}
 
-The first project we looked in detail at is the \textit{Lightning} project\footnote{\url{https://scratch.mit.edu/projects/1022959914/}, originally from \url{https://scratch.mit.edu/projects/995927372/}}.
+\begin{figure}
+    \begin{subfigure}{\linewidth}
+        \centering
+        \includestandalone{lightning-scatter-original}
+        \caption{
+            The original implementation where all user interaction blocks are in a single forever loop.
+            The \textsc{em-30},\textsc{em-60}, and \textsc{em-90} did not achieve 10 points.
+        }
+        \label{fig:lightning-behaviour-original}
+    \end{subfigure}
+
+    \begin{subfigure}{\linewidth}
+        \centering
+        \includestandalone{lightning-scatter-procedure}
+        \caption{A modified implementation where the user interaction blocks are placed inside a procedure with ``run without screen refresh'' enabled.}
+        \label{fig:lightning-behaviour-procedure}
+    \end{subfigure}
+    \caption{
+        Behaviour of the \textit{Lightning} exercise with different execution models.
+        Marks represent when a new clone is made, while vertical lines indicate when the player either lost (dashed line) or completed 10 points (full line).
+    }
+    \label{fig:lightning-behaviour}
+\end{figure}
+
+The first project we looked in detail at is the \textit{Lightning} project\footnote{\url{https://scratch.mit.edu/projects/1022959914/}, originally from \url{https://scratch.mit.edu/projects/995927372/}.}.
 The aim of this game is to dodge lightning bolts coming out of the sky.
-Due to the implementation of the interactive component, \textsc{em-30} is too slow and renders the game unplayable.
-A comparison of the different models in given in X.
+\Cref{fig:lightning-behaviour-original} gives an overview of the behaviour with the different execution models.
+The \textsc{em-30},\textsc{em-60}, and \textsc{em-90} model did not achieve 10 points: they were too slow and made the game unplayable.
 
-Adjusting the implementation, e.g.\ by using a dedicated hat block for each key, resolves this issue and allows \textsc{em-30} to work as well.
-This illustrates that projects rely on specific behaviour of the current execution model.
+This is due to how the interactive component is implemented.
+Adjusting the implementation by wrapping the user interaction blocks with a procedure that has ``run without screen refresh'' enabled solves this issue (\cref{fig:lightning-behaviour-procedure}).
+This implementation is usable in with all execution models, except \textsc{em-30}, which remains too slow.
 
-\subsubsection{\textit{Another} project}
+\minisec{\textit{Catch the apples} project}
 
-Also something here....
+\begin{figure}
+    \centering
+    \includestandalone{apple-scatter}
+    \caption{
+        Behaviour of the \textit{Catch the apples} exercise with different execution models.
+        Marks represent score changes (or the initial score at 0), while vertical lines indicate when the player hits 10 points.
+    }
+    \label{fig:catch-apples-behaviour}
+\end{figure}
+
+The second project is the \textit{Catch the apples} project\footnote{\url{https://scratch.mit.edu/projects/1023625108/}, originally from \url{https://scratch.mit.edu/projects/995778768/}.}.
+The aim here is to use the mouse to move a basket and catch as many falling apples as possible.
+\Cref{fig:catch-apples-behaviour} shows the behaviour with different execution models.
+In this exercise, all models are playable, but the more frames are executed, the faster the game plays.
 
 \subsection{Discussion}\label{subsec:discussion}
 
