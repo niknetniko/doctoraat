@@ -1,0 +1,42 @@
+\documentclass[tikz]{standalone}
+
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{pgfplots}
+\usepackage{siunitx}
+\usepackage{fontspec}
+
+\pgfplotsset{compat=1.18}
+
+\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc,svg.path,fit}
+
+\definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
+\definecolor{ugent-we}{RGB}{45, 140, 168}       % no match
+
+\begin{document}
+\begin{tikzpicture}
+    \pgfplotsset{
+        less/.style={fill=ugent-re},
+        same/.style={fill=gray!30},
+        more/.style={fill=ugent-we}
+    }
+    \begin{axis}[
+        ybar stacked,
+        hide axis,
+        xmin=0,
+        xmax=1,
+        ymin=0,
+        ymax=1,
+        legend columns=3,
+        legend cell align={center},
+        legend style={font=\small},
+    ]
+        \addlegendimage{fill=ugent-re}
+        \addlegendentry{Fewer blocks}
+        \addlegendimage{fill=gray!30}
+        \addlegendentry{Equal blocks}
+        \addlegendimage{fill=ugent-we}
+        \addlegendentry{More blocks}
+    \end{axis}
+\end{tikzpicture}
+\end{document}

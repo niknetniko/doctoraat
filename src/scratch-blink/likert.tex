@@ -37,7 +37,7 @@
         legend cell align={left},
         legend style={at={(0.35,1.2)},anchor=south,font=\small},
         title style={at={(0.35,1.75)},anchor=south,font=\large},
-        xticklabel={\addfontfeature{Numbers={Lining}}\num[round-mode=places, round-precision=0]{\tick}}
+        xticklabel={\pgfmathabs{\tick}\addfontfeature{Numbers={Lining}}\num[round-mode=places, round-precision=0]{\pgfmathresult}}
     ]
         % Undecided part 1
         \addplot[undecided,forget plot] coordinates {
@@ -112,7 +112,7 @@
         ytick style={draw=none},
         axis line style={draw=none},
         title style={at={(0.35,1)},anchor=south,font=\large},
-        xticklabel={\addfontfeature{Numbers={Lining}}\num[round-mode=places, round-precision=0]{\tick}}
+        xticklabel={\pgfmathabs{\tick}\addfontfeature{Numbers={Lining}}\num[round-mode=places, round-precision=0]{\pgfmathresult}}
     ]
         % Undecided part 1
         \addplot[undecided,forget plot] coordinates {
