@@ -7,7 +7,7 @@
 %\dictum[J. Maloney, M. Resnick, et al. \\ \textit{The Scratch Programming Language and Environment}]{Concurrency is often considered an advanced programming technique. Yet our everyday world is highly concurrent, so Scratch users
 %are not surprised that a sprite can do several things at once.}
 
-Scratch, a popular visual block-based programming language designed for young learners, inherently supports parallel programming.
+Scratch, a popular block-based programming language designed for young learners, inherently supports parallel programming.
 Each Scratch program (called a project) consists of a number of sprites with individual code (\cref{ch:scratch-the-programming-environment}).
 Blocks that are attached together form scripts, and each sprite can have multiple scripts running concurrently as separate threads within the Scratch virtual machine.
 
@@ -26,7 +26,7 @@ Alternative step functions (see, for example, the one used by Blink in \cref{sub
 To address these issues, this chapter begins with an in-depth exploration of Scratch's current execution model.
 This analysis is essential for understanding the subsequent section, where we explore the model's shortcomings in more detail.
 We then propose some modifications to the execution model, which would solve the issues we have identified.
-These modifications are finally evaluated to determine their impact on real-world Scratch projects.
+These modifications are finally evaluated to determine their impact on real-world Scratch projects in a preliminary benchmark.
 
 \section{Elements of a Scratch program}\label{sec:elements-of-a-scratch-program}
 
@@ -57,7 +57,7 @@ These modifications are finally evaluated to determine their impact on real-worl
         \end{scratch}
     \end{sublisting}
     \caption{
-        Two Scratch programs that seemingly produce the same result: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the program.
+        Two Scratch programs that seemingly exhibit the same behaviour: the sprite moves in a square of 100 steps, and finally stops at the same position as the start of the program.
     }
     \label{lst:scratch-two-programs}
 \end{listing}
@@ -83,11 +83,11 @@ In total, there are seven types of blocks:
         Stack blocks broadly fulfil the role of statements in Scratch.
     \item C blocks \scratchinline{\blockif{\hspace{1em}\dots\hspace*{1em}}{\blockspace[0.2]}}, which are named after their shape.
         They are used for most of the control flow blocks: loops and branches.
-        The variant for the if/else block is sometimes named an E block, since it has two slots.
+        The variant for the if/else block is sometimes called an E block since it has two slots.
     \item Reporter blocks \setscratch{baseline=c,scale=0.5}\ovalmove{\hspace{1em}\dots\hspace*{1em}}, act as variables or values and can be slotted into other blocks.
         Operators that result in a value also have this shape.
         The reporter blocks fulfil the role of expressions.
-    \item Boolean blocks \setscratch{baseline=c,scale=0.5}\boolsensing{\hspace{1em}\dots\hspace*{1em}}, which are analogous to reporter blocks, but result in a boolean.
+    \item Boolean blocks \setscratch{baseline=c,scale=0.5}\boolsensing{\hspace{1em}\dots\hspace*{1em}}, which are analogous to reporter blocks but result in a boolean.
     \item Cap blocks \scratchinline{\blockstop{\hspace{1em}\dots\hspace*{1em}}}, which end a script: no blocks can be added afterwards.
         Note that the infinite loop block, for example, is both a C block and a cap block.
     \item Custom blocks \scratchinline{\initmoreblocks{define\hspace{1em}\dots\hspace*{1em}}}, which define ``procedures''.
@@ -100,20 +100,20 @@ There exists, at least to the knowledge of the authors, no comprehensive formal 
 This does not mean there is no prior work.
 From the Scratch team, \textcite{maloneyScratchProgrammingLanguage2010} provide a high-level description of the threading model.
 
-Another body of works that provides insights into the Scratch execution model comes from the \emph{Chair of Software Engineering II} group, led by Prof.\ Dr.\ Gordon Fraser.
+Another body of works that provides insights into the Scratch execution model comes from the \emph{Chair of Software Engineering II} group, led by Gordon Fraser.
 These publications all provide descriptions for parts of the execution model.
 
 First, \textcite{stahlbauerTestingScratchPrograms2019} propose a formalization of three aspects in Scratch: the user perspective, a syntactic model and a semantic model.
 They describe the semantics of Scratch with a memory model based on message passing.
-Next, \textcite{stahlbauerVerifiedScratchProgram2020} develop LeILa, an intermediate language to which Scratch projects can be translated, with an intended use of performing analysis on Scratch projects.
-The authors also provide a formalization of LeILa, but use approximations in some areas.
+Next, \textcite{stahlbauerVerifiedScratchProgram2020} develop LeILa, an intermediate language to which Scratch projects can be translated, with the intended use of performing analysis on Scratch projects.
+The authors also provide a formalization of LeILa, using approximations of the behaviour of Scratch in some areas.
 Also, \textcite{gotzModelbasedTestingScratch2022} model the state-based behaviour of Scratch programs using a finite state machine.
 Finally, \textcite{deinerAutomatedTestGeneration2023} delve deeper into the actual execution of the virtual machine, while also proposing some modifications to it, for example, to make execution deterministic.
 
 Other block-based languages also have to deal with concurrency.
 For example, MakeCode also uses a non-preemptive threading model, inspired by Scratch~\autocite{ballMicrosoftMakeCodeEmbedded2019}.
 There has also been some work on concurrency and concurrency controls in other block-based languages~\autocite{chungConCodeItComparisonConcurrency2020}.
-However, since most of these languages do not use the Scratch virtual machine for execution, their relevancy for this chapter is limited.
+However, since these languages do not use the Scratch virtual machine for execution, their relevancy for this chapter is limited.
 
 \section{The current execution model}\label{sec:the-current-execution-model}
 
@@ -186,9 +186,9 @@ Also, in practice, many blocks request a redraw, so in many Scratch projects, a 
     \label{fig:scratch-two-execution}
 \end{figure}
 
-A concrete example of the execution model is given by \cref{fig:scratch-two-execution}, which shows the execution of the programs of \cref{lst:scratch-two-programs}.
+A concrete example of the execution model is given by \cref{fig:scratch-two-execution}, which shows the execution of the programs from \cref{lst:scratch-two-programs}.
 These programs have only one thread.
-Since none of the blocks in the unrolled program yield the thread, the full program is executed in one step.
+Since none of the blocks in the unrolled program yield the thread, the full program is executed in one tick.
 In the other version, with a loop, the thread yields after each iteration of the loop, meaning the program needs four steps.
 This does result in an observable difference: in the unrolled program, the sprite does not move visually.
 As a redraw only happens between steps, the sprite is back at its original position.
@@ -227,7 +227,7 @@ While there are three conceptual statuses, the implementation has five:
 Each thread maintains a stack structure.
 The \texttt{Sequencer} will then look up the next block on said stack, and if there is one, it will call the \texttt{Execute} class.
 That class will actually execute the block on the stack.
-For normal blocks (confusingly called ``stack blocks'', since they stack in a script), the current block is popped from the stack, the block is executed, and the next block is put on the stack.
+For normal blocks (somewhat confusingly called ``stack blocks'', since they stack together to form a script), the current block is popped from the stack, the block is executed, and the next block is put on the stack.
 The stack is only useful when working with C-blocks or procedures.
 For example, C blocks will push the first block in their slot on the stack.
 In the case of a loop, a counter is saved in the stack frame to determine how many times the loop should be run.
@@ -309,7 +309,7 @@ A fundamental feature of any debugger is the ability to step through code: execu
 The functionality is also essential in debuggers for Scratch: all existing debuggers for Scratch implement it.
 In Scratch, executing a single statement translates to executing a single block.
 
-However, the traditional single-block stepping has some drawbacks in Scratch.
+However, traditional single-block stepping has some drawbacks in Scratch.
 A first drawback is that users have to click a lot, since the stepping functionality is global, not per thread.
 Secondly, and more importantly, the step functionality exposes details of the Scratch execution model to the users.
 For example, thread switching, which is normally implicit in Scratch's perceived parallel execution, becomes visible to the users during debugging.
@@ -343,7 +343,7 @@ In line with how we want the stepping feature of the debugger to work, we have d
 Thus, in a single tick, the virtual machine will execute a single block in every thread.
 
 As there is often only one tick per step (due to many blocks requesting redraws), this means that only one block would be executed per step (thus one block for every thread per \qty{33}{\milli\second}).
-The consequence is that this makes execution much slower than in the original execution model.
+Consequently, this makes execution slower than in the original execution model.
 
 A possible remedy is to modify the number of steps that are taken.
 For example, it might be better to run at twice or more times the number of steps per second.
@@ -367,9 +367,9 @@ We begin by looking at existing work on analysing Scratch projects, followed by 
 
 \subsection{Existing analyses}\label{subsec:existing-analyses}
 
+\makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.\vspace{0.5cm}}
 \Textcite{aivaloglouHowKidsCode2016} analysed \num{250000} Scratch 2.0 projects they scraped from the public Scratch site.
 They looked at the types of blocks used, the size of the projects, and the complexity.
-\makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.\vspace{0.5cm}}
 For the complexity, they utilize the cyclomatic complexity metric~\autocite{mccabeComplexityMeasure1976}.
 The considered decision points are the \texttt{if} and \texttt{if-else} blocks.
 
@@ -389,9 +389,10 @@ The proposed ``when'' metric counts the number of ``when'' blocks (e.g.\ hat blo
 Since the dataset used by \textcite{aivaloglouHowKidsCode2016} consists of Scratch 2.0 projects and \textcite{fronzaApproachEvaluateComplexity2020} only analyse 80 projects, we found it necessary to collect a new dataset of Scratch projects.
 
 To create a new dataset, we used the Scratch API\footnote{\url{https://en.scratch-wiki.info/wiki/Scratch_API}} as follows.
-Creating a new project provides an identifier ({\addfontfeature{Numbers={Lining,Proportional}}996725073}), which we used as a starting point.
+Creating a new project provides an identifier ({\addfontfeature{Numbers={Lining,Proportional}}996725074}, April 7th, 2024), which we used as a starting point.
 We then subtract one from the identifier, downloaded the project if possible, and continued.
-The oldest project in the dataset is from April 5th, with identifier {\addfontfeature{Numbers={Lining,Proportional}}995595608}.
+\marginnote{The \num{1129465} projects were created in approximately 3 days, illustrating Scratch's popularity.}
+The oldest project in the dataset is from April 5th, 2024, with identifier {\addfontfeature{Numbers={Lining,Proportional}}995595608}.
 
 This resulted in \num{237926} downloaded public projects (of the total \num{1129465} that were made between our newest and oldest projects).
 From those, \num{207} were corrupt or for an older version of Scratch.
@@ -400,8 +401,8 @@ This results in a final dataset of \num{195372} Scratch projects we considered f
 
 \subsection{Analysing Scratch 3.0 projects}\label{subsec:analysing-scratch-3.0-projects}
 
-Hairball~\autocite{boeHairballLintinspiredStatic2013} is commonly used to analyse Scratch projects (it is also used by the existing analyses), but does not support Scratch 3.0.
-For this reason, we have implemented a similar piece of software in JavaScript.
+Hairball~\autocite{boeHairballLintinspiredStatic2013} was commonly used to analyse Scratch projects (it is also used by the existing analyses), but does not support Scratch 3.0.
+For this reason, we have implemented a similar tool\footnote{\url{https://github.com/scratch-ed/scratch-analysis}} in JavaScript (versus Hairball's use of Python).
 It also supports plugins to support extensions for other analyses.
 Being written in JavaScript, it has the advantage that it can reuse parts of the Scratch virtual machine, like reading and parsing Scratch projects.
 
@@ -411,8 +412,7 @@ For example, \qty{75}{\percent} (\textit{\qty{60}{\percent}}) indicates our data
 
 \subsection{Use of blocks}\label{subsec:use-of-blocks}
 
-Scratch blocks can be categorized into seven types, based on their shape (\cref{sec:elements-of-a-scratch-program}).
-\Cref{fig:block-shapes} shows their usage.
+Scratch blocks can be categorized into seven types, based on their shape (\cref{sec:elements-of-a-scratch-program}), their usage shown in \cref{fig:block-shapes}.
 Blocks can also be put into categories (\cref{subsec:using-the-environment-and-the-blocks}).
 The number of projects that use a block from a certain category is shown in \cref{fig:block-categories}.
 Note that these numbers do not fully compare with \textcite{aivaloglouHowKidsCode2016}: since then, some new Scratch extensions were added, and the pen-related blocks have moved to an extension.
@@ -437,7 +437,7 @@ The Pen extension is the most popular one, appearing in \qty{6.9}{\percent} of t
     \caption{
         Number of projects that use blocks from a certain category.
         Custom blocks are excluded, and all blocks for extensions are counted together.
-        Bar colours correspond to the block categories colours in the traditional Scratch 3.0 colour scheme.
+        Bar colours correspond to the block category colours in the traditional Scratch 3.0 colour scheme.
     }
     \label{fig:block-categories}
 \end{figure}
@@ -483,13 +483,13 @@ Two variants are frequently used: physical lines of code (the number of lines in
 While normally counting the physical lines of code is easy and counting logical lines requires some consideration, the reverse is true in Scratch.
 To count logical lines of code, we can simply count all blocks.
 For physical lines of code, we chose to count the number of ``main'' blocks in a script.
-This means we do not count blocks used as arguments, e.g.\ the condition of a loop block is not counted.
+This means we do not count blocks used as arguments, e.g.\ the condition block of a loop is not counted.
 
 When counting the number of scripts per project, we excluded scripts that consist only of a hat block, as these do nothing.
 We similarly excluded sprites without code from the count of sprites per project.
 These can have a role in some cases but are not useful in the statistics.
 
-From these data, we can conclude that \qty{75}{\percent} of projects have less than 5 sprites, 11 scripts, and 80 blocks (\textit{\qty{75}{\percent} of projects have less than 5 sprites, 12 scripts, and 76 blocks}).
+From these data, we can see that \qty{75}{\percent} of projects have less than 5 sprites, 11 scripts, and 80 blocks (\textit{\qty{75}{\percent} of projects have less than 5 sprites, 12 scripts, and 76 blocks}).
 We can conclude that most Scratch projects are still small in Scratch 3.0.
 
 \begin{figure}
@@ -542,18 +542,16 @@ Most scripts (\qty{72.6}{\percent}) have no decision points.
 
 \Cref{tab:scratch-programming-concepts} is an overview of the prevalence of some programming concepts in the analysed Scratch projects.
 While the number of projects that use procedures (\qty{17.1}{\percent}, \textit{\qty{7.70}{\percent}}) is higher, it is still not used that much: a majority of projects do not use it.
-Most projects do use loop statements (\qty{77.3}{\percent}, \textit{\qty{77.18}{\percent}}), the number of projects using a conditional loop is much smaller (\qty{14.6}{\percent}, \textit{\qty{13.59}{\percent}}).
-Less than half of projects use conditional statements (\qty{41.29}{\percent}, \textit{\qty{39.81}{\percent}}), and less than half (\qty{46.43}{\percent}, \textit{\qty{56.24}{\percent}}) use user input blocks.
+Most projects do use loop statements (\qty{77.3}{\percent}, \textit{\qty{77.18}{\percent}}), yet the number of projects using a conditional loop is much smaller (\qty{14.6}{\percent}, \textit{\qty{13.59}{\percent}}).
+Less than half of projects use conditional statements (\qty{41.29}{\percent}, \textit{\qty{39.81}{\percent}}), and a bit less than half (\qty{46.43}{\percent}, \textit{\qty{56.24}{\percent}}) use user input blocks.
 About a third (\qty{34.56}{\percent}, \textit{\qty{31.51}{\percent}}) of the projects use variables, and only \qty{9.38}{\percent} (\textit{\qty{4.01}{\percent}}) uses lists.
 This means that a large number of projects is simple (and this is what we would expect, given the previous metrics on project size and complexity).
 
 In summary, most Scratch projects are small and simple.
 However, big and complex ones do exist.
 Scratch projects have not changed significantly since the analysis by \textcite{aivaloglouHowKidsCode2016}, even if Scratch 3.0 was released in that period.
-However, this is not unexpected: Scratch 3.0 did not introduce major changes to the Scratch-the-programming-language.
-The main differences are as follows.
-The number of complex projects and of projects with procedures did increase slightly.
-User input blocks are used a bit less.
+However, this was expected: Scratch 3.0 did not introduce major changes to Scratch-the-programming-language.
+The main differences are as follows: the number of complex projects and of projects with procedures increased slightly, while user input blocks are used a bit less.
 
 \section{Evaluation of the new execution model}\label{sec:evaluation-of-the-new-execution-model}
 
@@ -565,7 +563,7 @@ We consider three variations of the new execution model, which differ in how fas
 \subsection{Selection of projects}\label{subsec:selection-of-projects}
 
 First, we differentiate between large and small projects.
-In the previous analysis, we noticed that \qty{75}{\percent} of projects have less than 5 sprites, 11 scripts, and 80 blocks.
+In the previous analysis, we determined that \qty{75}{\percent} of projects have less than 5 sprites, 11 scripts, and 80 blocks.
 We thus consider projects small if they have less than 80 blocks.
 
 Secondly, we differentiate between projects with user interaction and those without user interaction.
@@ -590,17 +588,17 @@ We therefore only manually look at two such projects.
             \caption{Large projects}
             \label{fig:blocks-non-interactive-large}
         \end{subfigure}
-        \vspace*{\floatsep}
+        \par\bigskip
         \begin{subfigure}{0.49\linewidth}
             % TODO: include proper
             \includestandalone[mode=buildnew]{block-violin-small}
-            \caption{Small projects}
+            \caption{Blocks of small projects}
             \label{fig:blocks-non-interactive-violin-small}
         \end{subfigure}
         \begin{subfigure}{0.49\linewidth}
             % TODO: include proper
             \includestandalone[mode=buildnew]{block-violin-large}
-            \caption{Large projects}
+            \caption{Blocks of large projects}
             \label{fig:blocks-non-interactive-violin-large}
         \end{subfigure}
     \end{wide}
@@ -616,11 +614,14 @@ We therefore only manually look at two such projects.
 
 
 \Cref{fig:blocks-non-interactive} shows the benchmark results for non-interactive projects, with \cref{fig:blocks-non-interactive-small} showing the results for small projects and \cref{fig:blocks-non-interactive-large} for large projects.
-From these results, it is clear that there is not a lot of difference for small projects, while larger projects are best served with an increase in frames per second to match Scratch 3.0's behaviour.
-Additionally, \cref{fig:blocks-non-interactive-violin-small,fig:blocks-non-interactive-violin-large} show that most projects do not differ that much in execution.
-However, it is also clear that there is a lot of variety in the larger projects, which makes choosing a good replacement model more difficult.
-There are also a few projects that diverge significantly in the number of blocks they execute.
-These warrant future investigation.
+Additionally, \cref{fig:blocks-non-interactive-violin-small,fig:blocks-non-interactive-violin-large} show how much the projects differ in regard to the number of blocks that were executed.
+The results show that most projects do not differ a lot, but there are a few outliers, particularly with the \textsc{em-asap} model, and with larger projects.
+In general, the \textsc{em-90} or \textsc{em-120} model seems to provide the most similar behaviour for most projects.
+
+However, the behaviour of the \textsc{em-asap} model warrants future investigation.
+Our initial investigation of those outlier projects did not reveal why the behaviour is so different.
+One hypothesis is that this is due to how the models are implemented: there are some quirks with JavaScript's \texttt{setTimeout} function\footnote{\url{https://developer.mozilla.org/en-US/docs/Web/API/setTimeout#reasons_for_delays_longer_than_specified}}, which is what is used in the virtual machine.
+An alternative implementation of the \textsc{em-asap} model might be warranted.
 
 \subsection{Interactive projects}\label{subsec:interactive-projects}
 
@@ -651,7 +652,7 @@ For example, the \textit{Lightning} project's implementation of user interaction
 While maybe unfortunate, as there are alternatives that do not depend on this behaviour, this is a consequence of \textit{Hyrum's Law}, which states that ``With a sufficient number of users, [\dots] all observable behaviours of your system will be depended on by somebody''.
 
 Lastly, this illustrates the need for more research into automated evaluation of the behaviour exhibited by Scratch projects.
-More research is to determine what constitutes observable behaviour and when changes to the behaviour become adverse changes.
+Some areas of interest are determining what constitutes observable behaviour and when changes to the behaviour become adverse changes.
 For example, if projects are executed a bit faster or slower, this might not affect the project's usability.
 The existing virtual machine is also not deterministic and depends on system performance: some projects might execute a lot slower on slower hardware, while still being usable.
 
@@ -689,10 +690,10 @@ Note that using these critical sections with blocks that require a redraw should
 
 Finally, we performed a preliminary benchmark using our proposed changes on a selection of projects, informed by our previous analysis.
 The results of this are promising: while there are differences in the behaviour and performance of Scratch projects, we do not believe these to be insurmountable.
-The modified execution model is thus suitable for our stepping method for debuggers and reduces concurrency-related surprising behaviour, while not adversely affecting existing projects.
+The modified execution model can be suitable for our stepping method for debuggers and reduces concurrency-related surprising behaviour, while not adversely affecting existing projects.
 
 While the results of the benchmarks are promising, they are just a preliminary exploration.
-Our proposed changes must be validated in educational practice and in a classroom setting with actual users of Scratch.
+Our proposed changes must be validated in educational practice and in a classroom setting with actual users of Scratch, in additional to performing expanded automated benchmarks.
 Both the intuitiveness of the new execution model and its impact on existing projects require more research.
 Considering the Scratch Team's (understandable) reluctance to introduce behavioural changes to Scratch at this point, we do not envision our changes being upstreamed soon.
 With that in mind, for the new model to ever be considered, future research will need to show that there are no major drawbacks.
@@ -700,7 +701,7 @@ Another area of improvement is looking at more projects with user interaction.
 One possible route is investigating heuristics to automatically provide suitable user interaction to those projects, making them suitable for automated benchmarking.
 
 We also see more opportunities for research on the existing and new execution model of Scratch itself.
-For starters, the current execution model is defined by its source code.
+For example, the current execution model is defined by its source code.
 Constructing a formal mode of the execution model would allow formal reasoning and analysis, which might reveal more opportunities for changes.
 This might also be beneficial in further analysing the new model's impact on existing Scratch projects.
 
