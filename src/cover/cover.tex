@@ -57,6 +57,17 @@
 \usepackage{microtype}
 \usepackage{graphicx}
 
+%! suppress = DiscouragedUseOfDef
+\newenvironment{shadequote}[1]%
+{%
+     \def\quoteauthor{#1}%
+     \tikz[remember picture,overlay,xshift=-22pt]
+     \node (OQ) {\fontsize{50pt}{50pt}\selectfont``};%
+     \noindent%
+}{%
+    \par\hfill\textit{\fontsize{12pt}{15pt}\selectfont\quoteauthor}%
+}
+
 \begin{document}
 \setbookcover{pagecolor=cover-background}
 \begin{bookcover}
@@ -88,17 +99,36 @@
         \vspace*{\fill}
         \rotatebox[origin=c]{-90}{\fontsize{17pt}{22pt}\selectfont\textsc{niko strijbol}}
     \end{bookcoverelement}
-    \begin{bookcoverelement}{normal}{back}[15mm,15mm,15mm,15mm]
-        \fontsize{12pt}{17pt}\selectfont{}\setlength{\parskip}{3mm}
-        This dissertation proposes a set of new tools for improving automated assessment and debugging in programming education.
+    \begin{bookcoverelement}{normal}{back}[25mm,15mm,25mm,25mm]
+        \fontsize{11pt}{15pt}\selectfont{}\setlength{\parskip}{3mm}
 
-        For textual programming languages, the first part introduces \textsc{test}ed and \textsc{test}ed-\textsc{dsl}, two related frameworks designed to enable and streamline the creation of programming exercises that can be used across programming languages.
-        Since creating programming exercises takes time, the more exercises can be reused, the more exercises are available to students.
+        This dissertation proposes a set of new tools for improving automated assessment and debugging, aimed at enhancing both the learning and the teaching of programming.
 
-        Recognizing the unique needs of young learners, the second part focuses on the block-based programming language Scratch, introducing Itch and Blink.
+        For textual programming languages, we introduce \textsc{test}ed and \textsc{test}ed-\textsc{dsl}, two related frameworks designed to enable and streamline the authoring of programming exercises that can be used across programming languages.
+        The big benefit of this approach is that exercises become more reusable, and the more exercises can be used, the more exercises are available to students.
+
+        Young learners, however, have unique needs: they frequently used the block-based programming language Scratch, for which we introduce Itch and Blink.
         Itch provides comprehensive testing capabilities for Scratch programs, while Blink offers an intuitive debugger, including time-traveling features.
+        These tools empower students to independently receive feedback and correct their mistakes, freeing teachers to focus on difficult cases, rather than spending time generating trivial feedback.
 
-        Overall, this dissertations remedies a few shortcomings in existing educational tools, aiming to enhance the learning and teaching of programming.
+        \vspace*{\fill}%
+
+        Published with raving reviews:
+        \vspace*{0.5cm}%
+
+        \fontsize{15pt}{17pt}\selectfont{}
+        \begin{shadequote}{Steven V.}%
+            Software, dat is toch niet publicatiewaardig?
+        \end{shadequote}
+
+        \begin{shadequote}{Kris K.}%
+            Dit is geen doctoraat in de informatica.
+        \end{shadequote}
+
+        \begin{shadequote}{Peter D.}%
+            Zeg Niko, ge moet u wel eens wassen, hé.
+        \end{shadequote}
+
         \vspace*{\fill}%
         \begin{center}%
             \pgfornament[scale=0.5,color=cover-foreground]{84}
