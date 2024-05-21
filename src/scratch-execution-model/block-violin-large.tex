@@ -140,7 +140,6 @@
     ]{violin-large.dat}
     %! parser = off
     \pgfkeys{
-        /pgfplots/xticklabels={\addfontfeature{Numbers={OldStyle,Proportional}}\textsc{asap}},
         /pgfplots/xlabel={Execution models (\textsc{em-})},
     };
     %! parser = on
@@ -148,6 +147,7 @@
         index=E,
         relative position=5.5,
         samples=100,
+        label={asap},
         average mark=*,
         average fill=black,
         average fill opacity=1.0,

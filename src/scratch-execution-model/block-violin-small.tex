@@ -189,13 +189,13 @@
     ]{violin-small.dat}
     %! parser = off
     \pgfkeys{
-        /pgfplots/xticklabels={\addfontfeature{Numbers={OldStyle,Proportional}}\textsc{asap}},
         /pgfplots/xlabel={Execution models (\textsc{em-})},
     };
     %! parser = on
     \violinplot[%
         index=E,
         relative position=5.5,
+        label={asap},
         samples=100,
         average mark=*,
         average fill=black,
