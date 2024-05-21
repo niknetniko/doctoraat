@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  build:
+  book:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -14,5 +14,17 @@ jobs:
       - run: nix build --print-build-logs
       - uses: actions/upload-artifact@v4
         with:
-          name: doctoraat.pdf
-          path: result/doctoraat.pdf
+          name: book.pdf
+          path: result/book.pdf
+  cover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flake-checker-action@main
+      - run: nix build .#cover --print-build-logs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cover.pdf
+          path: result/cover.pdf
