@@ -137,7 +137,7 @@
           default = dev;
           dev = pkgs.devshell.mkShell {
             name = "doctoraat";
-            packages = packages.document.buildInputs ++ packages.document.nativeBuildInputs ++ [pkgs.kile pkgs.vale pkgs.proselint];
+            packages = packages.book.buildInputs ++ packages.book.nativeBuildInputs ++ [pkgs.kile pkgs.vale pkgs.proselint];
             env = [
               {
                 name = "TEXLIVE_HOME";

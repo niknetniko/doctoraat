@@ -8,7 +8,7 @@
 
 \pgfplotsset{compat=1.18}
 
-\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc,svg.path,fit}
+\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc,svg.path,fit,plotmarks}
 
 \definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
 \definecolor{ugent-we}{RGB}{45, 140, 168}       % no match
@@ -64,16 +64,16 @@
             (8215.800000011921,em-120)
         };
         \draw[color=ugent-pp,line width=1pt] (axis cs:9256,min) -- (axis cs:9256,max);
-        \addplot[em-30,only marks] coordinates {
+        \addplot[em-30,only marks,mark=square*] coordinates {
             (0.0,em-30)
         };
         \draw[densely dashed,color=ugent-re,line width=1pt] (axis cs:976,min) -- (axis cs:976,max);
-        \addplot[em-60,only marks] coordinates {
+        \addplot[em-60,only marks,mark=triangle*] coordinates {
             (0.0,em-60)
             (1055.4000000357628,em-60)
         };
         \draw[densely dashed,color=ugent-ge,line width=1pt] (axis cs:1754,min) -- (axis cs:1754,max);
-        \addplot[em-90,only marks] coordinates {
+        \addplot[em-90,only marks,mark=diamond*] coordinates {
             (0.0,em-90)
             (1046.699999988079,em-90)
         };

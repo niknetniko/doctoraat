@@ -609,9 +609,17 @@ We therefore only manually look at two such projects.
     \label{fig:blocks-non-interactive}
 \end{figure}
 
+The benchmark dataset for non-interactive projects consists of 100 randomly chosen projects from the analysis dataset.
+Of those 100 projects, 75 are small projects.
+For these projects, we measure the number of executed blocks.
+This counts the number of times every block (from the physical lines of code, so excluding arguments) is executed.
+The benchmark dataset contains both projects that end and those that do not.
+Projects that do not end are, for example, those with repeat forever blocks.
+For projects that end, we measure the total number of executed blocks.
+Non-ending projects are halted after \qty{60}{\second}, and the number of executed blocks within that time is counted.
 
-\Cref{fig:blocks-non-interactive} shows the benchmark results for non-interactive projects, with \cref{fig:blocks-non-interactive-small} showing the results for small projects and \cref{fig:blocks-non-interactive-large} for large projects.
-Additionally, \cref{fig:blocks-non-interactive-violin-small,fig:blocks-non-interactive-violin-large} show how much the projects differ in regard to the number of blocks that were executed.
+\Cref{fig:blocks-non-interactive-small,fig:blocks-non-interactive-large} show how many projects differ in behaviour for small and large projects respectively.
+\Cref{fig:blocks-non-interactive-violin-small,fig:blocks-non-interactive-violin-large} then show how much the projects differ.
 The results show that most projects do not differ a lot, but there are a few outliers, particularly with the \textsc{em-asap} model, and with larger projects.
 In general, the \textsc{em-90} or \textsc{em-120} model seems to provide the most similar behaviour for most projects.
 
@@ -622,6 +630,31 @@ An alternative implementation of the \textsc{em-asap} model might be warranted.
 
 \subsection{Interactive projects}\label{subsec:interactive-projects}
 
+\begin{figure}
+    \begin{wide}
+        \begin{subfigure}[T]{0.49\linewidth}
+            \includegraphics[width=\linewidth]{lightning-game}
+            \caption{
+                The \textit{Lightning} project in action.
+                The user must use the arrow keys to move the cat around, avoiding the lightning bolts.
+            }
+            \label{fig:the-game-lightning}
+        \end{subfigure}
+        \begin{subfigure}[T]{0.49\linewidth}
+            \includegraphics[width=\linewidth]{apple-game}
+            \caption{
+                The \textit{Catch the apples} project in action.
+                The basket follows the mouse, and the user must catch as many apples as possible, without any apples falling on the ground.
+            }
+            \label{fig:the-game-apple}
+        \end{subfigure}
+    \end{wide}
+    \caption{
+        Overview of the two games we discuss.
+    }
+    \label{fig:the-game}
+\end{figure}
+
 \minisec{\textit{Lightning} project}
 
 \begin{figure}
@@ -629,7 +662,7 @@ An alternative implementation of the \textsc{em-asap} model might be warranted.
         \centering
         \includestandalone{lightning-scatter-original}
         \caption{
-            The original implementation where all user interaction blocks are in a single forever loop.
+            The original implementation (see bottom left).
             The \textsc{em-30},\textsc{em-60}, and \textsc{em-90} did not achieve 10 points.
         }
         \label{fig:lightning-behaviour-original}
@@ -638,24 +671,64 @@ An alternative implementation of the \textsc{em-asap} model might be warranted.
     \begin{subfigure}{\linewidth}
         \centering
         \includestandalone{lightning-scatter-procedure}
-        \caption{A modified implementation where the user interaction blocks are placed inside a procedure with ``run without screen refresh'' enabled.}
+        \caption{A modified implementation (see bottom right)}
         \label{fig:lightning-behaviour-procedure}
     \end{subfigure}
+    \par\medskip
+    \begin{subfigure}{0.49\linewidth}
+        \centering
+        \begin{scratch}[scale=0.5]
+            \blockinit{when \greenflag clicked}
+            \blockinfloop{forever}{
+                \blockif{if \boolsensing{key \selectmenu{right arrow} pressed?} then}{
+                    \blockmove{change x by \ovalnum{10}}
+                }
+                \blockif{if \boolsensing{key \selectmenu{left arrow} pressed?} then}{
+                    \blockmove{change x by \ovalnum{-10}}
+                }
+                \blockif{if \boolsensing{key \selectmenu{up arrow} pressed?} then}{
+                    \blockmove{change y by \ovalnum{10}}
+                }
+                \blockif{if \boolsensing{key \selectmenu{down arrow} pressed?} then}{
+                    \blockmove{change y by \ovalnum{-10}}
+                }
+            }
+        \end{scratch}
+        \caption{
+            Original implementation of the interactive component.
+        }
+        \label{fig:the-game-lightning-code-original}
+    \end{subfigure}
+    \begin{subfigure}{0.49\linewidth}
+        \centering
+        \begin{scratch}[scale=0.6]
+            \blockinit{when \greenflag clicked}
+            \blockinfloop{forever}{
+                \blockmoreblocks{move}
+            }
+        \end{scratch}
+        \caption{
+            Alternative implementation of the interactive component.
+            The four if blocks have been moved to a procedure ``run without screen refresh''.
+        }
+        \label{fig:the-game-lightning-code-better}
+    \end{subfigure}
     \caption{
-        Behaviour of the \textit{Lightning} exercise with different execution models.
-        Marks represent when a new clone is made, while vertical lines indicate when the player either lost (dashed line) or completed 10 points (full line).
+        Behaviour and implementation of the \textit{Lightning} exercise with different execution models.
+        In the behaviour (top), marks represent when a new clone is made, while vertical lines indicate when the player either lost (dashed line) or completed 10 points (full line).
+        The implementation (bottom) shows both variants of the user interaction code.
     }
     \label{fig:lightning-behaviour}
 \end{figure}
 
-The first project we looked in detail at is the \textit{Lightning} project\footnote{\url{https://scratch.mit.edu/projects/995927372/}}.
+The first project we looked at in detail is the \textit{Lightning} project\footnote{\url{https://scratch.mit.edu/projects/995927372/}} (\cref{fig:the-game-lightning}).
 The aim of this game is to dodge lightning bolts coming out of the sky.
 \Cref{fig:lightning-behaviour-original} gives an overview of the behaviour with the different execution models.
 The \textsc{em-30},\textsc{em-60}, and \textsc{em-90} model did not achieve 10 points: they were too slow and made the game unplayable.
 
-This is due to how the interactive component is implemented.
-Adjusting the implementation by wrapping the user interaction blocks with a procedure that has ``run without screen refresh'' enabled solves this issue (\cref{fig:lightning-behaviour-procedure}).
-This implementation is usable in with all execution models, except \textsc{em-30}, which remains too slow.
+This is due to how the interactive component is implemented (\cref{fig:the-game-lightning-code-original}).
+Adjusting the implementation by wrapping the user interaction blocks with a procedure (\cref{fig:the-game-lightning-code-better}) enabled solves this issue (\cref{fig:lightning-behaviour-procedure}).
+This implementation is usable with all new execution models, except \textsc{em-30}, which remains too slow.
 
 \minisec{\textit{Catch the apples} project}
 
@@ -669,10 +742,10 @@ This implementation is usable in with all execution models, except \textsc{em-30
     \label{fig:catch-apples-behaviour}
 \end{figure}
 
-The second project is the \textit{Catch the apples} project\footnote{\url{https://scratch.mit.edu/projects/995778768/}}.
+The second project is the \textit{Catch the apples} project\footnote{\url{https://scratch.mit.edu/projects/995778768/}} (\cref{fig:the-game-apple}).
 The aim here is to use the mouse to move a basket and catch as many falling apples as possible.
 \Cref{fig:catch-apples-behaviour} shows the behaviour with different execution models.
-In this exercise, all models are playable, with \textsc{em-30} being the most similar.
+In this exercise, all models are playable, with \textsc{em-30} behaving the most similar to the original Scratch execution model.
 Models faster than \textsc{em-60} are likely too fast to actually play.
 
 \subsection{Discussion}\label{subsec:discussion}
@@ -686,6 +759,8 @@ One solution for this problem would be to modify the virtual machine to change t
 Secondly, projects depend on specific behaviour of the virtual machine.
 For example, the \textit{Lightning} project's implementation of user interaction only works because of how the current execution model works.
 While maybe unfortunate, as there are alternatives that do not depend on this behaviour, this is a consequence of \textit{Hyrum's Law}, which states that ``With a sufficient number of users, [\dots] all observable behaviours of your system will be depended on by somebody''.
+Users, however, are already accustomed to changing the duration of wait blocks (and other such blocks) to account for the performance of the Scratch virtual machine on their device.
+While not ideal, small differences may thus be acceptable.
 
 Lastly, this illustrates the need for more research into automated evaluation of the behaviour exhibited by Scratch projects.
 Some areas of interest are determining what constitutes observable behaviour and when changes to the behaviour become adverse changes.
