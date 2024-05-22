@@ -768,7 +768,7 @@ Models faster than \textsc{em-60} are likely too fast to actually play.
 A few conclusions can be drawn from the results of this preliminary benchmark.
 
 First, it is not obviously clear which variation of the execution model is the best universal replacement.
-Different types of the projects have different needs.
+Different types of projects have different needs.
 One solution for this problem would be to modify the virtual machine to change the frames per second depending on the type of project that is executed.
 
 Secondly, projects depend on specific behaviour of the virtual machine.
@@ -815,16 +815,20 @@ Using this technique is our recommendation for implementing critical sections.
 Note that using these critical sections with blocks that require a redraw should be done thoughtfully, as the redraw will not occur (this behaves identically in the current execution model).
 
 Finally, we performed a preliminary benchmark using our proposed changes on a selection of projects, informed by our previous analysis.
-The results of this are promising: while there are differences in the behaviour and performance of Scratch projects, we do not believe these to be insurmountable.
-The modified execution model can be suitable for our stepping method for debuggers and reduces concurrency-related surprising behaviour, while not adversely affecting existing projects.
+The results of the benchmark make clear that finding a single replacement execution model without affecting existing projects is highly unlikely.
+Projects depend on the behaviour of the current execution model, meaning any change in behaviour will be a breaking change.
+Considering the Scratch Team's (understandable) reluctance to introduce behavioural changes to Scratch at this point, we do not envision our changes being upstreamed, nor would we recommend it.
 
-While the results of the benchmarks are promising, they are just a preliminary exploration.
-Our proposed changes must be validated in educational practice and in a classroom setting with actual users of Scratch, in additional to performing expanded automated benchmarks.
-Both the intuitiveness of the new execution model and its impact on existing projects require more research.
-Considering the Scratch Team's (understandable) reluctance to introduce behavioural changes to Scratch at this point, we do not envision our changes being upstreamed soon.
-With that in mind, for the new model to ever be considered, future research will need to show that there are no major drawbacks.
-Another area of improvement is looking at more projects with user interaction.
+While a universally applicable replacement execution model is not achievable, our proposed changes are still useful.
+For small projects, the impact of the changes is acceptable, and most projects are small.
+Additionally, the new execution model is more suitable for use with our stepping method for debuggers.
+We thus envision the new execution model to be used in classrooms where the debugger is used as well.
+
+The results of the benchmarks are also a preliminary exploration.
+Our proposed changes must still be validated in educational practice and in a classroom setting with actual users of Scratch, in additional to performing expanded automated benchmarks.
+Another area of improvement is looking at more projects with user interaction for benchmarking.
 One possible route is investigating heuristics to automatically provide suitable user interaction to those projects, making them suitable for automated benchmarking.
+Improving the benchmarking allows for a better understanding on the impact of the proposed execution model.
 
 We also see more opportunities for research on the existing and new execution model of Scratch itself.
 For example, the current execution model is defined by its source code.

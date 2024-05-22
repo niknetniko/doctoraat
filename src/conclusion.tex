@@ -111,11 +111,14 @@ Next, we proposed changes to the execution model of Scratch that seek to resolve
 However, the widespread use of Scratch demands that any changes must not adversely affect existing projects.
 For this reason, we explored how Scratch is used, the results of which corroborate previous findings: most Scratch projects are small.
 
-To conclude, we benchmarked the new execution model on various representative projects to measure the real-world impact.
-While there is some impact, we deem it acceptable.
-This strengthens our confidence in integrating the modified execution model not only with the debugger, but in general use of Scratch.
+We then performed a preliminary benchmark of the new execution model on various representative projects to measure the real-world impact.
+The results of this benchmark make clear that our initial goal of finding a replacement execution model that has no effect on existing projects is not attainable.
+Projects rely too much on the behaviour of the original execution model: any change to this behaviour will be a breaking change.
+However, the benchmark also showed that the effect on smaller projects is acceptable, and most Scratch projects are small.
+We thus believe the new execution model to still be useful: not as a general replacement, but for use in specific contexts.
+For example, in a classroom setting, we believe using the new execution model improves the experience of using the debugger.
 
-More research in regard to the execution model of Scratch is needed.
+Finally, we believe more research is needed in regard to the execution model of Scratch.
 For starters, the execution model is currently defined by its source code, despite some attempts to create a formal model for it.
 As an example, constructing full operational semantics for the execution model would allow better formal reasoning and analysis, which might reveal more opportunities for changes.
 Secondly, the changes we proposed in this chapter should be validated experimentally in a classroom setting.

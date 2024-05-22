@@ -342,8 +342,11 @@ Since Scratch is so widely used, our changes should not negatively impact existi
 We therefore analyse what a typical Scratch project looks like.
 Finally, we run some preliminary benchmarks with our proposed changes and report on the results.
 
-Based on our preliminary exploration, our proposed changes do not cause major problems for existing Scratch projects, while still being an improvement for debuggers.
-While we believe these changes to be promising, they must still be verified in educational practice and in a classroom setting to ensure that the changes are intuitive and do not have adverse effects.
+While we initially set out to find \textit{the} replacement execution model, our preliminary exploration leads us to believe that is probably not possible.
+Scratch programs, especially larger ones, rely on the current behaviour of the execution model, meaning any change to this behaviour would constitute a breaking change.
+We still believe the proposed changes are useful, but in more specialized contexts.
+For example, the proposed changes enhance the use of the debugger.
+Smaller programs are much less affected by our proposed changes, and most programs are small.
 
 \subsection{Organization of the second part}\label{subsec:organization-of-the-second-part}
 
