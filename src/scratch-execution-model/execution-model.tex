@@ -701,10 +701,25 @@ An alternative implementation of the \textsc{em-asap} model might be warranted.
     \end{subfigure}
     \begin{subfigure}{0.49\linewidth}
         \centering
-        \begin{scratch}[scale=0.6]
+        \begin{scratch}[scale=0.5]
             \blockinit{when \greenflag clicked}
             \blockinfloop{forever}{
                 \blockmoreblocks{move}
+            }
+        \end{scratch}
+        \begin{scratch}[scale=0.5]
+            \initmoreblocks{define \namemoreblocks{move}}
+            \blockif{if \boolsensing{\dots} then}{
+                \blockmove{change x by \ovalnum{10}}
+            }
+            \blockif{if \boolsensing{\dots} then}{
+                \blockmove{change x by \ovalnum{-10}}
+            }
+            \blockif{if \boolsensing{\dots} then}{
+                \blockmove{change y by \ovalnum{10}}
+            }
+            \blockif{if \boolsensing{\dots} then}{
+                \blockmove{change y by \ovalnum{-10}}
             }
         \end{scratch}
         \caption{
