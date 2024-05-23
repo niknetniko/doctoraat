@@ -104,7 +104,7 @@ However, in Scratch, we wanted the step to advance one step in all threads simul
 The current execution model makes this difficult.
 
 To answer this research question, we first explained in detail how the current execution model behaves.
-The current execution model has been chosen to minimize the occurrence of some concurrency-related issues, like race conditions, but does not prevent all issues.
+The current execution model has been chosen to minimize the occurrence of some concurrency-related issues, like certain race conditions, but does not prevent all issues.
 The threading model, in particular, causes some surprising behaviour, which is not ideal as Scratch is intended to be intuitive.
 
 Next, we proposed changes to the execution model of Scratch that seek to resolve these issues.

@@ -13,7 +13,7 @@ Blocks that are attached together form scripts, and each sprite can have multipl
 
 The Scratch execution model combines a fixed-step time loop (30 frames per second) with an almost-cooperative threading model.
 This means that threads are seldom interrupted, mostly relying on explicit yielding to other threads.
-While this approach minimizes the occurrence of race conditions, some concurrency issues persist~\autocite{maloneyScratchProgrammingLanguage2010}.
+While this approach minimizes the occurrence of certain race conditions, some concurrency issues persist~\autocite{maloneyScratchProgrammingLanguage2010}.
 For instance, the order in which sprites respond to broadcasts can be unpredictable.
 Consequently, even without explicit concurrency controls, Scratch is a useful tool for teaching concurrency concepts~\autocite{fatourouTeachingConcurrentProgramming2018}.
 
@@ -795,7 +795,7 @@ However, this introduces two downsides:
 This chapter then asks if we can modify the execution model of Scratch in such a way that the step functionality of a debugger is possible and that the changed execution model is usable for normal execution.
 To this end, we first took a detailed look at the existing execution model, due to a lack of existing literature on the topic.
 This model is the result of multiple years of work in the Scratch virtual machine and contains many nuances.
-The current execution model has been chosen to avoid race conditions but does not avoid all concurrency-related issues: there are some surprising consequences of the threading model in particular.
+The current execution model has been chosen to avoid some race conditions but does not avoid all concurrency-related issues: there are some surprising consequences of the threading model in particular.
 
 Any changes to the execution model must not have adverse consequences for existing Scratch projects.
 Therefore, we first analyse how Scratch is used by replicating select metrics of previous investigations into what Scratch projects look like.
@@ -803,13 +803,13 @@ The most significant previous result in this area is \textcite{aivaloglouHowKids
 Our results for Scratch 3.0 projects are broadly similar: most Scratch projects are small and simple, but there are a few big and complex ones.
 
 Our proposed changes to the execution model change the threading from cooperative to preemptive.
-This implies that race conditions, which the original execution model sought to prevent, are now possible.
+This implies that more race conditions, which the original execution model sought to prevent, are now possible.
 \Textcite{maloneyScratchProgrammingLanguage2010} use the classic example of reading the value of a variable, increasing this value, and finally updating the variable with the new value.
-When running the same code unchanged in the new execution model, race conditions are possible.
+When running the same code unchanged in the new execution model, more race conditions are possible.
 However, we believe this is not a big problem, due to two reasons.
 First, the kind of code where these race conditions can occur is used infrequently in Scratch.
 
-Second, there is a workaround: the part of the code that must be protected against race conditions can be extracted into a procedure, using the option ``run without screen refresh''.
+Second, there is a workaround: the part of the code that must be protected against these race conditions can be extracted into a procedure, using the option ``run without screen refresh''.
 This causes the code in the function to become atomic: it will be run without interruptions.
 Using this technique is our recommendation for implementing critical sections.
 Note that using these critical sections with blocks that require a redraw should be done thoughtfully, as the redraw will not occur (this behaves identically in the current execution model).

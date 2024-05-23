@@ -330,7 +330,7 @@ While working on the debugger, we also began looking more deeply into the Scratc
 The Scratch execution model combines a fixed-step time loop (30 frames per second) with an almost-cooperative threading model.
 This means that threads are seldom interrupted, mostly relying on explicit yielding to other threads.
 
-This threading model was chosen because it minimizes the occurrence of race conditions, although concurrency-related issues still occur~\autocite{maloneyScratchProgrammingLanguage2010}.
+This threading model was chosen because it minimizes the occurrence of some race conditions, although concurrency-related issues still occur~\autocite{maloneyScratchProgrammingLanguage2010}.
 The cooperative nature of the threading model also has drawbacks: it can lead to unexpected behaviour when working with multiple sprites.
 
 Additionally, the execution model also limits how a debugger can work, without resorting to deviating from the execution model as used during normal execution.
