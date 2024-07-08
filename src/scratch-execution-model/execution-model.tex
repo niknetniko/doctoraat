@@ -147,7 +147,7 @@ At four well-defined points, a thread always yields, thus causing said thread sw
 \end{enumerate}
 
 There is one exception: when using procedures ``without screen refresh'', Scratch will interrupt a thread that runs longer than \qty{500}{\milli\second}.
-This is called the ``wrap timer'', and has some curious edge cases\footnote{\url{https://github.com/scratchfoundation/scratch-vm/issues/2834}}.
+This is called the ``wrap timer'', and has some curious edge cases.\footnote{\url{https://github.com/scratchfoundation/scratch-vm/issues/2834}}
 
 The threads are executed in a first-come, first-serve manner: there are no priorities nor changes in thread order.
 The first thread is executed until it yields or ends, then the next thread, and so on.
@@ -221,7 +221,7 @@ While there are three conceptual statuses, the implementation has five:
         The thread is scheduled again next tick to see if the wait time is over.
     \item[\texttt{promise wait}] The thread is waiting for a JavaScript promise to be resolved, after which the thread will be set to \texttt{running}.
     \item[\texttt{yield tick}] The thread yields until the next step.
-        The purpose of this status seems to be some performance optimizations to aid with benchmarking\footnote{\url{https://github.com/scratchfoundation/scratch-vm/pull/1211}}.
+        The purpose of this status seems to be some performance optimizations to aid with benchmarking.\footnote{\url{https://github.com/scratchfoundation/scratch-vm/pull/1211}}
 \end{description}
 
 Each thread maintains a stack structure.
@@ -388,7 +388,7 @@ The proposed ``when'' metric counts the number of ``when'' blocks (e.g.\ hat blo
 
 Since the dataset used by \textcite{aivaloglouHowKidsCode2016} consists of Scratch 2.0 projects and \textcite{fronzaApproachEvaluateComplexity2020} only analyse 80 projects, we found it necessary to collect a new dataset of Scratch projects.
 
-To create a new dataset, we used the Scratch API\footnote{\url{https://en.scratch-wiki.info/wiki/Scratch_API}} as follows.
+We constructed a new dataset as follows, using the Scratch website.\footnote{\url{https://en.scratch-wiki.info/wiki/Scratch_API}}
 Creating a new project provides an identifier ({\addfontfeature{Numbers={Lining,Proportional}}996725074}, April 7th, 2024), which we used as a starting point.
 We then subtract one from the identifier, downloaded the project if possible, and continued.
 \marginnote{The \num{1129465} projects were created in approximately 3 days, illustrating Scratch's popularity.}
@@ -402,7 +402,7 @@ This results in a final dataset of \num{195372} Scratch projects we considered f
 \subsection{Analysing Scratch 3.0 projects}\label{subsec:analysing-scratch-3.0-projects}
 
 Hairball~\autocite{boeHairballLintinspiredStatic2013} was commonly used to analyse Scratch projects (it is also used by the existing analyses), but does not support Scratch 3.0.
-For this reason, we have implemented a similar tool\footnote{\url{https://github.com/scratch-ed/scratch-analysis}} in JavaScript (versus Hairball's use of Python).
+For this reason, we have implemented a similar tool in JavaScript (versus Hairball's use of Python).\footnote{\url{https://github.com/scratch-ed/scratch-analysis}}
 It also supports plugins to support extensions for other analyses.
 Being written in JavaScript, it has the advantage that it can reuse parts of the Scratch virtual machine, like reading and parsing Scratch projects.
 
@@ -736,7 +736,7 @@ An alternative implementation of the \textsc{em-asap} model might be warranted.
     \label{fig:lightning-behaviour}
 \end{figure}
 
-The first project we looked at in detail is the \textit{Lightning} project\footnote{\url{https://scratch.mit.edu/projects/995927372/}} (\cref{fig:the-game-lightning}).
+The first project we looked at in detail is the \textit{Lightning} project (\cref{fig:the-game-lightning}).\footnote{\url{https://scratch.mit.edu/projects/995927372/}}
 The aim of this game is to dodge lightning bolts coming out of the sky.
 \Cref{fig:lightning-behaviour-original} gives an overview of the behaviour with the different execution models.
 The \textsc{em-30},\textsc{em-60}, and \textsc{em-90} model did not achieve 10 points: they were too slow and made the game unplayable.
@@ -757,7 +757,7 @@ This implementation is usable with all new execution models, except \textsc{em-3
     \label{fig:catch-apples-behaviour}
 \end{figure}
 
-The second project is the \textit{Catch the apples} project\footnote{\url{https://scratch.mit.edu/projects/995778768/}} (\cref{fig:the-game-apple}).
+The second project is the \textit{Catch the apples} project (\cref{fig:the-game-apple}).\footnote{\url{https://scratch.mit.edu/projects/995778768/}}
 The aim here is to use the mouse to move a basket and catch as many falling apples as possible.
 \Cref{fig:catch-apples-behaviour} shows the behaviour with different execution models.
 In this exercise, all models are playable, with \textsc{em-30} behaving the most similar to the original Scratch execution model.

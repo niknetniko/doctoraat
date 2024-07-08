@@ -197,7 +197,7 @@ In this section, we first introduce the structure of the domain-specific languag
 \end{listing}
 
 TESTed-DSL uses YAML~\autocite{ben-kikiYAMLAinMarkup2021} as a markup language for describing test suites that are preferably specified in a language-agnostic way.
-The structure of test suites is formally specified in a JSON Schema\footnote{\url{https://github.com/dodona-edu/universal-judge/blob/master/tested/dsl/schema.json}}.
+The structure of test suites is formally specified in a JSON Schema.\footnote{\url{https://github.com/dodona-edu/universal-judge/blob/master/tested/dsl/schema.json}}
 Note that this schema can be plugged into text editors or integrated development environments for syntax highlighting, autocompletion, and validation.
 \Cref{lst:yaml-basic-example} shows a minimal example of a test suite.
 More elaborate examples are discussed in \cref{sec:dsl-illustrative-examples}.
@@ -330,7 +330,7 @@ We begin with the most common scenario: a language-agnostic test suite that reli
 Next, we provide two more advanced test suites that illustrate how advanced data types and custom oracles are handled in the DSL, while also illustrating the versatility of TESTed-DSL in describing test suites for different types of programming exercises.
 
 \Cref{lst:cipher-example} illustrates the hierarchical structure of units, test cases, and tests (in a script).
-The test suite has a single unit \texttt{Cipher} (line 2) containing all test cases to validate the correct behaviour of submissions that must define the class \texttt{Cipher}\footnote{\url{https://dodona.be/en/activities/636251211/}}.
+The test suite has a single unit \texttt{Cipher} (line 2) containing all test cases to validate the correct behaviour of submissions that must define the class \texttt{Cipher}.\footnote{\url{https://dodona.be/en/activities/636251211/}}
 
 The unit has multiple test cases, but only a single test case (lines 4--28) is shown completely for illustrative purposes.
 The first test case does not provide inputs that require scheduling a main call, as it only expects submissions to implement a class definition.
@@ -395,8 +395,7 @@ This behaviour cannot be altered: TESTed-DSL does not allow specifying an expect
 TESTed is designed in part to run as a standalone command line tool to generate structured feedback on standard output.
 It is also well-equipped for seamless integration with online learning platforms that display task description of programming exercises, accept student submissions, run TESTed in their backend and render the resulting feedback.
 \textsc{tap}~\autocite{schlueterTAP14TestAnything2022} (Test Anything Protocol) is the \textit{de facto} standard used by unit testing frameworks for reporting test results.
-For educational purposes, however, TESTed streams richer and more structured feedback to standard output, in a format formally specified in a JSON Schema\footnote{\url{ https://github.com/dodona-edu/dodona/blob/main/public/schemas/partial_output.json
-}}.
+For educational purposes, however, TESTed streams richer and more structured feedback to standard output, in a format formally specified in a JSON Schema.\footnote{\url{ https://github.com/dodona-edu/dodona/blob/main/public/schemas/partial_output.json}}
 Dodona~\autocite{vanpetegemDodonaLearnCode2023}, for example, renders each unit of test cases (from \cref{lst:cipher-example}) in a separate tab and visually groups all tests from the same test case inside a card (\cref{fig:dodona-render-cipher}).
 Because JavaScript code was submitted in this case, TESTed adopted the syntax and conventions configured in its JavaScript module to format all statements, expressions, and return values in the feedback.
 The JavaScript-specific syntax highlighting is done by Dodona as part of the process of rendering the feedback.
@@ -420,7 +419,7 @@ Test suites may, however, overrule these linter configurations.
 
 \subsubsection{Recoupling exercise: multiple functions and advanced data types}\label{subsubsec:recoupling-exercise:-multiple-functions-and-advanced-data-types}
 
-\Cref{lst:recouple-example} shows a language-agnostic test suite for an exercise\footnote{\url{https://dodona.be/en/activities/1145516160/}} that asks to implement two functions: \texttt{divide} and \texttt{recouple}.
+\Cref{lst:recouple-example} shows a language-agnostic test suite for an exercise that asks to implement two functions: \texttt{divide} and \texttt{recouple}.\footnote{\url{https://dodona.be/en/activities/1145516160/}}
 The first function must divide the given string into a number of parts.
 The second function must split each given string and then recombine the corresponding parts into new strings.
 As part of the problem-solving process, students may discover a divide-and-conquer strategy: the implementation of the second function may call the first function that solves a subtask.
@@ -629,7 +628,7 @@ We also added 6 new programming exercises with language-agnostic TESTed-DSL test
 Our experience in doing so is that direct authoring of TESTed-DSL test suites is ergonomic, either when done by hand or using a generator script based on a correct solution.
 Human error is reduced by using the formal specification for automatic verification that TESTed-DSL test suites are well-formed and valid.
 TESTed performs such verification while parsing test suites, but this can also be done interactively while authoring the test suites in an \textsc{ide}.
-For example, we provide a VS Code Plugin\footnote{\url{https://marketplace.visualstudio.com/items?itemName=dodona.dodona-exercise-plugin}} that automatically applies the JSON Schema to the YAML files to catch errors and to provide autocompletion.
+For example, we provide a VS Code Plugin that automatically applies the JSON Schema to the YAML files to catch errors and to provide autocompletion.\footnote{\url{https://marketplace.visualstudio.com/items?itemName=dodona.dodona-exercise-plugin}}
 The improved readability of TESTed-DSL test suites further increases productivity and enhances comfort while authoring programming exercises, especially with editor support for syntax highlighting and autocompletion.
 
 Of these exercises, \num{19} were used as mandatory assignments during the 2023 spring semester of the introductory course and \num{6} for midterm tests and exams.
@@ -666,7 +665,7 @@ Equally important is the total runtime for assessing the submissions for a progr
 This is the time students must wait before feedback is available.
 We observed that \qty{75}{\percent} of all JavaScript exercises are assessed automatically in less than 725 ms (\cref{fig:dsl-performance}).
 On average, TESTed spends \qty{225}{\milli\second} parsing and processing a TESTed-DSL test suite, with the remaining time used for generating test code (language-specific test harnesses), running test code and checking test results.
-Due to additional speedups in the testing framework itself, TESTed 2.0 is up to 2.8 times\footnote{\url{https://github.com/dodona-edu/universal-judge/pull/334}} faster than TESTed 1.0 (both using JSON test suites).
+Due to additional speedups in the testing framework itself, TESTed 2.0 is up to 2.8 times faster than TESTed 1.0 (both using JSON test suites).\footnote{\url{https://github.com/dodona-edu/universal-judge/pull/334}}
 
 \begin{figure}
     \centering
@@ -823,7 +822,7 @@ The input/output-based approach forces students to implement an input/output mod
 Because general-purpose unit testing frameworks work with language-specific test suites, the alternative approach duplicates efforts in specifying the expected behaviour for a programming exercise to each target programming language of its submissions.
 This can be seen in how separate test suites are written for each target language in most programming platforms.
 
-Only Exercism has a mechanism\footnote{\url{https://github.com/exercism/problem-specifications}} by which some exercises have a single specification in a generic track that is used to automatically derive language-specific instances.
+Only Exercism has a mechanism by which some exercises have a single specification in a generic track that is used to automatically derive language-specific instances.\footnote{\url{https://github.com/exercism/problem-specifications}}
 This system shares its goals with TESTed-DSL\@.
 However, it is far less flexible and ergonomic for authoring programming exercises, as the generation step is needed each time.
 
@@ -849,7 +848,7 @@ Feel free to run TESTed as a standalone command line tool, integrate it into you
 We ourselves now routinely rely on TESTed to create new programming exercises and to gradually migrate existing exercises to port them to other programming languages and to benefit from the additional features that TESTed brings.
 We also switched to TESTed when training (secondary school) teachers how to create programming exercises with automated assessment for Dodona.
 First of all because it covers most common cases, is easy to use, and teachers can use the same framework for educational software testing, regardless of their target programming language(s).
-As an open-source project on GitHub\footnote{\url{https://github.com/dodona-edu/universal-judge}}, we welcome the sharing of unsupported exercise scenarios, bugs and feature requests documented as issues.
-We also welcome additional language-specific modules to support new programming languages\footnote{\url{https://docs.dodona.be/en/references/tested/new-programming-language/}}.
+As an open-source project on GitHub, we welcome the sharing of unsupported exercise scenarios, bugs and feature requests documented as issues.\footnote{\url{https://github.com/dodona-edu/universal-judge}}
+We also welcome additional language-specific modules to support new programming languages.\footnote{\url{https://docs.dodona.be/en/references/tested/new-programming-language/}}
 
 \end{document}

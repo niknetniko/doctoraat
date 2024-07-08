@@ -891,7 +891,7 @@ A common use-case is to provide better or more detailed feedback about the issue
 
 Additional testing-framework-specific options are also added to this object.
 For example, with TESTed, the name of the test suite is often such an option.
-Other usable options for TESTed are\footnote{These are also described in our documentation at \url{https://docs.dodona.be/en/references/tested/exercise-config/}}:
+Other usable options for TESTed\footnote{These are also described in our documentation at \url{https://docs.dodona.be/en/references/tested/exercise-config/}} are:
 
 \begin{description}
     \item[\texttt{parallel}] If contexts should be executed in parallel or not (default false).
@@ -900,7 +900,7 @@ Other usable options for TESTed are\footnote{These are also described in our doc
         See \cref{subsubsec:compilation-units} for more information about this option.
     \item[\texttt{linter}] Enables or disables linting of the submissions (default true).
     \item[\texttt{language}] An object mapping programming languages to objects containing language-specific options.
-        As an example use-case of this option, some languages allow customizing the linter configuration\footnote{\url{https://docs.dodona.be/en/references/tested/exercise-config/\#linters}}.
+        As an example use-case of this option, some languages allow customizing the linter configuration.\footnote{\url{https://docs.dodona.be/en/references/tested/exercise-config/\#linters}}
     \item[\texttt{compiler\_optimizations}] If compiler optimizations should be enabled if available or not (default false).
         By enabling this option, compile speed is sacrificed for better execution speed of the submission.
         This option can be useful for exercises where the submission is expected to be computationally heavy.
@@ -916,7 +916,7 @@ The format is named partial since it is a streaming JSON format.
 This means that the output is a stream of JSON objects, instead of one big JSON object.
 
 TESTed uses newline-delimited JSON\@.
-Two equivalent specifications exist for this format: NDJSON (Newline-Delimited JSON\footnote{\url{https://ndjson.org/}}) and JSON Lines\footnote{\url{https://jsonlines.org/}}.
+Two equivalent specifications exist for this format: NDJSON (Newline-Delimited JSON)\footnote{\url{https://ndjson.org/}} and JSON Lines\footnote{\url{https://jsonlines.org/}}.
 The format itself is simple: JSON objects are separated by a newline, and each line is a valid JSON object.
 
 \begin{listing}
@@ -976,7 +976,7 @@ Some other smaller tasks are registering the language in TESTed and adding suppo
 
 The remainder of this section describes the different methods that must or can be implemented.
 We always begin by providing the method signature, followed by a discussion of the method.
-Most of this information is also available in the class itself as documentation in the code\footnote{\url{https://github.com/dodona-edu/universal-judge/blob/master/tested/languages/config.py}}, which is also the most up-to-date version.
+Most of this information is also available in the class itself as documentation in the code, which is also the most up-to-date version.\footnote{\url{https://github.com/dodona-edu/universal-judge/blob/master/tested/languages/config.py}}
 
 \subsection{Compilation}\label{subsec:impl-compilation}
 
@@ -1328,7 +1328,7 @@ Another example is JavaScript, where TESTed supports both synchronous and asynch
 
 The main goal of the second experiment was to identify any overhead that could possibly be imposed on exercise authors while producing test suites for TESTed, compared to authoring test suites for a specific programming language.
 A secondary goal was to identify possible limitations on the kind of exercises that TESTed could evaluate automatically or any shortcomings in the feedback it provides.
-For these purposes we designed test suites for all programming challenges of the 2020 edition of the Advent of Code\footnote{\url{https://adventofcode.com/}}, an annual programming contest run by Eric Wastl from December 1 to December 25.
+For these purposes we designed test suites for all programming challenges of the 2020 edition of the Advent of Code, an annual programming contest run by Eric Wastl from December 1 to December 25.\footnote{\url{https://adventofcode.com/}}
 
 The Advent of Code platform does not directly review source code that solves the programming challenges, but provides users with a single input data set and accepts a single textual result (usually a number or a short text) that is compared against the expected result by exact string matching.
 We have designed more elaborate test suites for all Advent of Code challenges that allow for more fine-grained testing of implemented solutions as is common practice in software engineering and in educational practice.
