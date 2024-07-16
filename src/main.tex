@@ -375,6 +375,13 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
     % https://tex.stackexchange.com/questions/360781/change-giveninits-option-within-document-biblatex
     \togglefalse{abx@bool@giveninits}
     \DeclareNameAlias{author}{given-family}
+    \section*{Included in this dissertation}\label{sec:included-in-this-dissertation}
+    List of publications directly related to this dissertation.
+    As such, the contents of these publications are included in this dissertation.
+    \printbibliography[keyword={supermine},heading=none]
+    \newpage
+    \section*{Remainder}\label{sec:remainder}
+    List of publications by Team Dodona for which I am a co-author.
     \printbibliography[keyword={mine},heading=none]
 \end{refcontext}
 
