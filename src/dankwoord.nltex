@@ -1,0 +1,12 @@
+\documentclass[main]{subfiles}
+
+\begin{document}
+
+\selectlanguage{dutch}
+
+\chapter{Dankwoord}\label{ch:dankwoord}
+
+Bedankt aan allen!
+
+\selectlanguage{english}
+\end{document}
