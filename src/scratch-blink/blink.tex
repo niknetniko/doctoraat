@@ -163,7 +163,7 @@ We discuss this more in great depth in \cref{ch:scratch-execution-model}.
 Blink also offers back-in-time debugging capabilities.
 During a debugging session, it instruments the virtual machine and constructs a snapshot of the program state each time a step is executed.
 These snapshots contain the entire state of the Scratch program, including the position of the sprites, the active blocks, clones, and the pen.
-To implement this feature, we modified the \texttt{Execute} component (\cref{fig:blink-architecture}) to create a snapshot at the end of the \texttt{execute} method.
+To implement this feature, we modified the \texttt{Execute} component to create a snapshot at the end of the \texttt{execute} method.
 Once a debugging session has been completed, these snapshots can be consulted to restore the program state.
 
 \subsection{Programmed breakpoints}\label{subsec:arch-programmed-breakpoints}
