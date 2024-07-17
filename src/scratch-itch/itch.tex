@@ -1,4 +1,3 @@
-%! suppress = FileNotFound
 \documentclass[../main]{subfiles}
 
 \begin{document}
@@ -317,7 +316,7 @@ These are free of restrictions: the check for allowed blocks does not apply.
 \begin{listing}
     \begin{wide}
         \begin{sublisting}{0.49\linewidth}
-            \begin{scratch}[scale=0.8]
+            \begin{scratch}[scale=0.7]
                 \blockinit{when I receive \selectmenu{Start}}
                 \blocklook{set \selectmenu{ghost} effect to \ovalnum{0}}
                 \blockrepeat{repeat \ovalnum{15}}
@@ -613,16 +612,16 @@ Most of the options are self-explanatory, and the output format option is explai
     \begin{wide}
         \includestandalone[width=\linewidth]{itch-sequence-diagram}
     \end{wide}
-    \caption{Sequence diagram showing the process of evaluating a project with Itch. When run as a library, there is no itch core or Puppeteer.}
+    \caption{Sequence diagram showing the process of evaluating a project with Itch. When run as a library, there is no Itch core or Puppeteer.}
     \label{fig:itch-sequence-diagram}
 \end{figure}
 
 When there is no existing browser instance available, Itch provides a command line interface.
 \marginnote{A headless browser is a full browser, but without user interface.}
 In this mode, Itch will run a headless browser, load the projects and test suites, run the judge, and finally collect the results from the browser.
-\Cref{fig:itch-sequence-diagram} shows the complete process.
 
-First, the runner package launches a Puppeteer instance.
+\Cref{fig:itch-sequence-diagram} shows the complete process.
+First, the runner package launches a Puppeteer instance (the headless browser).
 When ready, the various dependencies are loaded into the Puppeteer instance (these are the Itch core package, the Scratch dependencies, the test suite, the submission, and the starter project).
 The runner package will then run a special script that calls Itch as it would be used as a library: the \mintinline{typescript}{run(config)} function is called.
 Then, the same process happens as when using Itch as a library.

@@ -118,7 +118,7 @@ A test suite must be usable to evaluate submissions in every programming languag
 As a consequence of this requirement, adding support for new programming languages to the testing framework must not demand changes to existing test suites.
 All existing test suites must work with the new programming language without changes.
 
-The \term{second requirement} is similar testing capabilities as unit testing.
+The \term{second requirement} is that the framework must have testing capabilities similar to those of unit testing frameworks.
 Some concrete examples of what should be possible are:
 
 \begin{itemize}
@@ -605,12 +605,15 @@ TESTed takes a fail-fast approach~\autocite{shoreFailFastSoftware2004}: instead 
 
 \subsection{Execution planning}\label{subsec:execution-planning}
 
-The next step is planning the execution of the evaluation.
+The next step is planning the execution of the evaluation: creating an execution plan.
 As discussed before, a test suite contains a number of contexts, which must be independent of each other.
-As a side-effect, this independence allows TESTed to implement optimizations to improve performance.
+TESTed partitions these into \term{compilation units} (a set of contexts that are compiled together), which are in turn partitioned into \term{execution units} (a set of contexts that are executed together).
+This partitioning is what we consider the execution plan.
 
-TESTed partitions the test suite into \term{compilation units} (a set of contexts that are compiled together), which are in turn partitioned into execution units (a set of contexts that are executed together).
-While different compilation units cannot be executed as one execution unit, it is possible that one compilation unit represents multiple execution units.
+If performance was not a consideration, the simplest execution plan would be to compile and execute every context individually.
+After all, contexts are independent of each other, and separate compilation and execution would enforce that independence.
+However, this would be prohibitively slow: a test suite with fifty contexts would need fifty compilation steps and fifty execution steps.
+Creating an execution plan is thus necessary to improve performance, which is achieved by reducing the number of compilation units and execution units.
 
 \begin{figure}
     \begin{subfigure}{\textwidth}
@@ -649,18 +652,11 @@ While different compilation units cannot be executed as one execution unit, it i
     \caption{Schematic representation of the planning steps.}
 \end{figure}
 
-\subsubsection{Performance impact of the planning}
-
-If performance was not relevant, the easiest execution plan would be to compile and execute every context individually.
-After all, they are independent of each other, and separate compilation and execution would ensure that independence.
-However, this would be prohibitively slow: a test suite with fifty contexts would need fifty compilation steps and fifty execution steps.
-Creating an execution plan is thus intended to improve performance, which is achieved by reducing the number of compilation units and execution units.
-
 \subsubsection{Compilation units}
 \label{subsubsec:compilation-units}
 
 First, TESTed tries to use a single compilation unit for the whole test suite.
-This is achieved by creating a program that accepts an argument to indicate the execution that should be run.
+This is achieved by creating a program that accepts an argument to indicate which execution should be run.
 
 In programming languages without an explicit compilation step, the compilation is no more than a syntax check.
 \marginnote{
@@ -669,22 +665,23 @@ In programming languages without an explicit compilation step, the compilation i
 In compiled languages, the compilation is often much stricter, for example, failing if a non-existing function is used.
 
 Techniques used to improve performance must be weighed against the usefulness of the generated feedback.
-For example, consider an exercise where students must implement two or three functions.
-Students might implement the first function and submit their solution.
-With a single compilation unit, a compilation error would occur, since the test code calls functions that do not exit.
-This will prevent the first function from being evaluated, even if it was correct.
+For example, consider an exercise where students must implement two functions (functions A and B).
+Students might submit a solution in which they only implement function A\@.
+With a single compilation unit, the generated test code contains calls to both function A and B\@.
+This will this result in a compilation error, as a call to a non-existing function is not allowed.
+This will prevent function A from being evaluated, even if it was correct.
 
 To prevent this, if the compilation of the whole test suite fails, TESTed falls back to using one compilation unit per tab in the test suite.
 These two approaches are illustrated in \cref{fig:planning-compilation}.
 This is why a tab is intended to be a set of logically related contexts.
-Continuing with the example from before, there might be a separate tab for each function the exercise requires.
+Continuing with the example from before, there might be a separate tab A for tests involving function A and a second tab for tests involving function B\@.
 Going more fine-grained, by compiling each context individually, does not seem useful.
 While potentially providing better feedback, the performance impact is significant.
 Compiling at the tab level is a good compromise between fine-grained compilation (thus allowing more of the submission to be evaluated) and performance (the more compilation units, the slower the evaluation will be).
 
 \subsubsection{Execution units}
 
-Next, the compilation units from the previous steps are partitioned into \term{execution units}.
+Next, the compilation units from the previous steps are partitioned into execution units.
 \marginnote{
 All programming languages, including the non-compiled ones, are handled the same way.
 This allows the most consistency between programming languages.

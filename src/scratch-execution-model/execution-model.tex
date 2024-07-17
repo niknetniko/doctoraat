@@ -7,7 +7,7 @@
 %\dictum[J. Maloney, M. Resnick, et al. \\ \textit{The Scratch Programming Language and Environment}]{Concurrency is often considered an advanced programming technique. Yet our everyday world is highly concurrent, so Scratch users
 %are not surprised that a sprite can do several things at once.}
 
-Scratch, a popular block-based programming language designed for young learners, inherently supports parallel programming.
+The programming language Scratch inherently supports parallel programming.
 Each Scratch program (called a project) consists of a number of sprites with individual code (\cref{ch:scratch-the-programming-environment}).
 Blocks that are attached together form scripts, and each sprite can have multiple scripts running concurrently as separate threads within the Scratch virtual machine.
 
@@ -134,7 +134,7 @@ This is done by constraining where thread switches can occur.''.
 
 At four well-defined points, a thread always yields, thus causing said thread switching:
 \begin{enumerate}
-    \item When a block is with a fixed duration is executed.
+    \item When a block with a fixed duration is executed.
         There are a number of blocks that fall under this category.
         \scratchinline{\blockcontrol{wait \ovalnum{}}} is an obvious inclusion, but this also applies to \scratchinline{\blockmove{glide \ovalnum{} secs to x: \ovalnum{} y: \ovalnum{}}}, for example.
         \scratchinline{\blocksound{play sound \ovalsound*{} until done}} also falls under this category, even if there is no explicit time.

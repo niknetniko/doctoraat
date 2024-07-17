@@ -9,10 +9,9 @@ we introduced five educational tools to facilitate programming education:
 two for textual programming languages and three for block-based programming languages.
 We also propose changes to the Scratch execution model.
 
-\section{Textual programming languages}\label{sec:for-textual-programming-languages}
+We discuss each research question in detail below.
 
-Our contributions make it possible to ergonomically create a single programming exercise, with one test suite and one task description, and use this exercise across multiple programming languages.
-To make this possible, we created TESTed and TESTed-DSL, whose impact we discuss below.
+\section{Textual programming languages}\label{sec:for-textual-programming-languages}
 
 \begin{description}
     \item[RQ1] Can we design an educational software testing framework that supports automated assessment across programming languages based on a single test suite?
@@ -55,10 +54,6 @@ Native support for pretty printing nested data structures would be another valua
 There are more opportunities still, including data-driven tests (parameterized tests), supporting dynamic generation of test data and boosting the performance of running tests.
 
 \section{Block-based programming languages}\label{sec:for-block-based-programming-languages}
-
-For Scratch, our contributions make it possible to automatically assess Scratch exercises, providing students with qualitative and timely formative feedback.
-For this purpose, we created Itch, an educational testing framework for Scratch.
-Based on the feedback students receive from Itch, they can then use Blink, the debugger we created, to find the root cause of their issues.
 
 \begin{description}
     \item[RQ3] Can we design an educational software testing framework for the block-based programming language Scratch?
@@ -123,5 +118,16 @@ For starters, the execution model is currently defined by its source code, despi
 As an example, constructing full operational semantics for the execution model would allow better formal reasoning and analysis, which might reveal more opportunities for changes.
 Secondly, the changes we proposed in this chapter should be validated experimentally in a classroom setting.
 This would allow verification if the proposed changes are intuitive.
+
+%\section{The summa summarum}\label{sec:in-summary}
+%
+%For textual programming languages, our contributions make it possible to ergonomically create a single programming exercise, with one test suite and one task description, and use this exercise across multiple programming languages.
+%To make this possible, we created TESTed and TESTed-DSL\@.
+%
+%For Scratch, we make it possible to automatically assess Scratch exercises, providing students with qualitative and timely formative feedback.
+%For this purpose, we created Itch, an educational testing framework for Scratch.
+%Based on the feedback received from Itch, students can then use Blink, our debugger, to find the root cause of their issues.
+%To end, we conclude that the Scratch execution model might benefit from some changes, but only in specific scenarios.
+%In general, changing the execution model is difficult, as existing Scratch programs rely on it.
 
 \end{document}
