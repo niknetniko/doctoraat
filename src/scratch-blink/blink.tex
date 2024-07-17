@@ -117,28 +117,28 @@ The wait until and pause block waits until a condition holds and then suspends t
 
 Internally, Scratch consists of several interconnected components implemented in JavaScript (\cref{sec:scratch-internal}).
 However, for the integration of Blink, changes were only made in the virtual machine and the user interface.
-The interaction between these two components is shown in \cref{fig:blink-architecture}.
-
 The Blink debugger consists of three main components: instrumentation of the virtual machine for stepping, recording of the execution state, and the custom debug extension, which implements the breakpoints.
 
-\begin{figure}
-    \centering
-    \includestandalone[width=0.7\linewidth]{architecture}
-    \caption{
-        Diagram showing the internal interaction between the Scratch VM and Scratch GUI\@.
-    }
-    \label{fig:blink-architecture}
-\end{figure}
+%\begin{figure}
+%    \centering
+%    \includestandalone[width=0.7\linewidth]{architecture}
+%    \caption{
+%        Diagram showing the internal interaction between the Scratch VM and Scratch GUI\@.
+%    }
+%    \label{fig:blink-architecture}
+%\end{figure}
 
 \subsection{Instrumentation for stepping}\label{subsec:instrumentation-for-stepping}
 
 The virtual machine executes Scratch programs and preserves their current state.
-It consists of three main modules: the \texttt{Runtime}, the \texttt{Sequencer}, and the \texttt{Execute} module.
+It consists of three main modules relevant to the debugger: the \texttt{Runtime}, the \texttt{Sequencer}, and the \texttt{Execute} module.
 The \texttt{Runtime} module maintains a list of active threads.
 These objects embody the execution state of a script.
 Threads are created when certain events trigger (i.e.\ a green flag is clicked), but can also be removed from the runtime (i.e.\ when deleting a clone).
 A Scratch program is executed by repeatedly calling the \texttt{\_step} method of the \texttt{Runtime}, typically 30 times per second.
-This method subsequently creates threads \CircledText{1}, destroys threads \CircledText{2}, and calls \texttt{stepThreads} \CircledText{3} as shown in \cref{fig:blink-architecture}.
+This method subsequently creates threads, destroys threads, and calls the \texttt{stepThreads} method of the \texttt{Sequencer}.
+\texttt{stepThreads} will iterate all threads and ensure they are ready to be executed.
+Finally, it will call the \texttt{execute} method of the \texttt{Execute} module for each thread, which will do the actual execution.
 
 Blink implements the pause, step, and resume commands of the debugger by instrumenting the \texttt{\_step} method of the \texttt{Runtime}.
 The instrumentation consists of injecting the code for recording state into this \texttt{\_step} method in the Blink fork of the Scratch virtual machine.

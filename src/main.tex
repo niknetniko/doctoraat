@@ -30,6 +30,7 @@
 %\usepackage{showframe}
 \usepackage{xcolor}
 \usepackage{circledsteps}
+\usepackage{makecell}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{luacode}
@@ -158,7 +159,6 @@
     uniquename=init,
     dashed=false,
 ]{biblatex}
-% TODO: why is babelo without authors?
 \addbibresource{main.bib}
 % Smaller font for bibliography
 \renewcommand*{\bibfont}{\normalfont\small}
@@ -390,12 +390,10 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \subfile{introduction/introduction.tex}
 
 \part{\tested{}}\label{part:tested}
-%\subfile{tested-glue.tex}
 \subfile{tested-engine/engine.tex}
 \subfile{tested-dsl/dsl.tex}
 
 \part{Scratch}\label{part:scratch}
-%\subfile{itch-glue.tex}
 \subfile{scratch-introduction/scratch-introduction.tex}
 \subfile{scratch-itch/itch.tex}
 \subfile{scratch-blink/blink.tex}

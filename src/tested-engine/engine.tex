@@ -1286,8 +1286,26 @@ When generating the code for an execution unit, a few things must be taken into 
 \section{Evaluation of the TESTed framework}\label{sec:tested1-evaluating-tested}
 
 To validate whether TESTed meets the requirements put forward in \cref{sec:tested1-programming-language-agnostic-test-frameworks}, we report on its use in educational practice.
-We conducted three quasi-experiments where we asked students to solve a set of programming exercises and automatically reviewed their submissions with TESTed in Dodona.
+We conducted three quasi-experiments (\cref{tab:tested-experiments-data}) where we asked students to solve a set of programming exercises and automatically reviewed their submissions with TESTed in Dodona.
 Each experiment specifically focuses on a particular aspect of TESTed we want to evaluate.
+
+\begin{table}[h]
+    \centering
+    \caption{A summary of the three quasi-experiments by their data.}
+    \label{tab:tested-experiments-data}
+    \addfontfeatures{Numbers={Monospaced,Lining}}
+    \begin{tabular}{|l|r r r r|}
+        \hline
+        \makecell[l]{Experiment} & {Languages} & {Users} & {Exercises} & {Submissions} \\
+        \hline
+        \makecell[l]{Language \\ independence} & 6 & 38 & 3 & 468 \\
+        \hline
+        \makecell[l]{Overhead for \\ designers} & 6 & 325 & 50 & 5465 \\
+        \hline
+        \makecell[l]{Educational \\ practice} & 1 & 95 & 5 & 6696 \\
+        \hline
+    \end{tabular}
+\end{table}
 
 \subsection{Programming language independence}\label{subsec:programming-language-independence}
 
