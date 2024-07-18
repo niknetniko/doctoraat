@@ -1,57 +1,95 @@
 \documentclass[tikz,crop]{standalone}
 
+\input{../fonts}
+\usepackage{../tikz-uml}
+\input{../tikz-preamble}
+\usepackage{siunitx}
+\sisetup{detect-all}
+\DeclareSIUnit{\fps}{fps}
+
 \begin{document}
 
-\begin{tikzpicture}[x=0.75cm,y=0.75cm,fill fraction/.style={path picture={
-  \fill[#1]
-  (path picture bounding box.west) rectangle
-  (path picture bounding box.south east);
-}},
-  fill fraction/.default=gray!50]
+\begin{tikzpicture}[x=0.75cm,y=0.75cm,every node/.style={font=\small}]
+  \begin{umlseqdiag}
+    \umlactor[no ddots,fill=white]{External}
+    \umlobject[no ddots,fill=none]{Runtime}
+    \umlobject[no ddots,fill=none]{Sequencer}
+    \umlobject[no ddots,fill=none]{Execute}
 
-  \node[hnode,minimum height=2\block,minimum width=4\block] at (0,1) (gui) {Scratch GUI};
+    \begin{umlcall}[padding=-3,op={Events}]{External}{Runtime}
+      \begin{umlcallself}[op={\texttt{startHats()}}]{Runtime}
+      \end{umlcallself}
+    \end{umlcall}
 
-  \node[hnode,densely dotted,minimum width=13\block,minimum height=10.5\block,label={[fieldset,above left=-0.52\block and 3.5\block]Scratch VM}] at (0,-7.25) (vm) {};
+    \begin{umlfragment}[type=timer,label={30 times per second},inner xsep=1.4, inner ysep=2.5]
+      \begin{umlcall}[dt=8,op={\texttt{\_step()}}]{External}{Runtime}
+        \begin{umlcall}[padding=-3,op={\texttt{stepThreads()}}]{Runtime}{Sequencer}
+          \begin{umlfragment}[type=loop,label={for each thread},inner xsep=1.4]
+            \begin{umlcallself}[fill=white,draw=transparent]{Sequencer}
+            \end{umlcallself}
+            \begin{umlcallself}[dt=-2,op={\texttt{stepThread()}}]{Sequencer}
+              \begin{umlcall}[dt=4,op={\texttt{execute()}}]{Sequencer}{Execute}
+              \end{umlcall}
+            \end{umlcallself}
+          \end{umlfragment}
+        \end{umlcall}
+      \end{umlcall}
+    \end{umlfragment}
 
-  \draw[arrow,dotted] (gui) -- (vm) node[midway,fill=white] {is interface for};
-
-  \node[hnode,minimum width=5\block,minimum height=7.5\block,label={[fieldset,above left=-0.52\block and 0mm]Runtime}] at (-3.5,-6.75) (runtime) {};
-
-  \node[hnode,minimum width=4\block] at (runtime|-0,-4.5) (threads) {\texttt{threads}};
-
-  \node[hnode,signal,signal to=west and east,minimum width=4\block] at (runtime|-0,-6.75) (startHats) {\texttt{startHats}};
-
-  \draw[arrow,dotted] (gui) -| (-7.5,0|-startHats) node[near start,fill=white,align=center] {events initiated \\ by user} -- (startHats);
-
-  \node[hnode,signal,signal to=west and east,,minimum width=4\block] at (runtime|-0,-9) (step) {\texttt{\_step}};
-
-  \draw[arrow] (step) |- (-0.5,-11) node[draw,circle,inner sep=0,minimum size=0.5\block,near end,fill=white] {1} |- (threads.east);
-  \draw[arrow] (step) -- (startHats) node[draw,circle,inner sep=0,minimum size=0.5\block,midway,fill=white] {2};
-
-  \node[hnode,minimum width=5\block,minimum height=5\block,label={[fieldset,above left=-0.52\block and -0.25\block]Sequencer}] at (3.5,-5.5) (sequencer) {};
-
-  \node[hnode,signal,signal to=west and east,,minimum width=4\block] at (sequencer|-threads) (stepThreads) {\texttt{stepThreads}};
-
-  \draw[arrow] (step) -| (0.5,0|-stepThreads) node[draw,circle,inner sep=0,minimum size=0.5\block,near end,fill=white] {3} -- (stepThreads);
-
-  \node[hnode,signal,signal to=west and east,minimum width=4\block] at (sequencer|-startHats) (stepThread) {\texttt{stepThread}};
-
-  \draw[arrow] (stepThreads) -- (stepThread);
-
-  \node[hnode,minimum width=5\block,minimum height=3\block,label={[fieldset,above left=-0.52\block and 0.15\block]Execute}] at (3.5,-10.5) (execute) {};
-
-  \node[hnode,signal,signal to=west and east,minimum width=4\block] at (execute.center) (execute1) {\texttt{execute}};
-
-  \draw[arrow] (stepThread) -- (execute1);
-
-  \node[draw,circle,minimum size=2\block,label={[align=center]0:30 times \\ per second}] at (-4.5,-14) (clock) {};
-  \node[draw,circle,inner sep=0.5pt,fill] at (clock.center) (center) {};
-  \draw[thick] (center) -- ($(center)!0.8!(clock.north)$);
-  \draw[thick] (center) -- ($(center)!0.5!(clock.east)$);
-
-  \draw[arrow] (clock) -- (step.south-|clock.north);
-
-
+  \end{umlseqdiag}
 \end{tikzpicture}
 
 \end{document}
+
+% Old image:
+%\begin{tikzpicture}[x=0.75cm,y=0.75cm,fill fraction/.style={path picture={
+%  \fill[#1]
+%  (path picture bounding box.west) rectangle
+%  (path picture bounding box.south east);
+%}},
+%  fill fraction/.default=gray!50]
+%
+%  \node[hnode,minimum height=2\block,minimum width=4\block] at (0,1) (gui) {Scratch GUI};
+%
+%  \node[hnode,densely dotted,minimum width=13\block,minimum height=10.5\block,label={[fieldset,above left=-0.52\block and 3.5\block]Scratch VM}] at (0,-7.25) (vm) {};
+%
+%  \draw[arrow,dotted] (gui) -- (vm) node[midway,fill=white] {is interface for};
+%
+%  \node[hnode,minimum width=5\block,minimum height=7.5\block,label={[fieldset,above left=-0.52\block and 0mm]Runtime}] at (-3.5,-6.75) (runtime) {};
+%
+%  \node[hnode,minimum width=4\block] at (runtime|-0,-4.5) (threads) {\texttt{threads}};
+%
+%  \node[hnode,signal,signal to=west and east,minimum width=4\block] at (runtime|-0,-6.75) (startHats) {\texttt{startHats}};
+%
+%  \draw[arrow,dotted] (gui) -| (-7.5,0|-startHats) node[near start,fill=white,align=center] {events initiated \\ by user} -- (startHats);
+%
+%  \node[hnode,signal,signal to=west and east,,minimum width=4\block] at (runtime|-0,-9) (step) {\texttt{\_step}};
+%
+%  \draw[arrow] (step) |- (-0.5,-11) node[draw,circle,inner sep=0,minimum size=0.5\block,near end,fill=white] {1} |- (threads.east);
+%  \draw[arrow] (step) -- (startHats) node[draw,circle,inner sep=0,minimum size=0.5\block,midway,fill=white] {2};
+%
+%  \node[hnode,minimum width=5\block,minimum height=5\block,label={[fieldset,above left=-0.52\block and -0.25\block]Sequencer}] at (3.5,-5.5) (sequencer) {};
+%
+%  \node[hnode,signal,signal to=west and east,,minimum width=4\block] at (sequencer|-threads) (stepThreads) {\texttt{stepThreads}};
+%
+%  \draw[arrow] (step) -| (0.5,0|-stepThreads) node[draw,circle,inner sep=0,minimum size=0.5\block,near end,fill=white] {3} -- (stepThreads);
+%
+%  \node[hnode,signal,signal to=west and east,minimum width=4\block] at (sequencer|-startHats) (stepThread) {\texttt{stepThread}};
+%
+%  \draw[arrow] (stepThreads) -- (stepThread);
+%
+%  \node[hnode,minimum width=5\block,minimum height=3\block,label={[fieldset,above left=-0.52\block and 0.15\block]Execute}] at (3.5,-10.5) (execute) {};
+%
+%  \node[hnode,signal,signal to=west and east,minimum width=4\block] at (execute.center) (execute1) {\texttt{execute}};
+%
+%  \draw[arrow] (stepThread) -- (execute1);
+%
+%  \node[draw,circle,minimum size=2\block,label={[align=center]0:30 times \\ per second}] at (-4.5,-14) (clock) {};
+%  \node[draw,circle,inner sep=0.5pt,fill] at (clock.center) (center) {};
+%  \draw[thick] (center) -- ($(center)!0.8!(clock.north)$);
+%  \draw[thick] (center) -- ($(center)!0.5!(clock.east)$);
+%
+%  \draw[arrow] (clock) -- (step.south-|clock.north);
+%
+%
+%\end{tikzpicture}

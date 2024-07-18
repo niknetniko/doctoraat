@@ -125,7 +125,7 @@ These are organized by target, and every execution of a script results in a dist
 These are green threads: implemented fully in the virtual machine.
 
 The virtual machine is thus responsible for scheduling these threads.
-%\Cref{fig:blink-architecture} gives a schematic overview of the interaction between the different parts.
+\Cref{fig:blink-architecture} gives a schematic overview of the interaction between the different parts.
 It uses an almost-cooperative threading model, which \textcite{maloneyScratchProgrammingLanguage2010} call the ``Scratch threading model''.
 This means it is mostly non-preemptive: the virtual machine will not interrupt threads at arbitrary points in their execution.
 The threads must voluntarily yield control or reach a limited set of points in their execution.
@@ -196,7 +196,7 @@ In the looped version, the sprite moves four times (albeit rapidly), as there is
 
 \subsection{Implementation details}\label{subsec:implementation-details}
 
-%How different parts of the virtual machine implement the execution model from \cref{subsec:execution-of-a-scratch-program} is shown in \cref{fig:blink-architecture}.
+How different parts of the virtual machine implement the execution model from \cref{subsec:execution-of-a-scratch-program} is shown in \cref{fig:blink-architecture}.
 When the user interface loads a project, it also starts the virtual machine.
 This means that the game loop is active (this is done in the class \texttt{Runtime}).
 
