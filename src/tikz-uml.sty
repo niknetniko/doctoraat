@@ -4228,7 +4228,7 @@
   \expandafter\xdef\csname tikzumlLastChild@\tikzumlCallStartNodeName \endcsname{st-\tikzumlCall@nodeName}%
   %
   % top node of activity period of call receiver
-  \ifstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
+  \ifdefstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
     \draw (st-\tikzumlCall@nodeName)+(0,-0.75*\tikzumlCallPadding ex) node[coordinate, name=tikzumlTmpNode] {};%
     \node[tikzuml activity style] (et-\tikzumlCall@nodeName) at (\tikzumlCallStartNodeName |- tikzumlTmpNode) {};%
   }{%
@@ -4249,7 +4249,7 @@
   \ifnum\tikzumlCall@lastchildNum=\thetikzumlCallNum%
     %
     % this test occurs a bug with latex package preview
-    \ifstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
+    \ifdefstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
       \draw (\tikzumlCallBottomSrc)+(0,-\tikzumlCallPadding ex) node[coordinate, name=tikzumlTmpNode] {};%
       \node[tikzuml activity style] (eb-\tikzumlCall@nodeName) at (\tikzumlCallEndNodeName |- tikzumlTmpNode) {};%
       \draw (eb-\tikzumlCall@nodeName)+(0,-0.75*\tikzumlCallPadding ex) node[coordinate, name=tikzumlTmpNode] {};%
@@ -4281,7 +4281,7 @@
       \addtocounter{tikzumlCallEndFragmentNum}{-1}%
     \fi%
     %
-    \ifstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
+    \ifdefstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
       \draw (\tikzumlCallBottomSrc)+(0,-\tikzumlcallheight ex) node[coordinate, name=tikzumlTmpNode] {};%
       \node[tikzuml activity style] (eb-\tikzumlCall@nodeName) at (\tikzumlCallEndNodeName |- tikzumlTmpNode) {};%
       \draw (eb-\tikzumlCall@nodeName)+(0,-0.75*\tikzumlCallPadding ex) node[coordinate, name=tikzumlTmpNode] {};%
@@ -4298,7 +4298,7 @@
   %
   % draw activity periods
   \begin{pgfonlayer}{activity}%
-  \ifstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
+  \ifdefstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
     % draw root activity period only
     \ifnum\thetikzumlCallLevel=0%
       \draw[draw=\tikzumldrawcall, fill=\tikzumlfillcall] (st-\tikzumlCall@nodeName.north west) rectangle (sb-\tikzumlCall@nodeName.south east);%
@@ -4333,7 +4333,7 @@
   %
   % draw call arrows
   \begin{pgfonlayer}{connections}%
-  \ifstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
+  \ifdefstrequal{\tikzumlCallStartNodeName}{\tikzumlCallEndNodeName}{%
     \draw[\tikzumlcallstyle, \tikzumldrawcall] (st-\tikzumlCall@nodeName.east) -- ++(2.5*\tikzumlCallPadding ex,0) %
                                                -- ++(0,-0.75*\tikzumlCallPadding ex) %
                                                node[font=\tikzumlDefaultFont, text=\tikzumltextcall, midway, right, name=\tikzumlCall@nodeName-op] {\tikzumlCallOp} %
@@ -4507,7 +4507,7 @@
   \node[text=\tikzumlFragmentTextColor, font=\tikzumlDefaultFont, anchor=north east, name=\tikzumlFragment@name-type] %
                                    at (\tikzumlFragment@name-back.north west) {\tikzumlFragmentType};%
   \node[text=\tikzumlFragmentTextColor, font=\tikzumlDefaultFont, anchor=north west, name=\tikzumlFragment@name-label] %
-                                   at (\tikzumlFragment@name-type.south west) {\tikzumlFragmentLabel};%
+                                   at (\tikzumlFragment@name-type.north east) {\tikzumlFragmentLabel};%
   %
   % draw final fragment box
   \begin{pgfonlayer}{fragment\thetikzumlFragmentLevel}%
