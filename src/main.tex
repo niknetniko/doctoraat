@@ -47,60 +47,8 @@
 \setkomafont{dictumauthor}{\rmfamily\small}
 \renewcommand*{\dictumauthorformat}[1]{#1}
 
-\usepackage{fontspec}
-\setmainfont{Source Serif 4}[
-    Renderer = OpenType,
-    SizeFeatures    = {%
-        {Size={-9},Font=* Caption},
-        {Size={9-13},Font=*},
-        {Size={14-24},Font=* Subhead},
-        {Size={24-},Font=* Display}
-    },
-    ItalicFeatures = {%
-        SizeFeatures    = {%
-            {Size={-9},Font=* Caption Italic},
-            {Size={9-13},Font=* Italic},
-            {Size={14-24},Font=* Subhead Italic},
-            {Size={24-},Font=* Display Italic}
-        },
-    },
-    BoldFeatures = {%
-        SizeFeatures    = {%
-            {Size={-9},Font=* Caption Semibold},
-            {Size={9-13},Font=* Semibold},
-            {Size={14-24},Font=* Subhead Semibold},
-            {Size={24-},Font=* Display Semibold}
-        },
-    },
-    BoldItalicFeatures = {%
-        SizeFeatures    = {%
-                {Size={-9},Font=* Caption Semibold Italic},
-                {Size={9-13},Font=* Semibold Italic},
-                {Size={14-24},Font=* Subhead Semibold Italic},
-                {Size={24-},Font=* Display Semibold Italic}
-        },
-    },
-    Numbers         = OldStyle,
-]
-\setsansfont{Source Sans 3}[
-    UprightFont    = *-Regular,
-    ItalicFont     = *-Italic,
-    BoldFont       = *-Semibold,
-    BoldItalicFont = *-Semibold Italic
-]
-\setmonofont{Source Code Pro}[
-    Scale          = MatchLowercase,
-    UprightFont    = *-Regular,
-    ItalicFont     = *-Italic,
-    BoldFont       = *-Semibold,
-    BoldItalicFont = *-Semibold Italic
-]
-% Have a math font that at least works with our choices.
-%\usepackage{unicode-math}
-%\setmathfont{Erewhon Math}
-
-% Use real upper and lower scripts.
-\usepackage{realscripts}
+% Fonts and other basic typography stuff.
+\input{fonts}
 
 \usepackage{scrlayer-scrpage}
 \usepackage{scrlayer-notecolumn}
@@ -206,8 +154,6 @@
     }
 }
 
-\usepackage{microtype}
-
 \usepackage{siunitx}
 \sisetup{detect-all}
 \DeclareSIUnit{\fps}{fps}
@@ -223,7 +169,14 @@
 
 % Figuren
 \input{tikz-preamble}
+\usepackage{tikz-uml}
 \usepackage{scratch31}
+
+% Minted environments for use in Tikz
+\newminted[tikzjava]{java}{autogobble,linenos=false,fontsize=\tiny,stripall}
+\newminted[tikzpython]{python}{autogobble,linenos=false,fontsize=\tiny,stripall}
+\newminted[tikztext]{text}{autogobble,linenos=false,fontsize=\tiny,stripall}
+
 \usepackage{menukeys}
 % Use the styles I want
 \renewmenumacro{\keys}{shadowedroundedkeys}
