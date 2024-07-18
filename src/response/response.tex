@@ -1,0 +1,60 @@
+%! suppress = Makeatletter
+%! Author = niko
+%! Date = 5/10/2023
+
+% Preamble
+\documentclass[
+    paper=a4,
+    paper=portrait,
+    parskip=half,
+]{scrartcl}
+
+\usepackage{luacode}
+\directlua{pdf.setminorversion(7)}
+
+\input{../fonts}
+
+\usepackage{polyglossia}
+\setdefaultlanguage[variant=british]{english}
+
+\author{Niko Strijbol}
+\title{Response to the reading reports for doctoral dissertation.}
+
+\begin{document}
+
+\maketitle
+
+We would like to thank the reading committee of the jury for taking the time and effort to read the dissertation and for their insightful and helpful comments on the text.
+In this document, we detail the changes we have made to the text, or why we have not made some changes.
+The document here is a summary of the changes: the detailed changes are better viewed in the provided diff with the previous version of the text.
+
+\section{Summary of performed changes}
+
+\begin{enumerate}
+    \item Various typos and unclear sentences have been fixed and adjusted.
+        We again want to thank the jury members for pointing these out.
+    \item The publication list has been split to better indicate which of the publications are directly related to this dissertation and which are not.
+    \item The subsection on execution planning (page 36) has been changed to hopefully make it clearer.
+    \item Chapter 8, with the conclusions, has been slightly re-structured to make it less awkward.
+    \item Some data (e.g.\ about Scratch) were updated to use the most recently available data (July and August instead of April and May).
+        This has no impact on any conclusions or other text.
+    \item We have summarized the three quasi-experiments of chapter 2 (TESTed) in a table, which makes the data easier to read.
+    \item Figure 6.2 has been reworked as a sequence diagram to better show the interaction between the components.
+\end{enumerate}
+
+\section{Response to other suggestions}\label{sec:response-to-other-suggestions}
+
+\begin{enumerate}
+    \item It is suggested that referring to figures, tables, etc.\ is more commonly done with capitalization (e.g.\ Figure X instead of figure X).
+        However, this seems to be a personal choice: some style guides, like the \textit{APA style} do recommend capitalization.
+        Others, like the \textit{Chicago Manual of Style} and \textit{Hart's rules}, recommend lower case.
+        We have applied the other suggestion about putting footnote marks after punctuation.
+    \item It is suggested that chapter 2 (TESTed) could use more emphasis on its different uses (in regard to the support for black box and unit testing).
+        Considering the numerous existing frameworks that support black box testing, chapter 3 (which has more examples), and the length of the dissertation, we decided to keep the focus of the examples on unit testing in this chapter.
+        We have improved some references to chapter 3. (TODO)
+    \item It is suggested to include a bit more related work on programming course management systems.
+        We have chosen to instead include a more explicit reference to existing work to indicate where the reader can find an overview of those.
+\end{enumerate}
+
+
+\end{document}

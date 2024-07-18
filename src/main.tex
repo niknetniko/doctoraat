@@ -213,52 +213,6 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \DeclareRobustCommand\csc{\addfontfeature{Letters=UppercaseSmallCaps}}
 \DeclareTextFontCommand{\textcsc}{\csc}
 
-% Automagically convert 'Tested' to smallcaps.
-\begin{luacode}
-  to_replace = {
-    {"TESTed", "\\textsc{test}ed"},
-    "JSON",
-    "YAML",
-    "DSL",
-    "API",
-    "SVG",
-    "NDJSON",
-    "MIT",
-    "GIL",
-    "ABC",
-    "ASCII",
-    "IDE",
-    "GUI",
-    "FPS",
-    "HTML",
-    "CSS",
-    "FTRPRF",
-    "TIOBE",
-    "SPOJ",
-    "ACM-ICPC",
-    "SQL",
-    "ACM",
-    "ICPC",
-    "OSSL"
-  }
-  function capstosc(s)
-    for _, needle in ipairs(to_replace) do
-      if (type(needle) == "table") then
-        replacement = needle[2]
-        needle = needle[1]
-      else
-        replacement = "\\textsc{" .. string.lower(needle) .. "}"
-      end
-      pattern = "%f[%w_]" .. needle .. "%f[^%w_]"
-      s = string.gsub(s, pattern, replacement)
-    end
-    return s
-  end
-\end{luacode}
-\AtBeginDocument{%
-\directlua{luatexbase.add_to_callback ("process_input_buffer", capstosc, "capstosc" )}
-}
-
 \newcommand{\requ}[1]{\textcsc{(RQ#1)}}
 
 \newenvironment{wide}{%

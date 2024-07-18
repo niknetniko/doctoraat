@@ -1,0 +1,177 @@
+\documentclass[a4paper,landscape,DIV=10,twocolumn,fontsize=15pt]{scrartcl}
+
+\usepackage{luacode}
+\directlua{pdf.setminorversion(7)}
+
+\usepackage{tikz}
+\usetikzlibrary{backgrounds,chains,scopes}
+
+\usepackage{xcolor}
+\usepackage{graphicx}
+
+% Original colours
+\definecolor{istock-background}{HTML}{EDE6D6}
+\definecolor{istock-foreground}{HTML}{72645E}
+
+% New colours
+\definecolor{ugent-we-dark}{HTML}{1F6276}
+\definecolor{istock-bg-light}{HTML}{F2EDE2}
+
+% What we actually use
+\colorlet{cover-foreground}{ugent-we-dark}
+\colorlet{cover-background}{istock-bg-light}
+
+\usepackage{pgfornament}
+
+% Don't use the display type, as it is ugly.
+% Similarly, don't use the caption type.
+\usepackage{fontspec}
+\setmainfont{Source Serif 4}[
+    Color = cover-foreground,
+    Renderer = OpenType,
+    SizeFeatures = {
+            {Size={-13},Font=*},
+            {Size={14-},Font=* Subhead},
+    },
+    ItalicFeatures = {
+        SizeFeatures = {
+                {Size={-13},Font=* Italic},
+                {Size={14-},Font=* Subhead Italic},
+        },
+    },
+    BoldFeatures = {
+        SizeFeatures = {
+                {Size={-13},Font=* Semibold},
+                {Size={14-},Font=* Subhead Semibold},
+        },
+    },
+    BoldItalicFeatures = {
+        SizeFeatures = {
+                {Size={-13},Font=* Semibold Italic},
+                {Size={14-},Font=* Subhead Semibold Italic},
+        },
+    },
+    Numbers = OldStyle,
+]
+
+\usepackage{polyglossia}
+\setdefaultlanguage[variant=british]{english}
+
+\usepackage{microtype}
+\usepackage{graphicx}
+
+\begin{document}
+\pagecolor{cover-background}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+
+    % Ornaments
+    \node (nw) [anchor=north west] at (current page.north west) {\pgfornament[width=3cm,color=cover-foreground]{63}};
+    \node (ne) [anchor=north east] at (current page.north east) {\pgfornament[width=3cm,color=cover-foreground,symmetry=v]{63}};
+    \node (se) [anchor=south east] at (current page.south east) {\pgfornament[width=3cm,color=cover-foreground,symmetry=c]{63}};
+    \node (sw) [anchor=south west] at (current page.south west) {\pgfornament[width=3cm,color=cover-foreground,symmetry=h]{63}};
+
+    \node (t1) [right=-0.37cm of nw,anchor=north west,yshift=1.7cm] {\pgfornament[width=3.897cm,color=cover-foreground]{71}};
+
+    \foreach \x in {2,...,6} {
+        \node (t\x) [right=-0.37cm of t\the\numexpr\x-1,node distance=0] {\pgfornament[width=3.897cm,color=cover-foreground]{71}};
+    }
+
+    \node (b1) [right=-0.37cm of sw,anchor=south west,yshift=-1.7cm] {\pgfornament[width=3.897cm,color=cover-foreground,symmetry=h]{71}};
+
+    \foreach \x in {2,...,6} {
+        \node (b\x) [right=-0.37cm of b\the\numexpr\x-1,node distance=0] {\pgfornament[width=3.897cm,color=cover-foreground,symmetry=h]{71}};
+    }
+
+    \node (l1) [above=-0.39cm of sw,anchor=south west,xshift=-0.87cm,rotate=90] {\pgfornament[width=14.7cm,color=cover-foreground]{88}};
+
+    \node (l1) [above=-0.39cm of se,anchor=south east,xshift=0.87cm,rotate=-90] {\pgfornament[width=14.7cm,color=cover-foreground,symmetry=v]{88}};
+
+%    \foreach \x in {2,...,3} {
+%        \node (l\x) [above=-0.37cm of l\the\numexpr\x-1,node distance=0] {\rotatebox{90}{\pgfornament[width=3.897cm,color=cover-foreground,symmetry=h]{71}}};
+%    }
+
+%    \foreach \x in {2,...,6} {
+%        \node (b\x) [right=-0.37cm of b\the\numexpr\x-1,node distance=0] {\pgfornament[width=3.897cm,color=cover-foreground]{71}};
+%    }
+
+%    \node (t9) [anchor=north,] at ([yshift=0.05cm]current page.north) {\pgfornament[width=4cm,color=cover-foreground,symmetry=h]{71}};
+%    \foreach \x in {10,...,17} {
+%        \node (t\x) [right=-0.36cm of t\the\numexpr\x-1,node distance=0] {\pgfornament[width=1.364cm,color=cover-foreground,symmetry=h]{70}};
+%    }
+
+%    \draw [cover-foreground] (current page.north west) to [ornament=88] (current page.north east);
+
+    \node (invitation) [text width=\paperwidth,anchor=north,align=center,outer sep=2cm] at (current page.north) {
+        {\fontsize{18pt}{23pt}\selectfont You are cordially invited to the public defence of} \par
+        \vspace*{0.3cm}
+        {\fontsize{28pt}{35pt}\selectfont\textsc{niko strijbol}} \par
+        \vspace*{0.3cm}
+        {\fontsize{18pt}{23pt}\selectfont for his dissertation entitled} \par
+        \vspace*{0.8cm}
+        {\fontsize{34pt}{44pt}\selectfont EDUCATIONAL SOFTWARE TESTING} \par
+        \vspace*{0.1cm}
+        \textit{\fontsize{18pt}{23pt}\selectfont for} \par
+        \vspace*{0.3cm}
+        {\fontsize{27pt}{33pt}\selectfont TEXTUAL \textit{\fontsize{20pt}{23pt}\selectfont and} BLOCK-BASED PROGRAMMING LANGUAGES} \par
+        \vspace*{0.3cm}
+    };
+
+    \node (practical information) [text width=0.4\paperwidth,anchor=south west,align=left,outer sep=3cm] at (current page.south west) {
+%        {\fontsize{23pt}{28pt}\selectfont Practical} \par
+
+%        \vspace*{0.3cm}
+        Please confirm your attendance at \par
+        \fontsize{18pt}{23pt}\selectfont
+        \textbf{wolk.strijbol.be/doctoraat} \par
+        \vspace*{0.5cm}
+        September 4th, 2024 \par
+        17:00 Examination \par
+        19:00 Reception \par
+        \vspace*{0.5cm}
+        Auditorium A2, S9 \par
+        Campus Sterre \par
+        Krijgslaan 281, 9000 Gent \par
+        \vspace*{0.3cm}
+    };
+%
+%    \node (ornament) at ([yshift=1cm]current page.center) {
+%        \pgfornament[scale=0.5,color=cover-foreground]{84}
+%    };
+%
+%    \node (illustration) at ([yshift=-5.5cm]current page.center) {
+%        \includegraphics[width=0.65\linewidth]{../cover/iStock-ugent-we}
+%    };
+
+    \node (jury) [text width=0.3\paperwidth,anchor=south east,align=right,outer sep=3cm] at (current page.south east) {
+        {\fontsize{20pt}{25pt}\selectfont Supervisors} \par
+        \vspace*{0.1cm}
+        Prof.\ Dr.\ Peter Dawyndt \par
+        Prof.\ Dr.\ Christophe Scholliers  \par
+        Prof.\ Dr.\ Ir.\ Bart Mesuere  \par
+        \vspace*{0.5cm}
+        {\fontsize{20pt}{25pt}\selectfont Jury members} \par
+        \vspace*{0.1cm}
+        Prof.\ Dr.\ Ir.\ Bart Dhoedt \par
+        Prof.\ Dr.\ Veerle Fack \par
+        Prof.\ Dr.\ Gordon Fraser \par
+        Prof.\ Dr.\ Frank Neven \par
+        \vspace*{0.5cm}
+        {\fontsize{20pt}{25pt}\selectfont Chair} \par
+        \vspace*{0.1cm}
+        Prof.\ Dr.\ Chris Cornelis \par
+    };
+
+%    \node (back names) [shape=rectangle, fill=blue, minimum height=40mm, minimum width=\paperwidth, anchor=south west] at (current page.south west) {};
+%    \node at (back names.center) {
+%        \begin{tabular}{r l}
+%            A & B
+%        \end{tabular}
+%    };
+%    \node (names) [shape=rectangle, fill=red, minimum width=\paperwidth, anchor=west] at ([yshift=8cm]current page.south west) {
+%        \begin{tabular}{r l}
+%            one & two
+%        \end{tabular}
+%    };
+\end{tikzpicture}
+\end{document}
