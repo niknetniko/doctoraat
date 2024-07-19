@@ -42,17 +42,19 @@
     \CircledParamOpts{inner color=none, outer color=none, #1}{1}{\liningnums{#2}}%
 }
 
-\renewcommand{\dictumwidth}{0.75\textwidth}
-\setkomafont{dictum}{\rmfamily}
-\setkomafont{dictumauthor}{\rmfamily\small}
-\renewcommand*{\dictumauthorformat}[1]{#1}
+\renewcommand{\dictumwidth}{0.70\textwidth}
+\setkomafont{dictum}{\rmfamily\small\itshape}
+\setkomafont{dictumauthor}{\rmfamily\footnotesize\normalfont}
+\renewcommand*\raggeddictumtext{}
+\renewcommand*\dictumrule{}
+\renewcommand*{\dictumauthorformat}[1]{--- #1}
 
 % Fonts and other basic typography stuff.
 \input{fonts}
 
 \usepackage{scrlayer-scrpage}
 \usepackage{scrlayer-notecolumn}
-\addtokomafont{notecolumn.marginpar}{\footnotesize\raggedright}
+\addtokomafont{notecolumn.marginpar}{\scriptsize\raggedright}
 \newcommand*{\marginnote}{\makenote}
 \makeatletter
 \ModifyLayer[
