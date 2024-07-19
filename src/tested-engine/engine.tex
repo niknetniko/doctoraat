@@ -1068,12 +1068,11 @@ However, not all languages need all resulting files for each execution.
 By default, the name of the test case is used to filter the files.
 
 \begin{minted}{python}
-def find_main_file(self, files: list[Path], name: str) -> tuple[Path | None, Status]
+def find_main_file(self, files: list[Path], name: str) -> Path | Status
 \end{minted}
 
-This optional method finds the main file (i.e.\ the executable file or the file with the main method) in a list of dependencies.
-The method should either return the path to that file with the status \texttt{CORRECT}, or return \mintinline{python}{None} with an error status if the file could not be found.
-It can be useful if the normal convention of putting the main file last in a list of files is not enough.
+This optional method finds the main file (meaning the executable file or the file with the main method) in a list of dependencies.
+The method should either return the path to the main file, or return an error status if the file could not be found.
 
 \begin{minted}{python}
     def modify_solution(self, solution: Path):
@@ -1092,7 +1091,7 @@ Similarly, the main function in C programs is renamed to prevent conflicts with 
 There are a number of simple methods that deal with the different conventions used by the programming language.
 
 \begin{minted}{python}
-    def get_string_quote(self):
+    def get_string_quote(self) -> str:
 \end{minted}
 
 Returns the character used to quote strings.
@@ -1190,11 +1189,11 @@ For example, the Haskell implementation indicates that assignments are supported
 However, for practical purposes, this can fulfil the same role as an assignment in TESTed.
 
 \begin{minted}{python}
-    def map_type_restrictions(self) -> set[ExpressionTypes] | None:
-    def set_type_restrictions(self) -> set[ExpressionTypes] | None:
+    def collection_restrictions(self) -> dict[AllTypes, set[ExpressionTypes]]:
 \end{minted}
 
-These two optional functions allow restricting which data types are allowed in map keys and sets respectively.
+This optional method allows restricting which data types are allowed in collection types.
+Currently, restrictions for map keys and sets are supported.
 For example, in Python, a list is not hashable, meaning it cannot be used as the key in a dictionary, nor can it be an element of a set.
 
 \begin{minted}{python}
