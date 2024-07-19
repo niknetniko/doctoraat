@@ -4,9 +4,9 @@
 \begin{document}
 \chapter{A domain-specific language for creating programming exercises}\label{ch:tested-dsl}
 
-%\dictum[H. Abelson, G.\,J. Sussman, and J. Sussman \\ \textit{Structure and Interpretation of Computer Programs}]{
-%    Programs must be written for people to read, and only incidentally for machines to execute.
-%}
+\dictum[Abelson and Sussman, \textit{Structure and Interpretation of Computer Programs}]{
+    Programs must be written for people to read, and only incidentally for machines to execute.
+}
 
 Automated software testing is widely used in programming education to validate the correct behaviour of submissions for programming exercises.
 There are two dominant testing approaches: input/output testing and unit testing.
@@ -31,15 +31,17 @@ Software testing is the validation and verification of a system derived from sou
 Two complementary approaches prevail: dynamic testing executes the source code with a given suite of test cases, whereas static testing analyses the source code without executing it~\autocite{romliAutomaticProgrammingAssessment2010}.
 Both approaches might be done via manual or automated processes, based on a specification~\autocite{pieterseAutomatedAssessmentProgramming2013}.
 In modern software development, automated testing has become a standard practice for continuous integration and continuous development of living codebases, where both the codebase and the system requirements might evolve over time~\autocite{wintersSoftwareEngineeringGoogle2020}.
+
 The minimum requirement that is tested is correctness, which is the essential purpose of software testing~\autocite{panSoftwareTesting1999}.
 The desired or correct behaviours are specified as the functional requirements of the program and say how a program must behave~\autocite{bassSoftwareArchitecturePractice2021}.
 Automated testing for correctness needs some kind of oracle to tell if the functional requirements are satisfied.
 Other software quality factors (the non-functional requirements) that may be tested are its functionality (reliability, usability, integrity), engineering (efficiency, testability, documentation, structure) and adaptability (flexibility, reusability, maintainability)~\autocite{hetzelCompleteGuideSoftware1988}.
 
 Educational software testing is the application of automated software testing to source code students submit for programming exercises~\autocite{staubitzRepositoryOpenAutogradable2017,paivaAutomatedAssessmentComputer2022,desouzaSystematicLiteratureReview2016,keuningSystematicLiteratureReview2018}.
-For brevity, the source code under test will be called submissions throughout this chapter.
+For brevity, the source code under test is be called a submission.
 What makes educational software testing unique is that each programming exercise has a fixed specification, against which multiple submissions must be validated and verified~\autocite{wilcoxTestingStrategiesAutomated2016}.
 Submissions are usually small to moderate in size, with all source code contained in a single file in most cases.
+
 The main purpose of educational software testing is automated assessment of submissions~\autocite{berssanetteActiveLearningContext2021}, which may come as feedback and/or as a grade~\autocite{caizaProgrammingAssignmentsAutomatic2013}.
 Assessments can be provided instantly upon each submission while students work on their solution.
 Such a continuous assessment provides ``feed back'' on how students performed and ``feed forward'' on what to do next before making a new submission for the same assignment~\autocite{cheangAutomatedGradingProgramming2003,higginsCourseMarkerCBASystem2003,luckSecureOnlineSubmission1999}.
@@ -423,6 +425,7 @@ Test suites may, however, overrule these linter configurations.
 The first function must divide the given string into a number of parts.
 The second function must split each given string and then recombine the corresponding parts into new strings.
 As part of the problem-solving process, students may discover a divide-and-conquer strategy: the implementation of the second function may call the first function that solves a subtask.
+
 However, the test suite validates the correct behaviour of both functions in two separate units.
 This example illustrates that TESTed-DSL allows leaving out the grouping of tests in a script as a shorthand for the common case of test cases whose script has a single test.
 The first two test cases for the \texttt{divide} function (lines 4--7) use the \texttt{return} attribute with flow style notation of a YAML sequence to specify the function call is expected to return a sequence of strings as basic types of TESTed.
@@ -481,11 +484,13 @@ The third function call should throw an exception, but this does not happen.
 \Cref{lst:sum-example} shows a test suite for an input/output exercise that asks to read an integer \textit{k} from standard input and write a solution of the sum of three cubes problem ({\addfontfeature{Numbers=Lining}\textit{x}\textsuperscript{3}\,+\,\textit{y}\textsuperscript{3}\,+\,\textit{z}\textsuperscript{3}\,=\,\textit{k}}) to standard output as three lines containing non-zero integers \textit{x}, \textit{y} and \textit{z}~\autocite{bookerCrackingProblem332019}.
 The test suite has one unit with three test cases whose script only specifies a single line of input streamed into standard input of the main call and three expected lines of output printed on standard output.
 So again the shorthand structure applies here for units and scripts.
+
 The first two test cases show different YAML alternatives for specifying multi-line strings (line 4 and lines 6--9) as the expected value streamed to standard output.
 However, specifying a fixed expected output is problematic for this exercise.
 The task description does not imply any order in which the three integers must be listed, so any permutation of the three integers given by the expected solution for the second test case should also be validated as a correct solution.
 Moreover, some values of \textit{k} have alternative solutions, irrespective of permutations.
 For example, another way to solve the first test case is given by {\addfontfeature{Numbers=Lining}(−5)\textsuperscript{3}\,+\,4\textsuperscript{3}\,+\,4\textsuperscript{3}\,=\,3}~\autocite{sutherlandSumsThreeCubes2019}.
+
 As enumerating all possible solutions (and their permutations) is infeasible, the specification of the third test case provides a better approach.
 TESTed uses the function \texttt{sum\_of\_three\_cubes} from the Python module \texttt{oracle.py} as a custom oracle to validate the correctness of the output generated on stdout.
 TESTed always passes the actual output and some metadata, such as the programming language, and the expected output as the first argument to the oracle.
@@ -637,6 +642,7 @@ Students were not restricted in the number of submissions for each exercise.
 They received immediate feedback from automated assessment upon each submission, also after the submission deadline and also during midterm tests and exams.
 Students had previous experience in working with Dodona for solving Java, Python and Bash programming exercises with automated assessment.
 But most of them had no prior experience with the collection of JavaScript exercises, nor with automated assessment based on the custom JavaScript-specific testing framework used in previous editions of the course.
+
 For each course edition, we make a different selection of mandatory exercises and we always design new exercises for midterm tests and exams.
 This way, students who had to retake the course had no reference for comparison between the custom JavaScript-specific testing framework used in previous course editions and TESTed using during the 2023 edition.
 For that reason, we decided not to inform students about us switching the JavaScript testing framework that for them runs as a hidden component in the backend of Dodona.
