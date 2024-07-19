@@ -4,6 +4,14 @@
 
 \chapter{Introduction}\label{ch:introduction}
 
+\dictum[\textsc{acm}, \textsc{ieee}, \textsc{aaai}, \textit{Computer Science Curricula 2023}]{
+    Computer science education research has lately been gathering momentum.
+    It is now a mainstream area of doctoral research.
+    Professional conferences catering to it are increasing in number and ranking.
+    \ldots\
+    It signals the maturing of computer science education.
+}
+
 Learning to program is hard, and students consequently regard programming courses as difficult~\autocite{robinsLearningTeachingProgramming2003,simoesNatureProgrammingExercises2020}.
 It is generally accepted that gaining a deep understanding of programming requires experience and feedback~\autocite{gomesEnvironmentImproveProgramming2007,hattiePowerFeedback2007}.
 This feedback is what makes teaching programming difficult: it is a time-consuming task to provide qualitative and timely feedback on submissions, especially if the number of students in a course is high~\autocite{zavalaUseSemanticbasedAIG2018,staubitzRepositoryOpenAutogradable2017,queirosPexilProgrammingExercises2011,pirttinenCrowdsourcingProgrammingAssignments2018,gulwaniFeedbackGenerationPerformance2014,tangDatadrivenTestCase2016}.
@@ -59,7 +67,7 @@ This is no different for courses taught by our department.
 Feedback was initially (since 2011) provided using the Sphere Online Judge~\autocite{kosowskiApplicationOnlineJudge2008}, which was relatively unique in that it allowed teachers to create their own courses, exercises, and even testing frameworks.
 However, the platform targets the organization of programming contests and lacks support for features we wanted to introduce in our programming classes.
 
-\marginnote{As a student, I was part of one of the last graduation years to use SPOJ (that statement does make me feel old).}
+\marginnote{As a student, I was part of one of the last graduation years to use SPOJ (that statement makes me feel old).}
 In 2016, the needs for these classes outgrew the Sphere Online Judge, which led to the creation of our own platform: Dodona~\autocite{vanpetegemDodonaLearnCode2023}.
 Dodona is now used by most higher education institutions in Flanders and by many schools providing secondary education.
 As of May 2024, Dodona has more than \num{69200} registered users and has evaluated almost 18 million submissions.\footnote{\url{https://dodona.be/en/about/}}
@@ -84,8 +92,13 @@ More recently, complex pages have been added that use web components.
 
 Evaluating submissions has some performance and security considerations~\autocite{wasikSurveyOnlineJudge2018}, as a submission is untrusted code that is executed.
 Dodona solves this by running the evaluation completely inside a dedicated Docker container~\autocite{pevelerComparingJailedSandboxes2019}.
+
+The Docker containers run on a dedicated pool of worker servers.
+Using dedicated workers, a misbehaving submission has no effect on the stability of the platform itself.
+Using worker servers also allows for easy scaling if the number of submissions increases.
+
 At a high level, an evaluation of a submission goes through the following process:
-\begin{enumerate}[noitemsep]
+\begin{enumerate}[noitemsep,beginpenalty=10000]
     \item The submission is saved, and a job is started to perform the evaluation.
     \item A predefined and judge-specific Docker image is used to create a Docker container.
           In this container, all dependencies for the judge are available.
@@ -95,10 +108,6 @@ At a high level, an evaluation of a submission goes through the following proces
     \item During the evaluation, the judge outputs the feedback in a well-defined format on standard output.
     \item The output is captured and saved, after which the feedback is shown on Dodona.
 \end{enumerate}
-
-The Docker containers run on a dedicated pool of worker servers.
-Using dedicated workers, a misbehaving submission has no effect on the stability of the platform itself.
-Using worker servers also allows for easy scaling if the number of submissions increases.
 
 \subsection{Features for educators}\label{subsec:features-for-educators}
 
@@ -167,9 +176,8 @@ A repository with a well-defined structure is usable as the source for exercises
 This allows educators to be the owners of their exercises, in addition to all the other benefits of version control.
 Every time an exercise is updated in the repository, Dodona will synchronize the exercises on the platform with the exercises in the repository.
 
-A programming exercise consists of a few different parts.
-Besides a test suite, which is needed for automated feedback, exercises also need a problem statement that specifies what students should do.
-In Dodona, a problem statement is a Markdown of HTML file, in which educators have free rein (within limits due to security considerations) to describe their exercise.
+Besides a test suite, which is needed for automated feedback, programming exercises also need a problem statement that specifies what students should do.
+In Dodona, a problem statement is a Markdown or HTML file, in which educators have free rein to describe their exercise.
 The programming exercise (including a problem statement and test suite), together with a judge (the Docker image and the testing framework) form a \emph{task package} as defined by \textcite{verhoeffProgrammingTaskPackages2008}.
 
 \section{Structure of this dissertation}\label{sec:a-note-on-the-structure-of-this-thesis}
@@ -208,6 +216,7 @@ Similar to the conclusions, each chapter also has its own introduction, where th
 
 The first research question \requ{1} was inspired by the observation that using exercises and judges in Dodona required some manual work: ``Can we design a testing framework that supports automated assessment across programming languages with a single test suite?''.
 A lot of programming exercises on Dodona seem usable in multiple programming languages, at least in concept.
+
 Actually using an exercise in another programming language first requires a copy of the exercise to be made.
 Then the existing test suite must be converted manually to the test suite format used by the judge for that particular programming language.
 The other parts of the exercise (the configuration and task description) also need to be converted manually.
@@ -256,16 +265,13 @@ Another example of a consequence is the terminology used for the levels in the t
 The first chapter uses the terminology as used by Dodona, while the second chapter changes the terminology in the domain-specific language to align more closely with the terminology used in the literature.
 This illustrates the progressive insight that comes when working on a tool, and the interplay between the design stages and its application in practice.
 
-Research on TESTed was started in 2019 as a master's thesis~\autocite{strijbolTESTedOneJudge2020}.
-TESTed-DSL also finds its origins in a master's thesis~\autocite{selsTESTedProgrammeertaalonafhankelijkTesten2021}.
+Research on TESTed was started in 2019 as a master's thesis~\autocite{strijbolTESTedOneJudge2020}, as was TESTed-DSL in 2021~\autocite{selsTESTedProgrammeertaalonafhankelijkTesten2021}.
 
 \subsection{Repositories and user documentation}\label{subsec:repositories-and-code}
 
 As a software project, the source code for TESTed is important, if not more important than this dissertation.
 Both TESTed and TESTed-DSL share the same repository, which is published under the \textsc{mit} licence.\footnote{\url{https://github.com/dodona-edu/universal-judge}}
-
 Two sets of documentation are available, aimed at a different target audience:
-
 \begin{itemize}
     \item The guides for educators wanting to create programming exercises.\footnote{\url{https://docs.dodona.be/en/guides/exercises/}}
     Most of these guides are currently only available in Dutch.
@@ -366,6 +372,7 @@ Work on these various tools for Scratch often began as a master thesis~\autocite
 The source code of Itch is not publicly available at this time due to the agreement with our partner CodeCosmos.
 The source code for Blink is available under the same licence as Scratch, the \textsc{bsd} 3-Clause ``New'' or ``Revised'' Licence.\footnote{\url{https://github.com/scratch-ed/blink}}
 We also host an online instance of the debugger.\footnote{\url{https://scratch.ugent.be/blink/}}
+
 Our JavaScript implementation of an analysis tool for Scratch 3.0 (similar to Hairball; \cite{boeHairballLintinspiredStatic2013}) is available under the MIT Licence.\footnote{\url{https://github.com/scratch-ed/scratch-analysis}}
 
 \end{document}
