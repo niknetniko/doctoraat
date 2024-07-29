@@ -55,7 +55,8 @@
 ]
 
 \usepackage{polyglossia}
-\setdefaultlanguage[variant=british]{english}
+\setdefaultlanguage{dutch}
+\setotherlanguages{english}
 
 \usepackage{microtype}
 \usepackage{graphicx}
@@ -90,11 +91,11 @@
     \node (bottom) [right=5.5cm of current page.south west,anchor=west,yshift=1.5cm] {\pgfornament[width=10cm,color=cover-foreground]{88}};
 
     \node (invitation) [text width=\paperwidth,anchor=north,align=center,outer sep=2cm] at (current page.north) {
-        {\fontsize{18pt}{23pt}\selectfont You are cordially invited to the public defence of} \par
+        {\fontsize{18pt}{23pt}\selectfont U bent van harte uitgenodigd op de publieke verdediging van} \par
         \vspace*{0.3cm}
         {\fontsize{28pt}{35pt}\selectfont\textsc{niko strijbol}} \par
         \vspace*{0.3cm}
-        {\fontsize{18pt}{23pt}\selectfont for his dissertation entitled} \par
+        {\fontsize{18pt}{23pt}\selectfont voor zijn proefschrift getiteld} \par
         \vspace*{0.8cm}
         {\fontsize{32pt}{42pt}\selectfont EDUCATIONAL SOFTWARE TESTING} \par
         \vspace*{0.3cm}
@@ -114,13 +115,13 @@
 %        {\fontsize{23pt}{28pt}\selectfont Practical} \par
 
 %        \vspace*{0.3cm}
-        \textsc{rsvp} at \par
+        \textsc{rsvp} via \par
         \fontsize{18pt}{23pt}\selectfont
         \textbf{doctoraat.strijbol.be/rsvp} \par
         \vspace*{0.5cm}
-        September 4th, 2024 \par
-        17:00 Presentation \par
-        19:00 Reception \par
+        4 september 2024 \par
+        17:00 Presentatie \par
+        19:00 Receptie \par
         \vspace*{0.5cm}
         Auditorium A2, S9 \par
         Campus Sterre \par
@@ -137,34 +138,22 @@
 %    };
 
     \node (jury) [text width=0.4\paperwidth,anchor=south east,align=right,outer sep=1.5cm,yshift=1cm] at (current page.south east) {
-        {\fontsize{20pt}{25pt}\selectfont Supervisors} \par
+        {\fontsize{20pt}{25pt}\selectfont Promotoren} \par
         \vspace*{0.1cm}
-        Prof.\ Dr.\ Peter Dawyndt \par
-        Prof.\ Dr.\ Christophe Scholliers  \par
-        Prof.\ Dr.\ Ir.\ Bart Mesuere  \par
+        Prof.\ dr.\ Peter Dawyndt \par
+        Prof.\ dr.\ Christophe Scholliers  \par
+        Prof.\ dr.\ ir.\ Bart Mesuere  \par
         \vspace*{0.5cm}
-        {\fontsize{20pt}{25pt}\selectfont Jury members} \par
+        {\fontsize{20pt}{25pt}\selectfont Examencommissie} \par
         \vspace*{0.1cm}
-        Prof.\ Dr.\ Ir.\ Bart Dhoedt \par
-        Prof.\ Dr.\ Veerle Fack \par
-        Prof.\ Dr.\ Gordon Fraser \par
-        Prof.\ Dr.\ Frank Neven \par
+        Prof.\ dr.\ ir.\ Bart Dhoedt \par
+        Prof.\ dr.\ Veerle Fack \par
+        Prof.\ dr.\ Gordon Fraser \par
+        Prof.\ dr.\ Frank Neven \par
         \vspace*{0.5cm}
-        {\fontsize{20pt}{25pt}\selectfont Chair} \par
+        {\fontsize{20pt}{25pt}\selectfont Voorzitter} \par
         \vspace*{0.1cm}
-        Prof.\ Dr.\ Chris Cornelis \par
+        Prof.\ dr.\ Chris Cornelis \par
     };
-
-%    \node (back names) [shape=rectangle, fill=blue, minimum height=40mm, minimum width=\paperwidth, anchor=south west] at (current page.south west) {};
-%    \node at (back names.center) {
-%        \begin{tabular}{r l}
-%            A & B
-%        \end{tabular}
-%    };
-%    \node (names) [shape=rectangle, fill=red, minimum width=\paperwidth, anchor=west] at ([yshift=8cm]current page.south west) {
-%        \begin{tabular}{r l}
-%            one & two
-%        \end{tabular}
-%    };
 \end{tikzpicture}
 \end{document}
