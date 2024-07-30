@@ -1,8 +1,3 @@
-%! suppress = Makeatletter
-%! Author = niko
-%! Date = 5/10/2023
-
-% Preamble
 \documentclass[
     paper=a4,
     paper=portrait,
@@ -14,39 +9,118 @@
 
 \input{../fonts}
 
+%\usepackage{amsthm}
+%\newtheorem{point}{S}
+%\theoremstyle{definition}
+
+\newenvironment{point}{%
+    \itshape%
+  }{%
+    \nopagebreak%
+}
+
+\newenvironment{reply}{}{%
+    \vspace{0.8cm}
+}
+
 \usepackage{polyglossia}
 \setdefaultlanguage[variant=british]{english}
 
 \author{Niko Strijbol}
-\title{Response to the reading reports for doctoral dissertation.}
+\title{Summary of changes in response to the reading reports}
 
 \begin{document}
 
 \maketitle
 
 We would like to thank the reading committee of the jury for taking the time and effort to read the dissertation and for their insightful and helpful comments on the text.
-In this document, we detail the changes we have made to the text, or why we have not made some changes.
-The document here is a summary of the changes: the detailed changes are better viewed in the provided diff with the previous version of the text.
+This document details the changes made to the text, or why some changes have not been made.
+The document is a summary of the changes: the detailed changes are better viewed in the provided diff with the previous version of the text.
+
+\section{General changes}\label{sec:general-changes}
 
 \begin{enumerate}
+    \item We have summarized the three quasi-experiments of chapter 2 (TESTed) in a table, for a better overview.
     \item Various typos and unclear sentences have been fixed and adjusted.
         We again want to thank the jury members for pointing these out.
-    \item The publication list has been split to better indicate which of the publications are directly related to this dissertation and which are not.
-    \item The subsection on execution planning (page 36) has been changed to hopefully make it clearer.
-    \item Chapter 8, with the conclusions, has been slightly re-structured to make it less awkward.
-    \item Some data (e.g.\ about Scratch) were updated to use the most recently available data (July and August instead of April and May).
-        This has no impact on any conclusions or other text.
-    \item We have summarized the three quasi-experiments of chapter 2 (TESTed) in a table, which makes the data easier to read.
-    \item Figure 6.2 has been reworked as a sequence diagram to better show the interaction between the components.
-    \item Whether to capitalize references to figures, tables, etc.\ in the text (Figure X versus figure X) is a personal choice, and opinions differ on the subject.
-    For example, the \textit{APA Style Guide} recommends capitalization, but others, like the \textit{Chicago Manual of Style} and \textit{Hart's rules}, recommend not capitalizing the references.
-    We have thus not applied the suggestion to capitalize the references.
-    We have applied the other suggestion about putting footnote marks after punctuation.
-    \item It is suggested that chapter 2 (TESTed) could use more emphasis on its different uses (in regard to the support for black box and unit testing).
-    Considering the numerous existing frameworks that support black-box testing, chapter 3 (which has more examples), and the length of the dissertation, we decided to keep the focus of the examples on unit testing in this chapter.
-    We have improved some references to chapter 3. (TODO)
-    \item For the suggestion to include a bit more related work on programming course management systems, we have chosen to explicitly point the reader to some other review papers for an overview.
+    \item Footnotes have been placed after punctuation, as is the tradition.
 \end{enumerate}
 
+\section{Specific suggestions}\label{sec:specific-suggestions}
+
+\begin{point}
+    p. 146: The figure is not entirely clear to me. Could you present a UML-sequence diagram to explain this somewhat complicated interaction between the Runtime, Sequencer and Execute Environment?
+\end{point}
+
+\begin{reply}
+\noindent The figure (figure 6.2) has been replaced by a sequence diagram.
+\end{reply}
+
+\begin{point}
+    There could maybe have been a bit more discussion on the wider context of e.g. programming course management systems other than Dodona (e.g. Artemis, and dozens of others discussed in several survey papers).
+\end{point}
+
+\begin{reply}
+    We have added references to point the reader to a good overview of these platforms.
+\end{reply}
+
+\begin{point}
+    The candidate has a long list of publications, but not all of them are central to this thesis.
+    I suggest splitting up the list to make this clearer.
+\end{point}
+
+\begin{reply}
+    The publication list has been split to better indicate which publications are directly related to this dissertation and which are not.
+\end{reply}
+
+\begin{point}
+    One of the selling points of TESTed is the support for both black-box and unit testing.
+    In my opinion, Chapter 2 does not illustrate this very well.
+    Most emphasis is placed on explaining TESTed but less so on how it can be used.
+    To some extent this is acceptable as TESTed-DSL is introduced in the next chapter and many examples of its use are give there.
+    Still a bit more emphasis on concrete examples that exemplify its different uses (wrt black box and unit testing) would strengthen this chapter.
+
+    One possibility could be to expand on Listing 2.2 explaining in a bit more detail that a separate test for the assignment is in fact a unit test that supports verification of an initial solution.
+\end{point}
+
+\begin{reply}
+    The reasons for this are twofold: on one hand, we do not intend users of the TESTed to interact directly with the test suites and use of TESTed itself, as we also explicitly refer to the next chapter as the intended way of using TESTed.
+
+    On the other hand, the examples in this chapter are intentionally focussed on the unit-testing-like tests, as opposed to black-box testing.
+    The reason is that there are multiple existing testing frameworks that support multiple programming languages by only supporting black-box testing.
+    We thus focus on the unique aspect of TESTed: supporting multiple programming languages while simultaneously also supporting unit-testing-like tests.
+
+    Finally, given the long examples given in chapter 3 and the length of the dissertation, we feel like adding more examples in chapter 2 would not add enough to the understanding of the chapter to justify the increase in length.
+    Listing 2.2 and accompanying figure 2.3 are kept relatively simple since they are early in the chapter.
+    We have improved some cross-references in this area.
+\end{reply}
+
+\begin{point}
+    On page 36, the section on execution planning is confusing to me.
+    Could you include an example to explain why these groupings are necessary?
+    The current abstract example of three functions is unclear.
+    A more concrete example would be helpful.
+\end{point}
+
+\begin{reply}
+    The relevant subsection on execution planning (page 36) has been changed to make it clearer.
+\end{reply}
+
+\begin{point}
+    Section 5.4.2: Explain what a Puppeteer instance is.
+\end{point}
+
+\begin{reply}
+    We have added this explanation.
+\end{reply}
+
+\begin{point}
+    Structure of the Conclusions: In both sections, the first paragraph provides a summary, followed by the questions, and then a more detailed answer.
+    This structure feels awkward as the summary already partly answers the question, especially in Section 8.2, but it is also somewhat noticeable in Section 8.1. Please revisit
+\end{point}
+
+\begin{reply}
+    The conclusions have been restructured to make it less awkward and remove some repetition.
+\end{reply}
 
 \end{document}
