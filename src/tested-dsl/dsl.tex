@@ -377,13 +377,25 @@ units:
          - expression: "cipher01.decode('BCCDBACA')"
            exception: 'invalid message'
      - script:
-         # statements and expressions of the second script come here
+         # statements and expressions of the second script
     \end{minted}
     \caption[]{
         Language-agnostic test suite to validate the correct behaviour of submissions that must define the class \texttt{Cipher}, whose objects have properties \texttt{grid} and \texttt{map}, and methods \texttt{encode} and \texttt{decode}. Only the first test case is shown completely for illustrative purposes. Because this test suite only has a single unit, the \texttt{units} (line 1) could be removed, making the list of units the top-level construct in the test suite.
     }
     \label{lst:cipher-example}
 \end{listing}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{render-cipher}
+    \caption{
+        Dodona rendering of test results after TESTed validated a correct JavaScript submission for the programming exercise configured with the language-agnostic test suite from \cref{lst:cipher-example}.
+        All tests from a single test case are visually grouped inside a card.
+        Green check marks show that all tests of each script succeeded.
+        Each expression has one reported output -- either its return value (\texttt{return}) or a runtime exception (\texttt{exception}) -- that is validated to be correct as indicated by the green colour of the header for the reported output.
+    }
+    \label{fig:dodona-render-cipher}
+\end{figure}
 
 TESTed-DSL makes an important distinction between expressions and statements (\texttt{expression} and \texttt{statement}).
 The evaluation of expressions returns a strongly typed value that is captured by the language-specific test harness.
@@ -401,18 +413,6 @@ For educational purposes, however, TESTed streams richer and more structured fee
 Dodona~\autocite{vanpetegemDodonaLearnCode2023}, for example, renders each unit of test cases (from \cref{lst:cipher-example}) in a separate tab and visually groups all tests from the same test case inside a card (\cref{fig:dodona-render-cipher}).
 Because JavaScript code was submitted in this case, TESTed adopted the syntax and conventions configured in its JavaScript module to format all statements, expressions, and return values in the feedback.
 The JavaScript-specific syntax highlighting is done by Dodona as part of the process of rendering the feedback.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\textwidth]{render-cipher}
-    \caption{
-        Dodona rendering of test results after TESTed validated a correct JavaScript submission for the programming exercise configured with the language-agnostic test suite from \cref{lst:cipher-example}.
-        All tests from a single test case are visually grouped inside a card.
-        Green check marks show that all tests of each script succeeded.
-        Each expression has one reported output -- either its return value (\texttt{return}) or a runtime exception (\texttt{exception}) -- that is validated to be correct as indicated by the green colour of the header for the reported output.
-    }
-    \label{fig:dodona-render-cipher}
-\end{figure}
 
 Parallel to dynamic testing, TESTed flags programming errors, bugs, stylistic errors and suspicious constructs by running a language-specific linter (see \cref{subsec:static-analysis-of-the-submission}) on each submission~\autocite{truongLearningProgramWeb2005}.
 Dodona displays these linter messages inline in the source code of the submission, in a separate tab called Code.
@@ -461,7 +461,7 @@ units:
     \label{lst:recouple-example}
 \end{listing}
 
-Separating validation of the two functions across two separate units allows students to pinpoint immediately from the feedback what functions already behave as expected.
+Separating validation of the two functions across two separate units allows students to immediately pinpoint what functions already behave as expected from the feedback.
 \Cref{fig:dodona-render-recouple} shows a Dodona rendering of the generated feedback for a Python submission whose implementation of the first function passes all tests.
 However, the second function has three tests that fail for different reasons.
 The first function call returns the correct result, but also writes the string \texttt{spam} to standard output (\texttt{stdout}) whereas no output is expected on this output stream.
