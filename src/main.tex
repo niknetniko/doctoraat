@@ -173,7 +173,6 @@
 \input{tikz-preamble}
 \usepackage{tikz-uml}
 \usepackage{scratch31}
-\usepackage{filecontents}
 \usepackage{readarray}
 % Minted environments for use in Tikz
 \newminted[tikzjava]{java}{autogobble,linenos=false,fontsize=\tiny,stripall}
@@ -217,6 +216,9 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 \DeclareTextFontCommand{\textcsc}{\csc}
 
 \newcommand{\requ}[1]{\textcsc{(RQ#1)}}
+
+\usepackage{etoolbox}
+\patchcmd{\partheademptypage}{empty}{plain}{}{}
 
 \newenvironment{wide}{%
     \begin{addmargin*}[0cm]{-\dimexpr\marginparwidth+\marginparsep\relax}%
