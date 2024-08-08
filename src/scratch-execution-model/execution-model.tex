@@ -161,8 +161,8 @@ A thread can have one of three conceptual states: \emph{done}, \emph{running}, a
     \label{fig:scratch-model-explained}
 \end{figure}
 
-\marginnote{Scratch 3 should actually run at \qty{60}{\fps}; however Scratch enables a compatibility mode by default, resulting in \qty{30}{\fps}.}
 The virtual machine uses a \emph{fixed-time step with synchronization} main loop~\autocite{nystromGameProgrammingPatterns2014}, also called a \emph{synchronized coupled model}~\autocite{valenteRealTimeGame2005}.
+\marginnote{Scratch 3 should actually run at \qty{60}{\fps}; however Scratch enables a compatibility mode by default, resulting in \qty{30}{\fps}.}
 This means that the virtual machine runs in \term{steps}: internally, the \texttt{step} function is called every \qty{33}{\milli\second} (so 30 times a second, commonly known as \qty{30}{\fps}).
 
 In each step, the virtual machine will execute one or more ticks.
@@ -367,9 +367,9 @@ We begin by looking at existing work on analysing Scratch projects, followed by 
 
 \subsection{Existing analyses}\label{subsec:existing-analyses}
 
-\makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.\vspace{0.5cm}}
 \Textcite{aivaloglouHowKidsCode2016} analysed \num{250000} Scratch 2.0 projects they scraped from the public Scratch site.
 They looked at the types of blocks used, the size of the projects, and the complexity.
+\makenote*{There is some discussion if the cyclomatic complexity is a useful metric. It might have no more predictive ability than lines of code \autocite{hattonInvitedTalkRole2008,fentonCritiqueSoftwareDefect1999,cherfInvestigationMaintenanceSupport1992}.}
 For the complexity, they utilize the cyclomatic complexity metric~\autocite{mccabeComplexityMeasure1976}.
 The considered decision points are the \texttt{if} and \texttt{if-else} blocks.
 

@@ -126,7 +126,7 @@ The Blink debugger consists of three main components: instrumentation of the vir
     \includestandalone[width=\linewidth]{architecture}
     \caption{
         Sequence diagram showing the interactions in the virtual machine relevant to the debugger.
-        From the user interface (grouped as ``External'' in the diagram), the \texttt{Runtime} receives events, in response to which threads are created or removed.
+        The \texttt{Runtime} receives events from the user interface or from user interaction (grouped as ``External'' in the diagram), in response to which threads are created or removed.
         Meanwhile, the \texttt{\_step} method is called 30 times per second (this is implemented inside the \texttt{Runtime}, but should be considered external).
         This method manages the threads, and calls \texttt{stepThreads}, which will then call \texttt{stepThread} for each thread in the virtual machine.
         This last method will finally call the \texttt{execute} method on the \texttt{Execute} class, which will do the actual executing.
