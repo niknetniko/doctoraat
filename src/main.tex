@@ -24,6 +24,16 @@
 % We want more margins for our notes.
 \addtolength{\marginparwidth}{1.5cm}
 
+\usepackage{etoolbox}
+
+% Define a toggle for the print version.
+% In the print version, there are no coloured refs and black and white code highlighting.
+\newtoggle{print}
+
+% Define the toggle to be true or false.
+%\toggletrue{print}
+\togglefalse{print}
+
 \usepackage{standalone}
 
 % Andere
@@ -90,6 +100,10 @@
 \end{luacode*}
 \usepackage[newfloat]{minted}
 \setminted{autogobble=true,linenos=true,breaklines=true,fontsize=\footnotesize}
+\iftoggle{print}{%
+    % Set code highlighting to black and white.
+    \setminted{style=bw}
+}{}
 \setmintedinline{fontsize=,}
 \usepackage{luacolor}
 \usepackage[soul]{lua-ul}
@@ -191,7 +205,11 @@
 }
 
 %\usepackage[nospace]{varioref}
-\usepackage[colorlinks,pdfusetitle,allcolors=ugent-we-dark]{hyperref}
+\iftoggle{print}{%
+    \usepackage[hidelinks,pdfusetitle]{hyperref}
+}{%
+    \usepackage[colorlinks,pdfusetitle,allcolors=ugent-we-dark]{hyperref}
+}
 \usepackage[noabbrev]{cleveref}
 
 % Fix bug for cleveref
@@ -217,7 +235,6 @@ Prof.\ Dr.\ Ir.\ Bart Mesuere
 
 \newcommand{\requ}[1]{\textcsc{(RQ#1)}}
 
-\usepackage{etoolbox}
 \patchcmd{\partheademptypage}{empty}{plain}{}{}
 
 \newenvironment{wide}{%
