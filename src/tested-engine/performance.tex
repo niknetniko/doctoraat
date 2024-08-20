@@ -5,6 +5,14 @@
 
 \begin{document}
 
+\iftoggle{print}{%
+    \colorlet{specific-filler}{gray!30}
+    \colorlet{tested-filler}{gray!95}
+}{%
+    \colorlet{specific-filler}{ugent-we}
+    \colorlet{tested-filler}{ugent-ps}
+}
+
 \begin{tikzpicture}
     \begin{axis}[
         xbar,
@@ -27,7 +35,7 @@
         reverse legend,
         xticklabel={\addfontfeature{Numbers={Lining}}\num[round-mode=places, round-precision=0]{\tick}},
     ]
-        \addplot[style={fill=ugent-ps}] coordinates {
+        \addplot[style={fill=tested-filler}] coordinates {
             (0.5,Bash)
             (0.8,Python)
             (1.9,Java)
@@ -36,7 +44,7 @@
             (0.6,C)
         };
 
-        \addplot[style={fill=ugent-we}] coordinates {
+        \addplot[style={fill=specific-filler}] coordinates {
             (0.2,Bash)
             (0.4,Python)
             (3.4,Java)

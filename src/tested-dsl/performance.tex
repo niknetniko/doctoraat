@@ -11,6 +11,12 @@
 
 \begin{document}
 
+\iftoggle{print}{%
+    \colorlet{specific-fill}{gray!40}
+}{%
+    \colorlet{specific-fill}{ugent-we}
+}
+
 \begin{tikzpicture}
     \begin{axis}[
         ybar,
@@ -32,7 +38,7 @@
         xticklabel={\addfontfeature{Numbers={Lining}}\num[round-mode=places, round-precision=0]{\tick}},
         yticklabel={\addfontfeature{Numbers={Lining}}\num[round-mode=places, round-precision=0]{\tick}}
     ]
-        \addplot[fill=ugent-we] coordinates {
+        \addplot[fill=specific-fill] coordinates {
             (150,2)
             (250,10)
             (350,12)
@@ -69,7 +75,7 @@
             upper quartile=725.250321875,
             upper whisker=1113.508318,
             box extend=0.5
-        },draw=black,fill=ugent-we] coordinates {(0,1319.759644) (0,1356.797906) (0,1369.516804) (0,1388.407927) (0,1482.881139) (0,2206.955292)};
+        },draw=black,fill=specific-fill] coordinates {(0,1319.759644) (0,1356.797906) (0,1369.516804) (0,1388.407927) (0,1482.881139) (0,2206.955292)};
     \end{axis}
 \end{tikzpicture}
 

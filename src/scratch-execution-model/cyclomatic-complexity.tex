@@ -1,60 +1,14 @@
 \documentclass[tikz,crop]{standalone}
 
-\usepackage{tikz}
-\usepackage{xcolor}
-\usepackage{pgfplots}
-\usepackage{siunitx}
-\usepackage{fontspec}
-\setmainfont{Source Serif 4}[
-    Renderer = OpenType,
-    SizeFeatures    = {%
-        {Size={-9},Font=* Caption},
-        {Size={9-13},Font=*},
-        {Size={14-24},Font=* Subhead},
-        {Size={24-},Font=* Display}
-    },
-    ItalicFeatures = {%
-    SizeFeatures    = {%
-            {Size={-9},Font=* Caption Italic},
-            {Size={9-13},Font=* Italic},
-            {Size={14-24},Font=* Subhead Italic},
-            {Size={24-},Font=* Display Italic}
-    },
-    },
-    BoldFeatures = {%
-    SizeFeatures    = {%
-            {Size={-9},Font=* Caption Semibold},
-            {Size={9-13},Font=* Semibold},
-            {Size={14-24},Font=* Subhead Semibold},
-            {Size={24-},Font=* Display Semibold}
-    },
-    },
-    BoldItalicFeatures = {%
-    SizeFeatures    = {%
-            {Size={-9},Font=* Caption Semibold Italic},
-            {Size={9-13},Font=* Semibold Italic},
-            {Size={14-24},Font=* Subhead Semibold Italic},
-            {Size={24-},Font=* Display Semibold Italic}
-    },
-    },
-    Numbers         = OldStyle,
-]
-
-\pgfplotsset{compat=1.18}
-\usepgfplotslibrary{statistics}
-
-\usetikzlibrary{shapes,arrows,positioning,backgrounds,calc,intersections,calc,svg.path,fit}
-
-\definecolor{ugent-re}{RGB}{220, 78, 40}        % vermilion			/ vermiljoen
-\definecolor{ugent-we}{RGB}{45, 140, 168}       % no match
-\definecolor{ugent-ge}{RGB}{232, 94, 113}       % rose				/ bleekrood
-\definecolor{ugent-ea}{RGB}{111, 113, 185}      % distant blue		/ verblauw
-\definecolor{ugent-pp}{RGB}{251, 126, 58}       % deep orange		/ dieporanje
-\definecolor{ugent-ps}{RGB}{113, 168, 96}       % yellow green		/ geelgroen
-
-\usepackage{xparse}
+\input{../tikz-preamble}
 
 \begin{document}
+
+\iftoggle{print}{%
+    \colorlet{cc-fill}{gray!40}
+}{%
+    \colorlet{cc-fill}{ugent-we}
+}
 
 \begin{tikzpicture}
     \begin{axis}[
@@ -86,7 +40,7 @@
         yticklabel={\addfontfeature{Numbers={Lining}}\qty[round-mode=places, round-precision=0,fixed-exponent=6,exponent-mode=fixed,drop-exponent=true]{\tick}{\mega{}}},
         bar shift=0pt
     ]
-        \addplot[style={fill=ugent-we}] coordinates {
+        \addplot[style={fill=cc-fill}] coordinates {
             (1,2797997)
             (2,589626)
             (3,172432)

@@ -97,7 +97,7 @@ There is an exception: the variables of the stage are visible to all sprites and
 
 \subsection{Inter-sprite communication}\label{subsec:intersprite-communications}
 
-\textcolor{screvent}{Broadcasts} are the intended way to let sprites communicate with each other.
+Broadcasts are the intended way to let sprites communicate with each other.
 There are other ways, such as variables (since variables in the stage are global).
 However, broadcasts remain the intended way to do inter-sprite communication.
 It is a one-to-many broadcasting system~\autocite{maloneyScratchProgrammingLanguage2010}: a broadcast (an arbitrary string) is sent globally and might trigger multiple scripts (even in different sprites).

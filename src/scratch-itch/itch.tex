@@ -408,7 +408,7 @@ In the asynchronous variant, the action is executed and immediately finished.
 For example, the action to press the green flag is almost instant: the green flag is pressed in the virtual machine, and the action is complete.
 
 The synchronous actions will only finish after all activated scripts in Scratch have terminated.
-For example, the action to press the green flag will wait on all scripts with the hat block \scratchinline{\blockinit{when \greenflag clicked}} are done executing.
+For example, the action to press the green flag will wait until all scripts with the hat block \texttt{when flag clicked} are done executing.
 Of course, there are scenarios where this is not possible.
 If one of the scripts contains an infinite loop, the next scheduled action would never be performed, as the script will never end.
 
@@ -838,7 +838,7 @@ The user-facing part of the Poke software testing framework consists of three pa
 
 \subsection{The Poke extension}\label{subsec:poke-provided-blocks}
 
-Poke provides five categories of blocks: a hat block (\scratchinline{\blockpokehat{when \drawtesttube clicked}}, which starts the tests if the button is clicked), feedback blocks, user interaction blocks, observation blocks, and blocks to execute code in another sprite.
+Poke provides five categories of blocks: a hat block (which starts the tests if the button is clicked), feedback blocks, user interaction blocks, observation blocks, and blocks to execute code in another sprite.
 
 \subsubsection{Feedback blocks}
 
