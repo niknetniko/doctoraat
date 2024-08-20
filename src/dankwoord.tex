@@ -80,6 +80,12 @@ C H A R L O T T E R E V I L O K C
 
 \vspace{\fill}
 
+\iftoggle{print}{%
+    \colorlet{highlight-colour}{gray!30}
+}{%
+    \colorlet{highlight-colour}{ugent-we}
+}
+
 \begin{wide}
     \begin{tikzpicture}[x=0.75cm,y=0.75cm]
         % Draw internal grid.
@@ -91,8 +97,8 @@ C H A R L O T T E R E V I L O K C
             }
         }
 
-        \draw[line width=0.5cm,ugent-we,opacity=0.5,line cap=round] (12,-1) -- (15,-1);
-        \draw[line width=0.5cm,ugent-we,opacity=0.5,line cap=round] (9,-14) -- (12,-14);
+        \draw[line width=0.5cm,highlight-colour,opacity=0.5,line cap=round] (12,-1) -- (15,-1);
+        \draw[line width=0.5cm,highlight-colour,opacity=0.5,line cap=round] (9,-14) -- (12,-14);
     \end{tikzpicture}
 \end{wide}
 
