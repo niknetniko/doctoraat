@@ -1,4 +1,4 @@
-# Dissertation (_proefschrift_)
+# Doctoraatsproefschrift (_dissertation_)
 
 De bronbestanden voor de tekst van mijn proefschrift.
 De kern van de zaak speelt zich af in de map `src/`.
