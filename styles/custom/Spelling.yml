@@ -1,7 +1,0 @@
-extends: spelling
-message: "'%s' is unknown"
-dicpath: dictionary
-dictionaries:
-  - en_GB-ize
-ignore:
-  - ignore.txt
