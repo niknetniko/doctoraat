@@ -65,29 +65,6 @@
 \pagecolor{cover-background}
 \thispagestyle{empty}
 \begin{tikzpicture}[remember picture,overlay]
-
-    % Ornaments
-%    \node (nw) [anchor=north west] at (current page.north west) {\pgfornament[width=3cm,color=cover-foreground]{63}};
-%    \node (ne) [anchor=north east] at (current page.north east) {\pgfornament[width=3cm,color=cover-foreground,symmetry=v]{63}};
-%    \node (se) [anchor=south east] at (current page.south east) {\pgfornament[width=3cm,color=cover-foreground,symmetry=c]{63}};
-%    \node (sw) [anchor=south west] at (current page.south west) {\pgfornament[width=3cm,color=cover-foreground,symmetry=h]{63}};
-
-%    \node (t1) [right=-0.37cm of nw,anchor=north west,yshift=1.7cm] {\pgfornament[width=3.897cm,color=cover-foreground]{71}};
-%
-%    \foreach \x in {2,...,6} {
-%        \node (t\x) [right=-0.37cm of t\the\numexpr\x-1,node distance=0] {\pgfornament[width=3.897cm,color=cover-foreground]{71}};
-%    }
-%
-%    \node (b1) [right=-0.37cm of sw,anchor=south west,yshift=-1.7cm] {\pgfornament[width=3.897cm,color=cover-foreground,symmetry=h]{71}};
-
-%    \foreach \x in {2,...,6} {
-%        \node (b\x) [right=-0.37cm of b\the\numexpr\x-1,node distance=0] {\pgfornament[width=3.897cm,color=cover-foreground,symmetry=h]{71}};
-%    }
-
-%    \node (l1) [above=-0.39cm of sw,anchor=south west,xshift=-0.87cm,rotate=90] {\pgfornament[width=14.7cm,color=cover-foreground]{88}};
-%
-%    \node (l1) [above=-0.39cm of se,anchor=south east,xshift=0.87cm,rotate=-90] {\pgfornament[width=14.7cm,color=cover-foreground,symmetry=v]{88}};
-
     \node (bottom) [right=5.5cm of current page.south west,anchor=west,yshift=1.5cm] {\pgfornament[width=10cm,color=cover-foreground]{88}};
 
     \node (invitation) [text width=\paperwidth,anchor=north,align=center,outer sep=2cm] at (current page.north) {
@@ -108,13 +85,10 @@
     };
 
     \node (picture) [yshift=0.5cm] at (current page.center) {
-        \includegraphics[width=\linewidth]{../cover/iStock-ugent-we}
+        \includegraphics[width=\linewidth]{iStock-ugent-we}
     };
 
     \node (practical information) [text width=0.4\paperwidth,anchor=south west,align=left,outer sep=1.5cm,yshift=1cm] at (current page.south west) {
-%        {\fontsize{23pt}{28pt}\selectfont Practical} \par
-
-%        \vspace*{0.3cm}
         \textsc{rsvp} at \par
         \fontsize{18pt}{23pt}\selectfont
         \textbf{\href{https://doctoraat.strijbol.be/rsvp}{doctoraat.strijbol.be/rsvp}} \par
@@ -128,14 +102,6 @@
         Krijgslaan 281, 9000 Gent \par
         \vspace*{0.3cm}
     };
-%
-%    \node (ornament) at ([yshift=1cm]current page.center) {
-%        \pgfornament[scale=0.5,color=cover-foreground]{84}
-%    };
-%
-%    \node (illustration) at ([yshift=-5.5cm]current page.center) {
-%        \includegraphics[width=0.65\linewidth]{../cover/iStock-ugent-we}
-%    };
 
     \node (jury) [text width=0.4\paperwidth,anchor=south east,align=right,outer sep=1.5cm,yshift=1cm] at (current page.south east) {
         {\fontsize{20pt}{25pt}\selectfont Supervisors} \par
@@ -155,17 +121,5 @@
         \vspace*{0.1cm}
         Prof.\ Dr.\ Chris Cornelis \par
     };
-
-%    \node (back names) [shape=rectangle, fill=blue, minimum height=40mm, minimum width=\paperwidth, anchor=south west] at (current page.south west) {};
-%    \node at (back names.center) {
-%        \begin{tabular}{r l}
-%            A & B
-%        \end{tabular}
-%    };
-%    \node (names) [shape=rectangle, fill=red, minimum width=\paperwidth, anchor=west] at ([yshift=8cm]current page.south west) {
-%        \begin{tabular}{r l}
-%            one & two
-%        \end{tabular}
-%    };
 \end{tikzpicture}
 \end{document}
