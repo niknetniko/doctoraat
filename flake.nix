@@ -208,12 +208,74 @@
               export TEXMFVAR=$TMPDIR/.cache/texmf-var
             '';
             buildPhase = ''
-              latexmk -diagnostics -f -pdf -lualatex cover.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
+              latexmk -f -pdf -lualatex cover.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
             '';
             installPhase = ''
               mkdir -p $out;
               cp $BUILD_DIR/cover.pdf $out/cover.pdf
               cp $BUILD_DIR/cover.log $out/cover.log
+            '';
+          };
+          invitation-en = pkgs.stdenvNoCC.mkDerivation {
+            name = "invitation-en";
+            srcs = [
+              ./src/invitation
+              ./src/cover
+            ];
+            sourceRoot = "invitation";
+            nativeBuildInputs = with pkgs; [
+              latex_with_ugent
+              ugent-panno
+              source-serif
+              source-sans
+              source-code-pro
+            ];
+            phases = ["unpackPhase" "configurePhase" "buildPhase" "installPhase"];
+            configurePhase = ''
+              export TEXLIVE_HOME="${latex_with_ugent}"
+              export OSFONTDIR="${font_dir}"
+              export BUILD_DIR=$TMPDIR/build
+              export TEXMFHOME=$TMPDIR/.cache
+              export TEXMFVAR=$TMPDIR/.cache/texmf-var
+            '';
+            buildPhase = ''
+              latexmk -f -pdf -lualatex invitation-en.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
+            '';
+            installPhase = ''
+              mkdir -p $out;
+              cp $BUILD_DIR/invitation-en.pdf $out/invitation-en.pdf
+              cp $BUILD_DIR/invitation-en.log $out/invitation-en.log
+            '';
+          };
+          invitation-nl = pkgs.stdenvNoCC.mkDerivation {
+            name = "invitation-nl";
+            srcs = [
+              ./src/invitation
+              ./src/cover
+            ];
+            sourceRoot = "invitation";
+            nativeBuildInputs = with pkgs; [
+              latex_with_ugent
+              ugent-panno
+              source-serif
+              source-sans
+              source-code-pro
+            ];
+            phases = ["unpackPhase" "configurePhase" "buildPhase" "installPhase"];
+            configurePhase = ''
+              export TEXLIVE_HOME="${latex_with_ugent}"
+              export OSFONTDIR="${font_dir}"
+              export BUILD_DIR=$TMPDIR/build
+              export TEXMFHOME=$TMPDIR/.cache
+              export TEXMFVAR=$TMPDIR/.cache/texmf-var
+            '';
+            buildPhase = ''
+              latexmk -f -pdf -lualatex invitation-nl.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
+            '';
+            installPhase = ''
+              mkdir -p $out;
+              cp $BUILD_DIR/invitation-nl.pdf $out/invitation-nl.pdf
+              cp $BUILD_DIR/invitation-nl.log $out/invitation-nl.log
             '';
           };
         };
