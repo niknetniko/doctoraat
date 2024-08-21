@@ -131,6 +131,38 @@
           "${pkgs.source-sans}/share/fonts"
           "${pkgs.source-code-pro}/share/fonts"
         ];
+        mkPdfDocument = { name, sourceName ? name, extraNativeBuildInputs ? [], ... } @ args:
+          let
+            defaults = {
+              name = name;
+              nativeBuildInputs = with pkgs; [
+                # Use LaTeX with UGent & Panno everywhere, even if not strictly needed.
+                latex_with_ugent
+                ugent-panno
+                source-serif
+                source-sans
+                source-code-pro
+              ] ++ extraNativeBuildInputs;
+              phases = ["unpackPhase" "configurePhase" "buildPhase" "installPhase"];
+              configurePhase = ''
+                export TEXLIVE_HOME="${latex_with_ugent}"
+                export OSFONTDIR="${font_dir}"
+                export BUILD_DIR=$TMPDIR/build
+                export TEXMFHOME=$TMPDIR/.cache
+                export TEXMFVAR=$TMPDIR/.cache/texmf-var
+              '';
+              buildPhase = ''
+                latexmk -f -pdf -lualatex -shell-escape ${sourceName}.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
+              '';
+              installPhase = ''
+                mkdir -p $out;
+                cp $BUILD_DIR/${sourceName}.pdf $out/${name}.pdf
+                cp $BUILD_DIR/${sourceName}.log $out/${name}.log
+              '';
+            };
+            mergedArgs = pkgs.lib.recursiveUpdate defaults args;
+          in
+            pkgs.stdenvNoCC.mkDerivation mergedArgs;
       in
       rec {
         devShells = rec {
@@ -149,134 +181,39 @@
               }
             ];
           };
-#          dev2 = pkgs.mkShellNoCC {
-#            name = "doctoraat";
-#            inputsFrom = [packages.document];
-#            TEXLIVE_HOME = "${latex_with_ugent}";
-#            OSFONTDIR = font_dir;
-#          };
         };
         packages = rec {
           default = book;
-          book = pkgs.stdenvNoCC.mkDerivation {
+          book = mkPdfDocument {
             name = "book";
+            sourceName = "main";
             src = ./src;
-            nativeBuildInputs = with pkgs; [
+            extraNativeBuildInputs = with pkgs; [
               which
-              latex_with_ugent
               gnumake
               inkscape
               (python312.withPackages(ps: [ps.pygments]))
-              ugent-panno
-              source-serif
-              source-sans
-              source-code-pro
             ];
-            phases = ["unpackPhase" "configurePhase" "buildPhase" "installPhase"];
-            configurePhase = ''
-              export TEXLIVE_HOME="${latex_with_ugent}"
-              export OSFONTDIR="${font_dir}"
-              export BUILD_DIR=$TMPDIR/build
-              export TEXMFHOME=$TMPDIR/.cache
-              export TEXMFVAR=$TMPDIR/.cache/texmf-var
-            '';
-            buildPhase = ''
-              latexmk -f -pdf -lualatex -shell-escape main.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
-            '';
-            installPhase = ''
-              mkdir -p $out;
-              cp $BUILD_DIR/main.pdf $out/book.pdf
-              cp $BUILD_DIR/main.log $out/book.log
-            '';
           };
-          cover = pkgs.stdenvNoCC.mkDerivation {
+          cover = mkPdfDocument {
             name = "cover";
             src = ./src/cover;
-            nativeBuildInputs = with pkgs; [
-              latex_with_ugent
-              ugent-panno
-              source-serif
-              source-sans
-              source-code-pro
-            ];
-            phases = ["unpackPhase" "configurePhase" "buildPhase" "installPhase"];
-            configurePhase = ''
-              export TEXLIVE_HOME="${latex_with_ugent}"
-              export OSFONTDIR="${font_dir}"
-              export BUILD_DIR=$TMPDIR/build
-              export TEXMFHOME=$TMPDIR/.cache
-              export TEXMFVAR=$TMPDIR/.cache/texmf-var
-            '';
-            buildPhase = ''
-              latexmk -f -pdf -lualatex cover.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
-            '';
-            installPhase = ''
-              mkdir -p $out;
-              cp $BUILD_DIR/cover.pdf $out/cover.pdf
-              cp $BUILD_DIR/cover.log $out/cover.log
-            '';
           };
-          invitation-en = pkgs.stdenvNoCC.mkDerivation {
+          invitation-en = mkPdfDocument {
             name = "invitation-en";
             srcs = [
               ./src/invitation
               ./src/cover
             ];
             sourceRoot = "invitation";
-            nativeBuildInputs = with pkgs; [
-              latex_with_ugent
-              ugent-panno
-              source-serif
-              source-sans
-              source-code-pro
-            ];
-            phases = ["unpackPhase" "configurePhase" "buildPhase" "installPhase"];
-            configurePhase = ''
-              export TEXLIVE_HOME="${latex_with_ugent}"
-              export OSFONTDIR="${font_dir}"
-              export BUILD_DIR=$TMPDIR/build
-              export TEXMFHOME=$TMPDIR/.cache
-              export TEXMFVAR=$TMPDIR/.cache/texmf-var
-            '';
-            buildPhase = ''
-              latexmk -f -pdf -lualatex invitation-en.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
-            '';
-            installPhase = ''
-              mkdir -p $out;
-              cp $BUILD_DIR/invitation-en.pdf $out/invitation-en.pdf
-              cp $BUILD_DIR/invitation-en.log $out/invitation-en.log
-            '';
           };
-          invitation-nl = pkgs.stdenvNoCC.mkDerivation {
+          invitation-nl = mkPdfDocument {
             name = "invitation-nl";
             srcs = [
               ./src/invitation
               ./src/cover
             ];
             sourceRoot = "invitation";
-            nativeBuildInputs = with pkgs; [
-              latex_with_ugent
-              ugent-panno
-              source-serif
-              source-sans
-              source-code-pro
-            ];
-            phases = ["unpackPhase" "configurePhase" "buildPhase" "installPhase"];
-            configurePhase = ''
-              export TEXLIVE_HOME="${latex_with_ugent}"
-              export OSFONTDIR="${font_dir}"
-              export BUILD_DIR=$TMPDIR/build
-              export TEXMFHOME=$TMPDIR/.cache
-              export TEXMFVAR=$TMPDIR/.cache/texmf-var
-            '';
-            buildPhase = ''
-              latexmk -f -pdf -lualatex invitation-nl.tex -output-directory=$BUILD_DIR -interaction=nonstopmode
-            '';
-            installPhase = ''
-              mkdir -p $out;
-              cp $BUILD_DIR/invitation-nl.pdf $out/invitation-nl.pdf
-              cp $BUILD_DIR/invitation-nl.log $out/invitation-nl.log
-            '';
           };
         };
       }
