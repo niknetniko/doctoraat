@@ -29,3 +29,8 @@ The action is in the `src/` folder.
 
 With an installation of TeXLive, you can compile `src/main.tex` with `latexmk` and the dissertation will appear (after some time, 6 minutes or more is not an exception).
 People using Nix might also run `nix build` for the dissertation or other outputs for other documents.
+
+----
+
+The LaTeX itself is licenced under the MIT Licence.
+The contents (i.e. the text itself) is not.
