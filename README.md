@@ -20,7 +20,7 @@ Naast het hoofdcommando dat het proefschrift produceert (met `nix build`), kunne
 - `nix build .#invitation-en` voor de Engelstalige uitnodiging
 
 Merk op dat de kaftillustratie onder licentie aan mij is; gebruik die niet zonder toestemming!
-(Die zou strict genomen niet in de repository mogen zitten.)
+(Die zou strikt genomen niet in de repository mogen zitten.)
 
 ----
 
